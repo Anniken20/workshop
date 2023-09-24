@@ -18,5 +18,5 @@ public class DayAndNight : MonoBehaviour
 
 //This script just rotates the X axis
 //directional light only changes
-// rotation per sec can be changed + add the lamp function
-// Change the directional light location to change the funky shadows
+// rotation per sec can be changed 
+
