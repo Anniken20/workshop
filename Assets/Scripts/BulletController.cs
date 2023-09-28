@@ -21,9 +21,10 @@ public class BulletController : MonoBehaviour
     private IEnumerator BulletMove(Transform source)
     {
         currBounces = 0;
-        position = new Vector3(source.position.x, 2f, source.position.z);
-        direction = new Vector3(source.forward.x, 0f, source.forward.z);
         distanceTraveled = 0f;
+
+        //offset starting position for character height and in front of character
+        position = new Vector3(source.position.x, 1.2f, source.position.z) + (source.forward * 0.125f);
 
         while (currBounces < maxBounces && distanceTraveled < maxDistance)
         {

@@ -2807,8 +2807,9 @@ GameObject:
   - component: {fileID: 5885216829670671795}
   - component: {fileID: 135756641613574975}
   - component: {fileID: 4416926083347132239}
-  - component: {fileID: 6982812147933622148}
   - component: {fileID: 6982812147933622149}
+  - component: {fileID: 6982812147933622150}
+  - component: {fileID: 6982812147933622148}
   m_Layer: 7
   m_Name: Player
   m_TagString: Player
@@ -3804,12 +3805,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14bad7c6083a5004db04883f6f635b27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxBounces: 3
-  maxDistance: 1000
-  bulletSpeed: 300
   bulletPrefab: {fileID: 6120439615268133299, guid: 15f1d19673f29dc478d702041b334fca,
     type: 3}
-  fireTime: 0
+  aimController: {fileID: 6982812147933622150}
+  fireTime: 0.1
+--- !u!114 &6982812147933622150
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4416926083347132227}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93049e3cd35c90a4fafcdaa83daac21b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  aimLine: {fileID: 6982812147933622148}
+  canAim: 0
 --- !u!4 &6983258930626336602
 Transform:
   m_ObjectHideFlags: 0

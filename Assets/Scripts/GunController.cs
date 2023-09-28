@@ -16,13 +16,14 @@ using UnityEngine;
 public class GunController : MonoBehaviour
 {
     public GameObject bulletPrefab;
+    public AimController aimController;
 
     [Tooltip("Time in seconds while player is motionless firing gun.")]
     public float fireTime;
 
     //private vars
     private bool canShoot = true;
-    private float angle;
+    private Vector3 aimAngle;
 
     private void Update()
     {
@@ -31,13 +32,12 @@ public class GunController : MonoBehaviour
 
     private void GetInput()
     {
-        float a = Input.GetAxis("Mouse Y");
-        Mathf.Clamp(angle, -75f/360f, 75f/360f);
-        angle = a;
+        //get angle data from 1 script, so it will be consistent across lasso/gun
+        aimAngle = aimController.GetAimAngle();
 
         if (!canShoot) return;
 
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetMouseButtonDown(0))
         {
             StartCoroutine(FreezePlayerRoutine());
             FireGun();
@@ -47,17 +47,21 @@ public class GunController : MonoBehaviour
     private void FireGun()
     {
         //calculate launch angle
-        Vector3 launchAngle = gameObject.transform.forward + new Vector3(0, angle, 0);
+        /*Vector3 launchAngle = new Vector3(gameObject.transform.forward.x, 
+            gameObject.transform.forward.y, 
+            gameObject.transform.forward.z) + new Vector3(aimAngle.x, aimAngle.y, aimAngle.z);*/
 
         //instantiate and fire bullet
         GameObject bullet = Instantiate(bulletPrefab);
-        bullet.GetComponent<BulletController>().Fire(gameObject.transform, launchAngle);
+        bullet.GetComponent<BulletController>().Fire(gameObject.transform, aimAngle);
     }
 
     private IEnumerator FreezePlayerRoutine()
     {
         //PlayerController.main.firingGun = true;
+        canShoot = false;
         yield return new WaitForSeconds(fireTime);
+        canShoot = true;
         //PlayerController.main.firingGun = false;
     }
 
