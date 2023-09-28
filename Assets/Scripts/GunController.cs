@@ -13,145 +13,45 @@ using UnityEngine;
  * 
  */
 
-public class Bullet
-{
-    public Vector3 position;
-    public Vector3 direction;
-    public float distanceTraveled;
-    public float maxDistance;
-    public int currBounces;
-    public int maxBounces;
-    public float speed;
-    public int bulletIndex;
-
-    public Bullet(Vector3 pos, Vector3 dir)
-    {
-        position = pos;
-        direction = dir;
-    }
-
-    public Bullet(int index, float speed, int bounces, float dist)
-    {
-        bulletIndex = index;
-        this.speed = speed;
-        currBounces = bounces;
-        distanceTraveled = dist;
-    }
-
-    public Bullet() { }
-
-    public override string ToString()
-    {
-        return "index: " + bulletIndex + ", pos: " + position + ", bounces: " + currBounces;
-    }
-
-    public IEnumerator BulletMove(Transform source, LineRenderer lineRenderer)
-    {
-        currBounces = 0;
-        position = new Vector3(source.position.x, 2f, source.position.z);
-        direction = new Vector3(source.forward.x, 0f, source.forward.z);
-        distanceTraveled = 0f;
-
-        while (currBounces < maxBounces && distanceTraveled < maxDistance)
-        {
-            //move bullet in its fired direction
-            position = Vector3.MoveTowards(
-                    position,
-                    position + direction,
-                    speed * Time.deltaTime);
-
-
-            //track how far bullet has traveled so we know when to kill it
-            distanceTraveled += speed * Time.deltaTime;
-
-            RaycastHit hitData;
-
-            //if hits object, ricochet
-            if (Physics.Raycast(position, direction, out hitData, 0.01f))
-            {
-                direction = hitData.normal;
-                maxBounces++;
-            }
-
-            //update bullet trail line
-            lineRenderer.SetPosition(bulletIndex, position);
-
-            //wait until end of frame to continue while loop
-            yield return null;
-        }
-        if(currBounces < maxBounces)
-        {
-            Debug.Log("bullet stopped due to bounces");
-        }
-        if (distanceTraveled < maxDistance)
-        {
-            Debug.Log("bullet stopped due to bounces");
-        }
-
-    }
-}
-
-
 public class GunController : MonoBehaviour
 {
-    //public vars
-    public int maxBounces;
-    public float maxDistance;
-    public float bulletSpeed;
+    public GameObject bulletPrefab;
 
     [Tooltip("Time in seconds while player is motionless firing gun.")]
     public float fireTime;
 
     //private vars
     private bool canShoot = true;
-    Bullet headBullet;
-    Bullet trailingBullet;
-
-    //references
-    private LineRenderer _lineRenderer;
-
-    private void Awake()
-    {
-        _lineRenderer = GetComponent<LineRenderer>();
-        headBullet = new Bullet(1, bulletSpeed, maxBounces, maxDistance);
-        trailingBullet = new Bullet(0, bulletSpeed, maxBounces, maxDistance);
-    }
+    private float angle;
 
     private void Update()
     {
         GetInput();
-        Debug.Log("Head: " + headBullet);
-        Debug.Log("Tail: " + trailingBullet);
     }
 
     private void GetInput()
     {
+        float a = Input.GetAxis("Mouse Y");
+        Mathf.Clamp(angle, -75f/360f, 75f/360f);
+        angle = a;
+
         if (!canShoot) return;
 
         if (Input.GetKeyDown(KeyCode.E))
         {
             StartCoroutine(FreezePlayerRoutine());
-            print("FIRE");
             FireGun();
         }
     }
 
     private void FireGun()
     {
-        _lineRenderer.positionCount = 2;
-        _lineRenderer.SetPosition(0, new Vector3(gameObject.transform.position.x, 2f, gameObject.transform.position.z));
+        //calculate launch angle
+        Vector3 launchAngle = gameObject.transform.forward + new Vector3(0, angle, 0);
 
-        StartCoroutine(FireRoutine());
-    }
-
-    private IEnumerator FireRoutine()
-    {
-        StartCoroutine(headBullet.BulletMove(gameObject.transform, _lineRenderer));
-
-        //delay to create separation between front and back of bullet trail
-        yield return new WaitForSeconds(0.1f);
-
-        StartCoroutine(trailingBullet.BulletMove(gameObject.transform, _lineRenderer));
+        //instantiate and fire bullet
+        GameObject bullet = Instantiate(bulletPrefab);
+        bullet.GetComponent<BulletController>().Fire(gameObject.transform, launchAngle);
     }
 
     private IEnumerator FreezePlayerRoutine()
