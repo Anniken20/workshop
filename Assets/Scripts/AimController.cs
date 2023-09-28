@@ -28,12 +28,12 @@ public class AimController : MonoBehaviour
         angle.y += yDelta / 5f;
         angle.y = Mathf.Clamp(angle.y, -0.5f, 0.5f);
 
-        float xDelta = Input.GetAxis("Mouse X");
+        /*float xDelta = Input.GetAxis("Mouse X");
         angle.x += xDelta * gameObject.transform.forward.x / 5f;
         angle.x = Mathf.Clamp(angle.x, -0.5f, 0.5f);
 
         angle.z += xDelta * gameObject.transform.forward.z / 5f;
-        angle.z = Mathf.Clamp(angle.z, -0.5f, 0.5f);
+        angle.z = Mathf.Clamp(angle.z, -0.5f, 0.5f);*/
 
         //toggle aim draw
         if (Input.GetKeyDown(KeyCode.E))
@@ -82,10 +82,10 @@ public class AimController : MonoBehaviour
     private IEnumerator RecenterAimRoutine()
     {
         canAim = false;
-        while (Mathf.Abs(Vector3.Magnitude(angle - gameObject.transform.forward)) > 0.01f)
+        while (Mathf.Abs(Vector3.Magnitude(angle - gameObject.transform.forward)) > 0.0001f)
         {
             //lerp towards forward direction
-            angle = Vector3.Lerp(angle, gameObject.transform.forward, 0.1f);
+            angle = Vector3.Lerp(angle, gameObject.transform.forward, 0.2f);
                 
             //wait a frame until next loop iteration
             yield return null;
