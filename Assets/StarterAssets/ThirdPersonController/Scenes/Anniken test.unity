@@ -138,6 +138,7 @@ GameObject:
   - component: {fileID: 279927230}
   - component: {fileID: 279927229}
   - component: {fileID: 279927228}
+  - component: {fileID: 279927232}
   - component: {fileID: 279927227}
   m_Layer: 0
   m_Name: ghost object (1)
@@ -244,6 +245,24 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &279927232
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 279927226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77a483b7605651d4db61f2fcc56e5d08, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  material1: {fileID: 5629084884208175553, guid: fce3bf5a5b603db45ab0048fb6ab44df,
+    type: 3}
+  material2: {fileID: 2100000, guid: 945ea9f2e3ca9594c971974a3e694845, type: 2}
+  switchInterval: 5
+  switchKey: 116
+  switchDelay: 5
 --- !u!1 &542508511
 GameObject:
   m_ObjectHideFlags: 0
@@ -1089,6 +1108,7 @@ MonoBehaviour:
   material2: {fileID: 2100000, guid: 945ea9f2e3ca9594c971974a3e694845, type: 2}
   switchInterval: 5
   switchKey: 116
+  switchDelay: 5
 --- !u!1 &1764214107
 GameObject:
   m_ObjectHideFlags: 0
@@ -4092,6 +4112,7 @@ MonoBehaviour:
   material2: {fileID: 2100000, guid: 945ea9f2e3ca9594c971974a3e694845, type: 2}
   switchInterval: 5
   switchKey: 116
+  switchDelay: 5
 --- !u!4 &8322255485271233297
 Transform:
   m_ObjectHideFlags: 0
