@@ -7,10 +7,12 @@ public class GhostController : MonoBehaviour
 {   
     private bool abilityEnabled = false;
     private float abilityDuration = 5.0f;
-    private float countdownTimer = 0.0f;
+    private float countdownTimer = 2.0f;
 
-    // public ParticleSystem smokeParticleSystem; // Reference to the smoke Particle System
+    //public ParticleSystem smokeParticleSystem; // 
 
+    //can add the smoke to her hands if we want to, might need tweaking and editing but easy fix
+    //The timer for the countdown need to be the same as the ability and match the material switch or it will bug out
     
     //Once per frame
     void Update()

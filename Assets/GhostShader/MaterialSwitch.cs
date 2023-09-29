@@ -2,16 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//Buggy atm, but it shows the concept?
+//NO MORE BUGS WOOO
+//All numbers can be edited but too different can make it cause issues in ghost controller too
+//BE AWARE
+
 public class MaterialSwitch : MonoBehaviour
+
 {
     public Material material1;
     public Material material2;
-    public float switchInterval = 2f; // Time interval for material switching in seconds
+    public float switchInterval = 5f; // Time interval for material switching in seconds
     public KeyCode switchKey = KeyCode.T; // Key to initiate material switching
+    public float switchDelay = 5f; // Delay in seconds before switching is allowed again
 
     private Renderer rend;
-    private bool isSwitching = false;
     private bool canSwitch = true;
 
     private void Start()
@@ -24,35 +28,25 @@ public class MaterialSwitch : MonoBehaviour
     {
         if (Input.GetKeyDown(switchKey))
         {
-            ToggleSwitching(); // Toggle material switching on button press
-        }
-    }
-
-    public void ToggleSwitching()
-    {
-        if (canSwitch)
-        {
-            isSwitching = !isSwitching;
-
-            if (isSwitching)
+            if (canSwitch)
             {
-                StartCoroutine(SwitchMaterials());
+                SwitchMaterial();
+                StartCoroutine(SwitchCooldown());
             }
         }
     }
 
-    private IEnumerator SwitchMaterials()
+    private void SwitchMaterial()
+    {
+        rend.material = material2; // Change to Material2
+    }
+
+    private IEnumerator SwitchCooldown()
     {
         canSwitch = false;
-
-        while (isSwitching)
-        {
-            rend.material = material2; // Change to Material2
-            yield return new WaitForSeconds(switchInterval);
-            rend.material = material1; // Change back to Material1
-            yield return new WaitForSeconds(switchInterval);
-        }
-
+        yield return new WaitForSeconds(switchInterval);
+        rend.material = material1; // Change back to Material1
+        yield return new WaitForSeconds(switchDelay);
         canSwitch = true;
     }
 }
