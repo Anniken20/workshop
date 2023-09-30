@@ -62,6 +62,24 @@ public partial class @CharacterMovement: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Lasso"",
+                    ""type"": ""Button"",
+                    ""id"": ""10ea552d-13dd-4365-ab0a-792464af3ce6"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Pick-Up"",
+                    ""type"": ""Button"",
+                    ""id"": ""3aa39968-6211-4236-b219-08716bb6718b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -185,6 +203,28 @@ public partial class @CharacterMovement: IInputActionCollection2, IDisposable
                     ""action"": ""Shoot"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""031f348e-4ec9-4c18-88a8-d97ee9192f82"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Lasso"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""368a04f4-d17a-4968-b70b-9145d17ffcfa"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pick-Up"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -197,6 +237,8 @@ public partial class @CharacterMovement: IInputActionCollection2, IDisposable
         m_CharacterControls_Jump = m_CharacterControls.FindAction("Jump", throwIfNotFound: true);
         m_CharacterControls_GhostWall = m_CharacterControls.FindAction("GhostWall", throwIfNotFound: true);
         m_CharacterControls_Shoot = m_CharacterControls.FindAction("Shoot", throwIfNotFound: true);
+        m_CharacterControls_Lasso = m_CharacterControls.FindAction("Lasso", throwIfNotFound: true);
+        m_CharacterControls_PickUp = m_CharacterControls.FindAction("Pick-Up", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -262,6 +304,8 @@ public partial class @CharacterMovement: IInputActionCollection2, IDisposable
     private readonly InputAction m_CharacterControls_Jump;
     private readonly InputAction m_CharacterControls_GhostWall;
     private readonly InputAction m_CharacterControls_Shoot;
+    private readonly InputAction m_CharacterControls_Lasso;
+    private readonly InputAction m_CharacterControls_PickUp;
     public struct CharacterControlsActions
     {
         private @CharacterMovement m_Wrapper;
@@ -270,6 +314,8 @@ public partial class @CharacterMovement: IInputActionCollection2, IDisposable
         public InputAction @Jump => m_Wrapper.m_CharacterControls_Jump;
         public InputAction @GhostWall => m_Wrapper.m_CharacterControls_GhostWall;
         public InputAction @Shoot => m_Wrapper.m_CharacterControls_Shoot;
+        public InputAction @Lasso => m_Wrapper.m_CharacterControls_Lasso;
+        public InputAction @PickUp => m_Wrapper.m_CharacterControls_PickUp;
         public InputActionMap Get() { return m_Wrapper.m_CharacterControls; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -291,6 +337,12 @@ public partial class @CharacterMovement: IInputActionCollection2, IDisposable
             @Shoot.started += instance.OnShoot;
             @Shoot.performed += instance.OnShoot;
             @Shoot.canceled += instance.OnShoot;
+            @Lasso.started += instance.OnLasso;
+            @Lasso.performed += instance.OnLasso;
+            @Lasso.canceled += instance.OnLasso;
+            @PickUp.started += instance.OnPickUp;
+            @PickUp.performed += instance.OnPickUp;
+            @PickUp.canceled += instance.OnPickUp;
         }
 
         private void UnregisterCallbacks(ICharacterControlsActions instance)
@@ -307,6 +359,12 @@ public partial class @CharacterMovement: IInputActionCollection2, IDisposable
             @Shoot.started -= instance.OnShoot;
             @Shoot.performed -= instance.OnShoot;
             @Shoot.canceled -= instance.OnShoot;
+            @Lasso.started -= instance.OnLasso;
+            @Lasso.performed -= instance.OnLasso;
+            @Lasso.canceled -= instance.OnLasso;
+            @PickUp.started -= instance.OnPickUp;
+            @PickUp.performed -= instance.OnPickUp;
+            @PickUp.canceled -= instance.OnPickUp;
         }
 
         public void RemoveCallbacks(ICharacterControlsActions instance)
@@ -330,5 +388,7 @@ public partial class @CharacterMovement: IInputActionCollection2, IDisposable
         void OnJump(InputAction.CallbackContext context);
         void OnGhostWall(InputAction.CallbackContext context);
         void OnShoot(InputAction.CallbackContext context);
+        void OnLasso(InputAction.CallbackContext context);
+        void OnPickUp(InputAction.CallbackContext context);
     }
 }
