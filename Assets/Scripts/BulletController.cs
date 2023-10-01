@@ -24,7 +24,7 @@ public class BulletController : MonoBehaviour
         distanceTraveled = 0f;
 
         //offset starting position for character height and in front of character
-        position = new Vector3(source.position.x, 1.2f, source.position.z) + (source.forward * 0.125f);
+        position = new Vector3(source.position.x, source.position.y + 1.2f, source.position.z) + (source.forward * 0.125f);
 
         while (currBounces < maxBounces && distanceTraveled < maxDistance)
         {
@@ -33,7 +33,6 @@ public class BulletController : MonoBehaviour
                     position,
                     position + direction,
                     speed * Time.deltaTime);
-
 
             //track how far bullet has traveled so we know when to kill it
             distanceTraveled += speed * Time.deltaTime;
@@ -46,6 +45,7 @@ public class BulletController : MonoBehaviour
                 direction = Vector3.Reflect(direction, hitData.normal);
                 maxBounces++;
             }
+            
 
             gameObject.transform.position = position;
 
@@ -54,4 +54,20 @@ public class BulletController : MonoBehaviour
         }
         Destroy(gameObject);
     }
+
+    //could not get this system to work
+    /*
+    private void OnTriggerEnter(Collider other)
+    {
+        RaycastHit hitData;
+        
+        //if hits object, ricochet
+        if (Physics.Raycast(position, direction, out hitData, 0.1f))
+        {
+            Debug.Log("bullet bounce");
+            direction = Vector3.Reflect(direction, hitData.normal);
+            currBounces++;
+        }        
+    }
+    */
 }  

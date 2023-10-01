@@ -6,12 +6,22 @@ public class AimController : MonoBehaviour
 {
     public LineRenderer aimLine;
 
+    [Tooltip("1 => 180* of freedom. 0.5 => 90* of freedom.")]
+    public float xAngleFreedom;
+    [Tooltip("1 => 180* of freedom. 0.5 => 90* of freedom.")]
+    public float yAngleFreedom;
+
+    public float sensitivity = 5f;
+
     [HideInInspector] public bool canAim = true;
     private Vector3 angle;
+    private Vector3 modifiedAngle;
     private bool showingAimLine = false;
 
     private void Awake()
     {
+        angle = new Vector3();
+        modifiedAngle = new Vector3();
         canAim = true;
     }
     private void Update()
@@ -23,20 +33,21 @@ public class AimController : MonoBehaviour
     {
         //in case locked during menus or game cutscenes etc.
         if (!canAim) return;
-
-        float yDelta = Input.GetAxis("Mouse Y");
-        angle.y += yDelta / 5f * Time.deltaTime;
-        angle.y = Mathf.Clamp(angle.y, -0.5f, 0.5f);
-
-        
+             
         float xDelta = Input.GetAxis("Mouse X");
-        angle.x += xDelta * gameObject.transform.forward.x / 5f;
-        angle.x = Mathf.Clamp(angle.x, -0.5f, 0.5f);
+        float yDelta = Input.GetAxis("Mouse Y");
 
-        angle.z += xDelta * gameObject.transform.forward.z / 5f;
-        angle.z = Mathf.Clamp(angle.z, -0.5f, 0.5f);
+        xDelta *= sensitivity / 50f;
+        yDelta *= sensitivity / 50f;
 
-        angle += gameObject.transform.forward;
+        modifiedAngle.x += xDelta;
+        modifiedAngle.y += yDelta;
+
+        modifiedAngle.x = Mathf.Clamp(xDelta, -xAngleFreedom / 2, xAngleFreedom / 2);
+        modifiedAngle.y = Mathf.Clamp(yDelta, -yAngleFreedom / 2, yAngleFreedom / 2);
+
+        angle = gameObject.transform.forward;
+        angle += modifiedAngle;
 
         //toggle aim draw
         if (Input.GetKeyDown(KeyCode.E))
@@ -62,7 +73,7 @@ public class AimController : MonoBehaviour
 
         aimLine.positionCount = 2;
         Vector3 startPos = new Vector3(gameObject.transform.position.x,
-            1.5f,
+            gameObject.transform.position.y + 1.5f,
             gameObject.transform.position.z)
             + (gameObject.transform.forward * 0.25f);
 
