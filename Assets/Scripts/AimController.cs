@@ -25,15 +25,18 @@ public class AimController : MonoBehaviour
         if (!canAim) return;
 
         float yDelta = Input.GetAxis("Mouse Y");
-        angle.y += yDelta / 5f;
+        angle.y += yDelta / 5f * Time.deltaTime;
         angle.y = Mathf.Clamp(angle.y, -0.5f, 0.5f);
 
-        /*float xDelta = Input.GetAxis("Mouse X");
+        
+        float xDelta = Input.GetAxis("Mouse X");
         angle.x += xDelta * gameObject.transform.forward.x / 5f;
         angle.x = Mathf.Clamp(angle.x, -0.5f, 0.5f);
 
         angle.z += xDelta * gameObject.transform.forward.z / 5f;
-        angle.z = Mathf.Clamp(angle.z, -0.5f, 0.5f);*/
+        angle.z = Mathf.Clamp(angle.z, -0.5f, 0.5f);
+
+        angle += gameObject.transform.forward;
 
         //toggle aim draw
         if (Input.GetKeyDown(KeyCode.E))
