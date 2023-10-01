@@ -12,6 +12,7 @@ public class AimController : MonoBehaviour
     public float yAngleFreedom;
 
     public float sensitivity = 5f;
+    public bool horizontalAim;
 
     [HideInInspector] public bool canAim = true;
     private Vector3 angle;
@@ -61,6 +62,12 @@ public class AimController : MonoBehaviour
 
         //restore y angle
         modifiedAngle.y = ySave;
+
+        if (!horizontalAim)
+        {
+            modifiedAngle.x = 0f;
+            modifiedAngle.z = 0f;
+        }
 
         //apply modified angle
         angle = gameObject.transform.forward;

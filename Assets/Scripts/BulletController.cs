@@ -37,10 +37,11 @@ public class BulletController : MonoBehaviour
             //track how far bullet has traveled so we know when to kill it
             distanceTraveled += speed * Time.deltaTime;
 
+            
             RaycastHit hitData;
 
             //if hits object, ricochet
-            if (Physics.Raycast(position, direction, out hitData, 0.1f))
+            if (Physics.Raycast(position, direction, out hitData, 0.25f))
             {
                 direction = Vector3.Reflect(direction, hitData.normal);
                 maxBounces++;
