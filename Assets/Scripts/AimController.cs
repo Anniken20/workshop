@@ -17,9 +17,12 @@ public class AimController : MonoBehaviour
     private Vector3 angle;
     private Vector3 modifiedAngle;
     private bool showingAimLine = false;
+    private float xDelta;
+    private float yDelta;
 
     private void Awake()
     {
+        Cursor.lockState = CursorLockMode.Locked;
         angle = new Vector3();
         modifiedAngle = new Vector3();
         canAim = true;
@@ -33,19 +36,28 @@ public class AimController : MonoBehaviour
     {
         //in case locked during menus or game cutscenes etc.
         if (!canAim) return;
-             
-        float xDelta = Input.GetAxis("Mouse X");
-        float yDelta = Input.GetAxis("Mouse Y");
+        
+        //get input from mouse
+        xDelta = Input.GetAxis("Mouse X");
+        yDelta = Input.GetAxis("Mouse Y");
 
-        xDelta *= sensitivity / 50f;
-        yDelta *= sensitivity / 50f;
+        //apply sensitivity
+        modifiedAngle.x += xDelta * sensitivity / 100;
+        modifiedAngle.y += yDelta * sensitivity / 100;
 
-        modifiedAngle.x += xDelta;
-        modifiedAngle.y += yDelta;
+        //clamp x angle
+        modifiedAngle.x = Mathf.Clamp(modifiedAngle.x, -xAngleFreedom / 2, xAngleFreedom / 2);
 
-        modifiedAngle.x = Mathf.Clamp(xDelta, -xAngleFreedom / 2, xAngleFreedom / 2);
-        modifiedAngle.y = Mathf.Clamp(yDelta, -yAngleFreedom / 2, yAngleFreedom / 2);
+        //clamp and save y-value 
+        float ySave = Mathf.Clamp(modifiedAngle.y, -yAngleFreedom / 2, yAngleFreedom / 2);
 
+        //multiply by transform.right to get proper x and z directions
+        modifiedAngle = modifiedAngle.x * gameObject.transform.right;
+
+        //restore y angle
+        modifiedAngle.y = ySave;
+
+        //apply modified angle
         angle = gameObject.transform.forward;
         angle += modifiedAngle;
 
@@ -66,7 +78,6 @@ public class AimController : MonoBehaviour
     {
         if (!showingAimLine)
         {
-            //Debug.Log("eat penis");
             aimLine.positionCount = 0;
             return;
         }
