@@ -45,14 +45,19 @@ public class AimController : MonoBehaviour
         modifiedAngle.x += xDelta * sensitivity / 100;
         modifiedAngle.y += yDelta * sensitivity / 100;
 
-        //clamp x angle
-        modifiedAngle.x = Mathf.Clamp(modifiedAngle.x, -xAngleFreedom / 2, xAngleFreedom / 2);
-
         //clamp and save y-value 
         float ySave = Mathf.Clamp(modifiedAngle.y, -yAngleFreedom / 2, yAngleFreedom / 2);
 
         //multiply by transform.right to get proper x and z directions
         modifiedAngle = modifiedAngle.x * gameObject.transform.right;
+
+        //clamp x and z angles
+        modifiedAngle.x = Mathf.Clamp(modifiedAngle.x, 
+            gameObject.transform.forward.x - xAngleFreedom / 2,
+            gameObject.transform.forward.x + xAngleFreedom / 2);
+        modifiedAngle.z = Mathf.Clamp(modifiedAngle.z,
+            gameObject.transform.forward.z - xAngleFreedom / 2,
+            gameObject.transform.forward.z + xAngleFreedom / 2);
 
         //restore y angle
         modifiedAngle.y = ySave;
@@ -115,6 +120,7 @@ public class AimController : MonoBehaviour
             //wait a frame until next loop iteration
             yield return null;
         }
+        modifiedAngle = new Vector3(0f, 0f, 0f);
         canAim = true;
     }
 
