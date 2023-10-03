@@ -35,6 +35,7 @@ public class AimController : MonoBehaviour
     }
     private void UpdateAim()
     {
+
         //in case locked during menus or game cutscenes etc.
         if (!canAim) return;
         
@@ -53,12 +54,18 @@ public class AimController : MonoBehaviour
         modifiedAngle = modifiedAngle.x * gameObject.transform.right;
 
         //clamp x and z angles
+        //---could not get it working :()---
+        /*
         modifiedAngle.x = Mathf.Clamp(modifiedAngle.x, 
             gameObject.transform.forward.x - xAngleFreedom / 2,
             gameObject.transform.forward.x + xAngleFreedom / 2);
+        */
+        
+        /*
         modifiedAngle.z = Mathf.Clamp(modifiedAngle.z,
             gameObject.transform.forward.z - xAngleFreedom / 2,
             gameObject.transform.forward.z + xAngleFreedom / 2);
+        */
 
         //restore y angle
         modifiedAngle.y = ySave;
@@ -94,7 +101,10 @@ public class AimController : MonoBehaviour
             return;
         }
 
+        //add 2 positions to line renderer so a line is drawn
         aimLine.positionCount = 2;
+
+        //start line near chest level, a little bit in front of player
         Vector3 startPos = new Vector3(gameObject.transform.position.x,
             gameObject.transform.position.y + 1.5f,
             gameObject.transform.position.z)
@@ -109,7 +119,7 @@ public class AimController : MonoBehaviour
         {
             aimLine.SetPosition(1, hitData.point);
         }
-        //otherwise set far away in that direction
+        //otherwise set position 1 far away in that direction
         else
         {
             aimLine.SetPosition(1, angle * 200f);
