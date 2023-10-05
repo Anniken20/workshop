@@ -104,6 +104,7 @@ namespace StarterAssets
 
 #if ENABLE_INPUT_SYSTEM 
         private PlayerInput _playerInput;
+        private PlayerInput characterMovement;
 #endif
         private Animator _animator;
         private CharacterController _controller;
@@ -119,7 +120,7 @@ namespace StarterAssets
             get
             {
 #if ENABLE_INPUT_SYSTEM
-                return _playerInput.currentControlScheme == "KeyboardMouse";
+                return _playerInput.currentControlScheme == "CharacterMovement";
 #else
 				return false;
 #endif
