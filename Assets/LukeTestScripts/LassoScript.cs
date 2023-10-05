@@ -4,22 +4,36 @@ using UnityEngine;
 
 public class LassoScript : MonoBehaviour
 {
+[Header("Objects and transform info")]
 
+    [SerializeField] Transform rayLaunchPoint;
     [SerializeField] Transform lassoAttachPoint;
+    
+    [SerializeField] Transform playerObject;
+[Header("Lasso Stats")]
     [SerializeField] float rayDistance = 50f;
+    [SerializeField] int flingForce;
+    [SerializeField] float lassoGrabSpeed;
+[Header("Grapple Stats")]
     private bool lassoActive;
     private GameObject lassoObject;
     private GameObject grapplePoint;
-    [SerializeField] Transform rayLaunchPoint;
-    [SerializeField] Transform playerObject;
     private Rigidbody objectRigid;
     private Collider objectCollider;
     private bool moveObject;
-    private bool movePlayer;
+    private bool grapple;
     [SerializeField] float breakDistance = 1.0f;
-    [SerializeField] int flingForce;
-    [SerializeField] float lassoGrabSpeed;
+
+    [SerializeField] float grappleSpeed;
     private bool manipulateObject;
+    private Rigidbody rb;
+[Header("Misc")]
+    [SerializeField] LineRenderer lineRend;
+
+    private void Start(){
+        rb = GetComponent<Rigidbody>();
+        lineRend.enabled = false;
+    }
     void Update()
     {
         //Change this for different input this was only for testing
@@ -29,22 +43,25 @@ public class LassoScript : MonoBehaviour
                 CastRay();
                 manipulateObject = true;
             }
-            else{
-                //EmptyLasso();
-                //ManipulateObject();
-                //manipulateObject = true;
-            }
            }
         if(Input.GetMouseButtonUp(0)){
             EmptyLasso();
             manipulateObject = false;
+            grapple = false;
+            lineRend.enabled = false;
+            rb.velocity = Vector3.zero;
+            playerObject.gameObject.GetComponent<CharacterController>().enabled = true;
         }
         //Checks distance between player and grapple point and breaks off when too close
         if(grapplePoint != null){
             float distance = Vector3.Distance(playerObject.transform.position, grapplePoint.transform.position);
         
             if(distance <= breakDistance){
-                movePlayer = false;
+                grapple = false;
+                lineRend.enabled = false;
+                playerObject.gameObject.GetComponent<CharacterController>().enabled = true;
+
+        
                 
         }
         }
@@ -64,10 +81,12 @@ public class LassoScript : MonoBehaviour
                 Lasso(hit.transform.gameObject);
                 lassoActive = true;
             }
-            /*if(hit.transform.gameObject.CompareTag("Grapple")){
-                movePlayer = true;
+            if(hit.transform.gameObject.CompareTag("Grapple")){
+                grapple = true;
                 grapplePoint = hit.transform.gameObject;
-            }*/
+                lineRend.enabled = true;
+                rb.velocity = Vector3.zero;
+            }
         }
     }
 
@@ -83,46 +102,61 @@ public class LassoScript : MonoBehaviour
     }
 //Returns object to original state and clears info
     public void EmptyLasso(){
-        objectRigid.useGravity = true;
-        objectCollider.isTrigger = false;
-        lassoActive = false;
-        moveObject = false;
-        Vector3 objectVelocity = new Vector3(lassoAttachPoint.position.x*flingForce, 0, lassoAttachPoint.position.z*flingForce);
-        objectRigid.velocity = objectVelocity;
-        objectCollider = null;
-        objectRigid = null;
+        if(objectRigid || objectCollider != null){
+            objectRigid.useGravity = true;
+            objectCollider.isTrigger = false;
+            lassoActive = false;
+            moveObject = false;
+            Vector3 objectVelocity = new Vector3(lassoAttachPoint.position.x*flingForce, 0, lassoAttachPoint.position.z*flingForce);
+            objectRigid.velocity = objectVelocity;
+            objectCollider = null;
+            objectRigid = null;
+        }
     }
 //Handles the movement of the lasso'ed object and player when grappling
     void FixedUpdate(){
         if(moveObject){
+            
             lassoObject.transform.position = Vector3.Lerp(lassoObject.transform.position, lassoAttachPoint.transform.position, Time.deltaTime * lassoGrabSpeed);
         }
-
-        if(movePlayer){
-            playerObject.transform.position = Vector3.Lerp(playerObject.transform.position, grapplePoint.transform.position, Time.deltaTime * 4);
+//Moves the player towards the grapple point
+        if(grapple){
+            StopAllCoroutines();
+            //playerObject.transform.position = Vector3.Lerp(playerObject.transform.position, grapplePoint.transform.position, Time.deltaTime * grappleSpeed);
+            rb.AddForce((grapplePoint.transform.position - playerObject.transform.position) * .1f, ForceMode.VelocityChange);
+            playerObject.gameObject.GetComponent<CharacterController>().enabled = true;
+            lineRend.SetPosition(0, rayLaunchPoint.transform.position);
+            lineRend.SetPosition(1, grapplePoint.transform.position);
+            StartCoroutine(HookLifetime());
         }
 
         if(manipulateObject){
+            //This will need to be reworked for controller support
             float yRotation = Input.GetAxis("Mouse Y");
             float xRotation = Input.GetAxis("Mouse X");
-
-            lassoObject.transform.Rotate(yRotation * 10, xRotation * 10, 0);
+            //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            if(lassoObject != null){
+                lassoObject.transform.Rotate(yRotation * 10, xRotation * 10, 0);
+            }
         }
+
     }
 
-/*
-    private void ManipulateObject(){
-        float yRotation = Input.GetAxis("MouseY");
-        float xRotation = Input.GetAxis("Mouse X");
 
-        Quaternion targetRotate = Quaternion.Euler(xRotation, yRotation, 0);
-        lassoObject.transform.rotation = Quaternion.Slerp(lassoObject.transform.rotation, targetRotate, Time.deltaTime * 5.0f);
-    }
-
-*/
-//Cancels the grapple if player hits something
+//Cancels the grapple if player hits something and after a certain amount of time
     private void OnCollisionEnter(Collision other){
-        movePlayer = false;
+        grapple = false;
+        lineRend.enabled = false;
+        playerObject.gameObject.GetComponent<CharacterController>().enabled = true;
+    }
+//Cancels the grapple if it is going for too long
+    private IEnumerator HookLifetime(){
+        playerObject.gameObject.GetComponent<CharacterController>().enabled = false;
+        yield return new WaitForSeconds(8f);
+        lineRend.enabled = false;
+        grapple = false;
+        playerObject.gameObject.GetComponent<CharacterController>().enabled = true;
+        
     }
     
 }
