@@ -1,19 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class CameraController : MonoBehaviour
 {
-    public Camera isometricCamera;
-    public Camera thirdPersonCamera;
+    public GameObject camera;
+    public GameObject isometricCamPosition;
+    public GameObject thirdPersonCamPosition;
+
+    public float switchViewDuration;
 
     private bool isIsometricView = true;
 
     private void Start()
     {
-        // Which camera
-        isometricCamera.enabled = isIsometricView;
-        thirdPersonCamera.enabled = !isIsometricView;
+        //align it with the proper place
+        camera.transform.position = isometricCamPosition.transform.position;
     }
 
     private void Update()
@@ -24,8 +27,18 @@ public class CameraController : MonoBehaviour
             isIsometricView = !isIsometricView;
 
             // Toggle camera iso and over shoulder
-            isometricCamera.enabled = isIsometricView;
-            thirdPersonCamera.enabled = !isIsometricView;
+            // Move to proper target position with easing
+            if (isIsometricView)
+            {
+                Debug.Log("Moving to isoCamPos");
+                camera.transform.DOMove(isometricCamPosition.transform.position,
+                    switchViewDuration).SetEase(Ease.InOutBack);
+            } else
+            {
+                Debug.Log("Moving to shoulderCamPos");
+                camera.transform.DOMove(thirdPersonCamPosition.transform.position,
+                    switchViewDuration).SetEase(Ease.InOutBack);
+            }
         }
     }
 }
