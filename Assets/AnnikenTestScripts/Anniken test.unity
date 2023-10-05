@@ -481,10 +481,10 @@ MonoBehaviour:
   m_LookaheadTime: 0
   m_LookaheadSmoothing: 0
   m_LookaheadIgnoreY: 0
-  m_XDamping: 1
-  m_YDamping: 1
-  m_ZDamping: 1
-  m_TargetMovementOnly: 0
+  m_XDamping: 0.1
+  m_YDamping: 0.1
+  m_ZDamping: 0.1
+  m_TargetMovementOnly: 1
   m_ScreenX: 0.4
   m_ScreenY: 0.7
   m_CameraDistance: 1
@@ -614,9 +614,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b80b3eb37856d154190fd079728fd95c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  camBrain: {fileID: 9078993846310988380}
   mainCam: {fileID: 2070925443028286826}
   shoulderCam: {fileID: 1946228965}
-  switchViewDuration: 0
+  switchViewDuration: 1.5
 --- !u!4 &639036449
 Transform:
   m_ObjectHideFlags: 0
@@ -1529,7 +1530,7 @@ MonoBehaviour:
   m_Follow: {fileID: 8338988565591873055}
   m_Lens:
     FieldOfView: 40
-    OrthographicSize: 0.4
+    OrthographicSize: 0.5
     NearClipPlane: 0.05
     FarClipPlane: 2000
     Dutch: 0
@@ -1553,15 +1554,15 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1946228964}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.40607065, y: 1.685, z: -1}
+  m_LocalRotation: {x: 0.043619405, y: 0, z: 0, w: 0.9990483}
+  m_LocalPosition: {x: 0.4554966, y: 1.8113946, z: -0.97876364}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 515529754}
   m_Father: {fileID: 0}
   m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 5, y: 0, z: 0}
 --- !u!4 &1976503329 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8345070699079395522, guid: 09aade0ecefd01e4b8f7661acf64f5c2,
