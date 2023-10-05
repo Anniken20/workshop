@@ -41,9 +41,15 @@ public class BulletController : MonoBehaviour
             RaycastHit hitData;
 
             //if hits object, ricochet
-            if (Physics.Raycast(position, direction, out hitData, 0.25f))
+            if (Physics.Raycast(position, direction, out hitData, 0.3f))
             {
+                //teleport to point
+                position = hitData.point;
+
+                //reflect over the normal of the collision
                 direction = Vector3.Reflect(direction, hitData.normal);
+
+                //increment bounces
                 maxBounces++;
             }
             

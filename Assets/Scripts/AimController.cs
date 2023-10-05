@@ -55,26 +55,27 @@ public class AimController : MonoBehaviour
 
         //clamp x and z angles
         //---could not get it working :()---
-        /*
-        modifiedAngle.x = Mathf.Clamp(modifiedAngle.x, 
-            gameObject.transform.forward.x - xAngleFreedom / 2,
-            gameObject.transform.forward.x + xAngleFreedom / 2);
-        */
-        
-        /*
-        modifiedAngle.z = Mathf.Clamp(modifiedAngle.z,
-            gameObject.transform.forward.z - xAngleFreedom / 2,
-            gameObject.transform.forward.z + xAngleFreedom / 2);
-        */
+        if (horizontalAim)
+        {
+            modifiedAngle.x = Mathf.Clamp(modifiedAngle.x,
+                gameObject.transform.forward.x - xAngleFreedom / 2,
+                gameObject.transform.forward.x + xAngleFreedom / 2);
 
-        //restore y angle
-        modifiedAngle.y = ySave;
+            modifiedAngle.z = Mathf.Clamp(modifiedAngle.z,
+                gameObject.transform.right.x - xAngleFreedom / 2,
+                gameObject.transform.right.x + xAngleFreedom / 2);
 
-        if (!horizontalAim)
+            Debug.Log("angle.x: " + modifiedAngle.x);
+            Debug.Log("angle.z: " + modifiedAngle.z);
+        }
+        else
         {
             modifiedAngle.x = 0f;
             modifiedAngle.z = 0f;
         }
+
+        //restore y angle
+        modifiedAngle.y = ySave;
 
         //apply modified angle
         angle = gameObject.transform.forward;
