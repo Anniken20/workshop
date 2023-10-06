@@ -6,11 +6,12 @@ public class AimController : MonoBehaviour
 {
     public LineRenderer aimLine;
 
-    [Tooltip("1 => 180* of freedom. 0.5 => 90* of freedom.")]
+    [Tooltip("(Roughly) 2 => 90* of freedom. 0.5 => 30* of freedom.")]
     public float xAngleFreedom;
-    [Tooltip("1 => 180* of freedom. 0.5 => 90* of freedom.")]
+    [Tooltip("(Roughly) 2 => 90* of freedom. 0.5 => 30* of freedom.")]
     public float yAngleFreedom;
 
+    public GameObject aimGuide;
     public float sensitivity = 5f;
     public bool horizontalAim;
 
@@ -44,37 +45,30 @@ public class AimController : MonoBehaviour
         yDelta = Input.GetAxis("Mouse Y");
 
         //apply sensitivity
-        modifiedAngle.x += xDelta * sensitivity / 100;
-        modifiedAngle.y += yDelta * sensitivity / 100;
+        xDelta *= sensitivity / 100;
+        yDelta *= sensitivity / 100;
+
+        modifiedAngle.y += yDelta;
 
         //clamp and save y-value 
         float ySave = Mathf.Clamp(modifiedAngle.y, -yAngleFreedom / 2, yAngleFreedom / 2);
 
-        //multiply by transform.right to get proper x and z directions
-        modifiedAngle = modifiedAngle.x * gameObject.transform.right;
+        aimGuide.transform.Rotate(new Vector3(xDelta * 100, 0f, yDelta * 100));
 
-        //clamp x and z angles
-        //---could not get it working :()---
+        //clamp x and z
         /*
-        modifiedAngle.x = Mathf.Clamp(modifiedAngle.x, 
-            gameObject.transform.forward.x - xAngleFreedom / 2,
-            gameObject.transform.forward.x + xAngleFreedom / 2);
+        aimGuide.transform.eulerAngles = new Vector3(
+            Mathf.Clamp(aimGuide.transform.eulerAngles.x, -20, 20f),
+            0f,
+            Mathf.Clamp(aimGuide.transform.eulerAngles.z, -20, 20f)
+            );
         */
-        
-        /*
-        modifiedAngle.z = Mathf.Clamp(modifiedAngle.z,
-            gameObject.transform.forward.z - xAngleFreedom / 2,
-            gameObject.transform.forward.z + xAngleFreedom / 2);
-        */
+
+        modifiedAngle.x = aimGuide.transform.rotation.x;
+        modifiedAngle.z = aimGuide.transform.rotation.z;
 
         //restore y angle
         modifiedAngle.y = ySave;
-
-        if (!horizontalAim)
-        {
-            modifiedAngle.x = 0f;
-            modifiedAngle.z = 0f;
-        }
 
         //apply modified angle
         angle = gameObject.transform.forward;
@@ -138,6 +132,7 @@ public class AimController : MonoBehaviour
             yield return null;
         }
         modifiedAngle = new Vector3(0f, 0f, 0f);
+        aimGuide.transform.eulerAngles = modifiedAngle;
         canAim = true;
     }
 
