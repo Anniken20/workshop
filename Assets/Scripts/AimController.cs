@@ -54,6 +54,7 @@ public class AimController : MonoBehaviour
         float ySave = Mathf.Clamp(modifiedAngle.y, -yAngleFreedom / 2, yAngleFreedom / 2);
 
         aimGuide.transform.Rotate(new Vector3(xDelta * 100, 0f, yDelta * 100));
+        Debug.Log("Aim guide oilers: " + aimGuide.transform.eulerAngles);
 
         //clamp x and z
         /*
@@ -63,6 +64,11 @@ public class AimController : MonoBehaviour
             Mathf.Clamp(aimGuide.transform.eulerAngles.z, -20, 20f)
             );
         */
+
+        float angleX = Mathf.Clamp(aimGuide.transform.rotation.x + 360f, 330f, 690f) - 360f;
+        float angleZ = Mathf.Clamp(aimGuide.transform.rotation.z + 630f, 330f, 690f) - 360f;
+
+        aimGuide.transform.eulerAngles = new Vector3(angleX, aimGuide.transform.rotation.y, angleZ);
 
         modifiedAngle.x = aimGuide.transform.rotation.x;
         modifiedAngle.z = aimGuide.transform.rotation.z;
