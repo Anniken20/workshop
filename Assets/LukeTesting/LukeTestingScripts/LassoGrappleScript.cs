@@ -24,6 +24,7 @@ public class LassoGrappleScript : MonoBehaviour, IGrappleable
 
     void Start(){
         rb = GetComponent<Rigidbody>();
+        lineRend.enabled = false;
     }
 
     void FixedUpdate(){

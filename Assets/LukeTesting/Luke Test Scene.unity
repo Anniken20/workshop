@@ -1428,7 +1428,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1431692992}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.485, y: 0.95, z: 0.121}
+  m_LocalPosition: {x: 0.485, y: 0.95, z: 0.165}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3432,7 +3432,6 @@ GameObject:
   - component: {fileID: 5885216829670671795}
   - component: {fileID: 135756641613574975}
   - component: {fileID: 4416926083347132239}
-  - component: {fileID: 6982812147933622150}
   - component: {fileID: 6982812147933622148}
   - component: {fileID: 6982812147933622151}
   - component: {fileID: 6982812147933622152}
@@ -4346,27 +4345,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 80
   m_CollisionDetection: 2
---- !u!114 &6982812147933622150
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4416926083347132227}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 11821120ec58cee498e2f52c21a09455, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  aimController: {fileID: 6982812147933622152}
-  lassoAttachPoint: {fileID: 2123175269}
-  playerObject: {fileID: 3893294199639930361}
-  rayDistance: 50
-  flingForce: 0
-  lassoGrabSpeed: 6
-  breakDistance: 1
-  grappleSpeed: 4
-  lineRend: {fileID: 0}
 --- !u!114 &6982812147933622151
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4399,7 +4377,7 @@ MonoBehaviour:
   xAngleFreedom: 0.8
   yAngleFreedom: 1
   sensitivity: 3
-  horizontalAim: 0
+  horizontalAim: 1
   canAim: 0
 --- !u!120 &6982812147933622153
 LineRenderer:
@@ -4520,6 +4498,13 @@ MonoBehaviour:
   lassoAttachPoint: {fileID: 2123175269}
   lineOrigin: {x: 0, y: 0, z: 0}
   rayDistance: 50
+  launchPoint: {fileID: 1431692993}
+  lineRend: {fileID: 1431692994}
+  linePoints: 25
+  tBetween: 0.1
+  lassoObject: {fileID: 1279318481922432189, guid: 7fd498e7e285594439b9546436d6451f,
+    type: 3}
+  lassoLaunchStrength: 33
 --- !u!114 &6982812147933622155
 MonoBehaviour:
   m_ObjectHideFlags: 0
