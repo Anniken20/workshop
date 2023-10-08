@@ -9,7 +9,7 @@ public class LassoPickupScript : MonoBehaviour, ILassoable
 
     private bool moveObject;
 
-    private Transform attachPoint;
+     private Transform attachPoint;
 
     private bool manipulateObject;
 
