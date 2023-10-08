@@ -11,7 +11,7 @@ public class BossSpawner : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            // Player entered the trigger, spawn the specific boss.
+            // Player entered the trigger, boss in list spawns
             SpawnSpecificBoss();
         }
     }
