@@ -31,20 +31,22 @@ public class LassoScript : MonoBehaviour
     [SerializeField] LineRenderer lineRend;
 
     private void Start(){
-        rb = GetComponent<Rigidbody>();
+        //get player's rigidbody in case this is setup on a child object
+        rb = playerObject.gameObject.GetComponent<Rigidbody>();
         lineRend.enabled = false;
     }
     void Update()
     {
         //Change this for different input this was only for testing
-        if(Input.GetMouseButtonDown(0)){
+        if(Input.GetMouseButtonDown(1) || Input.GetKeyDown(KeyCode.G)){
         //^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^
             if(!lassoActive){
                 CastRay();
                 manipulateObject = true;
             }
            }
-        if(Input.GetMouseButtonUp(0)){
+        if(Input.GetMouseButtonUp(1) || Input.GetKeyUp(KeyCode.G))
+        {
             EmptyLasso();
             manipulateObject = false;
             grapple = false;
