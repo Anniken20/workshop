@@ -25,7 +25,7 @@ public class ShowDown : MonoBehaviour
                 EndDuel();
             }
 
-            if (Input.GetKeyDown(KeyCode.P) && !playerReacted)
+            if (Input.GetKeyDown(KeyCode.O) && !playerReacted)
             {
                 PlayerReacted();
             }
@@ -40,7 +40,6 @@ public class ShowDown : MonoBehaviour
 
         // Position characters appropriately for the showdown
         // Might want to animate them into position
-
         // Start a countdown or animation to signal the start of the duel
 
         StartCoroutine(StartCountdown());
@@ -50,7 +49,7 @@ public class ShowDown : MonoBehaviour
     {
         yield return new WaitForSeconds(1f);
 
-        // Signal the start of the duel here 
+        // Start of the duel here 
         // Wait for the reaction time before allowing the player to react
         yield return new WaitForSeconds(reactionTime);
         playerReacted = true;
