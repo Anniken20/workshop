@@ -9,7 +9,7 @@ public class LassoPickupScript : MonoBehaviour, ILassoable
 
     private bool moveObject;
 
-     private Transform attachPoint;
+    private Transform attachPoint;
 
     private bool manipulateObject;
 
@@ -17,37 +17,70 @@ public class LassoPickupScript : MonoBehaviour, ILassoable
 
     [SerializeField] float launchForce;
 
+    private bool lassoActive;
+
+    private LassoController player;
+
+    private Transform attachOrigin;
+
+    private Vector3 objectPos;
+
+    [SerializeField] float minDistance;
+    [SerializeField] float maxDistance;
+
+    private Vector3 playerForward;
+
 
     private void Start(){
         rb = GetComponent<Rigidbody>();
         objectCollider = GetComponent<Collider>();
+        player = FindObjectOfType<LassoController>();
+
+
     }
 
     private void Update(){
-        if(Input.GetMouseButtonUp(1)){
+        
+        if(Input.GetMouseButtonDown(1) && lassoActive == true){
             DropObject();
         }
+
+        if(Input.GetKeyDown(KeyCode.F)){
+            manipulateObject = true;
+            playerForward = player.transform.forward;
+            attachOrigin = attachPoint;
+        }
+        else if(Input.GetKeyUp(KeyCode.F)){
+            manipulateObject = false;
+            attachPoint.transform.position = attachOrigin.transform.position;
+        }
+
+        player.holdingItem = lassoActive;
     }
     public void Lassoed(Transform lassoAttachPoint, bool active){
+        lassoActive = active;
         attachPoint = lassoAttachPoint;
         rb.useGravity = false;
         objectCollider.isTrigger = true;
         moveObject = active;
         rb.velocity = Vector3.zero;
-        manipulateObject = true;
+        //manipulateObject = true;
+        player.startLassoCooldown = false;
 
     }
 
     private void DropObject(){
+        player.startLassoCooldown = true;
         rb.useGravity = true;
         objectCollider.isTrigger = false;
         moveObject = false;
         rb.velocity = new Vector3(attachPoint.position.x * launchForce, 0, attachPoint.position.y * launchForce);
-        manipulateObject = false;
+        //manipulateObject = false;
+        lassoActive = false;
     }
 
     private void FixedUpdate(){
-        if(moveObject){
+        if(moveObject && manipulateObject == false){
             transform.position = Vector3.Lerp(transform.position, attachPoint.transform.position, Time.deltaTime * objectWeight);
         }
 
@@ -57,6 +90,11 @@ public class LassoPickupScript : MonoBehaviour, ILassoable
             float xRotation = Input.GetAxis("Mouse X");
             //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
             transform.Rotate(yRotation * objectWeight, xRotation * objectWeight, 0);
-        }
+            float mWheelDistance = Input.mouseScrollDelta.y;
+            //transform.position = Mathf.Clamp(, minDistance, maxDistance);
+            var newPos = transform.position + (playerForward * mWheelDistance * 20);
+            transform.position = Vector3.Lerp(transform.position, newPos, Time.deltaTime);
+        
     }
+}
 }

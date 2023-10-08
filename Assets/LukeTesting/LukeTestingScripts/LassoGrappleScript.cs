@@ -15,15 +15,15 @@ public class LassoGrappleScript : MonoBehaviour, IGrappleable
 
     [SerializeField] Transform lassoOrigin;
 
-    public void Grappled(bool active, GameObject hitObject, Transform startPos){
+    public void Grappled(bool active, GameObject hitObject){
         grapplePoint = hitObject;
         grapple = active;
-        //rayOrigin = startPos;
 
     }
 
     void Start(){
         rb = GetComponent<Rigidbody>();
+        lineRend.enabled = false;
     }
 
     void FixedUpdate(){
