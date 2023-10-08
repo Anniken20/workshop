@@ -50,10 +50,14 @@ MonoBehaviour:
   position: {x: 0, y: 0, z: 0}
   direction: {x: 0, y: 0, z: 0}
   distanceTraveled: 0
-  maxDistance: 200
   currBounces: 0
+  currDmg: 0
+  maxDistance: 500
   maxBounces: 5
-  speed: 20
+  speed: 15
+  baseDmg: 50
+  bounceDmgMultiplier: 1.5
+  maxDmg: 100
 --- !u!96 &414907241059058888
 TrailRenderer:
   serializedVersion: 3
