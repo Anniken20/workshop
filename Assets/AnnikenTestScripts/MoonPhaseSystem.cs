@@ -9,7 +9,7 @@ public class MoonPhaseSystem : MonoBehaviour
 
     private void Update()
     {
-        // When it's a full moon, trigger the event.
+        // When it's a full moon, trigger the boss event?
         if (IsFullMoon())
         {
             OnFullMoon?.Invoke();
@@ -21,6 +21,6 @@ public class MoonPhaseSystem : MonoBehaviour
         // when is it full moon???
         // You might need data for moon phases or use a time-based approach we can do seconds or minute based?
         // Return true if it's a full moon, otherwise return false
-        return false; // Replace with whatever logic we got
+        return false; 
     }
 }
