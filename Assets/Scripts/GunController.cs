@@ -5,7 +5,7 @@ using UnityEngine;
 /* Gun Mechanic for Ghost Moon High Noon
  * 
  * Shoot gun in isometric setup with ricochet capabilities
- * 
+ * Includes option to redirect most recent bullet fired in mid-air
  * 
  * 
  * Caden Henderson
@@ -24,6 +24,8 @@ public class GunController : MonoBehaviour
     //private vars
     private bool canShoot = true;
     private Vector3 aimAngle;
+    private GameObject mostRecentBullet;
+    private bool lunaMode;
 
     private void Update()
     {
@@ -37,8 +39,30 @@ public class GunController : MonoBehaviour
 
         if (!canShoot) return;
 
+        //luna redirection / complete luna redirection
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            //if in luna redirect mode, then complete redirect.
+            //else enter luna mode
+            if (lunaMode)
+            {
+                FinishRedirect();
+                return;
+            }
+
+            RedirectBullet();
+        }
+
         if (Input.GetMouseButtonDown(0))
         {
+            //dont allow more bullets fired if in luna redirection mode
+            if (lunaMode)
+            {
+                FinishRedirect();
+                return;
+            }
+
+            //otherwise fire new bullet                
             StartCoroutine(FreezePlayerRoutine());
             FireGun();
         }
@@ -46,14 +70,12 @@ public class GunController : MonoBehaviour
 
     private void FireGun()
     {
-        //calculate launch angle
-        /*Vector3 launchAngle = new Vector3(gameObject.transform.forward.x, 
-            gameObject.transform.forward.y, 
-            gameObject.transform.forward.z) + new Vector3(aimAngle.x, aimAngle.y, aimAngle.z);*/
-
         //instantiate and fire bullet
         GameObject bullet = Instantiate(bulletPrefab);
         bullet.GetComponent<BulletController>().Fire(gameObject.transform, aimAngle);
+
+        //store this so we know which bullet to redirect
+        mostRecentBullet = bullet;
     }
 
     private IEnumerator FreezePlayerRoutine()
@@ -70,5 +92,24 @@ public class GunController : MonoBehaviour
         canShoot = false;
 
         //will eventually disable/grey out gun HUD
+    }
+
+    private void RedirectBullet()
+    {
+        if (mostRecentBullet != null)
+        {
+            lunaMode = true;
+            Debug.Log("Entered bullet redirect");
+            mostRecentBullet.GetComponent<BulletController>().EnterLunaMode();
+        }
+    }
+    private void FinishRedirect()
+    {
+        lunaMode = false;
+        Debug.Log("Finished luna's redirect");
+        mostRecentBullet.GetComponent<BulletController>().Redirect();
+
+        //set to null so we can't redirect same bullet >1
+        mostRecentBullet = null;
     }
 }
