@@ -7,7 +7,8 @@ public class TriggerArea : MonoBehaviour
   public int pickup;
   public void OnTriggerEnter(Collider other)
  {
-  if(pickup ==1){
+  if(pickup == 1)
+  {
     GameEvents.current.DoorwayTriggerEnter(pickup);
   }
  }

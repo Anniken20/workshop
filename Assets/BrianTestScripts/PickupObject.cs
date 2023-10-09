@@ -5,13 +5,13 @@ using UnityEngine;
 public class PickupObject : MonoBehaviour
 {
 
-    public int keyCount;
+   public int pickup;
 
     void OnTriggerEnter(Collider collider)
     {
         if(GetComponent<Collider>().gameObject.tag == "Key")
         {
-            keyCount += 1;
+            pickup +=1;
             Destroy(gameObject);
         }
     }
