@@ -118,6 +118,8 @@ namespace StarterAssets
 
         private bool _hasAnimator;
 
+        public int KeyCount;
+
         private bool IsCurrentDeviceMouse
         {
             get
@@ -406,7 +408,14 @@ namespace StarterAssets
         Debug.Log("You died!");
         }
     
-
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.tag == "Key")
+        {
+            KeyCount += 1;
+            Destroy(other.gameObject);
+        }
+    }
     }
 
 }

@@ -4,13 +4,16 @@ using UnityEngine;
 
 public class TriggerArea : MonoBehaviour
 {
- private void OnTriggerEnter(Collider other)
+  public int pickup;
+  public void OnTriggerEnter(Collider other)
  {
-    GameEvents.current.DoorwayTriggerEnter();
+  if(pickup ==1){
+    GameEvents.current.DoorwayTriggerEnter(pickup);
+  }
  }
 
- private void OnTriggerExit(Collider other)
+  public void OnTriggerExit(Collider other)
  {
-   GameEvents.current.DoorwayTriggerExit();
+   GameEvents.current.DoorwayTriggerExit(pickup);
  }
 }

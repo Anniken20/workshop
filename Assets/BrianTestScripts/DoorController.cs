@@ -4,19 +4,25 @@ using UnityEngine;
 
 public class DoorController : MonoBehaviour
 {
-    private void Start()
+    public int pickup;
+
+    private void start ()
     {
         GameEvents.current.onDoorwayTriggerEnter += OnDoorwayOpen;
         GameEvents.current.onDoorwayTriggerExit += OnDoorwayClose;
     }
 
-    private void OnDoorwayOpen()
+    private void OnDoorwayClose(int pickup)
     {
-        transform.Translate(0,2,0);
+        if (pickup == this.pickup){
+        transform.Translate(0,-2,0);
+        }
     }
 
-    private void OnDoorwayClose()
+    private void OnDoorwayOpen(int pickup)
     {
-        transform.Translate(0,-2,0);
+        if (pickup == this.pickup){
+        transform.Translate(0,2,0);
+        }
     }
 }

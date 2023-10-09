@@ -12,21 +12,21 @@ public class GameEvents : MonoBehaviour
         current = this;
     }
 
-    public event Action onDoorwayTriggerEnter;
-    public void DoorwayTriggerEnter()
+    public event Action<int> onDoorwayTriggerEnter;
+    public void DoorwayTriggerEnter(int pickup)
     {
         if (onDoorwayTriggerEnter != null)
         {
-            onDoorwayTriggerEnter();
+            onDoorwayTriggerEnter(pickup);
         }
     }
 
-    public event Action onDoorwayTriggerExit;
-    public void DoorwayTriggerExit()
+    public event Action<int> onDoorwayTriggerExit;
+    public void DoorwayTriggerExit(int pickup)
     {
         if(onDoorwayTriggerExit != null)
         {
-            onDoorwayTriggerExit();
+            onDoorwayTriggerExit(pickup);
         }
     }
 }
