@@ -7,13 +7,10 @@ public class AimController : MonoBehaviour
     public LineRenderer aimLine;
 
     [Tooltip("(Roughly) 2 => 90* of freedom. 0.5 => 30* of freedom.")]
-    public float xAngleFreedom;
-    [Tooltip("(Roughly) 2 => 90* of freedom. 0.5 => 30* of freedom.")]
     public float yAngleFreedom;
 
-    public GameObject aimGuide;
     public float sensitivity = 5f;
-    public bool horizontalAim;
+    public bool horizontalRotate = true;
 
     [HideInInspector] public bool canAim = true;
     private Vector3 angle;
@@ -39,33 +36,23 @@ public class AimController : MonoBehaviour
 
         //in case locked during menus or game cutscenes etc.
         if (!canAim) return;
-        
+
         //get input from mouse
         xDelta = Input.GetAxis("Mouse X");
         yDelta = Input.GetAxis("Mouse Y");
 
         //apply sensitivity
-        xDelta *= sensitivity / 100;
+        xDelta *= sensitivity / 1;
         yDelta *= sensitivity / 100;
+
+        //rotate horizontal
+        if(horizontalRotate)
+            gameObject.transform.Rotate(new Vector3(0f, xDelta, 0f));
 
         modifiedAngle.y += yDelta;
 
         //clamp and save y-value 
         float ySave = Mathf.Clamp(modifiedAngle.y, -yAngleFreedom / 2, yAngleFreedom / 2);
-
-        aimGuide.transform.Rotate(new Vector3(xDelta * 100, 0f, yDelta * 100));
-
-        //clamp x and z
-        /*
-        aimGuide.transform.eulerAngles = new Vector3(
-            Mathf.Clamp(aimGuide.transform.eulerAngles.x, -20, 20f),
-            0f,
-            Mathf.Clamp(aimGuide.transform.eulerAngles.z, -20, 20f)
-            );
-        */
-
-        modifiedAngle.x = aimGuide.transform.rotation.x;
-        modifiedAngle.z = aimGuide.transform.rotation.z;
 
         //restore y angle
         modifiedAngle.y = ySave;
@@ -132,7 +119,6 @@ public class AimController : MonoBehaviour
             yield return null;
         }
         modifiedAngle = new Vector3(0f, 0f, 0f);
-        aimGuide.transform.eulerAngles = modifiedAngle;
         canAim = true;
     }
 

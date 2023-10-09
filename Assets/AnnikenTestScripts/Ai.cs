@@ -23,7 +23,7 @@ public class Ai : MonoBehaviour
 
     private void Update()
     {
-        // Check if the player is in shooting range
+        // Check if in shooting range
         float distanceToPlayer = Vector3.Distance(transform.position, player.position);
 
         if (distanceToPlayer <= shootingRange)
@@ -33,7 +33,7 @@ public class Ai : MonoBehaviour
             Quaternion targetRotation = Quaternion.LookRotation(direction);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
 
-            // Check if it's time to shoot
+            // Check if  it can shoot
             if (Time.time - lastShootTime >= shootingCooldown)
             {
                 Shoot();
@@ -50,7 +50,7 @@ public class Ai : MonoBehaviour
 
     private void Shoot()
     {
-        //shoot thingy here
+        //Shoot thingy here we need the mechanic itself
         Debug.Log("Shooting at the player!");
     }
 
