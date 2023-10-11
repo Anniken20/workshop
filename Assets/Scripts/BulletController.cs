@@ -12,6 +12,8 @@ public class BulletController : MonoBehaviour
     [HideInInspector] public float currDmg;
     [HideInInspector] public bool inLunaMode;
     [HideInInspector] public CinemachineBrain cinemachineBrain;
+    [HideInInspector] public CinemachineVirtualCamera mainCamera;
+    [HideInInspector] public GameObject playerCamRoot;
     private float trailRendererTime;
 
     //inspector fields --------------------------
@@ -115,13 +117,16 @@ public class BulletController : MonoBehaviour
 
         //set transition speed for camera
         cinemachineBrain.m_DefaultBlend.m_Time = camMovementDuration;
+
+        //zoom main cam to look at bullet
+        mainCamera.Follow = gameObject.transform;
         
         //pause bullet movement
         inLunaMode = true;
 
         //set at higher priority than any of the scene cameras
         //so cinemachine auto-blends to this cam
-        lunaCam.Priority = 15;
+        //lunaCam.Priority = 15;
 
         //save trail renderer time value
         //then make it super large so trail doesn't go away
@@ -153,6 +158,9 @@ public class BulletController : MonoBehaviour
 
         //set at lower priority so cinemachine auto-blends to this cam
         lunaCam.Priority = -1;
+
+        //reset main cam to look at player
+        mainCamera.Follow = playerCamRoot.transform;
 
         //reset trailrenderer to previously saved value
         GetComponent<TrailRenderer>().time = trailRendererTime;

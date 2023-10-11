@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
 
 /* Gun Mechanic for Ghost Moon High Noon
  * 
@@ -17,6 +18,10 @@ public class GunController : MonoBehaviour
 {
     public GameObject bulletPrefab;
     public AimController aimController;
+    [Tooltip("Attach the main camera here")]
+    public CinemachineVirtualCamera playerFollowCam;
+    [Tooltip("Attach the PlayeraCameraRoot object, a child of the Player")]
+    public GameObject playerCamRoot;
 
     [Tooltip("Time in seconds while player is motionless firing gun.")]
     public float fireTime;
@@ -72,10 +77,16 @@ public class GunController : MonoBehaviour
     {
         //instantiate and fire bullet
         GameObject bullet = Instantiate(bulletPrefab);
-        bullet.GetComponent<BulletController>().Fire(gameObject.transform, aimAngle);
+        BulletController bulletController = bullet.GetComponent<BulletController>();
+        bulletController.Fire(gameObject.transform, aimAngle);
 
         //store this so we know which bullet to redirect
         mostRecentBullet = bullet;
+
+        //pass in the information of the main cam so we know how to modify its target
+        bulletController.mainCamera = playerFollowCam;
+        bulletController.playerCamRoot = playerCamRoot;
+
     }
 
     private IEnumerator FreezePlayerRoutine()
