@@ -12,6 +12,7 @@ public class BulletController : MonoBehaviour
     [HideInInspector] public float currDmg;
     [HideInInspector] public bool inLunaMode;
     [HideInInspector] public CinemachineBrain cinemachineBrain;
+    private float trailRendererTime;
 
     //inspector fields --------------------------
     [Header("Stats")]
@@ -48,7 +49,7 @@ public class BulletController : MonoBehaviour
         while (currBounces < maxBounces && distanceTraveled < maxDistance)
         {
             //if in luna mode, wait until exited
-            while (inLunaMode) yield return null;
+            //while (inLunaMode) yield return null;
 
             //move bullet in its fired direction
             position = Vector3.MoveTowards(
@@ -122,6 +123,15 @@ public class BulletController : MonoBehaviour
         //so cinemachine auto-blends to this cam
         lunaCam.Priority = 15;
 
+        //save trail renderer time value
+        //then make it super large so trail doesn't go away
+        TrailRenderer trailRenderer = GetComponent<TrailRenderer>();
+        trailRendererTime = trailRenderer.time;
+        trailRenderer.time = 10000f;
+
+        //while in luna mode, make bullet move slowly
+        speed = speed / 100f;
+
         //enable line renderer
         aimLineRenderer.positionCount = 2;
         StartCoroutine(DrawLunaLineRoutine());
@@ -143,6 +153,12 @@ public class BulletController : MonoBehaviour
 
         //set at lower priority so cinemachine auto-blends to this cam
         lunaCam.Priority = -1;
+
+        //reset trailrenderer to previously saved value
+        GetComponent<TrailRenderer>().time = trailRendererTime;
+
+        //reset bullet speed to normal
+        speed *= 100f;
 
         //disable line renderer
         aimLineRenderer.positionCount = 1;
