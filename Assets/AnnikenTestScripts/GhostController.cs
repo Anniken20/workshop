@@ -11,8 +11,10 @@ public class GhostController : MonoBehaviour
 
     private bool abilityEnabled = false;
     private float abilityDuration = 5.0f;
-    private float countdownTimer = 2.0f;
+    private float countdownTimer = 5.0f;
+    private Vector3 randomPosition;
 
+    private bool playerInBox;
     //public ParticleSystem smokeParticleSystem; // 
 
     //can add the smoke to her hands if we want to, might need tweaking and editing but easy fix
@@ -23,8 +25,10 @@ public class GhostController : MonoBehaviour
     {  
         if (Input.GetKeyDown (KeyCode.T))
         {
+            randomPosition = player.position;
             ToggleAbility();
         }
+        
             if (abilityEnabled)
                 {
                     countdownTimer -= Time.deltaTime;
@@ -34,6 +38,8 @@ public class GhostController : MonoBehaviour
                         DisableAbility();
                     }
                 }
+
+        
         
     }
 
@@ -67,13 +73,21 @@ public class GhostController : MonoBehaviour
         Debug.Log("DISABLED");
         
         // Find a valid position on the ground outside the box
-        Vector3 randomPosition = GetValidPositionOutsideBox();
+        //Vector3 randomPosition = GetValidPositionOutsideBox();
 
         // Teleport the player to the valid position
-        player.position = randomPosition;
+        if(playerInBox){
+            player.gameObject.GetComponent<CharacterController>().enabled = false;
+            randomPosition.y = 0;
+            player.position = randomPosition;
+            player.gameObject.GetComponent<CharacterController>().enabled = true;
+            playerInBox = false;
+        }
+        abilityEnabled = !abilityEnabled;
+
     }
 
-    private Vector3 GetValidPositionOutsideBox()
+    /*private Vector3 GetValidPositionOutsideBox()
     {
         Vector3 boxCenter = box.position;
         Vector3 randomDirection = Random.onUnitSphere;
@@ -107,5 +121,17 @@ public class GhostController : MonoBehaviour
         // Check if the point is inside the box using the box's size
         return Mathf.Abs(point.x - boxCenter.x) < boxSize.x / 2f
             && Mathf.Abs(point.z - boxCenter.z) < boxSize.z / 2f;
+    }*/
+
+    void OnTriggerEnter(Collider other){
+        if(other.gameObject.CompareTag("Player")){
+            playerInBox = true;
+        }
+    }
+
+    void OnTriggerExit(Collider other){
+        if(other.gameObject.CompareTag("Player")){
+            playerInBox = false;
+        }
     }
 }
