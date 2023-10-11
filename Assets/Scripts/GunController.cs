@@ -4,11 +4,13 @@ using UnityEngine;
 using Cinemachine;
 using DG.Tweening;
 
-/* Gun Mechanic for Ghost Moon High Noon
+/* Core Gun Mechanic for Ghost Moon High Noon
  * 
  * Shoot gun in isometric setup with ricochet capabilities
- * Includes option to redirect most recent bullet fired in mid-air
+ * Includes option to redirect most recent bullet fired in mid-air within a time window
  * 
+ * 
+ * Closely related to BulletController script and AimController script
  * 
  * Caden Henderson
  * 9/25/23
@@ -87,9 +89,11 @@ public class GunController : MonoBehaviour
         //store this so we know which bullet to redirect
         mostRecentBullet = bullet;
 
-        //pass in the information of the main cam so we know how to modify its target
+        //pass in the information of the main cam, target, and player
+        //so we know how to modify properly
         bulletController.mainCamera = playerFollowCam;
         bulletController.playerCamRoot = playerCamRoot;
+        bulletController.player = gameObject;
 
     }
 

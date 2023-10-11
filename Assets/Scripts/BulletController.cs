@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
 using DG.Tweening;
+using StarterAssets;
 
 public class BulletController : MonoBehaviour
 {
@@ -15,6 +16,7 @@ public class BulletController : MonoBehaviour
     [HideInInspector] public CinemachineBrain cinemachineBrain;
     [HideInInspector] public CinemachineVirtualCamera mainCamera;
     [HideInInspector] public GameObject playerCamRoot;
+    [HideInInspector] public GameObject player;
     private float trailRendererTime;
     private float formerCamOrthoSize;
 
@@ -120,6 +122,12 @@ public class BulletController : MonoBehaviour
 
     public void EnterLunaMode()
     {
+        //lock movement
+        player.GetComponent<ThirdPersonController>().LockMovement();
+
+        //lock aiming
+        player.GetComponent<AimController>().canAim = false;
+
         //this find by object kinda sucks but i dont have singleton behavior setup.
         //and this script is only on a prefab that is instantiated at runtime, 
         //so we can't just drag in a field unless we pass it in from the GunController or Player.
@@ -172,6 +180,12 @@ public class BulletController : MonoBehaviour
 
     public void ExitLunaMode()
     {
+        //unlock our player movement
+        player.GetComponent<ThirdPersonController>().UnlockMovement();
+
+        //unlock our player aiming
+        player.GetComponent<AimController>().canAim = true;
+
         //resume bullet movement
         inLunaMode = false;
 

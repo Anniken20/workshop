@@ -33,8 +33,8 @@ public class AimController : MonoBehaviour
     }
     private void UpdateAim()
     {
-
         //in case locked during menus or game cutscenes etc.
+        //currently referenced by BulletController when redirecting
         if (!canAim) return;
 
         //get input from mouse
