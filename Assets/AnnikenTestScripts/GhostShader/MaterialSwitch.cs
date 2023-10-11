@@ -46,7 +46,7 @@ public class MaterialSwitch : MonoBehaviour
         canSwitch = false;
         yield return new WaitForSeconds(switchInterval);
         rend.material = material1; // Change back to Material1
-        yield return new WaitForSeconds(switchDelay);
+        //yield return new WaitForSeconds(switchDelay);
         canSwitch = true;
     }
 }
