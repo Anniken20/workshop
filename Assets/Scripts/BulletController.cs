@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
+using DG.Tweening;
 
 public class BulletController : MonoBehaviour
 {
@@ -15,6 +16,7 @@ public class BulletController : MonoBehaviour
     [HideInInspector] public CinemachineVirtualCamera mainCamera;
     [HideInInspector] public GameObject playerCamRoot;
     private float trailRendererTime;
+    private float formerCamOrthoSize;
 
     //inspector fields --------------------------
     [Header("Stats")]
@@ -34,6 +36,10 @@ public class BulletController : MonoBehaviour
     public LineRenderer aimLineRenderer;
     [Tooltip("Whether or not the camera completely switches to Luna's \"POV\"")]
     public bool lunaPOVCam;
+    [Tooltip("Orthographic size of camera if NOT in lunaPOVCam. 1->4 are reasonable values.")]
+    public float lunaCamOrthoSize;
+    [Tooltip("When NOT in lunaPOVCam, the time it takes to zoom in and out.")]
+    public float camZoomTime;
 
     public void Fire(Transform source, Vector3 dir)
     {
@@ -120,11 +126,23 @@ public class BulletController : MonoBehaviour
         if (lunaPOVCam) cinemachineBrain = FindAnyObjectByType<CinemachineBrain>();
 
         //set transition speed for camera
-        if(lunaPOVCam) cinemachineBrain.m_DefaultBlend.m_Time = camMovementDuration;
+        if (lunaPOVCam) cinemachineBrain.m_DefaultBlend.m_Time = camMovementDuration;
 
         //zoom main cam to look at bullet
-        if (!lunaPOVCam) mainCamera.Follow = gameObject.transform;
-        
+        if (!lunaPOVCam)
+        {
+            mainCamera.Follow = gameObject.transform;
+            formerCamOrthoSize = mainCamera.m_Lens.OrthographicSize;
+
+            //tween camera ortho size to zoom in
+            DOTween.To(() => mainCamera.m_Lens.OrthographicSize, 
+                x => mainCamera.m_Lens.OrthographicSize = x, 
+                lunaCamOrthoSize, camZoomTime).SetEase(Ease.OutCubic);
+            
+            //insta snap
+            //mainCamera.m_Lens.OrthographicSize = lunaCamOrthoSize;
+        }
+
         //pause bullet movement
         inLunaMode = true;
 
@@ -157,14 +175,25 @@ public class BulletController : MonoBehaviour
         //resume bullet movement
         inLunaMode = false;
 
-        //set transition speed for camera
-        if (lunaPOVCam) cinemachineBrain.m_DefaultBlend.m_Time = camMovementDuration;
+        if (lunaPOVCam)
+        {
+            //set transition speed for camera
+            cinemachineBrain.m_DefaultBlend.m_Time = camMovementDuration;
 
-        //set at lower priority so cinemachine auto-blends to this cam
-        if (lunaPOVCam) lunaCam.Priority = -1;
+            //set at lower priority so cinemachine auto-blends to this cam
+            lunaCam.Priority = -1;
+        }
+        else
+        {
+            //reset main cam to look at player
+            mainCamera.Follow = playerCamRoot.transform;
+            DOTween.To(() => mainCamera.m_Lens.OrthographicSize,
+                x => mainCamera.m_Lens.OrthographicSize = x,
+                formerCamOrthoSize, camZoomTime).SetEase(Ease.OutCubic);
 
-        //reset main cam to look at player
-        if (!lunaPOVCam) mainCamera.Follow = playerCamRoot.transform;
+            //insta snap
+            //mainCamera.m_Lens.OrthographicSize = formerCamOrthoSize;
+        }
 
         //reset trailrenderer to previously saved value
         GetComponent<TrailRenderer>().time = trailRendererTime;

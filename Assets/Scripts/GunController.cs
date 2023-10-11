@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
+using DG.Tweening;
 
 /* Gun Mechanic for Ghost Moon High Noon
  * 
@@ -136,6 +137,13 @@ public class GunController : MonoBehaviour
         float remainingTime = lunaWindowTime;
         while (remainingTime > 0)
         {
+            if(!lunaMode)
+            {
+                //kick out
+                yield break;
+            }
+
+
             remainingTime -= Time.deltaTime;
 
             //wait a frame before resuming while loop
