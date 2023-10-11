@@ -91,6 +91,9 @@ namespace StarterAssets
         private float _jumpTimeoutDelta;
         private float _fallTimeoutDelta;
 
+        // GMHN edited fields
+        private bool _movementLocked;
+
         // animation IDs
         private int _animIDSpeed;
         private int _animIDGrounded;
@@ -226,6 +229,7 @@ namespace StarterAssets
 
         private void Move()
         {
+
             // set target speed based on move speed, sprint speed and if sprint is pressed
             float targetSpeed = _input.sprint ? SprintSpeed : MoveSpeed;
 
@@ -280,6 +284,15 @@ namespace StarterAssets
 
             Vector3 targetDirection = Quaternion.Euler(0.0f, _targetRotation, 0.0f) * Vector3.forward;
 
+
+            //set _speed to 0. Returning at top just causes animation issues galore.
+            //pretending there is no input works better.
+            if (_movementLocked)
+            {
+                _speed = 0.0f;
+                targetDirection = new Vector3(0.0f, 0.0f, 0.0f);
+                _animationBlend = 0.0f;
+            }
             // move the player
             _controller.Move(targetDirection.normalized * (_speed * Time.deltaTime) +
                              new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
@@ -402,9 +415,19 @@ namespace StarterAssets
             }
         }
 
-            public void Death()
+        public void Death()
         {
-        Debug.Log("You died!");
+            Debug.Log("You died!");
+        }
+
+        public void LockMovement()
+        {
+            _movementLocked = true;
+        }
+
+        public void UnlockMovement()
+        {
+            _movementLocked = false;
         }
     
 

@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
+using DG.Tweening;
+using StarterAssets;
 
 public class BulletController : MonoBehaviour
 {
@@ -12,6 +14,11 @@ public class BulletController : MonoBehaviour
     [HideInInspector] public float currDmg;
     [HideInInspector] public bool inLunaMode;
     [HideInInspector] public CinemachineBrain cinemachineBrain;
+    [HideInInspector] public CinemachineVirtualCamera mainCamera;
+    [HideInInspector] public GameObject playerCamRoot;
+    [HideInInspector] public GameObject player;
+    private float trailRendererTime;
+    private float formerCamOrthoSize;
 
     //inspector fields --------------------------
     [Header("Stats")]
@@ -29,6 +36,12 @@ public class BulletController : MonoBehaviour
     [Tooltip("The time it takes to zoom in/out from the character to the bullet")]
     public float camMovementDuration;
     public LineRenderer aimLineRenderer;
+    [Tooltip("Whether or not the camera completely switches to Luna's \"POV\"")]
+    public bool lunaPOVCam;
+    [Tooltip("Orthographic size of camera if NOT in lunaPOVCam. 1->4 are reasonable values.")]
+    public float lunaCamOrthoSize;
+    [Tooltip("When NOT in lunaPOVCam, the time it takes to zoom in and out.")]
+    public float camZoomTime;
 
     public void Fire(Transform source, Vector3 dir)
     {
@@ -48,7 +61,7 @@ public class BulletController : MonoBehaviour
         while (currBounces < maxBounces && distanceTraveled < maxDistance)
         {
             //if in luna mode, wait until exited
-            while (inLunaMode) yield return null;
+            //while (inLunaMode) yield return null;
 
             //move bullet in its fired direction
             position = Vector3.MoveTowards(
@@ -76,12 +89,14 @@ public class BulletController : MonoBehaviour
     {
         RaycastHit hitData;
         //if hits object, ricochet
-        if (Physics.Raycast(position, direction, out hitData, 0.3f))
+        //scale with speed because higher speed means more likely to clip through walls
+        //but on low speed the jump to the wall is noticeable
+        if (Physics.Raycast(position, direction, out hitData, speed * 0.15f))
         {
             //try to apply damage if it's a damage-able object
             TryToApplyDamage(hitData.collider.gameObject);
 
-            //teleport to point
+            //teleport to point to prevent inconsistency from sometimes bouncing early
             position = hitData.point;
 
             //reflect over the normal of the collision
@@ -107,20 +122,50 @@ public class BulletController : MonoBehaviour
 
     public void EnterLunaMode()
     {
+        //lock movement
+        player.GetComponent<ThirdPersonController>().LockMovement();
+
+        //lock aiming
+        player.GetComponent<AimController>().canAim = false;
+
         //this find by object kinda sucks but i dont have singleton behavior setup.
         //and this script is only on a prefab that is instantiated at runtime, 
         //so we can't just drag in a field unless we pass it in from the GunController or Player.
-        cinemachineBrain = FindAnyObjectByType<CinemachineBrain>();
+        if (lunaPOVCam) cinemachineBrain = FindAnyObjectByType<CinemachineBrain>();
 
         //set transition speed for camera
-        cinemachineBrain.m_DefaultBlend.m_Time = camMovementDuration;
-        
+        if (lunaPOVCam) cinemachineBrain.m_DefaultBlend.m_Time = camMovementDuration;
+
+        //zoom main cam to look at bullet
+        if (!lunaPOVCam)
+        {
+            mainCamera.Follow = gameObject.transform;
+            formerCamOrthoSize = mainCamera.m_Lens.OrthographicSize;
+
+            //tween camera ortho size to zoom in
+            DOTween.To(() => mainCamera.m_Lens.OrthographicSize, 
+                x => mainCamera.m_Lens.OrthographicSize = x, 
+                lunaCamOrthoSize, camZoomTime).SetEase(Ease.OutCubic);
+            
+            //insta snap
+            //mainCamera.m_Lens.OrthographicSize = lunaCamOrthoSize;
+        }
+
         //pause bullet movement
         inLunaMode = true;
 
         //set at higher priority than any of the scene cameras
         //so cinemachine auto-blends to this cam
-        lunaCam.Priority = 15;
+        if (lunaPOVCam) lunaCam.Priority = 15;
+
+        //save trail renderer time value
+        //then make it super large so trail doesn't go away
+        TrailRenderer trailRenderer = GetComponent<TrailRenderer>();
+        trailRendererTime = trailRenderer.time;
+        trailRenderer.time = 10000f;
+
+        //while in luna mode, make bullet move slowly
+        speed = speed / 10f;
 
         //enable line renderer
         aimLineRenderer.positionCount = 2;
@@ -135,14 +180,40 @@ public class BulletController : MonoBehaviour
 
     public void ExitLunaMode()
     {
+        //unlock our player movement
+        player.GetComponent<ThirdPersonController>().UnlockMovement();
+
+        //unlock our player aiming
+        player.GetComponent<AimController>().canAim = true;
+
         //resume bullet movement
         inLunaMode = false;
 
-        //set transition speed for camera
-        cinemachineBrain.m_DefaultBlend.m_Time = camMovementDuration;
+        if (lunaPOVCam)
+        {
+            //set transition speed for camera
+            cinemachineBrain.m_DefaultBlend.m_Time = camMovementDuration;
 
-        //set at lower priority so cinemachine auto-blends to this cam
-        lunaCam.Priority = -1;
+            //set at lower priority so cinemachine auto-blends to this cam
+            lunaCam.Priority = -1;
+        }
+        else
+        {
+            //reset main cam to look at player
+            mainCamera.Follow = playerCamRoot.transform;
+            DOTween.To(() => mainCamera.m_Lens.OrthographicSize,
+                x => mainCamera.m_Lens.OrthographicSize = x,
+                formerCamOrthoSize, camZoomTime).SetEase(Ease.OutCubic);
+
+            //insta snap
+            //mainCamera.m_Lens.OrthographicSize = formerCamOrthoSize;
+        }
+
+        //reset trailrenderer to previously saved value
+        GetComponent<TrailRenderer>().time = trailRendererTime;
+
+        //reset bullet speed to normal
+        speed *= 10f;
 
         //disable line renderer
         aimLineRenderer.positionCount = 1;
@@ -151,8 +222,8 @@ public class BulletController : MonoBehaviour
     private IEnumerator DrawLunaLineRoutine()
     {
         gameObject.transform.forward = direction;
-        Debug.Log("forward: " + gameObject.transform.forward);
-        Debug.Log("direction: " + direction);
+        //Debug.Log("forward: " + gameObject.transform.forward);
+        //Debug.Log("direction: " + direction);
         while (inLunaMode)
         {
             //uses mouse to change Luna's angle
@@ -176,7 +247,13 @@ public class BulletController : MonoBehaviour
         xDelta *=  3f;
         yDelta *= 3f;
 
+        //failed
+        //gameObject.transform.forward += new Vector3(0f, yDelta, 0f);
+
         //rotate horizontal and vertical
-        gameObject.transform.Rotate(new Vector3(0f, xDelta, yDelta));
+        gameObject.transform.Rotate(new Vector3(0f, xDelta, 0f));
+
+        //failed
+        //gameObject.transform.Rotate(new Vector3(yDelta, 0f, 0f));
     }
 }  
