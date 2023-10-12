@@ -101,7 +101,7 @@ public class LassoController : MonoBehaviour
 
     private void LaunchLasso(){
         projectile = Instantiate(lassoObject, startPos, launchPoint.rotation);
-        aimAngle = aimController.GetAimAngle();
+        //aimAngle = aimController.GetAimAngle();
         projectile.GetComponent<Rigidbody>().AddForce(aimAngle * lassoLaunchStrength, ForceMode.Impulse);
         drawToLasso = true;
     }

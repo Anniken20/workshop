@@ -32,6 +32,8 @@ public class LassoPickupScript : MonoBehaviour, ILassoable
 
     [HideInInspector] public GameObject lassoedObject;
 
+    [SerializeField] bool inCombat;
+
 
     private void Start(){
         rb = GetComponent<Rigidbody>();
