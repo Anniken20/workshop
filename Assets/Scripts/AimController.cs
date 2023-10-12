@@ -13,6 +13,7 @@ public class AimController : MonoBehaviour
     public bool horizontalRotate = true;
 
     [HideInInspector] public bool canAim = true;
+    [HideInInspector] public bool inLuna = false;
     private Vector3 angle;
     private Vector3 modifiedAngle;
     private bool showingAimLine = false;
@@ -25,6 +26,7 @@ public class AimController : MonoBehaviour
         angle = new Vector3();
         modifiedAngle = new Vector3();
         canAim = true;
+        inLuna = false;
     }
     private void Update()
     {
@@ -35,7 +37,7 @@ public class AimController : MonoBehaviour
     {
         //in case locked during menus or game cutscenes etc.
         //currently referenced by BulletController when redirecting
-        if (!canAim) return;
+        if (!canAim || inLuna) return;
 
         //get input from mouse
         xDelta = Input.GetAxis("Mouse X");

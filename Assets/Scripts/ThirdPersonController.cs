@@ -93,6 +93,9 @@ namespace StarterAssets
 
         // GMHN edited fields
         private bool _movementLocked;
+        [HideInInspector] public bool _lunaLocked;
+        [HideInInspector] public bool _paused;
+        [HideInInspector] public bool _stunned;
 
         // animation IDs
         private int _animIDSpeed;
@@ -170,6 +173,7 @@ namespace StarterAssets
         {
             _hasAnimator = TryGetComponent(out _animator);
 
+            _movementLocked = IsMovementLocked();
             JumpAndGravity();
             GroundedCheck();
             Move();
@@ -278,7 +282,8 @@ namespace StarterAssets
                     RotationSmoothTime);
 
                 // rotate to face input direction relative to camera position
-                transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
+                if(!_movementLocked)
+                    transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
             }
 
 
@@ -420,16 +425,13 @@ namespace StarterAssets
             Debug.Log("You died!");
         }
 
-        public void LockMovement()
+        //centralizing information about whether the player is locked
+        //without having information accessible from wrong areas
+        //for example, unpausing shouldn't unlock from luna's redirect movement lock
+        private bool IsMovementLocked()
         {
-            _movementLocked = true;
+            return _paused || _lunaLocked || _stunned;
         }
-
-        public void UnlockMovement()
-        {
-            _movementLocked = false;
-        }
-    
 
     }
 
