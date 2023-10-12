@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 5322804444775498839}
   - component: {fileID: 8377534958122505806}
   - component: {fileID: 6489114229716199110}
-  - component: {fileID: 3000011920243476183}
   - component: {fileID: 134391226414953909}
   - component: {fileID: 1924454856470118584}
+  - component: {fileID: 8128515557802019}
   m_Layer: 0
   m_Name: lassoObject
   m_TagString: Untagged
@@ -29,12 +29,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1279318481922432189}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.2, z: 1.4}
+  m_LocalPosition: {x: 0, y: 1.143, z: 1.4}
   m_LocalScale: {x: 0.726, y: 0.0583575, z: 0.726}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 17
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &8377534958122505806
 MeshFilter:
@@ -86,29 +86,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &3000011920243476183
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1279318481922432189}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5000001
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
 --- !u!54 &134391226414953909
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -148,3 +125,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 914aa19737d0059478f1689355eb9c75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lassoLifetime: 5
+--- !u!65 &8128515557802019
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1279318481922432189}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.58891743, y: 3.7519252, z: 0.41421187}
+  m_Center: {x: -0.0067591746, y: -0.8759646, z: 0.016820824}

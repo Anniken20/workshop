@@ -30,6 +30,8 @@ public class LassoPickupScript : MonoBehaviour, ILassoable
 
     private Vector3 playerForward;
 
+    [HideInInspector] public GameObject lassoedObject;
+
 
     private void Start(){
         rb = GetComponent<Rigidbody>();
@@ -48,11 +50,11 @@ public class LassoPickupScript : MonoBehaviour, ILassoable
         if(Input.GetKeyDown(KeyCode.F)){
             manipulateObject = true;
             playerForward = player.transform.forward;
-            attachOrigin = attachPoint;
+            //attachOrigin = attachPoint;
         }
         else if(Input.GetKeyUp(KeyCode.F)){
             manipulateObject = false;
-            attachPoint.transform.position = attachOrigin.transform.position;
+            //attachPoint.transform.position = attachOrigin.transform.position;
         }
 
         player.holdingItem = lassoActive;
@@ -77,6 +79,7 @@ public class LassoPickupScript : MonoBehaviour, ILassoable
         rb.velocity = new Vector3(attachPoint.position.x * launchForce, 0, attachPoint.position.y * launchForce);
         //manipulateObject = false;
         lassoActive = false;
+        lassoedObject = null;
     }
 
     private void FixedUpdate(){
@@ -84,16 +87,16 @@ public class LassoPickupScript : MonoBehaviour, ILassoable
             transform.position = Vector3.Lerp(transform.position, attachPoint.transform.position, Time.deltaTime * objectWeight);
         }
 
-        if(manipulateObject){
+        if(manipulateObject && lassoedObject != null){
             //This will need to be reworked for controller support
             float yRotation = Input.GetAxis("Mouse Y");
             float xRotation = Input.GetAxis("Mouse X");
             //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-            transform.Rotate(yRotation * objectWeight, xRotation * objectWeight, 0);
+            lassoedObject.transform.Rotate(yRotation * objectWeight, xRotation * objectWeight, 0);
             float mWheelDistance = Input.mouseScrollDelta.y;
             //transform.position = Mathf.Clamp(, minDistance, maxDistance);
             var newPos = transform.position + (playerForward * mWheelDistance * 20);
-            transform.position = Vector3.Lerp(transform.position, newPos, Time.deltaTime);
+            lassoedObject.transform.position = Vector3.Lerp(lassoedObject.transform.position, newPos, Time.deltaTime);
         
     }
 }
