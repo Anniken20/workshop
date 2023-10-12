@@ -91,6 +91,12 @@ namespace StarterAssets
         private float _jumpTimeoutDelta;
         private float _fallTimeoutDelta;
 
+        // GMHN edited fields
+        private bool _movementLocked;
+        [HideInInspector] public bool _lunaLocked;
+        [HideInInspector] public bool _paused;
+        [HideInInspector] public bool _stunned;
+
         // animation IDs
         private int _animIDSpeed;
         private int _animIDGrounded;
@@ -117,8 +123,6 @@ namespace StarterAssets
         private const float _threshold = 0.01f;
 
         private bool _hasAnimator;
-
-        public int KeyCount;
 
         private bool IsCurrentDeviceMouse
         {
@@ -169,6 +173,7 @@ namespace StarterAssets
         {
             _hasAnimator = TryGetComponent(out _animator);
 
+            _movementLocked = IsMovementLocked();
             JumpAndGravity();
             GroundedCheck();
             Move();
@@ -194,8 +199,9 @@ namespace StarterAssets
             // set sphere position, with offset
             Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y - GroundedOffset,
                 transform.position.z);
-            Grounded = Physics.CheckSphere(spherePosition, GroundedRadius, GroundLayers,
-                QueryTriggerInteraction.Ignore);
+            //Grounded = Physics.CheckSphere(spherePosition, GroundedRadius, GroundLayers,
+                //QueryTriggerInteraction.Ignore);
+                Grounded = GetComponent<CharacterController>().isGrounded;
 
             // update animator if using character
             if (_hasAnimator)
@@ -227,6 +233,7 @@ namespace StarterAssets
 
         private void Move()
         {
+
             // set target speed based on move speed, sprint speed and if sprint is pressed
             float targetSpeed = _input.sprint ? SprintSpeed : MoveSpeed;
 
@@ -275,12 +282,22 @@ namespace StarterAssets
                     RotationSmoothTime);
 
                 // rotate to face input direction relative to camera position
-                transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
+                if(!_movementLocked)
+                    transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
             }
 
 
             Vector3 targetDirection = Quaternion.Euler(0.0f, _targetRotation, 0.0f) * Vector3.forward;
 
+
+            //set _speed to 0. Returning at top just causes animation issues galore.
+            //pretending there is no input works better.
+            if (_movementLocked)
+            {
+                _speed = 0.0f;
+                targetDirection = new Vector3(0.0f, 0.0f, 0.0f);
+                _animationBlend = 0.0f;
+            }
             // move the player
             _controller.Move(targetDirection.normalized * (_speed * Time.deltaTime) +
                              new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
@@ -403,19 +420,19 @@ namespace StarterAssets
             }
         }
 
-            public void Death()
+        public void Death()
         {
-        Debug.Log("You died!");
+            Debug.Log("You died!");
         }
-    
-    private void OnTriggerEnter(Collider other)
-    {
-        if(other.tag == "Key")
+
+        //centralizing information about whether the player is locked
+        //without having information accessible from wrong areas
+        //for example, unpausing shouldn't unlock from luna's redirect movement lock
+        private bool IsMovementLocked()
         {
-            KeyCount += 1;
-            Destroy(other.gameObject);
+            return _paused || _lunaLocked || _stunned;
         }
-    }
+
     }
 
 }

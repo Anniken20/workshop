@@ -469,6 +469,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dmgTilBreak: 74
   knockbackFactor: 5
+  startingDamage: 0
 --- !u!54 &380882386
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -4183,7 +4184,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: 696c8c4465e48d04fb2a55779b436567, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4280,7 +4281,10 @@ MonoBehaviour:
   bulletPrefab: {fileID: 6120439615268133299, guid: f71e9abf30b1600488def74eaa14643c,
     type: 3}
   aimController: {fileID: 6982812147933622150}
+  playerFollowCam: {fileID: 2070925443028286826}
+  playerCamRoot: {fileID: 8338988565591873048}
   fireTime: 0.4
+  lunaWindowTime: 2
 --- !u!114 &6982812147933622150
 MonoBehaviour:
   m_ObjectHideFlags: 0
