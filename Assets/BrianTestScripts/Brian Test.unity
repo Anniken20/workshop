@@ -801,7 +801,7 @@ GameObject:
   - component: {fileID: 1131767921}
   m_Layer: 0
   m_Name: Game Event System
-  m_TagString: Untagged
+  m_TagString: GameController
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1034,8 +1034,9 @@ GameObject:
   - component: {fileID: 1390905648}
   - component: {fileID: 1390905647}
   - component: {fileID: 1390905646}
+  - component: {fileID: 1390905650}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: Key
   m_TagString: Key
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1082,7 +1083,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 02a8bb137b3dc465e834a60da68b0faa, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1127,6 +1128,45 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1390905650
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1390905644}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24484c6021954554d9f44c1ac7616fe4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  keyCollect:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1390905650}
+        m_TargetAssemblyTypeName: Key, Assembly-CSharp
+        m_MethodName: TestMethod
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1131767921}
+        m_TargetAssemblyTypeName: GameEvents, Assembly-CSharp
+        m_MethodName: KeyCount
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1001 &1402827283
 PrefabInstance:
   m_ObjectHideFlags: 0
