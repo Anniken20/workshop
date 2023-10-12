@@ -28,11 +28,19 @@ public class LassoController : MonoBehaviour
     public bool drawToLasso;
     [SerializeField] public LineRenderer drawToLassoLine;
     private GameObject projectile;
-
+    private LayerMask lassoAimMask;
+    private void Awake(){
+        int lassoLayer = lassoObject.gameObject.layer;
+        for(int i = 0; i<32; i++){
+            if(!Physics.GetIgnoreLayerCollision(lassoLayer, i)){
+                lassoAimMask |= 1 << i;
+            }
+        }
+    }
     void Update(){
         if(drawToLasso){
             drawToLassoLine.enabled = true;
-            drawToLassoLine.SetPosition(0, lassoOrigin.transform.position);
+            drawToLassoLine.SetPosition(0, startPos);
             drawToLassoLine.SetPosition(1, projectile.transform.position);
         }
         if(startLassoCooldown){
@@ -81,11 +89,18 @@ public class LassoController : MonoBehaviour
             point.y = startPos.y + lassoVelocity.y * time + (Physics.gravity.y / 2f * time * time);
 
             lineRend.SetPosition(i, point);
+
+            Vector3 lastPosition = lineRend.GetPosition(i - 1);
+            if(Physics.Raycast(lastPosition, (point - lastPosition).normalized, out RaycastHit hit, (point - lastPosition).magnitude, lassoAimMask)){
+                lineRend.SetPosition(i, hit.point);
+                lineRend.positionCount = i + 1;
+                return;
+            }
         }
     }
 
     private void LaunchLasso(){
-        projectile = Instantiate(lassoObject, launchPoint.position, launchPoint.rotation);
+        projectile = Instantiate(lassoObject, startPos, launchPoint.rotation);
         aimAngle = aimController.GetAimAngle();
         projectile.GetComponent<Rigidbody>().AddForce(aimAngle * lassoLaunchStrength, ForceMode.Impulse);
         drawToLasso = true;
