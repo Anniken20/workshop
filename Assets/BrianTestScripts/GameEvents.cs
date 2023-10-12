@@ -5,28 +5,12 @@ using UnityEngine;
 
 public class GameEvents : MonoBehaviour
 {
-    public static GameEvents current;
+    public int keys {get; private set; }
+    
 
-    private void Awake()
+    public void KeyCount()
     {
-        current = this;
+        keys++;
     }
 
-    public event Action onDoorwayTriggerEnter;
-    public void DoorwayTriggerEnter()
-    {
-        if (onDoorwayTriggerEnter != null)
-        {
-            onDoorwayTriggerEnter();
-        }
-    }
-
-    public event Action onDoorwayTriggerExit;
-    public void DoorwayTriggerExit()
-    {
-        if(onDoorwayTriggerExit != null)
-        {
-            onDoorwayTriggerExit();
-        }
-    }
 }
