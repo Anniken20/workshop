@@ -2,17 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LassoBreakScript : MonoBehaviour
+public class LassoBreakScript : MonoBehaviour, ILassoable
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+public void Lassoed(Transform attachPoint, bool active, GameObject gameObject){
+    Destroy(gameObject);
+ }
 }

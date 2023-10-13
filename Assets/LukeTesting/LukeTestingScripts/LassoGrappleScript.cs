@@ -13,7 +13,7 @@ public class LassoGrappleScript : MonoBehaviour, IGrappleable
 
     private Rigidbody rb;
 
-    [SerializeField] Transform lassoOrigin;
+    private Vector3 lassoOrigin;
 
     public void Grappled(bool active, GameObject hitObject){
         grapplePoint = hitObject;
@@ -46,10 +46,14 @@ public class LassoGrappleScript : MonoBehaviour, IGrappleable
     }
 
     private void Update(){
+        lassoOrigin = new Vector3(gameObject.transform.position.x,
+            gameObject.transform.position.y + 1.5f,
+            gameObject.transform.position.z)
+            + (gameObject.transform.forward * 0.25f);
         if(grapplePoint != null){
             float distance = Vector3.Distance(transform.position, grapplePoint.transform.position);
             if(distance <= breakDistance){
-                Debug.Log("Breaking off");
+                //Debug.Log("Breaking off");
                 grapple = false;
                 lineRend.enabled = false;
                 rb.velocity = Vector3.zero;
@@ -57,7 +61,7 @@ public class LassoGrappleScript : MonoBehaviour, IGrappleable
             }
         }
         if(grapple){
-            lineRend.SetPosition(0, lassoOrigin.transform.position);
+            lineRend.SetPosition(0, lassoOrigin);
             lineRend.SetPosition(1, grapplePoint.transform.position);
         }
 

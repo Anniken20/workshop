@@ -8,6 +8,7 @@ public class LassoController : MonoBehaviour
     public AimController aimController;
     private Vector3 aimAngle;
     private Vector3 startPos;
+    private Vector3 lineStart;
     private bool lassoActive;
     [SerializeField] public Transform lassoAttachPoint;
     //[SerializeField] Vector3 lineOrigin;
@@ -17,19 +18,21 @@ public class LassoController : MonoBehaviour
     [SerializeField] Transform launchPoint;
     [SerializeField] LineRenderer lineRend;
     //[SerializeField] Transform releasePos;
-    [SerializeField] [Range(10,100)] private int linePoints = 25;
+    //[SerializeField] [Range(10,100)] private int linePoints = 25;
+    private int linePoints = 25;
     [SerializeField] [Range(0.01f, 0.25f)] private float tBetween = 0.1f;
     [SerializeField] GameObject lassoObject;
     [SerializeField] [Range(1f, 15f)] private float lassoLaunchStrength;
-    [SerializeField] Transform lassoOrigin;
-    [SerializeField] float lassoCooldown = 2f;
-    public bool startLassoCooldown = true;
-    public bool holdingItem;
-    public bool drawToLasso;
+    [SerializeField] [Range(0.5f, 5f)] float lassoCooldown;
+    private float internalCooldown;
+    [HideInInspector] public bool startLassoCooldown = true;
+    [HideInInspector] public bool holdingItem;
+    [HideInInspector] public bool drawToLasso;
     [SerializeField] public LineRenderer drawToLassoLine;
     private GameObject projectile;
     private LayerMask lassoAimMask;
     private void Awake(){
+        internalCooldown = lassoCooldown;
         int lassoLayer = lassoObject.gameObject.layer;
         for(int i = 0; i<32; i++){
             if(!Physics.GetIgnoreLayerCollision(lassoLayer, i)){
@@ -39,12 +42,19 @@ public class LassoController : MonoBehaviour
     }
     void Update(){
         if(drawToLasso){
+            lineStart = new Vector3(gameObject.transform.position.x,
+            gameObject.transform.position.y + 1.5f,
+            gameObject.transform.position.z)
+            + (gameObject.transform.forward * 0.25f);
             drawToLassoLine.enabled = true;
-            drawToLassoLine.SetPosition(0, startPos);
+            drawToLassoLine.SetPosition(0, lineStart);
             drawToLassoLine.SetPosition(1, projectile.transform.position);
         }
         if(startLassoCooldown){
-            lassoCooldown -= 1f * Time.deltaTime;
+            internalCooldown -= 1f * Time.deltaTime;
+        }
+        if(internalCooldown <= 0){
+            internalCooldown = 0;
         }
         if(Input.GetMouseButtonDown(1)){
             if(holdingItem == false){
@@ -54,9 +64,9 @@ public class LassoController : MonoBehaviour
         }
         if(Input.GetMouseButtonUp(1)){
             lassoActive = false;
-            if(holdingItem == false && lassoCooldown <= 0){
+            if(holdingItem == false && internalCooldown <= 0){
                 LaunchLasso();
-                lassoCooldown = 2f;
+                internalCooldown = lassoCooldown;
                 lineRend.enabled = false;
             }
         }
@@ -67,7 +77,7 @@ public class LassoController : MonoBehaviour
             gameObject.transform.position.z)
             + (gameObject.transform.forward * 0.25f);
             aimAngle = aimController.GetAimAngle();
-            if(lassoCooldown <= 0){
+            if(internalCooldown <= 0){
                 DrawLassoLine();
             }
         }
@@ -101,7 +111,7 @@ public class LassoController : MonoBehaviour
 
     private void LaunchLasso(){
         projectile = Instantiate(lassoObject, startPos, launchPoint.rotation);
-        aimAngle = aimController.GetAimAngle();
+        //aimAngle = aimController.GetAimAngle();
         projectile.GetComponent<Rigidbody>().AddForce(aimAngle * lassoLaunchStrength, ForceMode.Impulse);
         drawToLasso = true;
     }

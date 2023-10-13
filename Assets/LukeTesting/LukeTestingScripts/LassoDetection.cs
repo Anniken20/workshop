@@ -31,12 +31,12 @@ public class LassoDetection : MonoBehaviour
         //IGrappleable grappleable = GetComponent<IGrappleable>();
         if(lassoable != null){
             Vector3 otherExtents = other.bounds.extents;
-            if(transform.position.y>=otherExtents.y){
-                lassoable.Lassoed(lassoAttachPoint, lassoActive);
+            if(transform.position.y>= (otherExtents.y) * 2){
+                
                 Destroy(gameObject);
                 lassoController.drawToLasso = false;
                 lassoController.drawToLassoLine.enabled = false;
-                other.GetComponent<LassoPickupScript>().lassoedObject = other.gameObject;
+                lassoable.Lassoed(lassoAttachPoint, lassoActive, other.gameObject);
             }
             else{
                 Destroy(gameObject);
