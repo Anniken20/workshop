@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class LassoPickupScript : MonoBehaviour, ILassoable
 {
+
+    private Vector3 launchAngle;
     private Rigidbody rb;
     private Collider objectCollider;
 
@@ -25,14 +27,12 @@ public class LassoPickupScript : MonoBehaviour, ILassoable
 
     private Vector3 objectPos;
 
-    [SerializeField] float minDistance;
-    [SerializeField] float maxDistance;
-
     private Vector3 playerForward;
 
-    [HideInInspector] public GameObject lassoedObject;
+    private GameObject lassoedObject;
 
-    [SerializeField] bool inCombat;
+    //[SerializeField] bool inCombat;
+    private bool canScroll;
 
 
     private void Start(){
@@ -44,7 +44,7 @@ public class LassoPickupScript : MonoBehaviour, ILassoable
     }
 
     private void Update(){
-        
+        launchAngle = player.GetComponent<AimController>().GetAimAngle();
         if(Input.GetMouseButtonDown(1) && lassoActive == true){
             DropObject();
         }
@@ -61,8 +61,9 @@ public class LassoPickupScript : MonoBehaviour, ILassoable
 
         player.holdingItem = lassoActive;
     }
-    public void Lassoed(Transform lassoAttachPoint, bool active){
+    public void Lassoed(Transform lassoAttachPoint, bool active, GameObject otherObject){
         lassoActive = active;
+        lassoedObject = otherObject;
         attachPoint = lassoAttachPoint;
         rb.useGravity = false;
         objectCollider.isTrigger = true;
@@ -78,7 +79,8 @@ public class LassoPickupScript : MonoBehaviour, ILassoable
         rb.useGravity = true;
         objectCollider.isTrigger = false;
         moveObject = false;
-        rb.velocity = new Vector3(attachPoint.position.x * launchForce, 0, attachPoint.position.y * launchForce);
+        //rb.velocity = new Vector3(attachPoint.position.x * launchForce, 0, attachPoint.position.y * launchForce);
+        rb.AddForce(launchAngle * launchForce, ForceMode.Impulse);
         //manipulateObject = false;
         lassoActive = false;
         lassoedObject = null;
@@ -96,9 +98,14 @@ public class LassoPickupScript : MonoBehaviour, ILassoable
             //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
             lassoedObject.transform.Rotate(yRotation * objectWeight, xRotation * objectWeight, 0);
             float mWheelDistance = Input.mouseScrollDelta.y;
-            //transform.position = Mathf.Clamp(, minDistance, maxDistance);
             var newPos = transform.position + (playerForward * mWheelDistance * 20);
+            var objDistance = Vector3.Distance(lassoedObject.transform.position, player.transform.position);
             lassoedObject.transform.position = Vector3.Lerp(lassoedObject.transform.position, newPos, Time.deltaTime);
+            if(objDistance >= 5 || objDistance <= 2.1){
+                DropObject();
+                Debug.Log(objDistance);
+            }
+            //newPos = Mathf.Clamp(newPos, attachPoint.position, maxDistance);
         
     }
 }

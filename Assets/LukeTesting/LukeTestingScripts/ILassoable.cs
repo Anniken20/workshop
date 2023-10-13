@@ -4,5 +4,5 @@ using UnityEngine;
 
 
 public interface ILassoable{
-    void Lassoed(Transform attachPoint, bool active);
+    void Lassoed(Transform attachPoint, bool active, GameObject gameObject);
 }
