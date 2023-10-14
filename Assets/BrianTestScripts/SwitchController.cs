@@ -41,6 +41,7 @@ public class SwitchController : MonoBehaviour
         }
     }
 
+    //moves switch down
     void MoveSwitchDown()
     {
         if (transform.position != switchDownPos)
@@ -49,6 +50,7 @@ public class SwitchController : MonoBehaviour
         }
     }
 
+    //moves switch up
      void MoveSwitchUp()
     {
         if (transform.position != switchUpPos)
@@ -57,6 +59,7 @@ public class SwitchController : MonoBehaviour
         }
     }
 
+    //trigger to make sure you are on switch
     private void OnTriggerEnter(Collider collision)
     {
         if (collision.CompareTag("Player"))
@@ -78,6 +81,7 @@ public class SwitchController : MonoBehaviour
         }
     }
 
+    //trigger to make sure you are off switch
     private void OnTriggerExit(Collider collision)
     {
         if (collision.CompareTag("Player"))
@@ -86,12 +90,14 @@ public class SwitchController : MonoBehaviour
         }
     }
 
+    //adds delay to switch moving up and down
     IEnumerator SwitchUpDelay (float waitTime)
     {
         yield return new WaitForSeconds(waitTime);
         isPressingSwitch = false;
     }
 
+    //check to make sure you have required item
     public bool HasRequiredItem(InventoryManager.AllItems itemRequired)
     {
         if(InventoryManager.Instance.inventoryItems.Contains(itemRequired))
