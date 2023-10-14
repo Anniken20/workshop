@@ -11,6 +11,7 @@ public class DoorController : MonoBehaviour
     Vector3 doorOpenPos;
     float doorSpeed = 10f;
 
+    //Sets door position to starting and highest opening point
     void Awake ()
     {
         doorClosedPos = transform.position;
@@ -29,6 +30,7 @@ public class DoorController : MonoBehaviour
         }
     }
 
+    //Moves Door Up
     void OpenDoor()
     {
         if (transform.position != doorOpenPos)
@@ -37,6 +39,8 @@ public class DoorController : MonoBehaviour
         }
     }
 
+
+    //Moves Door Down
     void CloseDoor()
     {
         if (transform.position != doorClosedPos)
