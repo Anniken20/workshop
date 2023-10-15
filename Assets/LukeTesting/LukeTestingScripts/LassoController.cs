@@ -23,14 +23,15 @@ public class LassoController : MonoBehaviour
     [SerializeField] [Range(0.01f, 0.25f)] private float tBetween = 0.1f;
     [SerializeField] GameObject lassoObject;
     [SerializeField] [Range(1f, 15f)] private float lassoLaunchStrength;
-    [SerializeField] [Range(0.5f, 5f)] float lassoCooldown;
-    private float internalCooldown;
+    [Range(0.5f, 5f)] public float lassoCooldown;
+    [HideInInspector] public float internalCooldown;
     [HideInInspector] public bool startLassoCooldown = true;
     [HideInInspector] public bool holdingItem;
     [HideInInspector] public bool drawToLasso;
     [SerializeField] public LineRenderer drawToLassoLine;
     private GameObject projectile;
     private LayerMask lassoAimMask;
+    public bool inCombat;
     private void Awake(){
         internalCooldown = lassoCooldown;
         int lassoLayer = lassoObject.gameObject.layer;

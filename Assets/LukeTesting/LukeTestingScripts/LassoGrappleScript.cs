@@ -7,9 +7,11 @@ public class LassoGrappleScript : MonoBehaviour, IGrappleable
 
     private bool grapple;
     private GameObject grapplePoint;
-    [SerializeField] float breakDistance = 1.0f;
+    [SerializeField] float breakDistance = 3.0f;
     [SerializeField] float grappleSpeed;
     [SerializeField] LineRenderer lineRend;
+    private float checkCollisionDelay = .1f;
+    private float internalCheckDelay;
 
     private Rigidbody rb;
 
@@ -52,6 +54,7 @@ public class LassoGrappleScript : MonoBehaviour, IGrappleable
             + (gameObject.transform.forward * 0.25f);
         if(grapplePoint != null){
             float distance = Vector3.Distance(transform.position, grapplePoint.transform.position);
+            //Debug.Log(distance);
             if(distance <= breakDistance){
                 //Debug.Log("Breaking off");
                 grapple = false;
@@ -63,6 +66,10 @@ public class LassoGrappleScript : MonoBehaviour, IGrappleable
         if(grapple){
             lineRend.SetPosition(0, lassoOrigin);
             lineRend.SetPosition(1, grapplePoint.transform.position);
+            internalCheckDelay -= Time.deltaTime;
+        }
+        else{
+            internalCheckDelay = checkCollisionDelay;
         }
 
         if(Input.GetMouseButtonUp(1)){
@@ -74,8 +81,10 @@ public class LassoGrappleScript : MonoBehaviour, IGrappleable
     }
 
     private void OnCollisionEnter(Collision other){
-        grapple = false;
-        lineRend.enabled = false;
-        GetComponent<CharacterController>().enabled = true;
+        if(internalCheckDelay <= 0){
+            grapple = false;
+            lineRend.enabled = false;
+            GetComponent<CharacterController>().enabled = true;
+        }
     }
 }

@@ -31,30 +31,65 @@ public class LassoPickupScript : MonoBehaviour, ILassoable
 
     private GameObject lassoedObject;
 
-    //[SerializeField] bool inCombat;
+
+    private float throwWindow = 3f;
+    private float internalThrowWindow;
+    private bool throwEnabled;
     private bool canScroll;
+
+    private bool inCombat;
+    private float combatLaunchStrength;
+    Camera mainCam;
+
+    private Vector3 throwPoint;
+    private float lassoCooldown;
+
+
 
 
     private void Start(){
+        mainCam = Camera.main;
+        internalThrowWindow = throwWindow;
         rb = GetComponent<Rigidbody>();
         objectCollider = GetComponent<Collider>();
         player = FindObjectOfType<LassoController>();
+        lassoCooldown = player.lassoCooldown;
+        //combatLaunchStrength = player.GetComponent<LassoController>().combatLaunchStrength;
 
 
     }
 
     private void Update(){
+        //Debug.Log(internalThrowWindow);
+        inCombat = player.GetComponent<LassoController>().inCombat;
+        if(inCombat && internalThrowWindow > 0 && Input.GetMouseButtonDown(1) && lassoedObject != null){
+            LaunchToCursor();
+        }
+        //Debug.Log(internalThrowWindow);
+        if(inCombat && internalThrowWindow <= 0){
+            LaunchToCursor();
+            throwEnabled = false;
+
+        }
+
+        if(throwEnabled){
+            internalThrowWindow -= Time.deltaTime;
+        }
+        else{
+            internalThrowWindow = throwWindow;
+        }
+
         launchAngle = player.GetComponent<AimController>().GetAimAngle();
         if(Input.GetMouseButtonDown(1) && lassoActive == true){
             DropObject();
         }
 
-        if(Input.GetKeyDown(KeyCode.F)){
+        if(Input.GetKeyDown(KeyCode.F) && !inCombat){
             manipulateObject = true;
             playerForward = player.transform.forward;
             //attachOrigin = attachPoint;
         }
-        else if(Input.GetKeyUp(KeyCode.F)){
+        else if(Input.GetKeyUp(KeyCode.F) && !inCombat){
             manipulateObject = false;
             //attachPoint.transform.position = attachOrigin.transform.position;
         }
@@ -62,18 +97,53 @@ public class LassoPickupScript : MonoBehaviour, ILassoable
         player.holdingItem = lassoActive;
     }
     public void Lassoed(Transform lassoAttachPoint, bool active, GameObject otherObject){
-        lassoActive = active;
-        lassoedObject = otherObject;
-        attachPoint = lassoAttachPoint;
-        rb.useGravity = false;
-        objectCollider.isTrigger = true;
-        moveObject = active;
-        rb.velocity = Vector3.zero;
-        //manipulateObject = true;
-        player.startLassoCooldown = false;
+        if(!inCombat){
+            lassoActive = active;
+            lassoedObject = otherObject;
+            attachPoint = lassoAttachPoint;
+            rb.useGravity = false;
+            objectCollider.isTrigger = true;
+            moveObject = active;
+            rb.velocity = Vector3.zero;
+            //manipulateObject = true;
+            player.startLassoCooldown = false;
+        }
+        else{
+            CombatLassoEnabled();
+            lassoedObject = otherObject;
+        }
 
     }
 
+    private void CombatLassoEnabled(){
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+        throwEnabled = true;
+    }
+
+    private void LaunchToCursor(){
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+        if(Physics.Raycast(ray, out hit, Mathf.Infinity)){
+            if(lassoedObject != null){
+                throwPoint = hit.point;
+                throwPoint.y += 2.5f;
+            }
+        }
+           // combatLaunchStrength = combatLaunchStrength * objectWeight;
+           combatLaunchStrength = 1.5f;
+           var yBoost = lassoedObject.transform.position;
+           //yBoost.y += .5f;
+            //lassoedObject.transform.position = yBoost;
+            lassoedObject.GetComponent<Rigidbody>().AddForce((throwPoint - lassoedObject.transform.position) * combatLaunchStrength, ForceMode.VelocityChange);
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
+            throwEnabled = false;
+            lassoedObject = null;
+
+            player.internalCooldown = lassoCooldown;
+            player.startLassoCooldown = true;
+    }
     private void DropObject(){
         player.startLassoCooldown = true;
         rb.useGravity = true;
@@ -103,10 +173,11 @@ public class LassoPickupScript : MonoBehaviour, ILassoable
             lassoedObject.transform.position = Vector3.Lerp(lassoedObject.transform.position, newPos, Time.deltaTime);
             if(objDistance >= 5 || objDistance <= 2.1){
                 DropObject();
-                Debug.Log(objDistance);
+                //Debug.Log(objDistance);
             }
             //newPos = Mathf.Clamp(newPos, attachPoint.position, maxDistance);
         
     }
+
 }
 }
