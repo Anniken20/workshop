@@ -49,7 +49,6 @@ public class LassoPickupScript : MonoBehaviour, ILassoable
 
 
 
-
     private void Start(){
         mainCam = Camera.main;
         internalThrowWindow = throwWindow;
@@ -117,6 +116,10 @@ public class LassoPickupScript : MonoBehaviour, ILassoable
             lassoedObject = otherObject;
         }
 
+    private void CombatLassoEnabled(){
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+        throwEnabled = true;
     }
 
     private void CombatLassoEnabled(){
@@ -124,7 +127,6 @@ public class LassoPickupScript : MonoBehaviour, ILassoable
         Cursor.lockState = CursorLockMode.None;
         throwEnabled = true;
     }
-
     private void LaunchToCursor(){
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
