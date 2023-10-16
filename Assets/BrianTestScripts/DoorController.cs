@@ -1,22 +1,51 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class DoorController : MonoBehaviour
 {
-    private void Start()
+
+    public bool isDoorOpen = false;
+    Vector3 doorClosedPos;
+    Vector3 doorOpenPos;
+    float doorSpeed = 10f;
+
+    //Sets door position to starting and highest opening point
+    void Awake ()
     {
-        GameEvents.current.onDoorwayTriggerEnter += OnDoorwayOpen;
-        GameEvents.current.onDoorwayTriggerExit += OnDoorwayClose;
+        doorClosedPos = transform.position;
+        doorOpenPos = new Vector3(transform.position.x, transform.position.y + 3f, transform.position.z);
+    }
+    // Update is called once per frame
+    void Update()
+    {
+        if (isDoorOpen)
+        { 
+            OpenDoor();
+        }
+        else if (!isDoorOpen)
+        {
+            CloseDoor();
+        }
     }
 
-    private void OnDoorwayOpen()
+    //Moves Door Up
+    void OpenDoor()
     {
-        transform.Translate(0,2,0);
+        if (transform.position != doorOpenPos)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, doorOpenPos, doorSpeed * Time.deltaTime);
+        }
     }
 
-    private void OnDoorwayClose()
+
+    //Moves Door Down
+    void CloseDoor()
     {
-        transform.Translate(0,-2,0);
+        if (transform.position != doorClosedPos)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, doorClosedPos, doorSpeed * Time.deltaTime);
+        }
     }
 }

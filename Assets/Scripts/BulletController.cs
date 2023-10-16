@@ -32,6 +32,7 @@ public class BulletController : MonoBehaviour
     public float maxDmg = Mathf.Infinity;
 
     [Header("Luna Stats")]
+    public GameObject luna;
     public CinemachineVirtualCamera lunaCam;
     [Tooltip("The time it takes to zoom in/out from the character to the bullet")]
     public float camMovementDuration;
@@ -122,11 +123,14 @@ public class BulletController : MonoBehaviour
 
     public void EnterLunaMode()
     {
+        //show luna
+        luna.SetActive(true);
+
         //lock movement
-        player.GetComponent<ThirdPersonController>().LockMovement();
+        player.GetComponent<ThirdPersonController>()._lunaLocked = true;
 
         //lock aiming
-        player.GetComponent<AimController>().canAim = false;
+        player.GetComponent<AimController>().inLuna = true;
 
         //this find by object kinda sucks but i dont have singleton behavior setup.
         //and this script is only on a prefab that is instantiated at runtime, 
@@ -162,7 +166,7 @@ public class BulletController : MonoBehaviour
         //then make it super large so trail doesn't go away
         TrailRenderer trailRenderer = GetComponent<TrailRenderer>();
         trailRendererTime = trailRenderer.time;
-        trailRenderer.time = 10000f;
+        trailRenderer.time *= 10f;
 
         //while in luna mode, make bullet move slowly
         speed = speed / 10f;
@@ -180,11 +184,14 @@ public class BulletController : MonoBehaviour
 
     public void ExitLunaMode()
     {
+        //hide luna
+        luna.SetActive(false);
+
         //unlock our player movement
-        player.GetComponent<ThirdPersonController>().UnlockMovement();
+        player.GetComponent<ThirdPersonController>()._lunaLocked = false;
 
         //unlock our player aiming
-        player.GetComponent<AimController>().canAim = true;
+        player.GetComponent<AimController>().inLuna = false;
 
         //resume bullet movement
         inLunaMode = false;
