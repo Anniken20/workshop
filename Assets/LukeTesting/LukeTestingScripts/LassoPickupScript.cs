@@ -43,6 +43,8 @@ public class LassoPickupScript : MonoBehaviour, ILassoable
 
     private Vector3 throwPoint;
     private float lassoCooldown;
+    private bool throwing;
+    private GameObject lassoObject;
 
 
 
@@ -60,6 +62,7 @@ public class LassoPickupScript : MonoBehaviour, ILassoable
     }
 
     private void Update(){
+        lassoObject = player.GetComponent<LassoController>().projectile;
         //Debug.Log(internalThrowWindow);
         inCombat = player.GetComponent<LassoController>().inCombat;
         if(inCombat && internalThrowWindow > 0 && Input.GetMouseButtonDown(1) && lassoedObject != null){
@@ -113,6 +116,10 @@ public class LassoPickupScript : MonoBehaviour, ILassoable
             lassoedObject = otherObject;
         }
 
+    private void CombatLassoEnabled(){
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+        throwEnabled = true;
     }
 
     private void CombatLassoEnabled(){
@@ -120,7 +127,6 @@ public class LassoPickupScript : MonoBehaviour, ILassoable
         Cursor.lockState = CursorLockMode.None;
         throwEnabled = true;
     }
-
     private void LaunchToCursor(){
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
@@ -143,6 +149,7 @@ public class LassoPickupScript : MonoBehaviour, ILassoable
 
             player.internalCooldown = lassoCooldown;
             player.startLassoCooldown = true;
+            throwing = true;
     }
     private void DropObject(){
         player.startLassoCooldown = true;
@@ -154,6 +161,9 @@ public class LassoPickupScript : MonoBehaviour, ILassoable
         //manipulateObject = false;
         lassoActive = false;
         lassoedObject = null;
+        player.drawToLasso = false;
+        player.drawToLassoLine.enabled = false;
+        lassoObject.GetComponent<LassoDetection>().destroy = true;
     }
 
     private void FixedUpdate(){
@@ -180,4 +190,11 @@ public class LassoPickupScript : MonoBehaviour, ILassoable
     }
 
 }
+    void OnCollisionEnter(Collision other){
+        if(throwing){
+            lassoObject.GetComponent<LassoDetection>().destroy = true;
+            player.GetComponent<LassoController>().drawToLasso = false;
+            throwing = false;
+        }
+    }
 }
