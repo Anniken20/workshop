@@ -115,11 +115,6 @@ public class LassoPickupScript : MonoBehaviour, ILassoable
             CombatLassoEnabled();
             lassoedObject = otherObject;
         }
-
-    private void CombatLassoEnabled(){
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.None;
-        throwEnabled = true;
     }
 
     private void CombatLassoEnabled(){
@@ -187,9 +182,10 @@ public class LassoPickupScript : MonoBehaviour, ILassoable
             }
             //newPos = Mathf.Clamp(newPos, attachPoint.position, maxDistance);
         
-    }
+            }
 
-}
+        }
+
     void OnCollisionEnter(Collision other){
         if(throwing){
             lassoObject.GetComponent<LassoDetection>().destroy = true;
