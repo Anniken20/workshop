@@ -23,14 +23,16 @@ public class LassoController : MonoBehaviour
     [SerializeField] [Range(0.01f, 0.25f)] private float tBetween = 0.1f;
     [SerializeField] GameObject lassoObject;
     [SerializeField] [Range(1f, 15f)] private float lassoLaunchStrength;
-    [SerializeField] [Range(0.5f, 5f)] float lassoCooldown;
-    private float internalCooldown;
+    [Range(0.5f, 5f)] public float lassoCooldown;
+    [HideInInspector] public float internalCooldown;
     [HideInInspector] public bool startLassoCooldown = true;
     [HideInInspector] public bool holdingItem;
     [HideInInspector] public bool drawToLasso;
     [SerializeField] public LineRenderer drawToLassoLine;
-    private GameObject projectile;
+    [HideInInspector] public GameObject projectile;
     private LayerMask lassoAimMask;
+    public bool inCombat;
+    private Transform connectPoint;
     private void Awake(){
         internalCooldown = lassoCooldown;
         int lassoLayer = lassoObject.gameObject.layer;
@@ -42,13 +44,20 @@ public class LassoController : MonoBehaviour
     }
     void Update(){
         if(drawToLasso){
-            lineStart = new Vector3(gameObject.transform.position.x,
-            gameObject.transform.position.y + 1.5f,
-            gameObject.transform.position.z)
-            + (gameObject.transform.forward * 0.25f);
-            drawToLassoLine.enabled = true;
-            drawToLassoLine.SetPosition(0, lineStart);
-            drawToLassoLine.SetPosition(1, projectile.transform.position);
+            if(projectile != null){
+                connectPoint = projectile.transform.Find("ConnectPoint");
+                
+                lineStart = new Vector3(gameObject.transform.position.x,
+                gameObject.transform.position.y + 1.5f,
+                gameObject.transform.position.z)
+                + (gameObject.transform.forward * 0.25f);
+                drawToLassoLine.enabled = true;
+                drawToLassoLine.SetPosition(0, lineStart);
+                drawToLassoLine.SetPosition(1, connectPoint.position);
+            }
+        }
+        else if(drawToLasso == false){
+            drawToLassoLine.enabled = false;
         }
         if(startLassoCooldown){
             internalCooldown -= 1f * Time.deltaTime;

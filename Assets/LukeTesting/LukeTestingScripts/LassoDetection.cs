@@ -11,14 +11,30 @@ public class LassoDetection : MonoBehaviour
     private Vector3 lassoExtents;
     private float lassoBottom;
     [SerializeField] int lassoLifetime;
-
+    [HideInInspector] public bool onObject;
+    [HideInInspector] public bool destroy;
+    private GameObject otherObject;
+    private bool hitObject;
+    
     void Update()
     {
         lassoAttachPoint = lassoController.lassoAttachPoint;
+        if(onObject){
+            transform.position = otherObject.transform.position;
+        }
+        if(otherObject != null){
+            if(hitObject == false && otherObject.GetComponent<LassoController>().holdingItem == false){
+                StartCoroutine(LassoLifespan());
+                hitObject = false;
+            }
+        }
+        if(destroy){
+            Destroy(gameObject);
+        }
     }
     void Start(){
-
-        StartCoroutine(LassoLifespan());
+        
+        //StartCoroutine(LassoLifespan());
 
         lassoController = FindObjectOfType<LassoController>();
         grappleScript = FindObjectOfType<LassoGrappleScript>();
@@ -30,23 +46,28 @@ public class LassoDetection : MonoBehaviour
         ILassoable lassoable = other.gameObject.GetComponent<ILassoable>();
         //IGrappleable grappleable = GetComponent<IGrappleable>();
         if(lassoable != null){
+            hitObject = true;
             Vector3 otherExtents = other.bounds.extents;
             if(transform.position.y>= (otherExtents.y) * 2){
                 
-                Destroy(gameObject);
-                lassoController.drawToLasso = false;
-                lassoController.drawToLassoLine.enabled = false;
+                //Destroy(gameObject);
+                GetComponent<Rigidbody>().isKinematic = true;
+                onObject = true;
+                otherObject = other.gameObject;
+                //transform.position = other.transform.position;
+                //lassoController.drawToLasso = false;
+                //lassoController.drawToLassoLine.enabled = false;
                 lassoable.Lassoed(lassoAttachPoint, lassoActive, other.gameObject);
             }
             else{
-                Destroy(gameObject);
-                lassoController.drawToLasso = false;
-                lassoController.drawToLassoLine.enabled = false;
+                //Destroy(gameObject);
+                //lassoController.drawToLasso = false;
+                //lassoController.drawToLassoLine.enabled = false;
             }
         }
         else if(other.gameObject.CompareTag("Grapple")){
             grappleScript.Grappled(lassoActive, other.transform.gameObject);
-
+            hitObject = true;
             Destroy(gameObject);
             lassoController.drawToLasso = false;
             lassoController.drawToLassoLine.enabled = false;
