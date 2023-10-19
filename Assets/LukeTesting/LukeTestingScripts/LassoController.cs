@@ -33,6 +33,10 @@ public class LassoController : MonoBehaviour
     private LayerMask lassoAimMask;
     public bool inCombat;
     private Transform connectPoint;
+    private float mouseY;
+    private Vector3 yAdjusted;
+    private float sens;
+    private float yAngleFreedom = 1f;
     private void Awake(){
         internalCooldown = lassoCooldown;
         int lassoLayer = lassoObject.gameObject.layer;
@@ -43,6 +47,9 @@ public class LassoController : MonoBehaviour
         }
     }
     void Update(){
+
+        
+
         if(drawToLasso){
             if(projectile != null){
                 connectPoint = projectile.transform.Find("ConnectPoint");
@@ -85,11 +92,11 @@ public class LassoController : MonoBehaviour
             gameObject.transform.position.y + 1.5f,
             gameObject.transform.position.z)
             + (gameObject.transform.forward * 0.25f);
-            aimAngle = aimController.GetAimAngle();
             if(internalCooldown <= 0){
                 DrawLassoLine();
             }
         }
+        LassoAiming();
     }
 
 
@@ -126,6 +133,27 @@ public class LassoController : MonoBehaviour
     }
 
     private void Start(){
+        sens = aimController.sensitivity;
         lineRend.enabled = false;
+        yAdjusted = new Vector3();
+        aimAngle = new Vector3();
+    }
+
+    private void LassoAiming(){
+
+        mouseY = Input.GetAxis("Mouse Y");
+
+        mouseY *= sens / 100;
+
+        yAdjusted.y += mouseY;
+
+        float yClamp = Mathf.Clamp(yAdjusted.y, -yAngleFreedom / 2, yAngleFreedom / 2);
+
+        yAdjusted.y = yClamp;
+
+        aimAngle = gameObject.transform.forward;
+        aimAngle += yAdjusted;
+
+        
     }
 }
