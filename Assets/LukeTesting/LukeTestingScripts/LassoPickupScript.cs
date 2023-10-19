@@ -13,7 +13,7 @@ public class LassoPickupScript : MonoBehaviour, ILassoable
 
     private Transform attachPoint;
 
-    private bool manipulateObject;
+    [HideInInspector] public bool manipulateObject;
 
     [SerializeField] float objectWeight;
 
@@ -45,6 +45,7 @@ public class LassoPickupScript : MonoBehaviour, ILassoable
     private float lassoCooldown;
     private bool throwing;
     private GameObject lassoObject;
+    
 
 
 
