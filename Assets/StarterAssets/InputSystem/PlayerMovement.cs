@@ -80,15 +80,6 @@ public partial class @PlayerMovement: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Phasing"",
-                    ""type"": ""Button"",
-                    ""id"": ""e61d0f7c-fda2-42b3-bcc9-fc0d916b36e6"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -311,28 +302,6 @@ public partial class @PlayerMovement: IInputActionCollection2, IDisposable
                     ""action"": ""Shoot"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""568e3397-af06-401c-9a28-7dadb8fc3d95"",
-                    ""path"": ""<XInputController>/buttonWest"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Phasing"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""4242477e-6329-43ff-86ec-b59931a338e8"",
-                    ""path"": ""<Keyboard>/t"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Phasing"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -347,7 +316,6 @@ public partial class @PlayerMovement: IInputActionCollection2, IDisposable
         m_Player_Sprint = m_Player.FindAction("Sprint", throwIfNotFound: true);
         m_Player_Lasso = m_Player.FindAction("Lasso", throwIfNotFound: true);
         m_Player_Shoot = m_Player.FindAction("Shoot", throwIfNotFound: true);
-        m_Player_Phasing = m_Player.FindAction("Phasing", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -415,7 +383,6 @@ public partial class @PlayerMovement: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Sprint;
     private readonly InputAction m_Player_Lasso;
     private readonly InputAction m_Player_Shoot;
-    private readonly InputAction m_Player_Phasing;
     public struct PlayerActions
     {
         private @PlayerMovement m_Wrapper;
@@ -426,7 +393,6 @@ public partial class @PlayerMovement: IInputActionCollection2, IDisposable
         public InputAction @Sprint => m_Wrapper.m_Player_Sprint;
         public InputAction @Lasso => m_Wrapper.m_Player_Lasso;
         public InputAction @Shoot => m_Wrapper.m_Player_Shoot;
-        public InputAction @Phasing => m_Wrapper.m_Player_Phasing;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -454,9 +420,6 @@ public partial class @PlayerMovement: IInputActionCollection2, IDisposable
             @Shoot.started += instance.OnShoot;
             @Shoot.performed += instance.OnShoot;
             @Shoot.canceled += instance.OnShoot;
-            @Phasing.started += instance.OnPhasing;
-            @Phasing.performed += instance.OnPhasing;
-            @Phasing.canceled += instance.OnPhasing;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -479,9 +442,6 @@ public partial class @PlayerMovement: IInputActionCollection2, IDisposable
             @Shoot.started -= instance.OnShoot;
             @Shoot.performed -= instance.OnShoot;
             @Shoot.canceled -= instance.OnShoot;
-            @Phasing.started -= instance.OnPhasing;
-            @Phasing.performed -= instance.OnPhasing;
-            @Phasing.canceled -= instance.OnPhasing;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -507,6 +467,5 @@ public partial class @PlayerMovement: IInputActionCollection2, IDisposable
         void OnSprint(InputAction.CallbackContext context);
         void OnLasso(InputAction.CallbackContext context);
         void OnShoot(InputAction.CallbackContext context);
-        void OnPhasing(InputAction.CallbackContext context);
     }
 }
