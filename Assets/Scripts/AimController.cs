@@ -1,9 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class AimController : MonoBehaviour
 {
+    public CharacterMovement iaControls;
+    private InputAction look;
+    private InputAction aim;
     public LineRenderer aimLine;
 
     [Tooltip("(Roughly) 2 => 90* of freedom. 0.5 => 30* of freedom.")]
@@ -27,6 +31,7 @@ public class AimController : MonoBehaviour
         modifiedAngle = new Vector3();
         canAim = true;
         inLuna = false;
+        iaControls = new CharacterMovement();
     }
     private void Update()
     {
@@ -40,8 +45,9 @@ public class AimController : MonoBehaviour
         if (!canAim || inLuna) return;
 
         //get input from mouse
-        xDelta = Input.GetAxis("Mouse X");
-        yDelta = Input.GetAxis("Mouse Y");
+        var looking = look.ReadValue<Vector2>();
+        xDelta = looking.x;
+        yDelta = looking.y;
 
         //apply sensitivity
         xDelta *= sensitivity / 1;
@@ -64,7 +70,7 @@ public class AimController : MonoBehaviour
         angle += modifiedAngle;
 
         //toggle aim draw
-        if (Input.GetKeyDown(KeyCode.E))
+        if (aim.triggered)
         {
             showingAimLine = !showingAimLine;
         }
@@ -127,5 +133,17 @@ public class AimController : MonoBehaviour
     public Vector3 GetAimAngle()
     {
         return angle;
+    }
+    
+    private void OnEnable(){
+        look = iaControls.CharacterControls.Look;
+        aim = iaControls.CharacterControls.Aim;
+
+        look.Enable();
+        aim.Enable();
+    }
+    private void OnDisable(){
+        look.Disable();
+        aim.Disable();
     }
 }
