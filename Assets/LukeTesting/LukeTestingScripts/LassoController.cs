@@ -1,10 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class LassoController : MonoBehaviour
 
 {
+    public CharacterMovement iaControls;
+    private InputAction lasso;
+    private InputAction look;
     public AimController aimController;
     private Vector3 aimAngle;
     private Vector3 startPos;
@@ -37,6 +41,8 @@ public class LassoController : MonoBehaviour
     private Vector3 yAdjusted;
     private float sens;
     private float yAngleFreedom = 1f;
+    private string lassoState;
+    private Vector2 looking;
     private void Awake(){
         internalCooldown = lassoCooldown;
         int lassoLayer = lassoObject.gameObject.layer;
@@ -45,10 +51,16 @@ public class LassoController : MonoBehaviour
                 lassoAimMask |= 1 << i;
             }
         }
+        iaControls = new CharacterMovement();
     }
     void Update(){
 
-        
+        looking = look.ReadValue<Vector2>();
+
+        iaControls.CharacterControls.Lasso.started += OnLassoDown;
+        iaControls.CharacterControls.Lasso.canceled += OnLassoRelease;
+
+
 
         if(drawToLasso){
             if(projectile != null){
@@ -72,7 +84,7 @@ public class LassoController : MonoBehaviour
         if(internalCooldown <= 0){
             internalCooldown = 0;
         }
-        if(Input.GetMouseButtonDown(1)){
+       /* if(Input.GetMouseButtonDown(1)){
             if(holdingItem == false){
                 lassoActive = true;
                 
@@ -85,7 +97,11 @@ public class LassoController : MonoBehaviour
                 internalCooldown = lassoCooldown;
                 lineRend.enabled = false;
             }
-        }
+        }*/
+
+        
+
+
 
         if(lassoActive && holdingItem == false){
             startPos = new Vector3(gameObject.transform.position.x,
@@ -137,11 +153,12 @@ public class LassoController : MonoBehaviour
         lineRend.enabled = false;
         yAdjusted = new Vector3();
         aimAngle = new Vector3();
+        //iActions = new CharacterControls();
     }
 
     private void LassoAiming(){
 
-        mouseY = Input.GetAxis("Mouse Y");
+        mouseY = looking.y;
 
         mouseY *= sens / 100;
 
@@ -156,4 +173,31 @@ public class LassoController : MonoBehaviour
 
         
     }
+
+    private void OnEnable(){
+        look = iaControls.CharacterControls.Look;
+        lasso = iaControls.CharacterControls.Lasso;
+
+        look.Enable();
+        lasso.Enable();
+    }
+    private void OnDisable(){
+        look.Disable();
+        lasso.Disable();
+    }
+
+    private void OnLassoDown(InputAction.CallbackContext context){
+        if(holdingItem == false){
+            lassoActive = true;                
+        }
+    }
+    private void OnLassoRelease(InputAction.CallbackContext context){
+        lassoActive = false;
+        if(holdingItem == false && internalCooldown <= 0){
+            LaunchLasso();
+            internalCooldown = lassoCooldown;
+            lineRend.enabled = false;
+        }
+    }
+
 }

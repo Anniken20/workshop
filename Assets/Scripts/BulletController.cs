@@ -4,9 +4,12 @@ using UnityEngine;
 using Cinemachine;
 using DG.Tweening;
 using StarterAssets;
+using UnityEngine.InputSystem;
 
 public class BulletController : MonoBehaviour
 {
+    public CharacterMovement iaControls;
+    private InputAction look;
     [HideInInspector] public Vector3 position;
     [HideInInspector] public Vector3 direction;
     [HideInInspector] public float distanceTraveled;
@@ -247,8 +250,9 @@ public class BulletController : MonoBehaviour
     private void HandleRedirectMouseInput()
     {
         //capture input from mouse
-        float xDelta = Input.GetAxis("Mouse X");
-        float yDelta = Input.GetAxis("Mouse Y");
+        var looking = look.ReadValue<Vector2>();
+        float xDelta = looking.x;
+        float yDelta = looking.y;
 
         //apply sensitivity
         xDelta *=  3f;
@@ -262,5 +266,16 @@ public class BulletController : MonoBehaviour
 
         //failed
         //gameObject.transform.Rotate(new Vector3(yDelta, 0f, 0f));
+    }
+    private void Awake(){
+        iaControls = new CharacterMovement();
+    }
+    private void OnEnable(){
+        look = iaControls.CharacterControls.Look;
+
+        look.Enable();
+    }
+    private void OnDisable(){
+        look.Disable();
     }
 }  
