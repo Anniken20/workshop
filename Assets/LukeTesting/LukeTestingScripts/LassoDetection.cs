@@ -6,6 +6,7 @@ public class LassoDetection : MonoBehaviour
 {
     private LassoController lassoController;
     private LassoGrappleScript grappleScript;
+    private LassoPickupScript pickupScript;
     private bool lassoActive = true;
     private Transform lassoAttachPoint;
     private Vector3 lassoExtents;
@@ -14,13 +15,33 @@ public class LassoDetection : MonoBehaviour
     [HideInInspector] public bool onObject;
     [HideInInspector] public bool destroy;
     private GameObject otherObject;
+    private LassoController player;
     private bool hitObject;
+    private float xScale;
+    private float yScale;
     
     void Update()
     {
         lassoAttachPoint = lassoController.lassoAttachPoint;
         if(onObject){
+            var xScale = otherObject.transform.localScale.x + .1f;
+            var zScale = otherObject.transform.localScale.z + .1f;
+            transform.localScale = new Vector3(xScale, transform.localScale.y, zScale);
             transform.position = otherObject.transform.position;
+            Vector3 aDirection = transform.position - player.gameObject.transform.position;
+            Quaternion aRotation = Quaternion.LookRotation(aDirection);
+            transform.rotation = aRotation;
+            var rotation = transform.rotation;
+            rotation.x = 0;
+            rotation.z = 0;
+            transform.rotation = rotation;
+            if(!pickupScript.manipulateObject){
+                otherObject.transform.rotation = transform.rotation;
+            }
+            else{
+                transform.rotation = otherObject.transform.rotation;
+            }
+
         }
         if(otherObject != null){
             if(hitObject == false && otherObject.GetComponent<LassoController>().holdingItem == false){
@@ -38,6 +59,8 @@ public class LassoDetection : MonoBehaviour
 
         lassoController = FindObjectOfType<LassoController>();
         grappleScript = FindObjectOfType<LassoGrappleScript>();
+        player = FindObjectOfType<LassoController>();
+        pickupScript = FindObjectOfType<LassoPickupScript>();
 
         lassoAttachPoint = lassoController.lassoAttachPoint;
 
