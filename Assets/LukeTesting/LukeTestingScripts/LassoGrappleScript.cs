@@ -64,6 +64,7 @@ public class LassoGrappleScript : MonoBehaviour, IGrappleable
             }
         }
         if(grapple){
+            lineRend.enabled = true;
             lineRend.SetPosition(0, lassoOrigin);
             lineRend.SetPosition(1, grapplePoint.transform.position);
             internalCheckDelay -= Time.deltaTime;

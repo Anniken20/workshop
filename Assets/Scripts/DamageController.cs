@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 /* Script for handling damage from bullets
  * 
@@ -19,11 +20,16 @@ public class DamageController : MonoBehaviour
     public float knockbackFactor = 5f;
     public float startingDamage;
 
+    [Header("Debug")]
+    public TMP_Text debugText;
+
     private float currDmg;
 
     private void Start()
     {
         currDmg = startingDamage;
+
+        if (debugText != null) debugText.text = currDmg + " / " + dmgTilBreak + " DMG";
     }
 
     //apply damage, apply knockback, destroy if broken
@@ -38,6 +44,7 @@ public class DamageController : MonoBehaviour
             //return since no need to knockback
             return;
         }
+        if (debugText != null) debugText.text = currDmg + " / " + dmgTilBreak + " DMG";
         Knockback(dmg, direction);
     }
 
