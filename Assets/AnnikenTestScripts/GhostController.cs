@@ -2,9 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using UnityEngine.InputSystem;
 public class GhostController : MonoBehaviour
 {   
+    public CharacterMovement iaControls;
+    private InputAction phase;
     public Transform player; // Reference to the player's Transform
     public Transform box; // Reference to the box's Transform
     public float teleportDistance = 1f;
@@ -23,7 +25,7 @@ public class GhostController : MonoBehaviour
     //Once per frame
     void Update()
     {  
-        if (Input.GetKeyDown (KeyCode.T))
+        if (phase.triggered)
         {
             randomPosition = player.position;
             ToggleAbility();
@@ -133,5 +135,16 @@ public class GhostController : MonoBehaviour
         if(other.gameObject.CompareTag("Player")){
             playerInBox = false;
         }
+    }
+    private void Awake(){
+        iaControls = new CharacterMovement();
+    }
+    private void OnEnable(){
+        phase = iaControls.CharacterControls.Phase;
+
+        phase.Enable();
+    }
+    private void OnDisable(){
+        phase.Disable();
     }
 }
