@@ -37,7 +37,7 @@ public class DamageController : MonoBehaviour
     {
         currDmg += dmg;
         //Debug.Log("currDmg: " + currDmg);
-        if (currDmg > dmgTilBreak)
+        if (currDmg >= dmgTilBreak)
         {
             Break();
 
