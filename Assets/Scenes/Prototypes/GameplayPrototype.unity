@@ -320,7 +320,7 @@ GameObject:
   - component: {fileID: 87326495}
   - component: {fileID: 87326494}
   - component: {fileID: 87326493}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: MOVING TARGET (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1193,7 +1193,7 @@ PrefabInstance:
     - target: {fileID: 623435282318788139, guid: 61faa3a840259af43a47932a738499ba,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.77
+      value: -1.735
       objectReference: {fileID: 0}
     - target: {fileID: 623435282318788139, guid: 61faa3a840259af43a47932a738499ba,
         type: 3}
@@ -1235,15 +1235,30 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3575859615113073495, guid: 61faa3a840259af43a47932a738499ba,
+        type: 3}
+      propertyPath: knockbackFactor
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 7763358892132063768, guid: 61faa3a840259af43a47932a738499ba,
         type: 3}
       propertyPath: m_Constraints
-      value: 126
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7778445240297782522, guid: 61faa3a840259af43a47932a738499ba,
+        type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 8342269697379768942, guid: 61faa3a840259af43a47932a738499ba,
         type: 3}
       propertyPath: m_Name
       value: ShootableCube (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8342269697379768942, guid: 61faa3a840259af43a47932a738499ba,
+        type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1327,11 +1342,6 @@ PrefabInstance:
       propertyPath: m_Follow
       value: 
       objectReference: {fileID: 87595350}
-    - target: {fileID: 5761851085955312540, guid: f1c77a5c48e2c7742818125d9699b479,
-        type: 3}
-      propertyPath: m_Lens.NearClipPlane
-      value: 0.001
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1773,7 +1783,7 @@ GameObject:
   - component: {fileID: 374649666}
   - component: {fileID: 374649665}
   - component: {fileID: 374649664}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: TARGET (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2296,7 +2306,7 @@ GameObject:
   - component: {fileID: 511847406}
   - component: {fileID: 511847405}
   - component: {fileID: 511847404}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: TARGET (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4277,10 +4287,15 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3575859615113073495, guid: 61faa3a840259af43a47932a738499ba,
+        type: 3}
+      propertyPath: knockbackFactor
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7763358892132063768, guid: 61faa3a840259af43a47932a738499ba,
         type: 3}
       propertyPath: m_Constraints
-      value: 126
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8342269697379768942, guid: 61faa3a840259af43a47932a738499ba,
         type: 3}
@@ -5276,7 +5291,7 @@ PrefabInstance:
     - target: {fileID: 8944336655422409496, guid: f6d148d888ffbf54b9afe9936dfaec1f,
         type: 3}
       propertyPath: near clip plane
-      value: 0.001
+      value: -500
       objectReference: {fileID: 0}
     - target: {fileID: 8944336655422409496, guid: f6d148d888ffbf54b9afe9936dfaec1f,
         type: 3}
@@ -5689,7 +5704,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 151.719, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -4, y: 3.71}
+  m_AnchoredPosition: {x: -4, y: 4.74}
   m_SizeDelta: {x: 20, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1152995267
@@ -6808,7 +6823,7 @@ GameObject:
   - component: {fileID: 1307659546}
   - component: {fileID: 1307659545}
   - component: {fileID: 1307659544}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: MOVING TARGET (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7504,7 +7519,7 @@ GameObject:
   - component: {fileID: 1425710736}
   - component: {fileID: 1425710735}
   - component: {fileID: 1425710734}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: MOVING TARGET
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7763,7 +7778,7 @@ GameObject:
   - component: {fileID: 1447882612}
   - component: {fileID: 1447882611}
   - component: {fileID: 1447882610}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: MOVING TARGET (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7933,7 +7948,7 @@ GameObject:
   - component: {fileID: 1466333734}
   - component: {fileID: 1466333739}
   - component: {fileID: 1466333738}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: TARGET
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8468,7 +8483,7 @@ PrefabInstance:
     - target: {fileID: 623435282318788139, guid: 61faa3a840259af43a47932a738499ba,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.29
+      value: -1.24
       objectReference: {fileID: 0}
     - target: {fileID: 623435282318788139, guid: 61faa3a840259af43a47932a738499ba,
         type: 3}
@@ -8523,12 +8538,22 @@ PrefabInstance:
     - target: {fileID: 7763358892132063768, guid: 61faa3a840259af43a47932a738499ba,
         type: 3}
       propertyPath: m_Constraints
-      value: 126
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7778445240297782522, guid: 61faa3a840259af43a47932a738499ba,
+        type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 8342269697379768942, guid: 61faa3a840259af43a47932a738499ba,
         type: 3}
       propertyPath: m_Name
       value: ShootableCube (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8342269697379768942, guid: 61faa3a840259af43a47932a738499ba,
+        type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -10219,7 +10244,7 @@ GameObject:
   - component: {fileID: 2136853941}
   - component: {fileID: 2136853940}
   - component: {fileID: 2136853939}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: TARGET (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
