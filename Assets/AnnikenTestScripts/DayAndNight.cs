@@ -6,7 +6,7 @@ public class DayAndNight : MonoBehaviour
 {
     Vector3 rot=Vector3.zero;
 
-    float degpersec=6;
+    float degpersec=2;
 
     // Update is called once per frame
     void Update()
