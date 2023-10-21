@@ -50,10 +50,26 @@ MonoBehaviour:
   position: {x: 0, y: 0, z: 0}
   direction: {x: 0, y: 0, z: 0}
   distanceTraveled: 0
-  maxDistance: 500
   currBounces: 0
+  currDmg: 0
+  inLunaMode: 0
+  cinemachineBrain: {fileID: 0}
+  mainCamera: {fileID: 0}
+  playerCamRoot: {fileID: 0}
+  player: {fileID: 0}
+  maxDistance: 500
   maxBounces: 5
   speed: 25
+  baseDmg: 50
+  bounceDmgMultiplier: 1
+  maxDmg: Infinity
+  luna: {fileID: 0}
+  lunaCam: {fileID: 0}
+  camMovementDuration: 0
+  aimLineRenderer: {fileID: 0}
+  lunaPOVCam: 0
+  lunaCamOrthoSize: 0
+  camZoomTime: 0
 --- !u!96 &414907241059058888
 TrailRenderer:
   serializedVersion: 3

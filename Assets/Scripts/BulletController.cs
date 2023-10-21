@@ -107,7 +107,7 @@ public class BulletController : MonoBehaviour
             direction = Vector3.Reflect(direction, hitData.normal);
 
             //increment bounces
-            maxBounces++;
+            currBounces++;
 
             //multiply dmg
             currDmg *= bounceDmgMultiplier;
