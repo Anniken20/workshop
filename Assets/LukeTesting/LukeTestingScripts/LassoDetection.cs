@@ -24,8 +24,8 @@ public class LassoDetection : MonoBehaviour
     {
         lassoAttachPoint = lassoController.lassoAttachPoint;
         if(onObject){
-            var xScale = otherObject.transform.localScale.x + .1f;
-            var zScale = otherObject.transform.localScale.z + .1f;
+            var xScale = otherObject.transform.localScale.x + .15f;
+            var zScale = otherObject.transform.localScale.z + .15f;
             transform.localScale = new Vector3(xScale, transform.localScale.y, zScale);
             transform.position = otherObject.transform.position;
             Vector3 aDirection = transform.position - player.gameObject.transform.position;
