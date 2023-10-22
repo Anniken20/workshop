@@ -9,7 +9,7 @@ public class exit : MonoBehaviour
     {
         if (Input.GetKey("escape"))
         {
-            UnityEditor.EditorApplication.isPlaying = false;
+            //UnityEditor.EditorApplication.isPlaying = false;
             Application.Quit();
         }
     }
