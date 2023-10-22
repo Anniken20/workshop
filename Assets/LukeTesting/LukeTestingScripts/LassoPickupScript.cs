@@ -194,6 +194,7 @@ public class LassoPickupScript : MonoBehaviour, ILassoable
         }
 
         if(manipulateObject && lassoedObject != null){
+            player.GetComponent<AimController>().canAim = false;
             //This will need to be reworked for controller support
             var looking = look.ReadValue<Vector2>();
             float yRotation = looking.y;
@@ -265,6 +266,7 @@ public class LassoPickupScript : MonoBehaviour, ILassoable
     }
     private void OnManipulateEnd(InputAction.CallbackContext context){
             manipulateObject = false;
+            player.GetComponent<AimController>().canAim = true;
             //attachPoint.transform.position = attachOrigin.transform.position;
     }
 

@@ -1,73 +1,118 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.AI;
 public class Ai : MonoBehaviour
 {
-    public Transform player; // Reference to the player's transform
-    public float moveSpeed = 2.0f;
-    public float rotationSpeed = 5.0f;
-    public float shootingRange = 10.0f;
-    public float shootingCooldown = 2.0f;
-    public int maxHealth = 100;
-    
+    public NavMeshAgent agent;
 
-    private int currentHealth;
-    private float lastShootTime;
+    public Transform player;
 
-    private void Start()
+    public LayerMask whatIsGround, whatIsPlayer;
+
+    public float health;
+
+    //Patroling
+    public Vector3 walkPoint;
+    bool walkPointSet;
+    public float walkPointRange;
+
+    //Attacking
+    public float timeBetweenAttacks;
+    bool alreadyAttacked;
+    public GameObject projectile;
+
+    //States
+    public float sightRange, attackRange;
+    public bool playerInSightRange, playerInAttackRange;
+
+    private void Awake()
     {
-        currentHealth = maxHealth;
-        lastShootTime = Time.time;
+        player = GameObject.Find("PlayerObj").transform;
+        agent = GetComponent<NavMeshAgent>();
     }
 
     private void Update()
     {
-        // Check if in shooting range
-        float distanceToPlayer = Vector3.Distance(transform.position, player.position);
+        //Check for sight and attack range
+        playerInSightRange = Physics.CheckSphere(transform.position, sightRange, whatIsPlayer);
+        playerInAttackRange = Physics.CheckSphere(transform.position, attackRange, whatIsPlayer);
 
-        if (distanceToPlayer <= shootingRange)
-        {
-            // Rotate towards the player
-            Vector3 direction = player.position - transform.position;
-            Quaternion targetRotation = Quaternion.LookRotation(direction);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
-
-            // Check if  it can shoot
-            if (Time.time - lastShootTime >= shootingCooldown)
-            {
-                Shoot();
-                lastShootTime = Time.time;
-            }
-        }
-        else
-        {
-            // Move towards the player
-            Vector3 moveDirection = (player.position - transform.position).normalized;
-            transform.Translate(moveDirection * moveSpeed * Time.deltaTime, Space.World);
-        }
+        if (!playerInSightRange && !playerInAttackRange) Patroling();
+        if (playerInSightRange && !playerInAttackRange) ChasePlayer();
+        if (playerInAttackRange && playerInSightRange) AttackPlayer();
     }
 
-    private void Shoot()
+    private void Patroling()
     {
-        //Shoot thingy here we need the mechanic itself
-        Debug.Log("Shooting at the player!");
+        if (!walkPointSet) SearchWalkPoint();
+
+        if (walkPointSet)
+            agent.SetDestination(walkPoint);
+
+        Vector3 distanceToWalkPoint = transform.position - walkPoint;
+
+        //Walkpoint reached
+        if (distanceToWalkPoint.magnitude < 1f)
+            walkPointSet = false;
+    }
+    private void SearchWalkPoint()
+    {
+        //Calculate random point in range
+        float randomZ = Random.Range(-walkPointRange, walkPointRange);
+        float randomX = Random.Range(-walkPointRange, walkPointRange);
+
+        walkPoint = new Vector3(transform.position.x + randomX, transform.position.y, transform.position.z + randomZ);
+
+        if (Physics.Raycast(walkPoint, -transform.up, 2f, whatIsGround))
+            walkPointSet = true;
+    }
+
+    private void ChasePlayer()
+    {
+        agent.SetDestination(player.position);
+    }
+
+    private void AttackPlayer()
+    {
+        //Make sure enemy doesn't move
+        agent.SetDestination(transform.position);
+
+        transform.LookAt(player);
+
+        if (!alreadyAttacked)
+        {
+            ///Attack code here
+            Rigidbody rb = Instantiate(projectile, transform.position, Quaternion.identity).GetComponent<Rigidbody>();
+            rb.AddForce(transform.forward * 32f, ForceMode.Impulse);
+            rb.AddForce(transform.up * 8f, ForceMode.Impulse);
+            ///End of attack code
+
+            alreadyAttacked = true;
+            Invoke(nameof(ResetAttack), timeBetweenAttacks);
+        }
+    }
+    private void ResetAttack()
+    {
+        alreadyAttacked = false;
     }
 
     public void TakeDamage(int damage)
     {
-        currentHealth -= damage;
+        health -= damage;
 
-        if (currentHealth <= 0)
-        {
-            Die();
-        }
+        if (health <= 0) Invoke(nameof(DestroyEnemy), 0.5f);
+    }
+    private void DestroyEnemy()
+    {
+        Destroy(gameObject);
     }
 
-    private void Die()
+    private void OnDrawGizmosSelected()
     {
-        // Implement death anim/effect? 
-        Debug.Log("Boss died!");
-        Destroy(gameObject);
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, attackRange);
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, sightRange);
     }
 }
