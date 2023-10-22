@@ -281,7 +281,7 @@ public partial class @CharacterMovement: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""c366667c-e922-4d64-a9d0-d41c49a43d3b"",
-                    ""path"": ""<Mouse>/scroll/up"",
+                    ""path"": ""<Keyboard>/upArrow"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -292,7 +292,7 @@ public partial class @CharacterMovement: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""cc967044-630f-4ef5-a588-6b2084fdaea7"",
-                    ""path"": ""<Mouse>/scroll/down"",
+                    ""path"": ""<Keyboard>/downArrow"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
