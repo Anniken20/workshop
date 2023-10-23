@@ -25,6 +25,9 @@ public class DamageController : MonoBehaviour
 
     private float currDmg;
 
+    public BreakController breakObject;
+
+
     private void Start()
     {
         currDmg = startingDamage;
@@ -61,6 +64,10 @@ public class DamageController : MonoBehaviour
     //for now just destroy. could be something more complicated later
     private void Break()
     {
-        Destroy(gameObject);
+        if (breakObject != null)
+        {
+            breakObject.BreakIntoPieces();
+            //Destroy(gameObject);
+        }
     }
 }
