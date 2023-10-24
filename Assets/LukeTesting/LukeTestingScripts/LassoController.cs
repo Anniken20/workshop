@@ -34,6 +34,11 @@ public class LassoController : MonoBehaviour
     [HideInInspector] public bool drawToLasso;
     [SerializeField] public LineRenderer drawToLassoLine;
     [HideInInspector] public GameObject projectile;
+    [SerializeField] GameObject lassoSpinLocation;
+    [SerializeField] GameObject lassoHipLocation;
+    private Transform spinningConnectPoint;
+    private GameObject spinningLasso;
+    private bool spinning = false;
     private LayerMask lassoAimMask;
     public bool inCombat;
     private Transform connectPoint;
@@ -54,7 +59,10 @@ public class LassoController : MonoBehaviour
         iaControls = new CharacterMovement();
     }
     void Update(){
-
+        if(spinningLasso != null){
+            spinningLasso.transform.Rotate(Vector3.up, 1f);
+        }
+        
         looking = look.ReadValue<Vector2>();
 
         iaControls.CharacterControls.Lasso.started += OnLassoDown;
@@ -66,12 +74,12 @@ public class LassoController : MonoBehaviour
             if(projectile != null){
                 connectPoint = projectile.transform.Find("ConnectPoint");
                 
-                lineStart = new Vector3(gameObject.transform.position.x,
+                /*lineStart = new Vector3(gameObject.transform.position.x,
                 gameObject.transform.position.y + 1.5f,
                 gameObject.transform.position.z)
-                + (gameObject.transform.forward * 0.25f);
+                + (gameObject.transform.forward * 0.25f);*/
                 drawToLassoLine.enabled = true;
-                drawToLassoLine.SetPosition(0, lineStart);
+                drawToLassoLine.SetPosition(0, lassoHipLocation.transform.position);
                 drawToLassoLine.SetPosition(1, connectPoint.position);
             }
         }
@@ -117,6 +125,20 @@ public class LassoController : MonoBehaviour
 
 
     private void DrawLassoLine(){
+        if(spinning && lassoActive && holdingItem == false){
+            spinningLasso = Instantiate(lassoObject, lassoSpinLocation.transform);
+            spinning = false;
+        }
+        //spinningLasso = Instantiate(lassoObject, lassoSpinLocation.transform);
+        spinningConnectPoint = spinningLasso.transform.Find("ConnectPoint");
+        drawToLassoLine.enabled = true;
+        drawToLassoLine.SetPosition(0, lassoHipLocation.transform.position);
+        drawToLassoLine.SetPosition(1, spinningConnectPoint.position);
+        spinningLasso.GetComponent<Rigidbody>().isKinematic = true;
+
+
+
+
         lineRend.enabled = true;
         lineRend.positionCount = Mathf.CeilToInt(linePoints / tBetween) + 1;
 
@@ -124,11 +146,11 @@ public class LassoController : MonoBehaviour
 
         int i = 0;
 
-        lineRend.SetPosition(i, startPos);
+        lineRend.SetPosition(i, lassoSpinLocation.transform.position);
         for(float time = 0; time < linePoints; time += tBetween){
             i++;
-            Vector3 point  = startPos + time * lassoVelocity;
-            point.y = startPos.y + lassoVelocity.y * time + (Physics.gravity.y / 2f * time * time);
+            Vector3 point  = lassoSpinLocation.transform.position + time * lassoVelocity;
+            point.y = lassoSpinLocation.transform.position.y + lassoVelocity.y * time + (Physics.gravity.y / 2f * time * time);
 
             lineRend.SetPosition(i, point);
 
@@ -142,7 +164,9 @@ public class LassoController : MonoBehaviour
     }
 
     private void LaunchLasso(){
-        projectile = Instantiate(lassoObject, startPos, launchPoint.rotation);
+        spinning = false;
+        Destroy(spinningLasso);
+        projectile = Instantiate(lassoObject, lassoSpinLocation.transform.position, launchPoint.rotation);
         //aimAngle = aimController.GetAimAngle();
         projectile.GetComponent<Rigidbody>().AddForce(aimAngle * lassoLaunchStrength, ForceMode.Impulse);
         drawToLasso = true;
@@ -168,7 +192,7 @@ public class LassoController : MonoBehaviour
 
         yAdjusted.y = yClamp;
 
-        aimAngle = gameObject.transform.forward;
+        aimAngle = lassoSpinLocation.transform.forward;
         aimAngle += yAdjusted;
 
         
@@ -188,7 +212,8 @@ public class LassoController : MonoBehaviour
 
     private void OnLassoDown(InputAction.CallbackContext context){
         if(holdingItem == false){
-            lassoActive = true;                
+            lassoActive = true;  
+            spinning = true;
         }
     }
     private void OnLassoRelease(InputAction.CallbackContext context){
@@ -197,6 +222,7 @@ public class LassoController : MonoBehaviour
             LaunchLasso();
             internalCooldown = lassoCooldown;
             lineRend.enabled = false;
+            
         }
     }
 
