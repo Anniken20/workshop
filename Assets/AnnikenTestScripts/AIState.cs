@@ -14,7 +14,6 @@ public enum AIState
 {
     Idle,
     Walk,
-    Patrolling,
     Die,
     MeleeAttack,
     RangeAttack,
