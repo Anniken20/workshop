@@ -42,12 +42,12 @@ public class DialogueController : MonoBehaviour
     
 
     private bool spatialMixing;
-    private Color textColor;
+    private SubtitleDisplayController subtitleDisplayController;
 
     private void Start()
     {
         spatialMixing = audioSource.spatialBlend > 0;
-        textColor = subtitleText.color;
+        subtitleDisplayController = subtitleText.GetComponent<SubtitleDisplayController>();
 
         if (playUnprompted) 
             StartCoroutine(UnpromptedDialogueRoutine());
@@ -71,19 +71,9 @@ public class DialogueController : MonoBehaviour
 
     private IEnumerator WriteToScreen(DialogueClip clip)
     {
-        subtitleText.text = clip.speaker + ": " + clip.text;
-        //subtitleText.gameObject.SetActive(true);
-        DOTween.To(() => subtitleText.color, 
-            x => subtitleText.color = x, 
-            new Color(subtitleText.color.r, subtitleText.color.g, subtitleText.color.b, 1), 0.5f);
-
+        subtitleDisplayController.LoadMessage(clip.speaker + ": " + clip.text);
         yield return new WaitForSeconds(clip.duration);
-
-        subtitleText.text = "";
-        //subtitleText.gameObject.SetActive(false);
-        DOTween.To(() => subtitleText.color, 
-            x => subtitleText.color = x, 
-            new Color(subtitleText.color.r, subtitleText.color.g, subtitleText.color.b, 0), 0.5f);
+        subtitleDisplayController.UnloadMessage(clip.speaker + ": " + clip.text);
     }
 
     private IEnumerator UnpromptedDialogueRoutine()
