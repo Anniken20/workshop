@@ -42,10 +42,13 @@ public class DialogueController : MonoBehaviour
     
 
     private bool spatialMixing;
+    private Color textColor;
 
     private void Start()
     {
         spatialMixing = audioSource.spatialBlend > 0;
+        textColor = subtitleText.color;
+
         if (playUnprompted) 
             StartCoroutine(UnpromptedDialogueRoutine());
     }
@@ -69,16 +72,18 @@ public class DialogueController : MonoBehaviour
     private IEnumerator WriteToScreen(DialogueClip clip)
     {
         subtitleText.text = clip.speaker + ": " + clip.text;
-        subtitleText.gameObject.SetActive(true);
+        //subtitleText.gameObject.SetActive(true);
+        DOTween.To(() => subtitleText.color, 
+            x => subtitleText.color = x, 
+            new Color(subtitleText.color.r, subtitleText.color.g, subtitleText.color.b, 1), 0.5f);
 
         yield return new WaitForSeconds(clip.duration);
 
         subtitleText.text = "";
-        subtitleText.gameObject.SetActive(false);
-        //subtitleText.color.DOTween()
-
-        // Tween a float called myFloat to 52 in 1 second
-        //DOTween.To(() => myFloat, x => myFloat = x, 52, 1);
+        //subtitleText.gameObject.SetActive(false);
+        DOTween.To(() => subtitleText.color, 
+            x => subtitleText.color = x, 
+            new Color(subtitleText.color.r, subtitleText.color.g, subtitleText.color.b, 0), 0.5f);
     }
 
     private IEnumerator UnpromptedDialogueRoutine()
