@@ -25,12 +25,13 @@ public class DamageController : MonoBehaviour
 
     private float currDmg;
 
-    public BreakController breakObject;
+    public BreakController breakController;
 
 
     private void Start()
     {
         currDmg = startingDamage;
+        breakController = GetComponent<BreakController>();
 
         if (debugText != null) debugText.text = currDmg + " / " + dmgTilBreak + " DMG";
     }
@@ -64,10 +65,15 @@ public class DamageController : MonoBehaviour
     //for now just destroy. could be something more complicated later
     private void Break()
     {
-        if (breakObject != null)
+        if (breakController != null)
         {
-            breakObject.BreakIntoPieces();
-            //Destroy(gameObject);
+            breakController.BreakIntoPieces();
+        }
+        else
+        {
+            Debug.LogError("BreakController component not found.");
+            // If BreakController is not found, destroy the object
+            Destroy(gameObject);
         }
     }
 }
