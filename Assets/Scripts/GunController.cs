@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
 using DG.Tweening;
+using UnityEngine.InputSystem;
 
 /* Core Gun Mechanic for Ghost Moon High Noon
  * 
@@ -19,6 +20,10 @@ using DG.Tweening;
 
 public class GunController : MonoBehaviour
 {
+    public CharacterMovement iaControls;
+
+    private InputAction shoot;
+    private InputAction redirect;
     public GameObject bulletPrefab;
     public AimController aimController;
     [Tooltip("Attach the main camera here")]
@@ -49,7 +54,7 @@ public class GunController : MonoBehaviour
         aimAngle = aimController.GetAimAngle();
 
         //luna redirection / complete luna redirection
-        if (Input.GetKeyDown(KeyCode.R))
+        if (redirect.triggered)
         {
             //if in luna redirect mode, then complete redirect.
             //else enter luna mode
@@ -62,7 +67,7 @@ public class GunController : MonoBehaviour
             RedirectBullet();
         }
 
-        if (Input.GetMouseButtonDown(0))
+        if (shoot.triggered)
         {
             //dont allow more bullets fired if in luna redirection mode
             if (lunaMode)
@@ -155,5 +160,19 @@ public class GunController : MonoBehaviour
         }
 
         FinishRedirect();
+    }
+    private void Awake(){
+        iaControls = new CharacterMovement();
+    }
+    private void OnEnable(){
+        shoot = iaControls.CharacterControls.Shoot;
+        redirect = iaControls.CharacterControls.Redirect;
+
+        shoot.Enable();
+        redirect.Enable();
+    }
+    private void OnDisable(){
+        shoot.Disable();
+        redirect.Disable();
     }
 }

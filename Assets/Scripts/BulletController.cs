@@ -4,9 +4,12 @@ using UnityEngine;
 using Cinemachine;
 using DG.Tweening;
 using StarterAssets;
+using UnityEngine.InputSystem;
 
 public class BulletController : MonoBehaviour
 {
+    public CharacterMovement iaControls;
+    private InputAction look;
     [HideInInspector] public Vector3 position;
     [HideInInspector] public Vector3 direction;
     [HideInInspector] public float distanceTraveled;
@@ -25,6 +28,8 @@ public class BulletController : MonoBehaviour
     public float maxDistance;
     public int maxBounces;
     public float speed;
+    [Tooltip("Hitting objects in these layers will destroy the bullet on contact.")]
+    public LayerMask nonRicochetLayers;
 
     [Header("Damage")]
     public float baseDmg = 50f;
@@ -82,7 +87,7 @@ public class BulletController : MonoBehaviour
             //wait until end of frame to continue while loop
             yield return null;
         }
-        Destroy(gameObject);
+        DestroyBullet();
     }
 
     //check for upcoming bounce and apply
@@ -97,6 +102,16 @@ public class BulletController : MonoBehaviour
             //try to apply damage if it's a damage-able object
             TryToApplyDamage(hitData.collider.gameObject);
 
+            //destroy bullet if object is non-ricochetable
+            //if (nonRicochetLayers.Equals(hitData.collider.gameObject.layer))
+
+            //compare in a weird way because layer masks are bit-flags fields
+            if((nonRicochetLayers & 1 << hitData.collider.gameObject.layer)
+                != 0)
+            {
+                DestroyBullet();
+            }
+
             //teleport to point to prevent inconsistency from sometimes bouncing early
             position = hitData.point;
 
@@ -104,7 +119,7 @@ public class BulletController : MonoBehaviour
             direction = Vector3.Reflect(direction, hitData.normal);
 
             //increment bounces
-            maxBounces++;
+            currBounces++;
 
             //multiply dmg
             currDmg *= bounceDmgMultiplier;
@@ -247,8 +262,9 @@ public class BulletController : MonoBehaviour
     private void HandleRedirectMouseInput()
     {
         //capture input from mouse
-        float xDelta = Input.GetAxis("Mouse X");
-        float yDelta = Input.GetAxis("Mouse Y");
+        var looking = look.ReadValue<Vector2>();
+        float xDelta = looking.x;
+        float yDelta = looking.y;
 
         //apply sensitivity
         xDelta *=  3f;
@@ -262,5 +278,23 @@ public class BulletController : MonoBehaviour
 
         //failed
         //gameObject.transform.Rotate(new Vector3(yDelta, 0f, 0f));
+    }
+
+    private void DestroyBullet()
+    {
+        //can eventually do something cooler like make a dud noise
+        Destroy(gameObject);
+    }
+
+    private void Awake(){
+        iaControls = new CharacterMovement();
+    }
+    private void OnEnable(){
+        look = iaControls.CharacterControls.Look;
+
+        look.Enable();
+    }
+    private void OnDisable(){
+        look.Disable();
     }
 }  
