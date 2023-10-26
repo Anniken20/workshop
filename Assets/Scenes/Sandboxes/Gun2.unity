@@ -1736,9 +1736,9 @@ AudioSource:
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
-  MaxDistance: 500
+  MaxDistance: 10
   Pan2D: 0
-  rolloffMode: 0
+  rolloffMode: 1
   BypassEffects: 0
   BypassListenerEffects: 0
   BypassReverbZones: 0
@@ -1771,7 +1771,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -1846,6 +1846,9 @@ MonoBehaviour:
   audioSource: {fileID: 1932793331}
   subtitleText: {fileID: 71308812}
   playUnprompted: 1
+  rndLowBound: 3
+  rndHighBound: 5
+  sceneListener: {fileID: 4416926083347132227}
   unpromptedDialogues:
   - speechClip: {fileID: 8300000, guid: a1f632d44f11627479cfa9136870d6a7, type: 3}
     text: Howdy. How ya doin'?
@@ -1859,8 +1862,6 @@ MonoBehaviour:
     text: Blarg
     speaker: Invisible Guy
     duration: 1
-  rndLowBound: 6
-  rndHighBound: 10
 --- !u!1 &1944141315
 GameObject:
   m_ObjectHideFlags: 0

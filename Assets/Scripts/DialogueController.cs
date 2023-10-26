@@ -32,11 +32,14 @@ public class DialogueController : MonoBehaviour
     [Header("Unprompted Dialogue")]
     [Tooltip("Will randomly play a piece of dialogue from the list setup below")]
     public bool playUnprompted;
-    public DialogueClip[] unpromptedDialogues;
     [Tooltip("Minimum time between playing dialogue clips")]
     public float rndLowBound;
     [Tooltip("Maximum time between playing dialogue clips")]
     public float rndHighBound;
+    [Tooltip("Attach the player if using spatial mixing on the Audio Source")]
+    public GameObject sceneListener;
+    public DialogueClip[] unpromptedDialogues;
+    
 
     private bool spatialMixing;
 
@@ -59,7 +62,8 @@ public class DialogueController : MonoBehaviour
         audioSource.clip = clip.speechClip;
         audioSource.Play();
 
-        StartCoroutine(WriteToScreen(clip));
+        //if audio is audible, write to subtitles
+        if((!spatialMixing) || InSpatialRange()) StartCoroutine(WriteToScreen(clip));
     }
 
     private IEnumerator WriteToScreen(DialogueClip clip)
@@ -87,5 +91,13 @@ public class DialogueController : MonoBehaviour
             //play 1 of the random clips
             PlayDialogue(unpromptedDialogues[(int)Random.Range(0, unpromptedDialogues.Length)]);
         }
+    }
+
+    //returns true if the player can hear this audio
+    //requires reference to player
+    private bool InSpatialRange()
+    {
+        return Vector3.Distance(gameObject.transform.position,
+            sceneListener.transform.position) < audioSource.maxDistance;
     }
 }
