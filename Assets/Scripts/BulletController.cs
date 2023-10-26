@@ -102,6 +102,9 @@ public class BulletController : MonoBehaviour
             //try to apply damage if it's a damage-able object
             TryToApplyDamage(hitData.collider.gameObject);
 
+            //try to apply interaction if it's shootable
+            TryToApplyShootable(hitData.collider.gameObject);
+
             //destroy bullet if object is non-ricochetable
             //if (nonRicochetLayers.Equals(hitData.collider.gameObject.layer))
 
@@ -133,6 +136,15 @@ public class BulletController : MonoBehaviour
         if (obj.gameObject.TryGetComponent<DamageController>(out damageController))
         {
             damageController.ApplyDamage(currDmg, direction);
+        }
+    }
+
+    private void TryToApplyShootable(GameObject obj)
+    {
+        ShootableController shootableController;
+        if (obj.gameObject.TryGetComponent<ShootableController>(out shootableController))
+        {
+            shootableController.OnShot();
         }
     }
 
