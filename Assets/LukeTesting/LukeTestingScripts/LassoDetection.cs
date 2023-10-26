@@ -19,6 +19,9 @@ public class LassoDetection : MonoBehaviour
     private bool hitObject;
     private float xScale;
     private float yScale;
+    [HideInInspector] public bool recall;
+    [SerializeField] AudioClip missSound;
+    private bool playMissOnce;
     
     void Update()
     {
@@ -54,7 +57,7 @@ public class LassoDetection : MonoBehaviour
         }
     }
     void Start(){
-        
+
         //StartCoroutine(LassoLifespan());
 
         lassoController = FindObjectOfType<LassoController>();
@@ -98,13 +101,41 @@ public class LassoDetection : MonoBehaviour
         else if(other.gameObject.tag != "Player"){
             lassoController.drawToLasso = false;
             lassoController.drawToLassoLine.enabled = false;
-            Destroy(gameObject);
+            //Destroy(gameObject);
+            playMissOnce = true;
+            recall = true;
         }
     }
 
     private IEnumerator LassoLifespan(){
         yield return new WaitForSeconds(lassoLifetime);
         Destroy(gameObject);
+    }
+    private void FixedUpdate(){
+        if(recall){
+            onObject = false;
+            player.drawToLasso = true;
+            player.connectPoint = transform.Find("RecallPoint");
+            var lassoT = transform.Find("Lasso");
+            var lassoObj = lassoT.gameObject;
+            lassoObj.SetActive(false);
+            var recallT = transform.Find("RecallPoint");
+            var recallObj = recallT.gameObject;
+            recallObj.SetActive(true);
+            GetComponent<Rigidbody>().isKinematic = true;
+            var hipObj = player.transform.Find("LassoHipLocation");
+            transform.position = Vector3.Lerp(transform.position, hipObj.position, 5f * Time.deltaTime);
+            if(Vector3.Distance(transform.position, hipObj.position) <= 1.5f){
+                Destroy(gameObject);
+                player.drawToLassoLine.enabled = false;
+            }
+            if(playMissOnce){
+                //aSource.PlayOneShot(missSound);
+                //aSource.Play();
+                AudioSource.PlayClipAtPoint(missSound, this.gameObject.transform.position);
+                playMissOnce = false;
+            }
+        }
     }
     
 }

@@ -41,13 +41,17 @@ public class LassoController : MonoBehaviour
     private bool spinning = false;
     private LayerMask lassoAimMask;
     public bool inCombat;
-    private Transform connectPoint;
+    [HideInInspector] public Transform connectPoint;
     private float mouseY;
     private Vector3 yAdjusted;
     private float sens;
     private float yAngleFreedom = 1f;
     private string lassoState;
     private Vector2 looking;
+    [SerializeField] private AudioSource spinSource;
+    [SerializeField] private AudioClip thrownSound;
+
+
     private void Awake(){
         internalCooldown = lassoCooldown;
         int lassoLayer = lassoObject.gameObject.layer;
@@ -60,7 +64,7 @@ public class LassoController : MonoBehaviour
     }
     void Update(){
         if(spinningLasso != null){
-            spinningLasso.transform.Rotate(Vector3.up, 1f);
+            spinningLasso.transform.Rotate(Vector3.up, 4.5f);
         }
         
         looking = look.ReadValue<Vector2>();
@@ -127,6 +131,7 @@ public class LassoController : MonoBehaviour
     private void DrawLassoLine(){
         if(spinning && lassoActive && holdingItem == false){
             spinningLasso = Instantiate(lassoObject, lassoSpinLocation.transform);
+            spinSource.Play();
             spinning = false;
         }
         //spinningLasso = Instantiate(lassoObject, lassoSpinLocation.transform);
@@ -164,6 +169,8 @@ public class LassoController : MonoBehaviour
     }
 
     private void LaunchLasso(){
+        AudioSource.PlayClipAtPoint(thrownSound, transform.position);
+        spinSource.Stop();
         spinning = false;
         Destroy(spinningLasso);
         projectile = Instantiate(lassoObject, lassoSpinLocation.transform.position, launchPoint.rotation);

@@ -185,7 +185,7 @@ public class LassoPickupScript : MonoBehaviour, ILassoable
         lassoedObject = null;
         player.drawToLasso = false;
         player.drawToLassoLine.enabled = false;
-        lassoObject.GetComponent<LassoDetection>().destroy = true;
+        lassoObject.GetComponent<LassoDetection>().recall = true;
     }
 
     private void FixedUpdate(){
