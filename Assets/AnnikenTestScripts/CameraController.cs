@@ -1,31 +1,55 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
+using Cinemachine;
+
+/* Script for switching from isometric to other cameras
+ * 
+ * 
+ * 
+ * Anniken Bergo
+ * Caden Henderson
+ * 10/8/23
+ */
 
 public class CameraController : MonoBehaviour
 {
-    public Camera isometricCamera;
-    public Camera thirdPersonCamera;
+    public CinemachineBrain camBrain;
+    public CinemachineVirtualCamera mainCam;
+    public CinemachineVirtualCamera shoulderCam;
 
-    private bool isIsometricView = true;
+    public float switchViewDuration;
 
-    private void Start()
-    {
-        // Which camera
-        isometricCamera.enabled = isIsometricView;
-        thirdPersonCamera.enabled = !isIsometricView;
-    }
+    private bool isIsometricView = false;
 
     private void Update()
     {
         // Button = switch
         if (Input.GetKeyDown(KeyCode.C))
         {
+            //flip isometric bool
             isIsometricView = !isIsometricView;
 
-            // Toggle camera iso and over shoulder
-            isometricCamera.enabled = isIsometricView;
-            thirdPersonCamera.enabled = !isIsometricView;
+            //change cinemachine virtual cam priorities.
+            //cinemachine brain will automatically "blend" to the highest priority camera.
+            if (isIsometricView)
+            {
+                //set transition time of cinemachine camera blend
+                camBrain.m_DefaultBlend.m_Time = switchViewDuration;
+
+                //change priorities
+                mainCam.Priority = 0;
+                shoulderCam.Priority = 1;
+            } else
+            {
+                //set transition time of cinemachine camera blend
+                camBrain.m_DefaultBlend.m_Time = switchViewDuration;
+
+                //change priorities
+                mainCam.Priority = 1;
+                shoulderCam.Priority = 0;
+            }
         }
     }
 }
