@@ -18,7 +18,7 @@ using DG.Tweening;
 public class SubtitleDisplayController : MonoBehaviour
 {
     private TMP_Text subtitleText;
-    public float fadeTime = 0.5f;
+    public float fadeTime = 0.3f;
     private int msgCount;
     private Vector3 defaultPos;
 
@@ -43,17 +43,18 @@ public class SubtitleDisplayController : MonoBehaviour
 
     public void UnloadMessage(string msg)
     {
-        //subtitleText.text = subtitleText.text.Remove(subtitleText.text.IndexOf(msg), );
-        subtitleText.text = subtitleText.text.Replace(msg, "");
-        subtitleText.text = subtitleText.text.TrimEnd();
         msgCount--;
         if (msgCount == 0)
         {
-            StartCoroutine(FadeTextRoutine(true));
-        } 
+            StartCoroutine(FadeTextRoutine(false, msg));;
+        } else
+        {
+            subtitleText.text = subtitleText.text.Replace(msg, "");
+            subtitleText.text = subtitleText.text.TrimEnd();
+        }
     }
 
-    private IEnumerator FadeTextRoutine(bool turningOn)
+    private IEnumerator FadeTextRoutine(bool turningOn, string msg = "")
     {
         float targetAlpha = 0f;
         if (turningOn)
@@ -79,6 +80,8 @@ public class SubtitleDisplayController : MonoBehaviour
         //clear txt
         if (msgCount == 0 && !turningOn)
         {
+            subtitleText.text = subtitleText.text.Replace(msg, "");
+            subtitleText.text = subtitleText.text.TrimEnd();
             MoveDown();
         }
     }
