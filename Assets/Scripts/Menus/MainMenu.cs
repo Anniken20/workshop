@@ -5,6 +5,19 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
+    public GameObject pauseMenu;
+
+    public void PlayButton()
+    {
+        SceneManager.LoadScene("GameplayPrototype");
+    }
+
+    public void SettingsButton()
+    {
+        pauseMenu.SetActive(true);
+        gameObject.SetActive(false);
+    }
+
     public void StartGame()
     {
         SceneManager.LoadScene("Level 1");
@@ -32,7 +45,7 @@ public class MainMenu : MonoBehaviour
 
     public void QuitGame() 
     {
-        Debug.Log("Button pressed");
+        Debug.Log("Game Quit");
         Application.Quit();
     }
 

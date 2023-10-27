@@ -23,15 +23,8 @@ public class AudioManager : MonoBehaviour
     public AudioSource dialogueAudio;
     public AudioSource ambienceAudio;
 
-    //volumes --------------------------------------------------------------
-    //these are set on scene start
-    //and when changing values in settings
-    [HideInInspector] public float musicVolume;
-    [HideInInspector] public float sfxVolume;
-    [HideInInspector] public float dialogueVolume;
-    [HideInInspector] public float ambienceVolume;
-
     //keys for player prefs ------------------------------------------------
+    [HideInInspector] public const string MASTER_KEY = "masterVolume";
     [HideInInspector] public const string MUSIC_KEY = "musicVolume";
     [HideInInspector] public const string SFX_KEY = "sfxVolume";
     [HideInInspector] public const string DIALOGUE_KEY = "dialogueVolume";
@@ -55,19 +48,15 @@ public class AudioManager : MonoBehaviour
         {
             DontDestroyOnLoad(gameObject);
             main = this;
-        }
-        
-        LoadVolume();      
+        }   
     }
 
-    /*
-    void Update()
+    private void Start()
     {
-        musicVolume2 = musicSlider.value;
-        sfxVolume = sfxSlider.value;
-        dialogueVolume = dialogueSlider.value;
+        //this goes in Start because Unity warns of unexpected behavior
+        //when changing mixer values in Awake
+        LoadVolume();
     }
-    */
 
     public void Play(AudioSourceChannel channel, AudioClip clip)
     {
@@ -90,18 +79,53 @@ public class AudioManager : MonoBehaviour
                 break;
         }
     }
-
-    //Volume saved in VolumeSettings script
     public void LoadVolume() 
     {
-        musicVolume = PlayerPrefs.GetFloat(MUSIC_KEY,0.8f);
-        sfxVolume = PlayerPrefs.GetFloat(SFX_KEY,0.8f);
-        dialogueVolume = PlayerPrefs.GetFloat(DIALOGUE_KEY,0.8f);
-        ambienceVolume = PlayerPrefs.GetFloat(AMBIENCE_KEY, 0.8f);
+        LoadMasterVolume();
+        LoadMusicVolume();
+        LoadSFXVolume();
+        LoadDialogueVolume();
+        LoadAmbienceVolume();
+    }
 
-        //mixer.SetFloat(VolumeSettings.MIXER_MUSIC, Mathf.Log10(musicVolume) * 20);
-        //mixer.SetFloat(VolumeSettings.MIXER_SFX, Mathf.Log10(sfxVolume) * 20);
-        //mixer.SetFloat(VolumeSettings.MIXER_DIALOGUE, Mathf.Log10(dialogueVolume) * 20);
-        //mixer.SetFloat(VolumeSettings.MIXER_AMBIENCE, Mathf.Log10(dialogueVolume) * 20);
+    public void LoadMasterVolume()
+    {
+        mixer.SetFloat(MASTER_KEY,
+            Mathf.Log10(PlayerPrefs.GetFloat(MASTER_KEY, 0.8f)) * 20f);
+        if (Mathf.Approximately(PlayerPrefs.GetFloat(MASTER_KEY), 0))
+            mixer.SetFloat(MASTER_KEY, -80f);
+    }
+
+    public void LoadMusicVolume()
+    {
+        mixer.SetFloat(MUSIC_KEY,
+            Mathf.Log10(PlayerPrefs.GetFloat(MUSIC_KEY, 0.8f)) * 20f);
+        if (Mathf.Approximately(PlayerPrefs.GetFloat(MUSIC_KEY), 0))
+            mixer.SetFloat(MUSIC_KEY, -80f);
+            
+    }
+
+    public void LoadSFXVolume()
+    {
+        mixer.SetFloat(SFX_KEY,
+            Mathf.Log10(PlayerPrefs.GetFloat(SFX_KEY, 0.8f)) * 20f);
+        if (Mathf.Approximately(PlayerPrefs.GetFloat(SFX_KEY), 0))
+            mixer.SetFloat(SFX_KEY, -80f);
+    }
+
+    public void LoadDialogueVolume()
+    {
+        mixer.SetFloat(DIALOGUE_KEY,
+            Mathf.Log10(PlayerPrefs.GetFloat(DIALOGUE_KEY, 0.8f)) * 20f);
+        if (Mathf.Approximately(PlayerPrefs.GetFloat(DIALOGUE_KEY), 0))
+            mixer.SetFloat(DIALOGUE_KEY, -80f);
+    }
+
+    public void LoadAmbienceVolume()
+    {
+        mixer.SetFloat(AMBIENCE_KEY,
+            Mathf.Log10(PlayerPrefs.GetFloat(AMBIENCE_KEY, 0.8f)) * 20f);
+        if (Mathf.Approximately(PlayerPrefs.GetFloat(AMBIENCE_KEY), 0))
+            mixer.SetFloat(AMBIENCE_KEY, -80f);
     }
 }
