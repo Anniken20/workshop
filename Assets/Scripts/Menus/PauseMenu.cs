@@ -6,6 +6,8 @@ public class PauseMenu : MonoBehaviour
 {
     public static bool GameIsPaused = false;
     public GameObject PausePanel;
+    public GameObject mainMenu;
+
     void Update()
     {
         if(Input.GetKeyDown(KeyCode.Escape))
@@ -45,5 +47,12 @@ public class PauseMenu : MonoBehaviour
     {
         Debug.Log("Killed myself");
         Application.Quit();
+    }
+
+    //when not in-game but looking at settings
+    public void Back()
+    {
+        mainMenu.SetActive(true);
+        gameObject.SetActive(false);
     }
 }
