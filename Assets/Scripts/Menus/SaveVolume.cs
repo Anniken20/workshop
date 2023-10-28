@@ -9,6 +9,7 @@ public struct SliderAndLabel
 {
     public TMP_Text label;
     public Slider slider;
+    //public Toggle muteBox;
 }
 
 public class SaveVolume : MonoBehaviour
@@ -24,6 +25,7 @@ public class SaveVolume : MonoBehaviour
         float v1 = PlayerPrefs.GetFloat(AudioManager.MASTER_KEY, 0.8f);
         master.label.text = (v1 * 100).ToString();
         master.slider.value = v1;
+        //if (!master.muteBox.isOn) { AudioManager.main.}
 
         v1 = PlayerPrefs.GetFloat(AudioManager.MUSIC_KEY, 0.8f);
         music.label.text = (v1 * 100).ToString();
@@ -76,5 +78,8 @@ public class SaveVolume : MonoBehaviour
         PlayerPrefs.SetFloat(AudioManager.AMBIENCE_KEY, ambience.slider.value);
         AudioManager.main.LoadAmbienceVolume();
     }
+
+    /*public void ToggleMuteMaster() { master.muteBox.isOn = !master.muteBox.isOn; 
+        PlayerPrefs.SetInt("MasterMuted", 1); }*/
 
 }
