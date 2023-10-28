@@ -6,9 +6,12 @@ public class PauseMenu : MonoBehaviour
 {
     public static bool GameIsPaused = false;
     public GameObject PausePanel;
+    public GameObject settingsPanel;
     public GameObject mainMenu;
 
-    void Update()
+    private const string mainMenuScene = "MainMenu";
+
+    private void Update()
     {
         if(Input.GetKeyDown(KeyCode.Escape))
         {
@@ -24,11 +27,15 @@ public class PauseMenu : MonoBehaviour
     }
     public void Pause()
     {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
         PausePanel.SetActive(true);
         Time.timeScale = 0;
     }
     public void Continue()
     {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
         PausePanel.SetActive(false);
         Time.timeScale = 1;
     }
@@ -43,16 +50,28 @@ public class PauseMenu : MonoBehaviour
         SceneManager.LoadScene(scene, LoadSceneMode.Single);
         Time.timeScale = 1;
     }
+
+    public void Settings()
+    {
+        settingsPanel.SetActive(true);
+        PausePanel.SetActive(false);
+    }
+
     public void QuitGame()
     {
-        Debug.Log("Killed myself");
-        Application.Quit();
+        SceneManager.LoadScene(mainMenuScene);
     }
 
     //when not in-game but looking at settings
     public void Back()
     {
-        mainMenu.SetActive(true);
-        gameObject.SetActive(false);
+        if(mainMenu != null) mainMenu.SetActive(true);
+        PausePanel.SetActive(false);
+    }
+
+    public void LeaveSettings()
+    {
+        settingsPanel.SetActive(false);
+        PausePanel.SetActive(true);
     }
 }
