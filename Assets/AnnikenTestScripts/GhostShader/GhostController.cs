@@ -11,6 +11,7 @@ public class GhostController : MonoBehaviour
     public Transform box; // Reference to the box's Transform
     public float teleportDistance = 1f;
 
+    [HideInInspector] public bool inGhost = false;
     private bool abilityEnabled = false;
     private float abilityDuration = 5.0f;
     private float countdownTimer = 5.0f;
@@ -65,6 +66,7 @@ public class GhostController : MonoBehaviour
     {
        // smokeParticleSystem.Play();
         GetComponent<BoxCollider> ().isTrigger = true;
+        inGhost = true;
         Debug.Log("ACTIVE");
     }
 
@@ -72,6 +74,7 @@ public class GhostController : MonoBehaviour
     {
        // smokeParticleSystem.Stop();
         GetComponent<BoxCollider> ().isTrigger = false;
+        inGhost = false;
         Debug.Log("DISABLED");
         
         // Find a valid position on the ground outside the box

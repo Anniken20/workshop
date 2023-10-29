@@ -66,6 +66,7 @@ public class AimController : MonoBehaviour
 
     private void Update()
     {
+        if (PauseMenu.paused || !canAim || inLuna) return;
         UpdateAim();
         DrawAimReticle();
     }
@@ -78,7 +79,7 @@ public class AimController : MonoBehaviour
     {
         //in case locked during menus or game cutscenes etc.
         //currently referenced by BulletController when redirecting
-        if (!canAim || inLuna) return;
+        if (PauseMenu.paused || !canAim || inLuna) return;
 
         //get input from mouse
         var looking = look.ReadValue<Vector2>();
@@ -127,7 +128,7 @@ public class AimController : MonoBehaviour
             return;
         }
 
-        if (!canAim || inLuna) return;
+        if (PauseMenu.paused || !canAim || inLuna) return;
 
         //add 2 positions to line renderer so a line is drawn
         aimLine.positionCount = 2;
@@ -151,7 +152,6 @@ public class AimController : MonoBehaviour
     private void DrawAimReticle()
     {
         if (!useAimReticle) return;
-        if (!canAim || inLuna) return;
         bool hitSomething = Physics.Raycast(shootPoint.position, angle, out RaycastHit hitData);
         if (hitSomething)
         {
