@@ -35,8 +35,14 @@ public class InventoryManager : MonoBehaviour
     //All Available Inventory Items in game
     public enum AllItems
     {
-        KeyRed,
-        KeyBlue,
-        KeyGreen,
+        SugarCubes,
+        Whiskey,
+        Badge,
+        Reliquary,
+        GuestBook,
+        TrunkKeys,
+        Rosary,
+        Dynamite,
+        HourglassNecklace,
     }
 }
