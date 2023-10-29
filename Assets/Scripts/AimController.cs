@@ -13,10 +13,17 @@ public class AimController : MonoBehaviour
     [Tooltip("(Roughly) 2 => 90* of freedom. 0.5 => 30* of freedom.")]
     public float yAngleFreedom;
     public float sensitivity = 5f;
-    [Range(0f, 1f)]
-    public float horizontalFreedom;
+    public float horizontalFreedom = 0.5f;
     public bool horizontalRotate = true;
     public Transform shootPoint;
+    public GameObject aimReticle;
+    public bool useAimReticle = true;
+    [Tooltip("The distance the reticle will be drawn from collision.")]
+    public float reticleDistFromCollision;
+    public bool drawReticleWhenNoCollision = true;
+    [Tooltip("The reticle will draw this far from the player when no collision is detected." +
+        " (Only if drawReticleWhenNoCollision is enabled)")]
+    public float reticleDistFromPlayer = 5f;
 
     [Header("IK Setup")]
     public GameObject playerHead;
@@ -24,8 +31,6 @@ public class AimController : MonoBehaviour
     public bool activeIK;
     public Transform lookAtTarget;
     public Transform lookAtRotator;
-
-    public float myFloat;
 
     [HideInInspector] public bool canAim = true;
     [HideInInspector] public bool inLuna = false;
@@ -48,11 +53,21 @@ public class AimController : MonoBehaviour
     private void Start()
     {
         animator = GetComponent<Animator>();
+        if (!useAimReticle) aimReticle.SetActive(false);
+        else
+        {
+            if (reticleDistFromCollision < 0.05)
+            {
+                Debug.LogWarning("ReticleDistFromCollision corrected to 0.05. (Was below) Teehee!");
+                reticleDistFromCollision = 0.05f;
+            }
+        }
     }
 
     private void Update()
     {
         UpdateAim();
+        DrawAimReticle();
     }
 
     private void FixedUpdate()
@@ -71,7 +86,7 @@ public class AimController : MonoBehaviour
         yDelta = looking.y;
 
         //apply sensitivity
-        xDelta *= sensitivity / 1;
+        xDelta *= sensitivity / 2;
         yDelta *= sensitivity / 100;
 
         //rotate horizontal
@@ -89,9 +104,6 @@ public class AimController : MonoBehaviour
         //restore y angle
         modifiedAngle.y = ySave;
 
-        //apply modified angle
-        //angle = gameObject.transform.forward;
-        //angle += modifiedAngle;
         angle = lookAtTarget.position - shootPoint.position;
 
         //toggle aim draw
@@ -103,7 +115,7 @@ public class AimController : MonoBehaviour
         //recenter aim
         if (Input.GetKeyDown(KeyCode.Tab))
         {
-            StartCoroutine(RecenterAimRoutine());
+            //StartCoroutine(RecenterAimRoutine());
         }
     }
 
@@ -115,29 +127,48 @@ public class AimController : MonoBehaviour
             return;
         }
 
+        if (!canAim || inLuna) return;
+
         //add 2 positions to line renderer so a line is drawn
         aimLine.positionCount = 2;
 
-        //start line near chest level, a little bit in front of player
-        Vector3 startPos = new Vector3(
-            gameObject.transform.position.x,
-            gameObject.transform.position.y + 1.5f,
-            gameObject.transform.position.z)
-            + (gameObject.transform.forward.normalized * 0.125f);
-
         //set position 0 slightly in front of player
-        aimLine.SetPosition(0, startPos);
+        aimLine.SetPosition(0, shootPoint.position);
 
         //set position 1 at impact point if collision
         RaycastHit hitData;
-        if (Physics.Raycast(startPos, angle, out hitData, 200f))
+        if (Physics.Raycast(shootPoint.position, angle, out hitData, 200f))
         {
             aimLine.SetPosition(1, hitData.point);
         }
         //otherwise set position 1 far away in that direction
         else
         {
-            aimLine.SetPosition(1, angle * 200f);
+            aimLine.SetPosition(1, angle * 500f);
+        }
+    }
+
+    private void DrawAimReticle()
+    {
+        if (!useAimReticle) return;
+        if (!canAim || inLuna) return;
+        bool hitSomething = Physics.Raycast(shootPoint.position, angle, out RaycastHit hitData);
+        if (hitSomething)
+        {
+            aimReticle.transform.position = hitData.point - (angle.normalized * reticleDistFromCollision);
+            aimReticle.transform.rotation = Quaternion.LookRotation(hitData.normal);
+        } else
+        {
+            if (drawReticleWhenNoCollision)
+            {
+                aimReticle.transform.position = shootPoint.position + angle.normalized * 3f;
+                //aimReticle.transform.localRotation = Quaternion.identity;
+                aimReticle.transform.localRotation = Quaternion.identity;
+            } else
+            {
+                //put it really far away
+                aimReticle.transform.position = shootPoint.position + angle.normalized * 1000f;
+            }
         }
     }
 
@@ -161,14 +192,12 @@ public class AimController : MonoBehaviour
         float pivotRotY = lookAtRotator.transform.localRotation.y;
         if(pivotRotY < -horizontalFreedom || pivotRotY > horizontalFreedom)
         {
-            float clampedRotY = Mathf.Clamp(pivotRotY * 90f, -horizontalFreedom * 90f, horizontalFreedom * 90f);
-            //clampedRotY = myFloat;
-            Debug.Log("Limited y rot to: " + clampedRotY);
+            float clampedRotY = 
+                Mathf.Clamp(pivotRotY * 120f, -horizontalFreedom * 120f, horizontalFreedom * 120f);     
             lookAtRotator.transform.localRotation =
                 Quaternion.Euler(lookAtRotator.rotation.x,
                 clampedRotY,
                 0f);
-            xDelta = 0f;
         }
     }
 
@@ -189,6 +218,7 @@ public class AimController : MonoBehaviour
         aim.Disable();
     }
 
+    //control whether our head can turn or not
     private void OnAnimatorIK()
     {
         if (animator)

@@ -2405,6 +2405,91 @@ Transform:
   m_Father: {fileID: 3893294199639930361}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1455047862
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 3893294199639930361}
+    m_Modifications:
+    - target: {fileID: 7051960995500378181, guid: 8f8a08fa31eaa91408a73e3209e15c3d,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 24
+      objectReference: {fileID: 0}
+    - target: {fileID: 7051960995500378181, guid: 8f8a08fa31eaa91408a73e3209e15c3d,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7051960995500378181, guid: 8f8a08fa31eaa91408a73e3209e15c3d,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -9.84
+      objectReference: {fileID: 0}
+    - target: {fileID: 7051960995500378181, guid: 8f8a08fa31eaa91408a73e3209e15c3d,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7051960995500378181, guid: 8f8a08fa31eaa91408a73e3209e15c3d,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7051960995500378181, guid: 8f8a08fa31eaa91408a73e3209e15c3d,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7051960995500378181, guid: 8f8a08fa31eaa91408a73e3209e15c3d,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7051960995500378181, guid: 8f8a08fa31eaa91408a73e3209e15c3d,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7051960995500378181, guid: 8f8a08fa31eaa91408a73e3209e15c3d,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7051960995500378181, guid: 8f8a08fa31eaa91408a73e3209e15c3d,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7051960995500378181, guid: 8f8a08fa31eaa91408a73e3209e15c3d,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7065045599372211547, guid: 8f8a08fa31eaa91408a73e3209e15c3d,
+        type: 3}
+      propertyPath: m_Name
+      value: AimReticle
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 8f8a08fa31eaa91408a73e3209e15c3d, type: 3}
+--- !u!4 &1455047863 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7051960995500378181, guid: 8f8a08fa31eaa91408a73e3209e15c3d,
+    type: 3}
+  m_PrefabInstance: {fileID: 1455047862}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1455047864 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7065045599372211547, guid: 8f8a08fa31eaa91408a73e3209e15c3d,
+    type: 3}
+  m_PrefabInstance: {fileID: 1455047862}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1471203278
 GameObject:
   m_ObjectHideFlags: 0
@@ -3608,7 +3693,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2050689194}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -5068,6 +5153,7 @@ Transform:
   - {fileID: 32747874}
   - {fileID: 1429556046}
   - {fileID: 1778301397}
+  - {fileID: 1455047863}
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -6405,7 +6491,7 @@ LineRenderer:
   - {x: 0, y: 0, z: 0}
   m_Parameters:
     serializedVersion: 3
-    widthMultiplier: 0.1
+    widthMultiplier: 0.01
     widthCurve:
       serializedVersion: 2
       m_Curve:
@@ -6495,15 +6581,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   aimLine: {fileID: 6982812147933622148}
   yAngleFreedom: 2
-  sensitivity: 3
-  horizontalFreedom: 0.46
+  sensitivity: 5
+  horizontalFreedom: 0.5
   horizontalRotate: 1
   shootPoint: {fileID: 1778301397}
+  aimReticle: {fileID: 1455047864}
+  useAimReticle: 1
+  reticleDistFromCollision: 0.1
+  drawReticleWhenNoCollision: 1
+  reticleDistFromPlayer: 5
   playerHead: {fileID: 1399579106414337810}
   activeIK: 1
   lookAtTarget: {fileID: 2050689195}
   lookAtRotator: {fileID: 1429556046}
-  myFloat: 50
   canAim: 0
   inLuna: 0
 --- !u!54 &6982812147933622151
