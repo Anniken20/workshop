@@ -74,7 +74,6 @@ public class LassoPickupScript : MonoBehaviour, ILassoable
     }
 
     private void Update(){
-
             if(Input.GetAxis("Mouse ScrollWheel") != 0){
                 mWheelDistance = Input.GetAxis("Mouse ScrollWheel");
             }
@@ -150,14 +149,14 @@ public class LassoPickupScript : MonoBehaviour, ILassoable
         throwEnabled = true;
     }
     private void LaunchToCursor(){
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        /*Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
         if(Physics.Raycast(ray, out hit, Mathf.Infinity)){
             if(lassoedObject != null){
                 throwPoint = hit.point;
                 throwPoint.y += 2.5f;
             }
-        }
+        }*/
            // combatLaunchStrength = combatLaunchStrength * objectWeight;
            combatLaunchStrength = 1.5f;
            var yBoost = lassoedObject.transform.position;
@@ -173,7 +172,7 @@ public class LassoPickupScript : MonoBehaviour, ILassoable
             player.startLassoCooldown = true;
             throwing = true;
     }
-    private void DropObject(){
+    public void DropObject(){
         player.startLassoCooldown = true;
         rb.useGravity = true;
         objectCollider.isTrigger = false;
@@ -222,6 +221,12 @@ public class LassoPickupScript : MonoBehaviour, ILassoable
             }
             //newPos = Mathf.Clamp(newPos, attachPoint.position, maxDistance);
         
+            }
+            if(lassoedObject != null){
+                var playDist = Vector3.Distance(lassoedObject.transform.position, player.transform.position);
+                if(playDist >= 5 || playDist <= 2.1 && manipulateObject){
+                    DropObject();
+                }
             }
 
         }

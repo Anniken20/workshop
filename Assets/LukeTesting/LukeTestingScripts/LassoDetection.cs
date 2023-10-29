@@ -20,7 +20,7 @@ public class LassoDetection : MonoBehaviour
     private float xScale;
     private float yScale;
     [HideInInspector] public bool recall;
-    [SerializeField] AudioClip missSound;
+    public AudioClip missSound;
     private bool playMissOnce;
     
     void Update()
@@ -98,12 +98,15 @@ public class LassoDetection : MonoBehaviour
             lassoController.drawToLasso = false;
             lassoController.drawToLassoLine.enabled = false;
         }
-        else if(other.gameObject.tag != "Player"){
+        else if(other.gameObject.tag != "Player" && onObject == false || other.gameObject.tag != "Player" && onObject == true && otherObject.GetComponent<LassoPickupScript>().manipulateObject){
             lassoController.drawToLasso = false;
             lassoController.drawToLassoLine.enabled = false;
             //Destroy(gameObject);
             playMissOnce = true;
             recall = true;
+            if(otherObject != null){
+                otherObject.GetComponent<LassoPickupScript>().DropObject();
+            }
         }
     }
 
@@ -132,7 +135,7 @@ public class LassoDetection : MonoBehaviour
             if(playMissOnce){
                 //aSource.PlayOneShot(missSound);
                 //aSource.Play();
-                AudioSource.PlayClipAtPoint(missSound, this.gameObject.transform.position);
+                AudioManager.main.Play(AudioManager.AudioSourceChannel.SFX, missSound);
                 playMissOnce = false;
             }
         }

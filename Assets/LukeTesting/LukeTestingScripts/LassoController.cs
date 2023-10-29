@@ -48,8 +48,10 @@ public class LassoController : MonoBehaviour
     private float yAngleFreedom = 1f;
     private string lassoState;
     private Vector2 looking;
-    [SerializeField] private AudioSource spinSource;
-    [SerializeField] private AudioClip thrownSound;
+    
+    [SerializeField] private AudioClip spinSound;
+    public AudioClip thrownSound;
+    [SerializeField] private bool cancelAim;
 
 
     private void Awake(){
@@ -63,6 +65,9 @@ public class LassoController : MonoBehaviour
         iaControls = new CharacterMovement();
     }
     void Update(){
+        if(Input.GetKeyDown(KeyCode.G)){
+            CancelAiming();
+        }
         if(spinningLasso != null){
             spinningLasso.transform.Rotate(Vector3.up, 4.5f);
         }
@@ -74,14 +79,14 @@ public class LassoController : MonoBehaviour
 
 
 
-        if(drawToLasso){
+        /*if(drawToLasso){
             if(projectile != null){
                 connectPoint = projectile.transform.Find("ConnectPoint");
                 
                 /*lineStart = new Vector3(gameObject.transform.position.x,
                 gameObject.transform.position.y + 1.5f,
                 gameObject.transform.position.z)
-                + (gameObject.transform.forward * 0.25f);*/
+                + (gameObject.transform.forward * 0.25f);////
                 drawToLassoLine.enabled = true;
                 drawToLassoLine.SetPosition(0, lassoHipLocation.transform.position);
                 drawToLassoLine.SetPosition(1, connectPoint.position);
@@ -89,7 +94,7 @@ public class LassoController : MonoBehaviour
         }
         else if(drawToLasso == false){
             drawToLassoLine.enabled = false;
-        }
+        }*/
         if(startLassoCooldown){
             internalCooldown -= 1f * Time.deltaTime;
         }
@@ -115,7 +120,7 @@ public class LassoController : MonoBehaviour
 
 
 
-        if(lassoActive && holdingItem == false){
+        /*if(lassoActive && holdingItem == false){
             startPos = new Vector3(gameObject.transform.position.x,
             gameObject.transform.position.y + 1.5f,
             gameObject.transform.position.z)
@@ -124,21 +129,21 @@ public class LassoController : MonoBehaviour
                 DrawLassoLine();
             }
         }
-        LassoAiming();
+        LassoAiming();*/
     }
 
 
     private void DrawLassoLine(){
         if(spinning && lassoActive && holdingItem == false){
             spinningLasso = Instantiate(lassoObject, lassoSpinLocation.transform);
-            spinSource.Play();
+            //spinSource.Play();
             spinning = false;
         }
         //spinningLasso = Instantiate(lassoObject, lassoSpinLocation.transform);
         spinningConnectPoint = spinningLasso.transform.Find("ConnectPoint");
         drawToLassoLine.enabled = true;
-        drawToLassoLine.SetPosition(0, lassoHipLocation.transform.position);
-        drawToLassoLine.SetPosition(1, spinningConnectPoint.position);
+        //drawToLassoLine.SetPosition(0, lassoHipLocation.transform.position);
+        //drawToLassoLine.SetPosition(1, spinningConnectPoint.position);
         spinningLasso.GetComponent<Rigidbody>().isKinematic = true;
 
 
@@ -169,19 +174,22 @@ public class LassoController : MonoBehaviour
     }
 
     private void LaunchLasso(){
-        AudioSource.PlayClipAtPoint(thrownSound, transform.position);
-        spinSource.Stop();
+        AudioManager.main.Play(AudioManager.AudioSourceChannel.SFX, thrownSound);
         spinning = false;
         Destroy(spinningLasso);
         projectile = Instantiate(lassoObject, lassoSpinLocation.transform.position, launchPoint.rotation);
         //aimAngle = aimController.GetAimAngle();
         projectile.GetComponent<Rigidbody>().AddForce(aimAngle * lassoLaunchStrength, ForceMode.Impulse);
         drawToLasso = true;
+
     }
 
     private void Start(){
         sens = aimController.sensitivity;
-        lineRend.enabled = false;
+        drawToLasso = true;
+        lineRend.enabled = true;
+        drawToLassoLine.enabled = true;
+
         yAdjusted = new Vector3();
         aimAngle = new Vector3();
         //iActions = new CharacterControls();
@@ -221,16 +229,62 @@ public class LassoController : MonoBehaviour
         if(holdingItem == false){
             lassoActive = true;  
             spinning = true;
+            cancelAim = false;
         }
     }
     private void OnLassoRelease(InputAction.CallbackContext context){
         lassoActive = false;
-        if(holdingItem == false && internalCooldown <= 0){
+        if(holdingItem == false && internalCooldown <= 0 && cancelAim == false){
             LaunchLasso();
             internalCooldown = lassoCooldown;
             lineRend.enabled = false;
+            cancelAim = false;
             
         }
+    }
+    private void FixedUpdate(){
+        if(lassoActive && holdingItem == false){
+            startPos = new Vector3(gameObject.transform.position.x,
+            gameObject.transform.position.y + 1.5f,
+            gameObject.transform.position.z)
+            + (gameObject.transform.forward * 0.25f);
+            if(internalCooldown <= 0){
+                DrawLassoLine();
+            }
+        }
+        LassoAiming();
+
+
+        if(drawToLasso){
+            if(projectile != null){
+                connectPoint = projectile.transform.Find("ConnectPoint");
+                
+                /*lineStart = new Vector3(gameObject.transform.position.x,
+                gameObject.transform.position.y + 1.5f,
+                gameObject.transform.position.z)
+                + (gameObject.transform.forward * 0.25f);*/
+                drawToLassoLine.enabled = true;
+                drawToLassoLine.SetPosition(0, lassoHipLocation.transform.position);
+                drawToLassoLine.SetPosition(1, connectPoint.position);
+            }
+        }
+        else if(drawToLasso == false){
+            drawToLassoLine.enabled = false;
+        }
+
+        if(spinning != null && spinningConnectPoint != null){
+            drawToLassoLine.SetPosition(0, lassoHipLocation.transform.position);
+            drawToLassoLine.SetPosition(1, spinningConnectPoint.position);
+            spinningLasso.GetComponent<Collider>().enabled = false;
+        }
+    }
+
+    private void CancelAiming(){
+        drawToLasso = false;
+        lineRend.enabled = false;
+        drawToLassoLine.enabled = false;
+        cancelAim = true;
+        Destroy(spinningLasso);
     }
 
 }
