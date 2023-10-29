@@ -36,6 +36,21 @@ public class LassoGrappleScript : MonoBehaviour, IGrappleable
             lineRend.enabled = true;
             StartCoroutine(HookLifetime());
         }
+
+
+            ///Added///
+
+        lassoOrigin = new Vector3(gameObject.transform.position.x,
+            gameObject.transform.position.y + 1.5f,
+            gameObject.transform.position.z)
+            + (gameObject.transform.forward * 0.25f);
+
+
+        if(grapple){
+            lineRend.enabled = true;
+            lineRend.SetPosition(0, lassoOrigin);
+            lineRend.SetPosition(1, grapplePoint.transform.position);
+        }
     }
 
     private IEnumerator HookLifetime(){
@@ -48,10 +63,10 @@ public class LassoGrappleScript : MonoBehaviour, IGrappleable
     }
 
     private void Update(){
-        lassoOrigin = new Vector3(gameObject.transform.position.x,
+        /*lassoOrigin = new Vector3(gameObject.transform.position.x,
             gameObject.transform.position.y + 1.5f,
             gameObject.transform.position.z)
-            + (gameObject.transform.forward * 0.25f);
+            + (gameObject.transform.forward * 0.25f);*/
         if(grapplePoint != null){
             float distance = Vector3.Distance(transform.position, grapplePoint.transform.position);
             //Debug.Log(distance);
@@ -64,9 +79,9 @@ public class LassoGrappleScript : MonoBehaviour, IGrappleable
             }
         }
         if(grapple){
-            lineRend.enabled = true;
-            lineRend.SetPosition(0, lassoOrigin);
-            lineRend.SetPosition(1, grapplePoint.transform.position);
+            //lineRend.enabled = true;
+            //lineRend.SetPosition(0, lassoOrigin);
+            //lineRend.SetPosition(1, grapplePoint.transform.position);
             internalCheckDelay -= Time.deltaTime;
         }
         else{
@@ -89,3 +104,4 @@ public class LassoGrappleScript : MonoBehaviour, IGrappleable
         }
     }
 }
+
