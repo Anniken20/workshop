@@ -12,9 +12,20 @@ public class AimController : MonoBehaviour
 
     [Tooltip("(Roughly) 2 => 90* of freedom. 0.5 => 30* of freedom.")]
     public float yAngleFreedom;
-
     public float sensitivity = 5f;
+    [Range(0f, 1f)]
+    public float horizontalFreedom;
     public bool horizontalRotate = true;
+    public Transform shootPoint;
+
+    [Header("IK Setup")]
+    public GameObject playerHead;
+    private Animator animator;
+    public bool activeIK;
+    public Transform lookAtTarget;
+    public Transform lookAtRotator;
+
+    public float myFloat;
 
     [HideInInspector] public bool canAim = true;
     [HideInInspector] public bool inLuna = false;
@@ -33,9 +44,19 @@ public class AimController : MonoBehaviour
         inLuna = false;
         iaControls = new CharacterMovement();
     }
+
+    private void Start()
+    {
+        animator = GetComponent<Animator>();
+    }
+
     private void Update()
     {
         UpdateAim();
+    }
+
+    private void FixedUpdate()
+    {
         DrawLine();
     }
     private void UpdateAim()
@@ -55,8 +76,11 @@ public class AimController : MonoBehaviour
 
         //rotate horizontal
         if(horizontalRotate)
-            gameObject.transform.Rotate(new Vector3(0f, xDelta, 0f));
-
+        {
+            LimitHorizontalRotation();
+            lookAtRotator.Rotate(new Vector3(0f, xDelta, 0f));
+        }
+            
         modifiedAngle.y += yDelta;
 
         //clamp and save y-value 
@@ -66,8 +90,9 @@ public class AimController : MonoBehaviour
         modifiedAngle.y = ySave;
 
         //apply modified angle
-        angle = gameObject.transform.forward;
-        angle += modifiedAngle;
+        //angle = gameObject.transform.forward;
+        //angle += modifiedAngle;
+        angle = lookAtTarget.position - shootPoint.position;
 
         //toggle aim draw
         if (aim.triggered)
@@ -94,10 +119,11 @@ public class AimController : MonoBehaviour
         aimLine.positionCount = 2;
 
         //start line near chest level, a little bit in front of player
-        Vector3 startPos = new Vector3(gameObject.transform.position.x,
+        Vector3 startPos = new Vector3(
+            gameObject.transform.position.x,
             gameObject.transform.position.y + 1.5f,
             gameObject.transform.position.z)
-            + (gameObject.transform.forward * 0.25f);
+            + (gameObject.transform.forward.normalized * 0.125f);
 
         //set position 0 slightly in front of player
         aimLine.SetPosition(0, startPos);
@@ -130,6 +156,22 @@ public class AimController : MonoBehaviour
         canAim = true;
     }
 
+    private void LimitHorizontalRotation()
+    {
+        float pivotRotY = lookAtRotator.transform.localRotation.y;
+        if(pivotRotY < -horizontalFreedom || pivotRotY > horizontalFreedom)
+        {
+            float clampedRotY = Mathf.Clamp(pivotRotY * 90f, -horizontalFreedom * 90f, horizontalFreedom * 90f);
+            //clampedRotY = myFloat;
+            Debug.Log("Limited y rot to: " + clampedRotY);
+            lookAtRotator.transform.localRotation =
+                Quaternion.Euler(lookAtRotator.rotation.x,
+                clampedRotY,
+                0f);
+            xDelta = 0f;
+        }
+    }
+
     public Vector3 GetAimAngle()
     {
         return angle;
@@ -145,5 +187,23 @@ public class AimController : MonoBehaviour
     private void OnDisable(){
         look.Disable();
         aim.Disable();
+    }
+
+    private void OnAnimatorIK()
+    {
+        if (animator)
+        {
+            if (activeIK)
+            {
+                if(lookAtTarget != null)
+                {
+                    animator.SetLookAtWeight(1);
+                    animator.SetLookAtPosition(lookAtTarget.position);
+                }
+            } else
+            {
+                animator.SetLookAtWeight(0);
+            }
+        }
     }
 }
