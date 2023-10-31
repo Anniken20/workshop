@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using DG.Tweening;
 
 public class AimController : MonoBehaviour
 {
@@ -66,9 +67,9 @@ public class AimController : MonoBehaviour
 
     private void Update()
     {
-        if (PauseMenu.paused || !canAim || inLuna) return;
         UpdateAim();
         DrawAimReticle();
+        Debug.Log("Look at rot rotation: " + lookAtRotator.transform.rotation);
     }
 
     private void FixedUpdate()
@@ -79,7 +80,11 @@ public class AimController : MonoBehaviour
     {
         //in case locked during menus or game cutscenes etc.
         //currently referenced by BulletController when redirecting
-        if (PauseMenu.paused || !canAim || inLuna) return;
+        if (PauseMenu.paused || !canAim || inLuna)
+        {
+            angle = lookAtTarget.position - shootPoint.position;
+            return;
+        }
 
         //get input from mouse
         var looking = look.ReadValue<Vector2>();
@@ -116,7 +121,7 @@ public class AimController : MonoBehaviour
         //recenter aim
         if (Input.GetKeyDown(KeyCode.Tab))
         {
-            //StartCoroutine(RecenterAimRoutine());
+            StartCoroutine(RecenterAimRoutine());
         }
     }
 
@@ -128,7 +133,7 @@ public class AimController : MonoBehaviour
             return;
         }
 
-        if (PauseMenu.paused || !canAim || inLuna) return;
+        if (PauseMenu.paused) return;
 
         //add 2 positions to line renderer so a line is drawn
         aimLine.positionCount = 2;
@@ -152,6 +157,7 @@ public class AimController : MonoBehaviour
     private void DrawAimReticle()
     {
         if (!useAimReticle) return;
+        if (PauseMenu.paused) return;
         bool hitSomething = Physics.Raycast(shootPoint.position, angle, out RaycastHit hitData);
         if (hitSomething)
         {
@@ -162,7 +168,6 @@ public class AimController : MonoBehaviour
             if (drawReticleWhenNoCollision)
             {
                 aimReticle.transform.position = shootPoint.position + angle.normalized * 3f;
-                //aimReticle.transform.localRotation = Quaternion.identity;
                 aimReticle.transform.localRotation = Quaternion.identity;
             } else
             {
@@ -175,15 +180,8 @@ public class AimController : MonoBehaviour
     private IEnumerator RecenterAimRoutine()
     {
         canAim = false;
-        while (Mathf.Abs(Vector3.Magnitude(angle - gameObject.transform.forward)) > 0.0001f)
-        {
-            //lerp towards forward direction
-            angle = Vector3.Lerp(angle, gameObject.transform.forward, 0.2f);
-                
-            //wait a frame until next loop iteration
-            yield return null;
-        }
-        modifiedAngle = new Vector3(0f, 0f, 0f);
+        Tween tween = lookAtRotator.DOLocalRotate(new Vector3(0, 0, 0), 0.1f);
+        yield return tween.WaitForCompletion();
         canAim = true;
     }
 
@@ -195,9 +193,9 @@ public class AimController : MonoBehaviour
             float clampedRotY = 
                 Mathf.Clamp(pivotRotY * 120f, -horizontalFreedom * 120f, horizontalFreedom * 120f);     
             lookAtRotator.transform.localRotation =
-                Quaternion.Euler(lookAtRotator.rotation.x,
+                /*Quaternion.Euler(lookAtRotator.rotation.x,
                 clampedRotY,
-                0f);
+                0f);*/
         }
     }
 

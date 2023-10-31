@@ -120,7 +120,7 @@ public class GunController : MonoBehaviour
 
     private void RedirectBullet()
     {
-        if (mostRecentBullet != null)
+        if (mostRecentBullet != null  && mostRecentBullet.GetComponent<BulletController>().canBeRedirected)
         {
             lunaMode = true;
             //Debug.Log("Entered bullet redirect");
