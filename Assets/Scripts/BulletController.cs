@@ -102,14 +102,24 @@ public class BulletController : MonoBehaviour
             //try to apply damage if it's a damage-able object
             TryToApplyDamage(hitData.collider.gameObject);
 
-            //destroy bullet if object is non-ricochetable
-            //if (nonRicochetLayers.Equals(hitData.collider.gameObject.layer))
+            //try to apply interaction if it's shootable
+            TryToApplyShootable(hitData.collider.gameObject);
 
+            //destroy bullet if object is non-ricochetable
             //compare in a weird way because layer masks are bit-flags fields
             if((nonRicochetLayers & 1 << hitData.collider.gameObject.layer)
                 != 0)
             {
                 DestroyBullet();
+            }
+
+            //phase through it if it's a ghost object
+            if(TryGetComponent<GhostController>(out GhostController ghostCon))
+            {
+                if (ghostCon.inGhost)
+                {
+                    return;
+                }
             }
 
             //teleport to point to prevent inconsistency from sometimes bouncing early
@@ -130,9 +140,18 @@ public class BulletController : MonoBehaviour
     private void TryToApplyDamage(GameObject obj)
     {
         DamageController damageController;
-        if (obj.gameObject.TryGetComponent<DamageController>(out damageController))
+        if (obj.TryGetComponent<DamageController>(out damageController))
         {
             damageController.ApplyDamage(currDmg, direction);
+        }
+    }
+
+    private void TryToApplyShootable(GameObject obj)
+    {
+        ShootableController shootableController;
+        if (obj.TryGetComponent<ShootableController>(out shootableController))
+        {
+            shootableController.OnShot();
         }
     }
 
