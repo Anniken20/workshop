@@ -69,7 +69,6 @@ public class AimController : MonoBehaviour
     {
         UpdateAim();
         DrawAimReticle();
-        Debug.Log("Look at rot rotation: " + lookAtRotator.transform.rotation);
     }
 
     private void FixedUpdate()
@@ -98,8 +97,8 @@ public class AimController : MonoBehaviour
         //rotate horizontal
         if(horizontalRotate)
         {
-            LimitHorizontalRotation();
             lookAtRotator.Rotate(new Vector3(0f, xDelta, 0f));
+            LimitHorizontalRotation();
         }
             
         modifiedAngle.y += yDelta;
@@ -187,15 +186,22 @@ public class AimController : MonoBehaviour
 
     private void LimitHorizontalRotation()
     {
-        float pivotRotY = lookAtRotator.transform.localRotation.y;
-        if(pivotRotY < -horizontalFreedom || pivotRotY > horizontalFreedom)
+        float pivotRotY = lookAtRotator.transform.localRotation.eulerAngles.y;
+        if(pivotRotY > 180f && pivotRotY < 360f &&  pivotRotY < 360f-(horizontalFreedom * 90f))
         {
-            float clampedRotY = 
-                Mathf.Clamp(pivotRotY * 120f, -horizontalFreedom * 120f, horizontalFreedom * 120f);     
+            float clampedRotY = 360 - (horizontalFreedom * 90f);
             lookAtRotator.transform.localRotation =
-                /*Quaternion.Euler(lookAtRotator.rotation.x,
+            Quaternion.Euler(lookAtRotator.rotation.x,
                 clampedRotY,
-                0f);*/
+                0f);
+        }
+        else if(pivotRotY <= 180f && pivotRotY > 0 && pivotRotY > horizontalFreedom * 90f)
+        {
+            float clampedRotY = horizontalFreedom * 90f;
+            lookAtRotator.transform.localRotation =
+            Quaternion.Euler(lookAtRotator.rotation.x,
+                clampedRotY,
+                0f);
         }
     }
 
