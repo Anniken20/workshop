@@ -264,7 +264,7 @@ PrefabInstance:
     - target: {fileID: 1991870300955139427, guid: 81c96b43c51986f4792c0fe00e8022ca,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.4263124
+      value: 0.42622447
       objectReference: {fileID: 0}
     - target: {fileID: 1991870300955139427, guid: 81c96b43c51986f4792c0fe00e8022ca,
         type: 3}
@@ -274,7 +274,7 @@ PrefabInstance:
     - target: {fileID: 1991870300955139427, guid: 81c96b43c51986f4792c0fe00e8022ca,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.98674333
+      value: -0.986739
       objectReference: {fileID: 0}
     - target: {fileID: 1991870300955139427, guid: 81c96b43c51986f4792c0fe00e8022ca,
         type: 3}
@@ -1109,6 +1109,12 @@ MonoBehaviour:
   material2: {fileID: 2100000, guid: a86abe31c16d9dd489e3680a9c04bd15, type: 2}
   switchInterval: 5
   switchDelay: 5
+--- !u!1 &512336522 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1399579107103275648, guid: 64dce48905ffd9b4293e595fa6941544,
+    type: 3}
+  m_PrefabInstance: {fileID: 1031476229}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &633347338
 GameObject:
   m_ObjectHideFlags: 0
@@ -1445,7 +1451,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &864898906
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2568,6 +2574,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1615494189}
+    - targetCorrespondingSourceObject: {fileID: 4416926081852918481, guid: 64dce48905ffd9b4293e595fa6941544,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1615494196}
     - targetCorrespondingSourceObject: {fileID: 8187455079231382173, guid: 64dce48905ffd9b4293e595fa6941544,
         type: 3}
       insertIndex: -1
@@ -3674,7 +3684,18 @@ MonoBehaviour:
   aimLine: {fileID: 1615494136}
   yAngleFreedom: 0
   sensitivity: 5
+  horizontalFreedom: 0.5
   horizontalRotate: 1
+  shootPoint: {fileID: 0}
+  aimReticle: {fileID: 0}
+  useAimReticle: 1
+  reticleDistFromCollision: 0
+  drawReticleWhenNoCollision: 1
+  reticleDistFromPlayer: 5
+  playerHead: {fileID: 512336522}
+  activeIK: 0
+  lookAtTarget: {fileID: 0}
+  lookAtRotator: {fileID: 0}
   canAim: 1
   inLuna: 0
 --- !u!114 &1615494138
@@ -3756,7 +3777,13 @@ MonoBehaviour:
   drawToLasso: 0
   drawToLassoLine: {fileID: 1217809709}
   projectile: {fileID: 0}
+  lassoSpinLocation: {fileID: 0}
+  lassoHipLocation: {fileID: 0}
   inCombat: 0
+  connectPoint: {fileID: 0}
+  spinSound: {fileID: 0}
+  thrownSound: {fileID: 0}
+  cancelAim: 0
 --- !u!114 &1615494161
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3833,6 +3860,35 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
+--- !u!114 &1615494196
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1615494128}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93049e3cd35c90a4fafcdaa83daac21b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  aimLine: {fileID: 0}
+  yAngleFreedom: 0
+  sensitivity: 5
+  horizontalFreedom: 0.5
+  horizontalRotate: 1
+  shootPoint: {fileID: 0}
+  aimReticle: {fileID: 0}
+  useAimReticle: 1
+  reticleDistFromCollision: 0
+  drawReticleWhenNoCollision: 1
+  reticleDistFromPlayer: 5
+  playerHead: {fileID: 0}
+  activeIK: 0
+  lookAtTarget: {fileID: 0}
+  lookAtRotator: {fileID: 0}
+  canAim: 1
+  inLuna: 0
 --- !u!1001 &1616523544
 PrefabInstance:
   m_ObjectHideFlags: 0
