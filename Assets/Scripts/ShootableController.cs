@@ -14,5 +14,7 @@ public class ShootableController : MonoBehaviour
         {
             onShot.Invoke();
         }
+
+        Destroy(gameObject);
     }
 }
