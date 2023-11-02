@@ -5,6 +5,7 @@ using Cinemachine;
 using DG.Tweening;
 using StarterAssets;
 using UnityEngine.InputSystem;
+using System.Threading;
 
 public class BulletController : MonoBehaviour
 {
@@ -20,6 +21,7 @@ public class BulletController : MonoBehaviour
     [HideInInspector] public CinemachineVirtualCamera mainCamera;
     [HideInInspector] public GameObject playerCamRoot;
     [HideInInspector] public GameObject player;
+    [HideInInspector] public bool canBeRedirected;
     private float trailRendererTime;
     private float formerCamOrthoSize;
 
@@ -30,6 +32,9 @@ public class BulletController : MonoBehaviour
     public float speed;
     [Tooltip("Hitting objects in these layers will destroy the bullet on contact.")]
     public LayerMask nonRicochetLayers;
+    public GameObject bullethole;
+    [Tooltip("After this many seconds, the bullethole will disappear. If negative, then never disappear.")]
+    public float bulletholeLifetime;
 
     [Header("Damage")]
     public float baseDmg = 50f;
@@ -48,12 +53,18 @@ public class BulletController : MonoBehaviour
     public float lunaCamOrthoSize;
     [Tooltip("When NOT in lunaPOVCam, the time it takes to zoom in and out.")]
     public float camZoomTime;
+    [Tooltip("After this duration, the bullet can no longer be redirect.")]
+    public float redirectWindowTime;
+    [Tooltip("The game sleeps for this many milliseconds on redirection.")]
+    public int sleepMS;
 
     public void Fire(Transform source, Vector3 dir)
     {
         currDmg = baseDmg;
         direction = dir;
+        gameObject.transform.LookAt(gameObject.transform.position + (dir * 10));
         StartCoroutine(BulletMove(source));
+        StartCoroutine(RedirectWindowRoutine());
     }
 
     private IEnumerator BulletMove(Transform source)
@@ -106,13 +117,27 @@ public class BulletController : MonoBehaviour
             TryToApplyShootable(hitData.collider.gameObject);
 
             //destroy bullet if object is non-ricochetable
-            //if (nonRicochetLayers.Equals(hitData.collider.gameObject.layer))
-
             //compare in a weird way because layer masks are bit-flags fields
             if((nonRicochetLayers & 1 << hitData.collider.gameObject.layer)
                 != 0)
             {
+                //not a decal, but kinda works for drawing a small plane
+                GameObject bhole = Instantiate(bullethole, hitData.point + (hitData.normal * 0.01f),
+                    Quaternion.FromToRotation(Vector3.up, hitData.normal));
+                if(bulletholeLifetime >= 0)
+                {
+                    Destroy(bhole, bulletholeLifetime);
+                }
                 DestroyBullet();
+            }
+
+            //phase through it if it's a ghost object
+            if(TryGetComponent<GhostController>(out GhostController ghostCon))
+            {
+                if (ghostCon.inGhost)
+                {
+                    return;
+                }
             }
 
             //teleport to point to prevent inconsistency from sometimes bouncing early
@@ -120,6 +145,9 @@ public class BulletController : MonoBehaviour
 
             //reflect over the normal of the collision
             direction = Vector3.Reflect(direction, hitData.normal);
+
+            //rotate to point in right direction
+            gameObject.transform.LookAt(gameObject.transform.position + (direction * 10));
 
             //increment bounces
             currBounces++;
@@ -133,7 +161,7 @@ public class BulletController : MonoBehaviour
     private void TryToApplyDamage(GameObject obj)
     {
         DamageController damageController;
-        if (obj.gameObject.TryGetComponent<DamageController>(out damageController))
+        if (obj.TryGetComponent<DamageController>(out damageController))
         {
             damageController.ApplyDamage(currDmg, direction);
         }
@@ -142,7 +170,7 @@ public class BulletController : MonoBehaviour
     private void TryToApplyShootable(GameObject obj)
     {
         ShootableController shootableController;
-        if (obj.gameObject.TryGetComponent<ShootableController>(out shootableController))
+        if (obj.TryGetComponent<ShootableController>(out shootableController))
         {
             shootableController.OnShot();
         }
@@ -211,6 +239,9 @@ public class BulletController : MonoBehaviour
 
     public void ExitLunaMode()
     {
+        //sleeeep
+        Thread.Sleep(sleepMS);
+
         //hide luna
         luna.SetActive(false);
 
@@ -256,8 +287,6 @@ public class BulletController : MonoBehaviour
     private IEnumerator DrawLunaLineRoutine()
     {
         gameObject.transform.forward = direction;
-        //Debug.Log("forward: " + gameObject.transform.forward);
-        //Debug.Log("direction: " + direction);
         while (inLunaMode)
         {
             //uses mouse to change Luna's angle
@@ -271,8 +300,17 @@ public class BulletController : MonoBehaviour
         }
     }
 
+    private IEnumerator RedirectWindowRoutine()
+    {
+        canBeRedirected = true;
+        yield return new WaitForSeconds(redirectWindowTime);
+        canBeRedirected = false;
+    }
+
     private void HandleRedirectMouseInput()
     {
+        if (PauseMenu.paused) return;
+
         //capture input from mouse
         var looking = look.ReadValue<Vector2>();
         float xDelta = looking.x;
@@ -282,14 +320,8 @@ public class BulletController : MonoBehaviour
         xDelta *=  3f;
         yDelta *= 3f;
 
-        //failed
-        //gameObject.transform.forward += new Vector3(0f, yDelta, 0f);
-
-        //rotate horizontal and vertical
+        //rotate horizontal
         gameObject.transform.Rotate(new Vector3(0f, xDelta, 0f));
-
-        //failed
-        //gameObject.transform.Rotate(new Vector3(yDelta, 0f, 0f));
     }
 
     private void DestroyBullet()

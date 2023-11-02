@@ -4,14 +4,10 @@ using UnityEngine;
 using UnityEngine.AI;
 
 /*
-Hard coded AI, this doesn't have the same flexibility and would require more
-maintenance and care. This can in essence do everything but things require
-editing and fixing to fit our needs to the T
-
 !Has bugs!
 Sometimes unpredictable ones
 
-Last edited by 10/26/23 Anniken creator of said AI
+Last edited by 11/02/23 Anniken creator of said AI
 */
 public class Bot : MonoBehaviour
 {
@@ -25,7 +21,7 @@ public class Bot : MonoBehaviour
     bool walkPointSet;
     public float walkPointRange;
 
-    // Attacking
+    // Melee Attack
     public GameObject projectile;
     public float timeBetweenAttacks;
     bool alreadyAttacked;
@@ -46,7 +42,7 @@ public class Bot : MonoBehaviour
 
     private void Awake()
     {
-        player = GameObject.Find("PlayerArmature").transform;
+        player = GameObject.Find("Player").transform;
         agent = GetComponent<NavMeshAgent>();
     }
 

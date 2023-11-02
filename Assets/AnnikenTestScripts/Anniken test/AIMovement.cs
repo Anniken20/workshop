@@ -24,7 +24,7 @@ public class AIMovement : MonoBehaviour
     private Vector3 targetPosition;
     public UnityEngine.AI.NavMeshAgent navMeshAgent;
     
-    public float paceRange = 5.0f;  // The range within which the AI will pace
+    public float paceRange = 5.0f;  // The range the AI will pace
     private Vector3 originalPosition;
     private float paceDirection = 1;
 
@@ -36,7 +36,6 @@ public class AIMovement : MonoBehaviour
 
     void Update()
     {
-        // Implement state machine logic
         switch (currentState)
         {
             case AIMovementState.Standing:
@@ -62,7 +61,6 @@ public class AIMovement : MonoBehaviour
         currentState = newState;
         stateTimer = 0.0f;
 
-        // Handle state entry logic (if any)
         switch (newState)
         {
             case AIMovementState.Standing:
@@ -85,7 +83,6 @@ public class AIMovement : MonoBehaviour
 
     void StandBehavior()
     {
-        // Implement behavior for the Standing state
         stateTimer += Time.deltaTime;
         if (stateTimer >= standDuration)
         {
@@ -151,10 +148,8 @@ public class AIMovement : MonoBehaviour
         else
         {
             // If the target is no longer in sight, transition to another state
-            SetState(AIMovementState.Standing); // You can choose an appropriate state
+            SetState(AIMovementState.Standing);
         }
-
-        // Implement additional logic for state transitions or obstacle avoidance
     }
 
     bool IsTargetInSight()
@@ -168,7 +163,7 @@ public class AIMovement : MonoBehaviour
         RaycastHit hit;
 
         // Define a layer mask to control which objects the raycast can hit
-        int layerMask = LayerMask.GetMask("ObstacleLayer"); // Adjust this to your obstacle layer
+        int layerMask = LayerMask.GetMask("ObstacleLayer"); 
 
         // Perform the raycast
         if (Physics.Raycast(transform.position, directionToTarget, out hit, Mathf.Infinity, layerMask))
@@ -181,7 +176,7 @@ public class AIMovement : MonoBehaviour
             }
         }
         // The target is not in sight, so you should return to pace here
-        ReturnToPace(); // Implement your return to pace function
+        ReturnToPace();
 
         // Return false to indicate that the target is not in sight
         return false;
@@ -194,7 +189,7 @@ public class AIMovement : MonoBehaviour
         if (navAgent != null)
         {
             // Set the destination to a predefined "pace" position
-            Vector3 pacePosition = new Vector3(0f, 0f, 0f); // Replace with your desired pace position
+            Vector3 pacePosition = new Vector3(0f, 0f, 0f); 
             navAgent.SetDestination(pacePosition);
         }
     }

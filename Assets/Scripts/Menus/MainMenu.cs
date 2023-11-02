@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
-    public GameObject pauseMenu;
+    public GameObject settingsMenu;
 
     public void PlayButton()
     {
@@ -14,7 +14,7 @@ public class MainMenu : MonoBehaviour
 
     public void SettingsButton()
     {
-        pauseMenu.SetActive(true);
+        settingsMenu.SetActive(true);
         gameObject.SetActive(false);
     }
 
