@@ -24,6 +24,7 @@ public class BulletController : MonoBehaviour
     [HideInInspector] public bool canBeRedirected;
     private float trailRendererTime;
     private float formerCamOrthoSize;
+    private GunAudioController gunAudioController;
 
     //inspector fields --------------------------
     [Header("Stats")]
@@ -60,11 +61,13 @@ public class BulletController : MonoBehaviour
 
     public void Fire(Transform source, Vector3 dir)
     {
+        gunAudioController = GetComponent<GunAudioController>();
         currDmg = baseDmg;
         direction = dir;
         gameObject.transform.LookAt(gameObject.transform.position + (dir * 10));
         StartCoroutine(BulletMove(source));
         StartCoroutine(RedirectWindowRoutine());
+        gunAudioController.PlayFire();
     }
 
     private IEnumerator BulletMove(Transform source)
@@ -98,6 +101,7 @@ public class BulletController : MonoBehaviour
             //wait until end of frame to continue while loop
             yield return null;
         }
+        gunAudioController.PlayCollision();
         DestroyBullet();
     }
 
@@ -128,7 +132,9 @@ public class BulletController : MonoBehaviour
                 {
                     Destroy(bhole, bulletholeLifetime);
                 }
+                gunAudioController.PlayCollision();
                 DestroyBullet();
+                return;
             }
 
             //phase through it if it's a ghost object
@@ -155,6 +161,9 @@ public class BulletController : MonoBehaviour
             //multiply dmg
             currDmg *= bounceDmgMultiplier;
             currDmg = Mathf.Clamp(currDmg, 0, maxDmg);
+
+            //play sound
+            gunAudioController.PlayRicochet("Metal", currBounces-1);
         }
     }
 
