@@ -27,7 +27,6 @@ public class AimController : MonoBehaviour
     public float reticleDistFromPlayer = 5f;
 
     [Header("IK Setup")]
-    public GameObject playerHead;
     private Animator animator;
     public bool activeIK;
     public Transform lookAtTarget;
