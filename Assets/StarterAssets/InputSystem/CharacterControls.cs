@@ -143,6 +143,15 @@ public partial class @CharacterMovement: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""CancelAim"",
+                    ""type"": ""Button"",
+                    ""id"": ""49caddd5-5bb3-45e8-8459-47186a20045f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -464,6 +473,28 @@ public partial class @CharacterMovement: IInputActionCollection2, IDisposable
                     ""action"": ""Sprint"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""40d403a5-ab29-41e1-97b5-d2f22acb4c56"",
+                    ""path"": ""<Keyboard>/#(G)"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CancelAim"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""630c4b33-94e1-480c-be90-a2af11eb159e"",
+                    ""path"": ""<Gamepad>/dpad/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CancelAim"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -485,6 +516,7 @@ public partial class @CharacterMovement: IInputActionCollection2, IDisposable
         m_CharacterControls_Move = m_CharacterControls.FindAction("Move", throwIfNotFound: true);
         m_CharacterControls_Jump = m_CharacterControls.FindAction("Jump", throwIfNotFound: true);
         m_CharacterControls_Sprint = m_CharacterControls.FindAction("Sprint", throwIfNotFound: true);
+        m_CharacterControls_CancelAim = m_CharacterControls.FindAction("CancelAim", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -559,6 +591,7 @@ public partial class @CharacterMovement: IInputActionCollection2, IDisposable
     private readonly InputAction m_CharacterControls_Move;
     private readonly InputAction m_CharacterControls_Jump;
     private readonly InputAction m_CharacterControls_Sprint;
+    private readonly InputAction m_CharacterControls_CancelAim;
     public struct CharacterControlsActions
     {
         private @CharacterMovement m_Wrapper;
@@ -576,6 +609,7 @@ public partial class @CharacterMovement: IInputActionCollection2, IDisposable
         public InputAction @Move => m_Wrapper.m_CharacterControls_Move;
         public InputAction @Jump => m_Wrapper.m_CharacterControls_Jump;
         public InputAction @Sprint => m_Wrapper.m_CharacterControls_Sprint;
+        public InputAction @CancelAim => m_Wrapper.m_CharacterControls_CancelAim;
         public InputActionMap Get() { return m_Wrapper.m_CharacterControls; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -624,6 +658,9 @@ public partial class @CharacterMovement: IInputActionCollection2, IDisposable
             @Sprint.started += instance.OnSprint;
             @Sprint.performed += instance.OnSprint;
             @Sprint.canceled += instance.OnSprint;
+            @CancelAim.started += instance.OnCancelAim;
+            @CancelAim.performed += instance.OnCancelAim;
+            @CancelAim.canceled += instance.OnCancelAim;
         }
 
         private void UnregisterCallbacks(ICharacterControlsActions instance)
@@ -667,6 +704,9 @@ public partial class @CharacterMovement: IInputActionCollection2, IDisposable
             @Sprint.started -= instance.OnSprint;
             @Sprint.performed -= instance.OnSprint;
             @Sprint.canceled -= instance.OnSprint;
+            @CancelAim.started -= instance.OnCancelAim;
+            @CancelAim.performed -= instance.OnCancelAim;
+            @CancelAim.canceled -= instance.OnCancelAim;
         }
 
         public void RemoveCallbacks(ICharacterControlsActions instance)
@@ -699,5 +739,6 @@ public partial class @CharacterMovement: IInputActionCollection2, IDisposable
         void OnMove(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnSprint(InputAction.CallbackContext context);
+        void OnCancelAim(InputAction.CallbackContext context);
     }
 }

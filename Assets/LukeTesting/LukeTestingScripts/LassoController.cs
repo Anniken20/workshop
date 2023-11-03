@@ -9,6 +9,7 @@ public class LassoController : MonoBehaviour
     public CharacterMovement iaControls;
     private InputAction lasso;
     private InputAction look;
+    private InputAction cancel;
     public AimController aimController;
     private Vector3 aimAngle;
     private Vector3 startPos;
@@ -68,7 +69,7 @@ public class LassoController : MonoBehaviour
     }
     void Update(){
         
-        if(Input.GetKeyDown(KeyCode.G)){
+        if(cancel.triggered){
             CancelAiming();
         }
         if(spinningLasso != null){
@@ -140,15 +141,19 @@ public class LassoController : MonoBehaviour
         drawToLasso = true;
         if(spinning && lassoActive && holdingItem == false){
             spinningLasso = Instantiate(lassoObject, lassoSpinLocation.transform);
-            //spinSource.Play();
+            AudioManager.main.Play(AudioManager.AudioSourceChannel.SFX, spinSound);
             spinning = false;
         }
         //spinningLasso = Instantiate(lassoObject, lassoSpinLocation.transform);
-        spinningConnectPoint = spinningLasso.transform.Find("ConnectPoint");
-        drawToLassoLine.enabled = true;
+        if(spinningLasso != null){
+            spinningConnectPoint = spinningLasso.transform.Find("ConnectPoint");
+            drawToLassoLine.enabled = true;
+            spinningLasso.GetComponent<Rigidbody>().isKinematic = true;
+        
+        
         //drawToLassoLine.SetPosition(0, lassoHipLocation.transform.position);
         //drawToLassoLine.SetPosition(1, spinningConnectPoint.position);
-        spinningLasso.GetComponent<Rigidbody>().isKinematic = true;
+        
 
 
 
@@ -174,6 +179,7 @@ public class LassoController : MonoBehaviour
                 lineRend.positionCount = i + 1;
                 return;
             }
+        }
         }
     }
 
@@ -229,13 +235,16 @@ public class LassoController : MonoBehaviour
     private void OnEnable(){
         look = iaControls.CharacterControls.Look;
         lasso = iaControls.CharacterControls.Lasso;
+        cancel = iaControls.CharacterControls.CancelAim;
 
         look.Enable();
         lasso.Enable();
+        cancel.Enable();
     }
     private void OnDisable(){
         look.Disable();
         lasso.Disable();
+        cancel.Disable();
     }
 
     private void OnLassoDown(InputAction.CallbackContext context){

@@ -181,7 +181,7 @@ public class LassoPickupScript : MonoBehaviour, ILassoable
             player.startLassoCooldown = true;
             throwing = true;
             player.lassoCombatAiming.SetActive(false);
-
+            lassoActive = false;
     }
     public void DropObject(){
         player.startLassoCooldown = true;
