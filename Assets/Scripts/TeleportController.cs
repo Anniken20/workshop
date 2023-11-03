@@ -7,6 +7,7 @@ public class TeleportController : MonoBehaviour
    public GameObject toPoint;
     private CharacterController characterController;
     private bool isTransitioning = false;
+    public float walkDistance = 1.0f;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -29,8 +30,9 @@ public class TeleportController : MonoBehaviour
         //Calculates destination position
         Vector3 destination = toPoint.transform.position;
 
-        //Calculates midpoint through doorway
-        Vector3 midpoint = (player.transform.position + destination) / 2f;
+        //Calculates offset position in front of midpoint
+        Vector3 offset = playerForward * walkDistance;
+        Vector3 midpoint = (player.transform.position + offset + destination) / 2f;
 
         float transitionDuration = 1.0f;
         float elapsedTime = 0f;
