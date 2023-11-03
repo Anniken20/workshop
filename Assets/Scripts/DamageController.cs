@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 /* Script for handling damage from bullets
  * 
@@ -24,6 +25,10 @@ public class DamageController : MonoBehaviour
     [Header("Debug")]
     public TMP_Text debugText;
 
+    [Header("Health Bar")]
+    public bool hasHealthBar = true; 
+    public Image healthBar;
+
     private float currDmg;
 
     public BreakController breakController;
@@ -36,12 +41,25 @@ public class DamageController : MonoBehaviour
 
         if (debugText != null) debugText.text = currDmg + " / " + dmgTilBreak + " DMG";
 
+        if (hasHealthBar && healthBar != null)
+        {
+            // Initialize the health bar
+            healthBar.fillAmount = 1f; // Full health at the beginning
+        }
     }
 
     //apply damage, apply knockback, destroy if broken
     public void ApplyDamage(float dmg, Vector3 direction)
     {
         currDmg += dmg;
+
+        if (hasHealthBar && healthBar != null)
+        {
+            // Update the health bar
+            float healthPercentage = 1 - (currDmg / dmgTilBreak);
+            healthBar.fillAmount = Mathf.Clamp01(healthPercentage);
+        }
+
         //Debug.Log("currDmg: " + currDmg);
         if (currDmg >= dmgTilBreak)
         {
