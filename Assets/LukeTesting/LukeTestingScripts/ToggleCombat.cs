@@ -27,7 +27,7 @@ public class ToggleCombat : MonoBehaviour
     }
 
     private void Update(){
-        if(otherObj != null){
+        if(otherObj != null && otherObj.GetComponent<LassoController>() != null){
             inCombat = otherObj.gameObject.GetComponent<LassoController>().inCombat;
 
         }

@@ -43,6 +43,7 @@ public class LassoController : MonoBehaviour
     public bool inCombat;
     [HideInInspector] public Transform connectPoint;
     private float mouseY;
+    private float mouseX;
     private Vector3 yAdjusted;
     private float sens;
     private float yAngleFreedom = 1f;
@@ -52,6 +53,7 @@ public class LassoController : MonoBehaviour
     [SerializeField] private AudioClip spinSound;
     public AudioClip thrownSound;
     [SerializeField] private bool cancelAim;
+    public GameObject lassoCombatAiming;
 
 
     private void Awake(){
@@ -65,6 +67,7 @@ public class LassoController : MonoBehaviour
         iaControls = new CharacterMovement();
     }
     void Update(){
+        
         if(Input.GetKeyDown(KeyCode.G)){
             CancelAiming();
         }
@@ -134,6 +137,7 @@ public class LassoController : MonoBehaviour
 
 
     private void DrawLassoLine(){
+        drawToLasso = true;
         if(spinning && lassoActive && holdingItem == false){
             spinningLasso = Instantiate(lassoObject, lassoSpinLocation.transform);
             //spinSource.Play();
@@ -174,10 +178,12 @@ public class LassoController : MonoBehaviour
     }
 
     private void LaunchLasso(){
+        //lassoSpinLocation.transform.Rotate(new Vector3(0f, 0f, 0f));
         AudioManager.main.Play(AudioManager.AudioSourceChannel.SFX, thrownSound);
         spinning = false;
         Destroy(spinningLasso);
         projectile = Instantiate(lassoObject, lassoSpinLocation.transform.position, launchPoint.rotation);
+        projectile.transform.Rotate(0f, aimAngle.y, 0f);
         //aimAngle = aimController.GetAimAngle();
         projectile.GetComponent<Rigidbody>().AddForce(aimAngle * lassoLaunchStrength, ForceMode.Impulse);
         drawToLasso = true;
@@ -198,16 +204,23 @@ public class LassoController : MonoBehaviour
     private void LassoAiming(){
 
         mouseY = looking.y;
+        //mouseX = looking.x;
 
         mouseY *= sens / 100;
+        //mouseX *= sens / 2;
 
         yAdjusted.y += mouseY;
 
         float yClamp = Mathf.Clamp(yAdjusted.y, -yAngleFreedom / 2, yAngleFreedom / 2);
 
         yAdjusted.y = yClamp;
-
-        aimAngle = lassoSpinLocation.transform.forward;
+        //yAdjusted.x = mouseX;
+        //lassoSpinLocation.transform.Rotate(new Vector3(0f, mouseX, 0f));
+        //aimAngle = lassoSpinLocation.transform.forward;
+        aimAngle = aimController.GetAimAngle();
+        //Debug.Log(aimAngle);
+        aimAngle *= 0.2f;
+        //aimAngle = gameObject.transform.forward;
         aimAngle += yAdjusted;
 
         
@@ -239,10 +252,25 @@ public class LassoController : MonoBehaviour
             internalCooldown = lassoCooldown;
             lineRend.enabled = false;
             cancelAim = false;
-            
+        }
+        if(spinningLasso != null){
+            foreach (Transform child in lassoSpinLocation.transform){
+                Destroy(child.gameObject);
+            }
         }
     }
     private void FixedUpdate(){
+        /*if(inCombat){
+            lassoCombatAiming.SetActive(true);
+        }*/
+
+
+        if(!inCombat){
+            lassoCombatAiming.SetActive(false);
+        }
+
+
+
         if(lassoActive && holdingItem == false){
             startPos = new Vector3(gameObject.transform.position.x,
             gameObject.transform.position.y + 1.5f,
