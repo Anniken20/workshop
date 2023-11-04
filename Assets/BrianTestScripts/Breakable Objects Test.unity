@@ -341,7 +341,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 41684029}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.09, y: 1.12, z: 0.3}
+  m_LocalPosition: {x: 12.57, y: 0, z: 0.12}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1319,7 +1319,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1471203279
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1333,6 +1333,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   toPoint: {fileID: 41684029}
+  walkDistance: 1
 --- !u!65 &1471203280
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1362,7 +1363,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1471203278}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.3373833, y: 0.32632494, z: 0.3}
+  m_LocalPosition: {x: 5.04, y: 0.32632494, z: -0.09}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4475,6 +4476,11 @@ PrefabInstance:
     - target: {fileID: 3575859615113073495, guid: 61faa3a840259af43a47932a738499ba,
         type: 3}
       propertyPath: breakController
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3575859615113073495, guid: 61faa3a840259af43a47932a738499ba,
+        type: 3}
+      propertyPath: healthBarPrefab
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 8342269697379768942, guid: 61faa3a840259af43a47932a738499ba,
