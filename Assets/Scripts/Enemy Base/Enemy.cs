@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable
+/*
+ * public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable
 {
     [field: SerializeField] public float MaxHealth { get; set; } = 100f;
     public float CurrentHealth { get; set;}
@@ -64,3 +65,4 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable
 
     }
 }
+*/
