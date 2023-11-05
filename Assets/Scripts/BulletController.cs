@@ -33,6 +33,7 @@ public class BulletController : MonoBehaviour
     public float speed;
     [Tooltip("Hitting objects in these layers will destroy the bullet on contact.")]
     public LayerMask nonRicochetLayers;
+    public LayerMask passThroughLayers;
     public GameObject bullethole;
     [Tooltip("After this many seconds, the bullethole will disappear. If negative, then never disappear.")]
     public float bulletholeLifetime;
@@ -114,6 +115,14 @@ public class BulletController : MonoBehaviour
         //but on low speed the jump to the wall is noticeable
         if (Physics.Raycast(position, direction, out hitData, speed * 0.15f))
         {
+            //phase through it if it's a pass-through layer
+            //compare in a weird way because layer masks are bit-flag fields
+            if ((passThroughLayers & 1 << hitData.collider.gameObject.layer)
+                != 0)
+            {
+                return;
+            }
+
             //try to apply damage if it's a damage-able object
             TryToApplyDamage(hitData.collider.gameObject);
 
@@ -138,7 +147,7 @@ public class BulletController : MonoBehaviour
             }
 
             //phase through it if it's a ghost object
-            if(TryGetComponent<GhostController>(out GhostController ghostCon))
+            if (TryGetComponent<GhostController>(out GhostController ghostCon))
             {
                 if (ghostCon.inGhost)
                 {
