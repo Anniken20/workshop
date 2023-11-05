@@ -58,21 +58,21 @@ public class AudioManager : MonoBehaviour
         LoadVolume();
     }
 
-    public void Play(AudioSourceChannel channel, AudioClip clip, float volume = 1.0f)
+    public void Play(AudioSourceChannel channel, AudioClip clip)
     {
         switch (channel)
         {
             case AudioSourceChannel.Music:
-                musicAudio.PlayOneShot(clip, volume);
+                musicAudio.PlayOneShot(clip);
                 break;
             case AudioSourceChannel.SFX:
-                sfxAudio.PlayOneShot(clip, volume);
+                sfxAudio.PlayOneShot(clip);
                 break;
             case AudioSourceChannel.Dialogue:
-                dialogueAudio.PlayOneShot(clip, volume);
+                dialogueAudio.PlayOneShot(clip);
                 break;
             case AudioSourceChannel.Ambience:
-                ambienceAudio.PlayOneShot(clip, volume);
+                ambienceAudio.PlayOneShot(clip);
                 break;
             default:
                 Debug.LogWarning("Audio passed in to nonexistent channel in AudioManager!");
