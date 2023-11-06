@@ -57,12 +57,15 @@ public class LassoPickupScript : MonoBehaviour, ILassoable
     private bool pulling;
     private bool pushing;
     private Transform inCombatAimingPos;
+
+    private LayerMask playerLayer;
     
 
 
 
 
     private void Start(){
+        playerLayer = LayerMask.GetMask("Player");
         mainCam = Camera.main;
         internalThrowWindow = throwWindow;
         rb = GetComponent<Rigidbody>();
@@ -130,11 +133,12 @@ public class LassoPickupScript : MonoBehaviour, ILassoable
     }
     public void Lassoed(Transform lassoAttachPoint, bool active, GameObject otherObject){
         if(!inCombat){
+            rb.excludeLayers = playerLayer;
             lassoActive = active;
             lassoedObject = otherObject;
             attachPoint = lassoAttachPoint;
             rb.useGravity = false;
-            objectCollider.isTrigger = true;
+            //objectCollider.isTrigger = true;
             moveObject = active;
             rb.velocity = Vector3.zero;
             //manipulateObject = true;
@@ -184,9 +188,10 @@ public class LassoPickupScript : MonoBehaviour, ILassoable
             lassoActive = false;
     }
     public void DropObject(){
+        rb.includeLayers = playerLayer;
         player.startLassoCooldown = true;
         rb.useGravity = true;
-        objectCollider.isTrigger = false;
+        //objectCollider.isTrigger = false;
         moveObject = false;
         //rb.velocity = new Vector3(attachPoint.position.x * launchForce, 0, attachPoint.position.y * launchForce);
         rb.AddForce(launchAngle * launchForce, ForceMode.Impulse);
@@ -238,6 +243,11 @@ public class LassoPickupScript : MonoBehaviour, ILassoable
                 if(playDist >= 5 || playDist <= 2.1 && manipulateObject){
                     DropObject();
                 }
+            }
+
+            if(moveObject || manipulateObject && lassoedObject != null){
+                rb.velocity = Vector3.zero;
+                rb.angularVelocity =Vector3.zero;
             }
 
         }
