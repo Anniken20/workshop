@@ -56,16 +56,12 @@ public class LassoPickupScript : MonoBehaviour, ILassoable
     private float mWheelDistance;
     private bool pulling;
     private bool pushing;
-    private Transform inCombatAimingPos;
-
-    private LayerMask playerLayer;
     
 
 
 
 
     private void Start(){
-        playerLayer = LayerMask.GetMask("Player");
         mainCam = Camera.main;
         internalThrowWindow = throwWindow;
         rb = GetComponent<Rigidbody>();
@@ -78,9 +74,6 @@ public class LassoPickupScript : MonoBehaviour, ILassoable
     }
 
     private void Update(){
-
-        inCombatAimingPos = player.lassoCombatAiming.transform;
-
             if(Input.GetAxis("Mouse ScrollWheel") != 0){
                 mWheelDistance = Input.GetAxis("Mouse ScrollWheel");
             }
@@ -112,7 +105,7 @@ public class LassoPickupScript : MonoBehaviour, ILassoable
         }
 
         launchAngle = player.GetComponent<AimController>().GetAimAngle();
-        if(lasso.triggered && lassoActive == true && !inCombat){
+        if(lasso.triggered && lassoActive == true){
             DropObject();
         }
 
@@ -133,30 +126,26 @@ public class LassoPickupScript : MonoBehaviour, ILassoable
     }
     public void Lassoed(Transform lassoAttachPoint, bool active, GameObject otherObject){
         if(!inCombat){
-            rb.excludeLayers = playerLayer;
             lassoActive = active;
             lassoedObject = otherObject;
             attachPoint = lassoAttachPoint;
             rb.useGravity = false;
-            //objectCollider.isTrigger = true;
+            objectCollider.isTrigger = true;
             moveObject = active;
             rb.velocity = Vector3.zero;
             //manipulateObject = true;
             player.startLassoCooldown = false;
             mWheelDistance = 0;
-            
         }
         else{
             CombatLassoEnabled();
-            lassoActive = active;
-            player.lassoCombatAiming.SetActive(true);
             lassoedObject = otherObject;
         }
     }
 
     private void CombatLassoEnabled(){
-        //Cursor.visible = true;
-        //Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
         throwEnabled = true;
     }
     private void LaunchToCursor(){
@@ -171,11 +160,9 @@ public class LassoPickupScript : MonoBehaviour, ILassoable
            // combatLaunchStrength = combatLaunchStrength * objectWeight;
            combatLaunchStrength = 1.5f;
            var yBoost = lassoedObject.transform.position;
-            //yBoost.y += .5f;
+           //yBoost.y += .5f;
             //lassoedObject.transform.position = yBoost;
-            var launchPos = inCombatAimingPos.position;
-            launchPos.y += 3f;
-            lassoedObject.GetComponent<Rigidbody>().AddForce((launchPos - lassoedObject.transform.position) * combatLaunchStrength, ForceMode.VelocityChange);
+            lassoedObject.GetComponent<Rigidbody>().AddForce((throwPoint - lassoedObject.transform.position) * combatLaunchStrength, ForceMode.VelocityChange);
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
             throwEnabled = false;
@@ -184,14 +171,11 @@ public class LassoPickupScript : MonoBehaviour, ILassoable
             player.internalCooldown = lassoCooldown;
             player.startLassoCooldown = true;
             throwing = true;
-            player.lassoCombatAiming.SetActive(false);
-            lassoActive = false;
     }
     public void DropObject(){
-        rb.includeLayers = playerLayer;
         player.startLassoCooldown = true;
         rb.useGravity = true;
-        //objectCollider.isTrigger = false;
+        objectCollider.isTrigger = false;
         moveObject = false;
         //rb.velocity = new Vector3(attachPoint.position.x * launchForce, 0, attachPoint.position.y * launchForce);
         rb.AddForce(launchAngle * launchForce, ForceMode.Impulse);
@@ -238,16 +222,11 @@ public class LassoPickupScript : MonoBehaviour, ILassoable
             //newPos = Mathf.Clamp(newPos, attachPoint.position, maxDistance);
         
             }
-            if(lassoedObject != null && manipulateObject == true && !inCombat){
+            if(lassoedObject != null){
                 var playDist = Vector3.Distance(lassoedObject.transform.position, player.transform.position);
                 if(playDist >= 5 || playDist <= 2.1 && manipulateObject){
                     DropObject();
                 }
-            }
-
-            if(moveObject || manipulateObject && lassoedObject != null){
-                rb.velocity = Vector3.zero;
-                rb.angularVelocity =Vector3.zero;
             }
 
         }
