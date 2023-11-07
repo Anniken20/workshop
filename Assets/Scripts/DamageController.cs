@@ -27,7 +27,8 @@ public class DamageController : MonoBehaviour
 
     [Header("Health Bar")]
     public bool hasHealthBar = true; 
-    public Image healthBar;
+    public Image fullHealthBar;
+    public Image healthBarMask;
 
     private float currDmg;
 
@@ -41,10 +42,14 @@ public class DamageController : MonoBehaviour
 
         if (debugText != null) debugText.text = currDmg + " / " + dmgTilBreak + " DMG";
 
-        if (hasHealthBar && healthBar != null)
+       if (hasHealthBar)
         {
-            // Initialize the health bar
-            healthBar.fillAmount = 1f; // Full health at the beginning
+            if (fullHealthBar != null && healthBarMask != null)
+            {
+                // Initialize the health bar
+                fullHealthBar.fillAmount = 1f; // Full health at the beginning
+                healthBarMask.fillAmount = 1f; // Initialize the mask to full
+            }
         }
     }
 
@@ -53,11 +58,13 @@ public class DamageController : MonoBehaviour
     {
         currDmg += dmg;
 
-        if (hasHealthBar && healthBar != null)
+       if (hasHealthBar && fullHealthBar != null && healthBarMask != null)
         {
-            // Update the health bar
+            // Update health bar
             float healthPercentage = 1 - (currDmg / dmgTilBreak);
-            healthBar.fillAmount = Mathf.Clamp01(healthPercentage);
+            healthBarMask.fillAmount = Mathf.Clamp01(healthPercentage);
+            Debug.Log("Health Percentage: " + healthPercentage);
+        Debug.Log("Mask Fill Amount: " + healthBarMask.fillAmount);
         }
 
         //Debug.Log("currDmg: " + currDmg);
