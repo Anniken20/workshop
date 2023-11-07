@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/*
 public class EnemyIdleState : EnemyState
 {
     public EnemyIdleState(Enemy enemy, EnemyStateMachine enemyStateMachine) : base(enemy, enemyStateMachine)
@@ -34,3 +34,4 @@ public class EnemyIdleState : EnemyState
         base.PhysicsUpdate();
     }
 }
+*/
