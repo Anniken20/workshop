@@ -18,27 +18,13 @@ public class Enemy : MonoBehaviour
         attackState = new EnemyAttackState(this, stateMachine);
 
     }
+    
     private void Start()
     {
         currentHealth = maxHealth;
     }
 
-    public void Damage(float damageAmount)
-    {
-        currentHealth -= damageAmount;
-
-        if(currentHealth <= 0f)
-        {
-            Die();
-        }
-    }
-
-    private void AnimationTriggerEvent(AnimationTriggerType triggerType)
-    {
-        //TO DO Fill once statemachine is created
-    }
-
-    public enum AnimationTriggerType
+    public enum AnimationTriggerType;
     {
         EnemyDamaged,
         PlayFootStepSound
