@@ -24,7 +24,7 @@ public class Enemy : MonoBehaviour
         currentHealth = maxHealth;
     }
 
-    public enum AnimationTriggerType;
+    public enum AnimationTriggerType
     {
         EnemyDamaged,
         PlayFootStepSound
