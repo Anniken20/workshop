@@ -20,7 +20,6 @@ public class DamageController : MonoBehaviour
     public float knockbackFactor = 5f;
     public float startingDamage;
 
-
     [Header("Debug")]
     public TMP_Text debugText;
 
@@ -35,7 +34,6 @@ public class DamageController : MonoBehaviour
         breakController = GetComponent<BreakController>();
 
         if (debugText != null) debugText.text = currDmg + " / " + dmgTilBreak + " DMG";
-
     }
 
     //apply damage, apply knockback, destroy if broken
@@ -51,10 +49,8 @@ public class DamageController : MonoBehaviour
             return;
         }
         if (debugText != null) debugText.text = currDmg + " / " + dmgTilBreak + " DMG";
-
         Knockback(dmg, direction);
     }
-
 
     //apply force to rigidbody to knockback
     public void Knockback(float dmg, Vector3 direction)
