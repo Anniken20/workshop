@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
 public class EnemyStateMachine
 {
     public EnemyState CurretEnemyState { get; set;}
@@ -18,3 +19,4 @@ public class EnemyStateMachine
         CurretEnemyState.EnterState();
     }
 }
+*/
