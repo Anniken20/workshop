@@ -101,6 +101,7 @@ GameObject:
   - component: {fileID: 414907241059058888}
   - component: {fileID: 8846312387481078735}
   - component: {fileID: 258089543975049779}
+  - component: {fileID: 8874737415370382754}
   m_Layer: 0
   m_Name: Bullet
   m_TagString: Untagged
@@ -148,15 +149,22 @@ MonoBehaviour:
   mainCamera: {fileID: 0}
   playerCamRoot: {fileID: 0}
   player: {fileID: 0}
+  canBeRedirected: 0
   maxDistance: 500
   maxBounces: 5
   speed: 10
   nonRicochetLayers:
     serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 2432
+  passThroughLayers:
+    serializedVersion: 2
+    m_Bits: 4096
+  bullethole: {fileID: 6238176355579144921, guid: eaea0fa5c8f4a484cada259e0024dc7a,
+    type: 3}
+  bulletholeLifetime: -1
   baseDmg: 50
   bounceDmgMultiplier: 1.5
-  maxDmg: 100
+  maxDmg: 500
   luna: {fileID: 3289662549931257346}
   lunaCam: {fileID: 4554561722050434672}
   camMovementDuration: 0.8
@@ -164,6 +172,8 @@ MonoBehaviour:
   lunaPOVCam: 0
   lunaCamOrthoSize: 2
   camZoomTime: 2
+  redirectWindowTime: 2
+  sleepMS: 50
 --- !u!96 &414907241059058888
 TrailRenderer:
   serializedVersion: 3
@@ -393,6 +403,56 @@ LineRenderer:
   m_UseWorldSpace: 1
   m_Loop: 0
   m_ApplyActiveColorSpace: 1
+--- !u!114 &8874737415370382754
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6120439615268133299}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ea100194605cde438b8c6f53f7f7730, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fireVolume: 0.6
+  ricochetVolume: 0.5
+  throughSurfaceVolume: 0.5
+  lunaSFXVolume: 0.7
+  fireClips:
+  - name: FIRE
+    clip: {fileID: 8300000, guid: 68fb068242c939a4094f3a583e2586d9, type: 3}
+  ricochetClips:
+  - name: DEBUG BOUNCE
+    clip: {fileID: 8300000, guid: 02dd588439617ed4e98adb78252f7539, type: 3}
+  - name: DEBUG BOUNCE
+    clip: {fileID: 8300000, guid: 7d4fa7921cc8a0c4fb9f5159f74e7f33, type: 3}
+  - name: CUTE
+    clip: {fileID: 8300000, guid: 355d1c4fcf26f804b93ecfefc88d1f99, type: 3}
+  - name: CUTE
+    clip: {fileID: 8300000, guid: b5f1ee64f15716245b849bbd4feea2fb, type: 3}
+  - name: CUTE
+    clip: {fileID: 8300000, guid: e2f0a0250f9f2fe47819ee32a99f8456, type: 3}
+  - name: CUTE
+    clip: {fileID: 8300000, guid: e75058c20e4cb564da7d4a6d462f6877, type: 3}
+  - name: CUTE
+    clip: {fileID: 8300000, guid: 49ff2ccbbf3fe2f4ebba75a34a076fe5, type: 3}
+  - name: Metal
+    clip: {fileID: 8300000, guid: f7c34d4f7f4738846ada20f3e5d85f77, type: 3}
+  - name: Metal
+    clip: {fileID: 8300000, guid: e975054eb1f341e43ad6788d2241fc38, type: 3}
+  - name: Metal
+    clip: {fileID: 8300000, guid: 9e231a7f1f6d41749b7a80c21e607846, type: 3}
+  - name: Metal
+    clip: {fileID: 8300000, guid: 41155ce2a0a79c347a73cc92f06e1371, type: 3}
+  - name: Metal
+    clip: {fileID: 8300000, guid: 0376df046501f594a8d51851f69be615, type: 3}
+  collisionClips:
+  - name: Wood
+    clip: {fileID: 8300000, guid: ad6b763c739800f4ea25fa2c0339f84f, type: 3}
+  - name: Wood
+    clip: {fileID: 8300000, guid: 02e71aa6d35d8a243929f447875d4291, type: 3}
+  lunaClips: []
 --- !u!1 &7257855347508725799
 GameObject:
   m_ObjectHideFlags: 0
@@ -473,10 +533,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3778441595813947085}
     m_Modifications:
+    - target: {fileID: 3017207941574419881, guid: aa717ab1778797b4283d11d9e79546a2,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -14.285715
+      objectReference: {fileID: 0}
     - target: {fileID: 3778441595813947085, guid: aa717ab1778797b4283d11d9e79546a2,
         type: 3}
       propertyPath: m_RootOrder
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3778441595813947085, guid: aa717ab1778797b4283d11d9e79546a2,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 3778441595813947085, guid: aa717ab1778797b4283d11d9e79546a2,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 3778441595813947085, guid: aa717ab1778797b4283d11d9e79546a2,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.7
       objectReference: {fileID: 0}
     - target: {fileID: 3778441595813947085, guid: aa717ab1778797b4283d11d9e79546a2,
         type: 3}
@@ -491,7 +571,7 @@ PrefabInstance:
     - target: {fileID: 3778441595813947085, guid: aa717ab1778797b4283d11d9e79546a2,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 3778441595813947085, guid: aa717ab1778797b4283d11d9e79546a2,
         type: 3}
@@ -528,17 +608,46 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3778441595813947085, guid: aa717ab1778797b4283d11d9e79546a2,
+        type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5796794650465714040, guid: aa717ab1778797b4283d11d9e79546a2,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6120439615268133299, guid: aa717ab1778797b4283d11d9e79546a2,
         type: 3}
       propertyPath: m_Name
       value: Bullet Modeled
+      objectReference: {fileID: 0}
+    - target: {fileID: 6120439615268133299, guid: aa717ab1778797b4283d11d9e79546a2,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7257855347508725799, guid: aa717ab1778797b4283d11d9e79546a2,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8786492131611657155, guid: aa717ab1778797b4283d11d9e79546a2,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8846312387481078735, guid: aa717ab1778797b4283d11d9e79546a2,
         type: 3}
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5362570443177364146, guid: aa717ab1778797b4283d11d9e79546a2, type: 3}
+    - {fileID: 414907241059058888, guid: aa717ab1778797b4283d11d9e79546a2, type: 3}
+    - {fileID: 8846312387481078735, guid: aa717ab1778797b4283d11d9e79546a2, type: 3}
+    - {fileID: 258089543975049779, guid: aa717ab1778797b4283d11d9e79546a2, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -636,6 +745,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Luna-Redirect
+      objectReference: {fileID: 0}
+    - target: {fileID: 7236698109513985138, guid: 2daa1994f54308a428fbc88318f5d4c3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7236698109513985138, guid: 2daa1994f54308a428fbc88318f5d4c3,
         type: 3}

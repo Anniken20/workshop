@@ -101,6 +101,7 @@ namespace StarterAssets
         [HideInInspector] public bool _lunaLocked;
         [HideInInspector] public bool _paused;
         [HideInInspector] public bool _stunned;
+        [HideInInspector] public bool _canMove;
 
         // animation IDs
         private int _animIDSpeed;
@@ -444,7 +445,7 @@ namespace StarterAssets
         //for example, unpausing shouldn't unlock from luna's redirect movement lock
         private bool IsMovementLocked()
         {
-            return _paused || _lunaLocked || _stunned;
+            return _paused || _lunaLocked || _stunned || _canMove;
         }
 
         private void OnEnable(){

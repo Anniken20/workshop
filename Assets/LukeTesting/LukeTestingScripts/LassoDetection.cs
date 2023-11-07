@@ -72,6 +72,7 @@ public class LassoDetection : MonoBehaviour
         ILassoable lassoable = other.gameObject.GetComponent<ILassoable>();
         //IGrappleable grappleable = GetComponent<IGrappleable>();
         if(lassoable != null){
+            //AudioManager.main.Play(AudioManager.AudioSourceChannel.SFX, lassoedSound);
             hitObject = true;
             Vector3 otherExtents = other.bounds.extents;
             if(transform.position.y>= (otherExtents.y) * 2){
@@ -92,6 +93,7 @@ public class LassoDetection : MonoBehaviour
             }
         }
         else if(other.gameObject.CompareTag("Grapple")){
+            //AudioManager.main.Play(AudioManager.AudioSourceChannel.SFX, grappleSound);
             grappleScript.Grappled(lassoActive, other.transform.gameObject);
             hitObject = true;
             Destroy(gameObject);
