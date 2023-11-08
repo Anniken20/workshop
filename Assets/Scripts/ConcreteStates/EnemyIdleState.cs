@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class EnemyIdleState : EnemyState
 {
@@ -16,12 +17,12 @@ public class EnemyIdleState : EnemyState
 
     public override void EnterState()
     {
-        base.EnterState();
+        nav.isStopped = true;
     }
 
     public override void ExitState()
     {
-        base.ExitState();
+        nav.isStopped = false;
     }
 
     public override void FrameUpdate()
