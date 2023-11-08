@@ -1,11 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
 
-public class EnemyAttackState : EnemyState {
-
-    public EnemyAttackState(Enemy enemy, EnemyStateMachine enemyStateMachine) : base(enemy, enemyStateMachine)
+public class EnemyPoopState : EnemyState
+{
+    public EnemyPoopState(Enemy enemy, EnemyStateMachine enemyStateMachine) : base(enemy, enemyStateMachine)
     {
 
     }
@@ -17,26 +16,21 @@ public class EnemyAttackState : EnemyState {
 
     public override void EnterState()
     {
-        base.EnterState();
+        Debug.Log("started pooping");
     }
 
     public override void ExitState()
     {
-        base.ExitState();
+        Debug.Log("done pooping");
     }
 
     public override void FrameUpdate()
     {
-        base.FrameUpdate();
+        Debug.Log("pooping every frame");
     }
 
     public override void PhysicsUpdate()
     {
         base.PhysicsUpdate();
-    }
-
-    public override string ToString()
-    {
-        return base.ToString();
     }
 }
