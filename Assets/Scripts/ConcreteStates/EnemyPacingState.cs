@@ -26,8 +26,7 @@ public class EnemyPacingState : EnemyState
     //start a random timer between 2 values
     private void StartPace()
     {
-        //Debug.Log("Starting pace timer");
-        currentTimer = Random.Range(enemy.frequencyBounds.x, enemy.frequencyBounds.y);
+        currentTimer = Random.Range(((Boring)enemy).frequencyBounds.x, ((Boring)enemy).frequencyBounds.y);
     }
 
     public override void ExitState()
@@ -45,7 +44,7 @@ public class EnemyPacingState : EnemyState
         if(currentTimer < 0)
         {
             //set new random point to go to
-            nav.SetDestination(enemy.gameObject.transform.position + (Random.insideUnitSphere * enemy.randomPointRadius));
+            nav.SetDestination(enemy.gameObject.transform.position + (Random.insideUnitSphere * ((Boring)enemy).randomPointRadius));
 
             //set new timer to go to another point
             StartPace();

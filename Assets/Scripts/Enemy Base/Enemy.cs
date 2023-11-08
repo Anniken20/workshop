@@ -9,25 +9,11 @@ public class Enemy : MonoBehaviour
     public float maxHealth = 100f;
     [HideInInspector] public float currentHealth;
     [HideInInspector] public EnemyStateMachine stateMachine;
-    [HideInInspector] public EnemyIdleState idleState;
-    [HideInInspector] public EnemyAttackState attackState;
-    [HideInInspector] public EnemyPacingState pacingState;
 
-    [Header("Pacing Variables")]
-    public Vector2 frequencyBounds = new Vector2(2f, 6f);
-    public float randomPointRadius = 5f;
-
-    private void Awake()
+    protected void MyAwake()
     {
         NavMeshAgent nav = GetComponent<NavMeshAgent>();
-
         stateMachine = new EnemyStateMachine();
-
-        idleState = new EnemyIdleState(this, stateMachine);
-        attackState = new EnemyAttackState(this, stateMachine);
-        pacingState = new EnemyPacingState(this, stateMachine);
-
-        stateMachine.Initialize(pacingState);
     }
     
     private void Start()
@@ -37,12 +23,12 @@ public class Enemy : MonoBehaviour
 
     private void Update()
     {
-        stateMachine.CurrentEnemyState.FrameUpdate();
+        stateMachine.CurrentEnemyState?.FrameUpdate();
     }
 
     private void FixedUpdate()
     {
-        stateMachine.CurrentEnemyState.PhysicsUpdate();
+        stateMachine.CurrentEnemyState?.PhysicsUpdate();
     }
 
     public enum AnimationTriggerType
