@@ -56,6 +56,8 @@ public class LassoController : MonoBehaviour
     [SerializeField] private bool cancelAim;
     public GameObject lassoCombatAiming;
 
+    private Animator animator;
+
 
     private void Awake(){
         internalCooldown = lassoCooldown;
@@ -197,6 +199,7 @@ public class LassoController : MonoBehaviour
     }
 
     private void Start(){
+        animator = GetComponent<Animator>();
         sens = aimController.sensitivity;
         drawToLasso = true;
         lineRend.enabled = true;
@@ -249,6 +252,7 @@ public class LassoController : MonoBehaviour
 
     private void OnLassoDown(InputAction.CallbackContext context){
         if(holdingItem == false){
+            animator.SetBool("isLassoing", true);
             lassoActive = true;  
             spinning = true;
             cancelAim = false;
@@ -257,6 +261,7 @@ public class LassoController : MonoBehaviour
     private void OnLassoRelease(InputAction.CallbackContext context){
         lassoActive = false;
         if(holdingItem == false && internalCooldown <= 0 && cancelAim == false){
+            animator.SetBool("isLassoing", false);
             LaunchLasso();
             internalCooldown = lassoCooldown;
             lineRend.enabled = false;
@@ -317,6 +322,7 @@ public class LassoController : MonoBehaviour
     }
 
     private void CancelAiming(){
+        animator.SetBool("isLassoing", false);
         drawToLasso = false;
         lineRend.enabled = false;
         drawToLassoLine.enabled = false;
