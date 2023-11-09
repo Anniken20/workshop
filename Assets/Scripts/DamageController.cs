@@ -15,83 +15,96 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Rigidbody))]
 public class DamageController : MonoBehaviour
 {
-    [Tooltip("Once the object reaches this level of damage it is destroyed.")]
+    [Tooltip("Once the object reaches this level of damage, it is destroyed.")]
     public float dmgTilBreak;
-    [Tooltip("Multiplies by the direction to increase knockback when hit by bullet.")]
+    [Tooltip("Multiplies by the direction to increase knockback when hit by a bullet.")]
     public float knockbackFactor = 5f;
     public float startingDamage;
-
 
     [Header("Debug")]
     public TMP_Text debugText;
 
     [Header("Health Bar")]
-    public bool hasHealthBar = true; 
+    public bool hasHealthBar = true; // Option to enable or disable the health bar
     public Image fullHealthBar;
     public Image healthBarMask;
+    public float healthBarFadeTime = 1f; // Time in seconds for health bar to fade
 
     private float currDmg;
-
     public BreakController breakController;
-
+    private bool isTakingDamage;
+    private float lastDamageTime;
 
     private void Start()
     {
         currDmg = startingDamage;
         breakController = GetComponent<BreakController>();
+        lastDamageTime = Time.time;
 
         if (debugText != null) debugText.text = currDmg + " / " + dmgTilBreak + " DMG";
 
-       if (hasHealthBar)
+        if (hasHealthBar && fullHealthBar != null && healthBarMask != null)
         {
-            if (fullHealthBar != null && healthBarMask != null)
-            {
-                // Initialize the health bar
-                fullHealthBar.fillAmount = 1f; // Full health at the beginning
-                healthBarMask.fillAmount = 1f; // Initialize the mask to full
-            }
+            // Initialize the health bar
+            fullHealthBar.fillAmount = 1f; // Full health at the beginning
+            healthBarMask.fillAmount = 0f; // Initialize the mask to zero
+            SetHealthBarVisible(false);
         }
     }
 
-    //apply damage, apply knockback, destroy if broken
+    private void Update()
+    {
+        if (Time.time - lastDamageTime >= healthBarFadeTime && isTakingDamage)
+        {
+            isTakingDamage = false;
+            SetHealthBarVisible(false);
+        }
+    }
+
+    // Apply damage, apply knockback, destroy if broken
     public void ApplyDamage(float dmg, Vector3 direction)
     {
         currDmg += dmg;
 
-       if (hasHealthBar && fullHealthBar != null && healthBarMask != null)
+        if (hasHealthBar && fullHealthBar != null && healthBarMask != null)
         {
             // Update health bar
             float healthPercentage = 1 - (currDmg / dmgTilBreak);
             healthBarMask.fillAmount = Mathf.Clamp01(healthPercentage);
-            Debug.Log("Health Percentage: " + healthPercentage);
-        Debug.Log("Mask Fill Amount: " + healthBarMask.fillAmount);
+
+            lastDamageTime = Time.time;
+            isTakingDamage = true;
+            SetHealthBarVisible(true);
         }
 
-        //Debug.Log("currDmg: " + currDmg);
         if (currDmg >= dmgTilBreak)
         {
             Break();
-
-            //return since no need to knockback
-            return;
+            return; // No need to knockback
         }
+
         if (debugText != null) debugText.text = currDmg + " / " + dmgTilBreak + " DMG";
 
         Knockback(dmg, direction);
     }
 
+    private void SetHealthBarVisible(bool isVisible)
+    {
+        fullHealthBar.enabled = isVisible;
+        healthBarMask.enabled = isVisible;
+    }
 
-    //apply force to rigidbody to knockback
+    // Apply force to rigidbody to knockback
     public void Knockback(float dmg, Vector3 direction)
     {
         Rigidbody rb;
-        if(TryGetComponent<Rigidbody>(out rb))
+        if (TryGetComponent<Rigidbody>(out rb))
         {
             rb.AddForce(direction * dmg * knockbackFactor);
         }
     }
 
-    //for now just destroy. could be something more complicated later
+    // For now, just destroy. Could be something more complicated later
     private void Break()
     {
         if (breakController != null)
