@@ -117,8 +117,7 @@ public class BulletController : MonoBehaviour
         {
             //phase through it if it's a pass-through layer
             //compare in a weird way because layer masks are bit-flag fields
-            if ((passThroughLayers & 1 << hitData.collider.gameObject.layer)
-                != 0)
+            if ((passThroughLayers & 1 << hitData.collider.gameObject.layer) != 0)
             {
                 return;
             }
@@ -172,7 +171,7 @@ public class BulletController : MonoBehaviour
             currDmg = Mathf.Clamp(currDmg, 0, maxDmg);
 
             //play sound
-            gunAudioController.PlayRicochet("Metal", currBounces-1);
+            gunAudioController.PlayRicochet("CUTE", currBounces-1);
         }
     }
 
