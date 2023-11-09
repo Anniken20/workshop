@@ -24,6 +24,7 @@ public class BulletController : MonoBehaviour
     [HideInInspector] public bool canBeRedirected;
     private float trailRendererTime;
     private float formerCamOrthoSize;
+    private GunAudioController gunAudioController;
 
     //inspector fields --------------------------
     [Header("Stats")]
@@ -32,6 +33,7 @@ public class BulletController : MonoBehaviour
     public float speed;
     [Tooltip("Hitting objects in these layers will destroy the bullet on contact.")]
     public LayerMask nonRicochetLayers;
+    public LayerMask passThroughLayers;
     public GameObject bullethole;
     [Tooltip("After this many seconds, the bullethole will disappear. If negative, then never disappear.")]
     public float bulletholeLifetime;
@@ -60,11 +62,13 @@ public class BulletController : MonoBehaviour
 
     public void Fire(Transform source, Vector3 dir)
     {
+        gunAudioController = GetComponent<GunAudioController>();
         currDmg = baseDmg;
         direction = dir;
         gameObject.transform.LookAt(gameObject.transform.position + (dir * 10));
         StartCoroutine(BulletMove(source));
         StartCoroutine(RedirectWindowRoutine());
+        gunAudioController.PlayFire();
     }
 
     private IEnumerator BulletMove(Transform source)
@@ -98,6 +102,7 @@ public class BulletController : MonoBehaviour
             //wait until end of frame to continue while loop
             yield return null;
         }
+        gunAudioController.PlayCollision();
         DestroyBullet();
     }
 
@@ -110,6 +115,13 @@ public class BulletController : MonoBehaviour
         //but on low speed the jump to the wall is noticeable
         if (Physics.Raycast(position, direction, out hitData, speed * 0.15f))
         {
+            //phase through it if it's a pass-through layer
+            //compare in a weird way because layer masks are bit-flag fields
+            if ((passThroughLayers & 1 << hitData.collider.gameObject.layer) != 0)
+            {
+                return;
+            }
+
             //try to apply damage if it's a damage-able object
             TryToApplyDamage(hitData.collider.gameObject);
 
@@ -128,11 +140,13 @@ public class BulletController : MonoBehaviour
                 {
                     Destroy(bhole, bulletholeLifetime);
                 }
+                gunAudioController.PlayCollision();
                 DestroyBullet();
+                return;
             }
 
             //phase through it if it's a ghost object
-            if(TryGetComponent<GhostController>(out GhostController ghostCon))
+            if (TryGetComponent<GhostController>(out GhostController ghostCon))
             {
                 if (ghostCon.inGhost)
                 {
@@ -155,6 +169,9 @@ public class BulletController : MonoBehaviour
             //multiply dmg
             currDmg *= bounceDmgMultiplier;
             currDmg = Mathf.Clamp(currDmg, 0, maxDmg);
+
+            //play sound
+            gunAudioController.PlayRicochet("Metal", currBounces-1);
         }
     }
 
