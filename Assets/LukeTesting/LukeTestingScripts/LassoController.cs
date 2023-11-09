@@ -36,6 +36,7 @@ public class LassoController : MonoBehaviour
     [SerializeField] public LineRenderer drawToLassoLine;
     [HideInInspector] public GameObject projectile;
     [SerializeField] GameObject lassoSpinLocation;
+    [SerializeField] GameObject lassoHandLocation;
     [SerializeField] GameObject lassoHipLocation;
     private Transform spinningConnectPoint;
     private GameObject spinningLasso;
@@ -56,6 +57,9 @@ public class LassoController : MonoBehaviour
     [SerializeField] private bool cancelAim;
     public GameObject lassoCombatAiming;
 
+    [Header("Lasso Spin Speed")]
+    [SerializeField] [Range(0f, 30f)] private float spinSpeed = 4.5f;
+
     private Animator animator;
 
 
@@ -75,7 +79,7 @@ public class LassoController : MonoBehaviour
             CancelAiming();
         }
         if(spinningLasso != null){
-            spinningLasso.transform.Rotate(Vector3.up, 4.5f);
+            spinningLasso.transform.Rotate(Vector3.up, spinSpeed);
         }
         
         looking = look.ReadValue<Vector2>();
@@ -306,6 +310,7 @@ public class LassoController : MonoBehaviour
                 gameObject.transform.position.z)
                 + (gameObject.transform.forward * 0.25f);*/
                 drawToLassoLine.enabled = true;
+                drawToLassoLine.positionCount = 2;
                 drawToLassoLine.SetPosition(0, lassoHipLocation.transform.position);
                 drawToLassoLine.SetPosition(1, connectPoint.position);
             }
@@ -315,8 +320,15 @@ public class LassoController : MonoBehaviour
         }
 
         if(spinning != null && spinningConnectPoint != null){
-            drawToLassoLine.SetPosition(0, lassoHipLocation.transform.position);
-            drawToLassoLine.SetPosition(1, spinningConnectPoint.position);
+            /*drawToLassoLine.SetPosition(0, lassoHipLocation.transform.position);
+            drawToLassoLine.SetPosition(1, lassoHandLocation.transform.position);
+            drawToLassoLine.SetPosition(2, spinningConnectPoint.position);*/
+            Vector3[] lineConPos = new Vector3[3];
+            lineConPos[0] = lassoHipLocation.transform.position;
+            lineConPos[1] = lassoHandLocation.transform.position;
+            lineConPos[2] = spinningConnectPoint.position;
+            drawToLassoLine.positionCount = lineConPos.Length;
+            drawToLassoLine.SetPositions(lineConPos);
             spinningLasso.GetComponent<Collider>().enabled = false;
         }
     }

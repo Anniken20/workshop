@@ -17,6 +17,7 @@ public class LassoPickupScript : MonoBehaviour, ILassoable
     private Rigidbody rb;
     private Collider objectCollider;
 
+
     private bool moveObject;
 
     private Transform attachPoint;
@@ -57,6 +58,7 @@ public class LassoPickupScript : MonoBehaviour, ILassoable
     private bool pulling;
     private bool pushing;
     private Transform inCombatAimingPos;
+    private GunController gunCon;
 
     private LayerMask playerLayer;
     
@@ -65,13 +67,15 @@ public class LassoPickupScript : MonoBehaviour, ILassoable
 
 
     private void Start(){
-        playerLayer = LayerMask.GetMask("Player");
+        
+        //playerLayer = LayerMask.GetMask("Player");
         mainCam = Camera.main;
         internalThrowWindow = throwWindow;
         rb = GetComponent<Rigidbody>();
         objectCollider = GetComponent<Collider>();
         player = FindObjectOfType<LassoController>();
         lassoCooldown = player.lassoCooldown;
+        gunCon = player.GetComponent<GunController>();
         //combatLaunchStrength = player.GetComponent<LassoController>().combatLaunchStrength;
 
 
@@ -132,13 +136,14 @@ public class LassoPickupScript : MonoBehaviour, ILassoable
         player.holdingItem = lassoActive;
     }
     public void Lassoed(Transform lassoAttachPoint, bool active, GameObject otherObject){
+        //gunCon.DisableShooting();
         if(!inCombat){
-            rb.excludeLayers = playerLayer;
+            //rb.excludeLayers = playerLayer;
             lassoActive = active;
             lassoedObject = otherObject;
             attachPoint = lassoAttachPoint;
             rb.useGravity = false;
-            //objectCollider.isTrigger = true;
+            objectCollider.isTrigger = true;
             moveObject = active;
             rb.velocity = Vector3.zero;
             //manipulateObject = true;
@@ -188,10 +193,10 @@ public class LassoPickupScript : MonoBehaviour, ILassoable
             lassoActive = false;
     }
     public void DropObject(){
-        rb.includeLayers = playerLayer;
+        //rb.includeLayers = playerLayer;
         player.startLassoCooldown = true;
         rb.useGravity = true;
-        //objectCollider.isTrigger = false;
+        objectCollider.isTrigger = false;
         moveObject = false;
         //rb.velocity = new Vector3(attachPoint.position.x * launchForce, 0, attachPoint.position.y * launchForce);
         rb.AddForce(launchAngle * launchForce, ForceMode.Impulse);
