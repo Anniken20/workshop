@@ -18,7 +18,7 @@ namespace StarterAssets
         private InputAction sprint;
         private InputAction jump;
         private InputAction move;
-        private float targetSpeed;
+        [HideInInspector] public float targetSpeed;
         [Header("Player")]
         [Tooltip("Move speed of the character in m/s")]
         public float MoveSpeed = 2.0f;
@@ -462,6 +462,18 @@ namespace StarterAssets
             move.Disable();
             jump.Disable();
          }   
+        
+        public void ChangeSpeed(float newValue)
+        {
+            SprintSpeed += newValue;
+            MoveSpeed += newValue;
+        }
+
+        public void ChangeSpeedByFactor(float factor)
+        {
+            SprintSpeed *= factor;
+            MoveSpeed *= factor;
+        }
 
     }
     

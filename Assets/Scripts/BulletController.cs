@@ -171,7 +171,7 @@ public class BulletController : MonoBehaviour
             currDmg = Mathf.Clamp(currDmg, 0, maxDmg);
 
             //play sound
-            gunAudioController.PlayRicochet("Metal", currBounces-1);
+            gunAudioController.PlayRicochet("CUTE", currBounces-1);
         }
     }
 
