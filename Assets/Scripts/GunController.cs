@@ -4,6 +4,7 @@ using UnityEngine;
 using Cinemachine;
 using DG.Tweening;
 using UnityEngine.InputSystem;
+using StarterAssets;
 
 /* Core Gun Mechanic for Ghost Moon High Noon
  * 
@@ -36,6 +37,8 @@ public class GunController : MonoBehaviour
 
     [Tooltip("Time in seconds while player is motionless firing gun.")]
     public float fireTime;
+    [Tooltip("For fireTime seconds after firing, the player will speed will multiply by this factor.")]
+    public float reducedSpeedFactor = 0.5f;
     [Tooltip("The amount of time the player has to redirect the shot. " +
         "\nIf time elapses, the bullet slips away at its current redirect angle.")]
     public float lunaWindowTime;
@@ -45,6 +48,19 @@ public class GunController : MonoBehaviour
     private Vector3 aimAngle;
     private GameObject mostRecentBullet;
     private bool lunaMode;
+    private Animator animator;
+    private ThirdPersonController thirdPersonController;
+
+    private void Start()
+    {
+        animator = GetComponent<Animator>();
+        thirdPersonController = GetComponent<ThirdPersonController>();
+        if(reducedSpeedFactor <= 0)
+        {
+            reducedSpeedFactor = 0.5f;
+            Debug.LogWarning("reducedSpeedFactor field of GunController on Player was 0. Set to 0.5 Teehee!");
+        }
+    }
 
     private void Update()
     {
@@ -108,15 +124,19 @@ public class GunController : MonoBehaviour
          //anim = GetComponent<Animator>();
        // anim.SetBool("isShooting", false);
 
+        //trigger animation trigger
+        animator.SetTrigger("shootTrigger");
+
     }
 
+    //slow down the player speed by some factor
     private IEnumerator FreezePlayerRoutine()
     {
-        //PlayerController.main.firingGun = true;
+        thirdPersonController.ChangeSpeedByFactor(reducedSpeedFactor);
         canShoot = false;
         yield return new WaitForSeconds(fireTime);
         canShoot = true;
-        //PlayerController.main.firingGun = false;
+        thirdPersonController.ChangeSpeedByFactor(1/reducedSpeedFactor);
     }
 
     public void DisableShooting()
