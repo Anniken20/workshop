@@ -2,11 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-/*
-
-public class EnemyIdleState : EnemyState
+public class EnemyPoopState : EnemyState
 {
-    public EnemyIdleState(Enemy enemy, EnemyStateMachine enemyStateMachine) : base(enemy, enemyStateMachine)
+    public EnemyPoopState(Enemy enemy, EnemyStateMachine enemyStateMachine) : base(enemy, enemyStateMachine)
     {
 
     }
@@ -18,17 +16,17 @@ public class EnemyIdleState : EnemyState
 
     public override void EnterState()
     {
-        nav.isStopped = true;
+        Debug.Log("started pooping");
     }
 
     public override void ExitState()
     {
-        nav.isStopped = false;
+        Debug.Log("done pooping");
     }
 
     public override void FrameUpdate()
     {
-        base.FrameUpdate();
+        Debug.Log("pooping every frame");
     }
 
     public override void PhysicsUpdate()
@@ -36,4 +34,3 @@ public class EnemyIdleState : EnemyState
         base.PhysicsUpdate();
     }
 }
-*/

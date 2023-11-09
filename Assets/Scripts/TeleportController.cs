@@ -7,7 +7,7 @@ public class TeleportController : MonoBehaviour
    public GameObject toPoint;
     private CharacterController characterController;
     private bool isTransitioning = false;
-    public float walkDistance = 1.0f;
+    public float walkDistance = 1.0f;  // Adjust this distance as needed
 
     private void OnTriggerEnter(Collider other)
     {
@@ -24,35 +24,24 @@ public class TeleportController : MonoBehaviour
 
         characterController.enabled = false;
 
-        //Determines direction player is facing
+        // Wait for a moment to simulate being frozen
+        //Change this value as needed
+        yield return new WaitForSeconds(1.0f);
+
+        // Calculate the intermediate position just in front of the door
         Vector3 playerForward = player.transform.forward;
+        Vector3 doorPosition = toPoint.transform.position;
+        Vector3 intermediatePosition = doorPosition - playerForward * walkDistance;
 
-        //Calculates destination position
-        Vector3 destination = toPoint.transform.position;
+        // Move the player to the intermediate position
+        player.transform.position = intermediatePosition;
 
-        //Calculates offset position in front of midpoint
-        Vector3 offset = playerForward * walkDistance;
-        Vector3 midpoint = (player.transform.position + offset + destination) / 2f;
-
-        float transitionDuration = 1.0f;
-        float elapsedTime = 0f;
-
-        while (elapsedTime < transitionDuration)
-        {
-            //Interpolates position to create smoother transition
-            player.transform.position = Vector3.Lerp(player.transform.position, midpoint, elapsedTime / transitionDuration);
-
-            //Rotates player to face same direction
-            player.transform.forward = playerForward;
-
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
-
-        player.transform.position = destination;
+        // Teleport the player to the final destination
+        player.transform.position = doorPosition;
 
         characterController.enabled = true;
 
         isTransitioning = false;
     }
 }
+
