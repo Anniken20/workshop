@@ -267,7 +267,7 @@ public class BulletController : MonoBehaviour
 
         //screenshake
         ScreenShakeScript ss = GetComponentInChildren<ScreenShakeScript>();
-        ss.ShakeCam(shakeIntensity, shakeDuration, lunaCam);
+        ss.ShakeCam(shakeIntensity, shakeDuration);
 
         //hide luna
         luna.SetActive(false);

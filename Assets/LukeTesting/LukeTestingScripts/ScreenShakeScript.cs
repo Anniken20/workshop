@@ -33,6 +33,7 @@ public class ScreenShakeScript : MonoBehaviour
 
     public void ShakeCam(float intensity, float duration){
         CinemachineBasicMultiChannelPerlin noise = vCam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+        if(noise == null) noise = vCam.AddCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
         noise.m_AmplitudeGain = intensity;
         timer = duration;
     }
