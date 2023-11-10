@@ -41,7 +41,7 @@ public class GunController : MonoBehaviour
     public float lunaWindowTime;
 
     //private vars
-    private bool canShoot = true;
+    [HideInInspector] public bool canShoot = true;
     private Vector3 aimAngle;
     private GameObject mostRecentBullet;
     private bool lunaMode;
@@ -138,6 +138,13 @@ public class GunController : MonoBehaviour
         //will eventually disable/grey out gun HUD
     }
 
+    public void ReenableShooting()
+    {
+        canShoot = true;
+
+        //will eventually make our HUD yay
+    }
+
     private void RedirectBullet()
     {
         if (mostRecentBullet != null  && mostRecentBullet.GetComponent<BulletController>().canBeRedirected)
@@ -154,7 +161,8 @@ public class GunController : MonoBehaviour
     {
         lunaMode = false;
         //Debug.Log("Finished luna's redirect");
-        mostRecentBullet.GetComponent<BulletController>().Redirect();
+        if (mostRecentBullet == null) return;
+        else mostRecentBullet.GetComponent<BulletController>().Redirect();
 
         //set to null so we can't redirect same bullet >1
         mostRecentBullet = null;

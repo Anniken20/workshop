@@ -36,4 +36,21 @@ public class ScreenShakeScript : MonoBehaviour
         noise.m_AmplitudeGain = intensity;
         timer = duration;
     }
+
+    //public method for shaking cams besides the main one
+    public void ShakeCam(float intensity, float duration, CinemachineVirtualCamera targetCamera)
+    {
+        CinemachineBasicMultiChannelPerlin noise = targetCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+        if(noise == null) noise = targetCamera.AddCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+        StartCoroutine(ShakeRoutine(intensity, duration, targetCamera));
+    }
+
+    //coroutine that provides shake impulse then shut off.
+    private IEnumerator ShakeRoutine(float intensity, float duration, CinemachineVirtualCamera targetCamera)
+    {
+        CinemachineBasicMultiChannelPerlin noise = targetCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+        noise.m_AmplitudeGain = intensity;
+        yield return new WaitForSeconds(duration);
+        noise.m_AmplitudeGain = 0f;
+    }
 }
