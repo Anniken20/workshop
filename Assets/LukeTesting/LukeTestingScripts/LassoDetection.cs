@@ -22,6 +22,7 @@ public class LassoDetection : MonoBehaviour
     [HideInInspector] public bool recall;
     public AudioClip missSound;
     private bool playMissOnce;
+    private bool allowPickup;
     
     void Update()
     {

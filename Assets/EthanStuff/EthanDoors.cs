@@ -22,6 +22,7 @@ public class EthanDoors : MonoBehaviour
     [Header("Door Types")]
     [SerializeField] bool KeyDoor;
     [SerializeField] bool BreakObjDoor;
+    [SerializeField] bool PressurePlateDoor;
     [SerializeField] GameObject DoorOpenerObj;
 
 
@@ -95,6 +96,24 @@ public class EthanDoors : MonoBehaviour
                 }
             }
 
+        }
+
+
+        if (collision.CompareTag("Lassoable"))
+        {
+            isPressingSwitch = !isPressingSwitch;
+
+            if (PressurePlateDoor)
+            {
+                if (isDoorOpenSwitch && !doorController.isDoorOpen)
+                {
+                    doorController.isDoorOpen = !doorController.isDoorOpen;
+                }
+                else if (isDoorCloseSwitch && doorController.isDoorOpen)
+                {
+                    doorController.isDoorOpen = !doorController.isDoorOpen;
+                }
+            }
         }
     }
 
