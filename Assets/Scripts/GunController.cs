@@ -27,9 +27,6 @@ public class GunController : MonoBehaviour
     private InputAction redirect;
     public GameObject bulletPrefab;
     public AimController aimController;
-    
-    [Header("Additional Animations")]
-    private Animator anim;
     [Tooltip("Attach the main camera here")]
     public CinemachineVirtualCamera playerFollowCam;
     [Tooltip("Attach the PlayeraCameraRoot object, a child of the Player")]
@@ -68,8 +65,7 @@ public class GunController : MonoBehaviour
     }
 
     private void GetInput()
-    {   
-        
+    {
         //get angle data from 1 script, so it will be consistent across lasso/gun
         aimAngle = aimController.GetAimAngle();
 
@@ -106,8 +102,6 @@ public class GunController : MonoBehaviour
 
     private void FireGun()
     {
-        anim = GetComponent<Animator>();
-        anim.Play("Shoot");
         //instantiate and fire bullet
         GameObject bullet = Instantiate(bulletPrefab);
         BulletController bulletController = bullet.GetComponent<BulletController>();
@@ -121,8 +115,6 @@ public class GunController : MonoBehaviour
         bulletController.mainCamera = playerFollowCam;
         bulletController.playerCamRoot = playerCamRoot;
         bulletController.player = gameObject;
-         //anim = GetComponent<Animator>();
-       // anim.SetBool("isShooting", false);
 
         //trigger animation trigger
         animator.SetTrigger("shootTrigger");
@@ -142,6 +134,7 @@ public class GunController : MonoBehaviour
     public void DisableShooting()
     {
         canShoot = false;
+
         //will eventually disable/grey out gun HUD
     }
 

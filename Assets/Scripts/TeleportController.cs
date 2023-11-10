@@ -4,13 +4,10 @@ using UnityEngine;
 
 public class TeleportController : MonoBehaviour
 {
-    public GameObject toPoint;
+   public GameObject toPoint;
     private CharacterController characterController;
     private bool isTransitioning = false;
-    public float walkDistance = 5.0f;  //Adjust this as needed
-    public float walkDuration = 1.0f;  // Adjust this as needed
-    private Vector3 teleportDestination;
-    private Vector3 intermediatePosition;
+    public float walkDistance = 1.0f;  // Adjust this distance as needed
 
     private void OnTriggerEnter(Collider other)
     {
@@ -27,42 +24,24 @@ public class TeleportController : MonoBehaviour
 
         characterController.enabled = false;
 
+        // Wait for a moment to simulate being frozen
+        //Change this value as needed
+        yield return new WaitForSeconds(1.0f);
+
         // Calculate the intermediate position just in front of the door
         Vector3 playerForward = player.transform.forward;
         Vector3 doorPosition = toPoint.transform.position;
-        intermediatePosition = doorPosition - playerForward * walkDistance; 
+        Vector3 intermediatePosition = doorPosition - playerForward * walkDistance;
 
-        // Calculate the number of steps based on the walk duration
-        int numSteps = Mathf.FloorToInt(walkDuration / Time.fixedDeltaTime);
-        float stepDistance = Vector3.Distance(player.transform.position, intermediatePosition) / numSteps;
-
-        // Move the player step by step
-        for (int step = 0; step < numSteps; step++)
-        {
-            player.transform.position = Vector3.MoveTowards(player.transform.position, intermediatePosition, stepDistance);
-            yield return new WaitForFixedUpdate();
-        }
-
-        // Store the teleport destination
-        teleportDestination = doorPosition;
-
-        // Wait for the specified walk duration
-        float startTime = Time.time;
-        float elapsedTime = 0f;
-        while (elapsedTime < walkDuration)
-        {
-            elapsedTime = Time.time - startTime;
-            yield return null;
-        }
+        // Move the player to the intermediate position
+        player.transform.position = intermediatePosition;
 
         // Teleport the player to the final destination
-        player.transform.position = teleportDestination;
-
-        // Wait for a very short moment to avoid jitter
-        yield return new WaitForSeconds(0.1f);
+        player.transform.position = doorPosition;
 
         characterController.enabled = true;
 
         isTransitioning = false;
     }
 }
+

@@ -4,10 +4,8 @@ using UnityEngine;
 using UnityEngine.AI;
 
 
-
 /*
  * public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable
-
 
 {
     [Header("Global")]
