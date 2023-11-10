@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-
+/*
 public class Boring : Enemy
 {
     [HideInInspector] public EnemyIdleState idleState;
@@ -34,3 +34,4 @@ public class Boring : Enemy
         stateMachine.ChangeState(pacingState);
     }
 }
+*/

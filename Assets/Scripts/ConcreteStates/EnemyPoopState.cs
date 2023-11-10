@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/*
 public class EnemyPoopState : EnemyState
 {
     public EnemyPoopState(Enemy enemy, EnemyStateMachine enemyStateMachine) : base(enemy, enemyStateMachine)
@@ -34,3 +34,4 @@ public class EnemyPoopState : EnemyState
         base.PhysicsUpdate();
     }
 }
+*/

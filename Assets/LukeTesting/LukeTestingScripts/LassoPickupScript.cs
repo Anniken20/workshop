@@ -61,6 +61,7 @@ public class LassoPickupScript : MonoBehaviour, ILassoable
     private GunController gunCon;
 
     private LayerMask playerLayer;
+    // commented out this for rn
     
 
 
