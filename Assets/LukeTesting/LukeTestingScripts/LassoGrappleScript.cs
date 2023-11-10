@@ -173,10 +173,11 @@ public class LassoGrappleScript : MonoBehaviour, IGrappleable
         if(cancel.triggered){
             EndGrapple();
         }
-
-        if(Vector3.Distance(gameObject.transform.position, grapplePoint.transform.position) > cancelDistance && grapple){
-            Debug.Log(Vector3.Distance(gameObject.transform.position, grapplePoint.transform.position));
-            EndGrapple();
+        if(grapplePoint != null){
+            if(Vector3.Distance(gameObject.transform.position, grapplePoint.transform.position) > cancelDistance && grapple){
+                Debug.Log(Vector3.Distance(gameObject.transform.position, grapplePoint.transform.position));
+                EndGrapple();
+            }
         }
         
 

@@ -119,6 +119,7 @@ public class LassoDetection : MonoBehaviour
     }
     private void FixedUpdate(){
         if(recall){
+            player.GetComponent<LassoController>().endThrow = true;
             onObject = false;
             player.drawToLasso = true;
             player.connectPoint = transform.Find("RecallPoint");
