@@ -36,8 +36,8 @@ public class LassoController : MonoBehaviour
     [SerializeField] public LineRenderer drawToLassoLine;
     [HideInInspector] public GameObject projectile;
     [SerializeField] GameObject lassoSpinLocation;
-    [SerializeField] GameObject lassoHandLocation;
-    [SerializeField] GameObject lassoHipLocation;
+    [SerializeField] public GameObject lassoHandLocation;
+    [SerializeField] public GameObject lassoHipLocation;
     private Transform spinningConnectPoint;
     private GameObject spinningLasso;
     private bool spinning = false;
@@ -190,6 +190,7 @@ public class LassoController : MonoBehaviour
     }
 
     private void LaunchLasso(){
+        animator.SetBool("isThrowing", true);
         //lassoSpinLocation.transform.Rotate(new Vector3(0f, 0f, 0f));
         AudioManager.main.Play(AudioManager.AudioSourceChannel.SFX, thrownSound);
         spinning = false;
@@ -255,7 +256,7 @@ public class LassoController : MonoBehaviour
     }
 
     private void OnLassoDown(InputAction.CallbackContext context){
-        if(holdingItem == false){
+        if(holdingItem == false && GetComponent<LassoGrappleScript>().canLasso == true){
             animator.SetBool("isLassoing", true);
             lassoActive = true;  
             spinning = true;
@@ -264,7 +265,7 @@ public class LassoController : MonoBehaviour
     }
     private void OnLassoRelease(InputAction.CallbackContext context){
         lassoActive = false;
-        if(holdingItem == false && internalCooldown <= 0 && cancelAim == false){
+        if(holdingItem == false && internalCooldown <= 0 && cancelAim == false && GetComponent<LassoGrappleScript>().canLasso == true){
             animator.SetBool("isLassoing", false);
             LaunchLasso();
             internalCooldown = lassoCooldown;
@@ -310,9 +311,19 @@ public class LassoController : MonoBehaviour
                 gameObject.transform.position.z)
                 + (gameObject.transform.forward * 0.25f);*/
                 drawToLassoLine.enabled = true;
-                drawToLassoLine.positionCount = 2;
+
+
+                Vector3[] lineConPos = new Vector3[3];
+                lineConPos[0] = lassoHipLocation.transform.position;
+                lineConPos[1] = lassoHandLocation.transform.position;
+                lineConPos[2] = connectPoint.position;
+                drawToLassoLine.positionCount = lineConPos.Length;
+                drawToLassoLine.SetPositions(lineConPos);
+
+
+                /*drawToLassoLine.positionCount = 2;
                 drawToLassoLine.SetPosition(0, lassoHipLocation.transform.position);
-                drawToLassoLine.SetPosition(1, connectPoint.position);
+                drawToLassoLine.SetPosition(1, connectPoint.position);*/
             }
         }
         else if(drawToLasso == false){
