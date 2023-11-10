@@ -8,11 +8,12 @@ public class LassoGrappleScript : MonoBehaviour, IGrappleable
 {
     public CharacterMovement iaControls;
     private InputAction lasso;
+    private InputAction cancel;
 
     private bool grapple;
     private GameObject grapplePoint;
-    [SerializeField] float breakDistance = 3.0f;
-    [SerializeField] float grappleSpeed;
+    //[SerializeField] float breakDistance = 3.0f;
+    [SerializeField] float boostSpeed;
     [SerializeField] LineRenderer lineRend;
     private float checkCollisionDelay = .1f;
     private float internalCheckDelay;
@@ -36,6 +37,9 @@ public class LassoGrappleScript : MonoBehaviour, IGrappleable
     [SerializeField] float sPower;
     [SerializeField] float dPower;
     [SerializeField] float mScale;
+
+    [SerializeField] float cancelDistance;
+    private float walkSpeed;
     
 
 
@@ -93,7 +97,7 @@ public class LassoGrappleScript : MonoBehaviour, IGrappleable
     private void StartGrapple(InputAction.CallbackContext context){
         Debug.Log("starting");
         detectCol = false;
-        GetComponent<Rigidbody>().AddForce((grapplePoint.transform.position - transform.position) * grappleSpeed, ForceMode.VelocityChange);
+        GetComponent<Rigidbody>().AddForce((grapplePoint.transform.position - transform.position) * boostSpeed, ForceMode.VelocityChange);
         if(grapple && gPoint != null){
             grappling = true;
             //Maybe move this to fixed update idk yet
@@ -120,6 +124,7 @@ public class LassoGrappleScript : MonoBehaviour, IGrappleable
                     gJoint.spring = sPower;
                     gJoint.damper = dPower;
                     gJoint.massScale = mScale;
+
                     
                 }
             }
@@ -127,7 +132,12 @@ public class LassoGrappleScript : MonoBehaviour, IGrappleable
 
     }
 
-    private void EndGrapple(InputAction.CallbackContext context){
+    private void EndGrapplePressed(InputAction.CallbackContext context){
+        EndGrapple();
+
+    }
+
+    private void EndGrapple(){
         Debug.Log("Ending");
         grappling = false;
         grapple = false;
@@ -137,14 +147,17 @@ public class LassoGrappleScript : MonoBehaviour, IGrappleable
         lineRend.enabled = false;
         detectCol = true;
         StartCoroutine(EndDelay());
-
     }
     private void OnEnable(){
         lasso = iaControls.CharacterControls.Lasso;
+        cancel = iaControls.CharacterControls.CancelAim;
+
+        cancel.Enable();
         lasso.Enable();
 
     }
     private void OnDisable(){
+        cancel.Disable();
         lasso.Disable();
     }
 
@@ -152,11 +165,22 @@ public class LassoGrappleScript : MonoBehaviour, IGrappleable
         //Debug.Log(Vector3.Distance(gameObject.transform.position, gPoint));
         if(grapple){
             iaControls.CharacterControls.Lasso.started += StartGrapple;
-            iaControls.CharacterControls.Lasso.canceled += EndGrapple;
+            iaControls.CharacterControls.Lasso.canceled += EndGrapplePressed;
         }
         if(grapple || grappling){
             canLasso = false;
         }
+        if(cancel.triggered){
+            EndGrapple();
+        }
+
+        if(Vector3.Distance(gameObject.transform.position, grapplePoint.transform.position) > cancelDistance && grapple){
+            Debug.Log(Vector3.Distance(gameObject.transform.position, grapplePoint.transform.position));
+            EndGrapple();
+        }
+        
+
+
 
     }
 
