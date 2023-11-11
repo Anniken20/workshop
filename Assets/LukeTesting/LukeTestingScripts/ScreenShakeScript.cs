@@ -5,7 +5,7 @@ using Cinemachine;
 
 public class ScreenShakeScript : MonoBehaviour
 {
-    [Header("Testing Values")]
+     [Header("Testing Values")]
      [SerializeField] [Range(1f, 30f)] float shakeIntensity;
      [SerializeField] float shakeDuration;
      private float timer;
@@ -33,7 +33,24 @@ public class ScreenShakeScript : MonoBehaviour
 
     public void ShakeCam(float intensity, float duration){
         CinemachineBasicMultiChannelPerlin noise = vCam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+        if(noise == null) noise = vCam.AddCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
         noise.m_AmplitudeGain = intensity;
         timer = duration;
+    }
+
+    //public method for shaking cams besides the main one
+    public void ShakeCam(float intensity, float duration, CinemachineVirtualCamera targetCamera)
+    {
+        StartCoroutine(ShakeRoutine(intensity, duration, targetCamera));
+    }
+
+    //coroutine that provides shake impulse then shut off.
+    private IEnumerator ShakeRoutine(float intensity, float duration, CinemachineVirtualCamera targetCamera)
+    {
+        CinemachineBasicMultiChannelPerlin noise = targetCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+        if (noise == null) noise = targetCamera.AddCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+        noise.m_AmplitudeGain = intensity;
+        yield return new WaitForSeconds(duration);
+        noise.m_AmplitudeGain = 0f;
     }
 }

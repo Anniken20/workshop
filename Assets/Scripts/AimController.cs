@@ -141,7 +141,7 @@ public class AimController : MonoBehaviour
 
         //set position 1 at impact point if collision
         RaycastHit hitData;
-        if (Physics.Raycast(shootPoint.position, angle, out hitData, 200f))
+        if (Physics.Raycast(shootPoint.position, angle, out hitData, 200f, LayerManager.main.shootableLayers))
         {
             aimLine.SetPosition(1, hitData.point);
         }
@@ -156,7 +156,7 @@ public class AimController : MonoBehaviour
     {
         if (!useAimReticle) return;
         if (PauseMenu.paused) return;
-        bool hitSomething = Physics.Raycast(shootPoint.position, angle, out RaycastHit hitData);
+        bool hitSomething = Physics.Raycast(shootPoint.position, angle, out RaycastHit hitData, 100f, LayerManager.main.shootableLayers);
         if (hitSomething)
         {
             aimReticle.transform.position = hitData.point - (angle.normalized * reticleDistFromCollision);
@@ -166,7 +166,7 @@ public class AimController : MonoBehaviour
             if (drawReticleWhenNoCollision)
             {
                 aimReticle.transform.position = shootPoint.position + angle.normalized * 3f;
-                aimReticle.transform.localRotation = Quaternion.identity;
+                aimReticle.transform.localRotation = Quaternion.Euler(gameObject.transform.forward);
             } else
             {
                 //put it really far away

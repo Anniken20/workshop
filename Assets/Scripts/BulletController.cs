@@ -31,9 +31,6 @@ public class BulletController : MonoBehaviour
     public float maxDistance;
     public int maxBounces;
     public float speed;
-    [Tooltip("Hitting objects in these layers will destroy the bullet on contact.")]
-    public LayerMask nonRicochetLayers;
-    public LayerMask passThroughLayers;
     public GameObject bullethole;
     [Tooltip("After this many seconds, the bullethole will disappear. If negative, then never disappear.")]
     public float bulletholeLifetime;
@@ -57,8 +54,15 @@ public class BulletController : MonoBehaviour
     public float camZoomTime;
     [Tooltip("After this duration, the bullet can no longer be redirect.")]
     public float redirectWindowTime;
+    [Tooltip("The camera will follow the redirected bullet for this many seconds before returning to look at the player.")]
+    public float followBulletDuration;
+    [Tooltip("The main camera will look at this transform instead of the player's transform while redirecting")]
+    public Transform redirectLookPoint;
     [Tooltip("The game sleeps for this many milliseconds on redirection.")]
     public int sleepMS;
+    public float shakeIntensity;
+    public float shakeDuration;
+
 
     public void Fire(Transform source, Vector3 dir)
     {
@@ -115,9 +119,21 @@ public class BulletController : MonoBehaviour
         //but on low speed the jump to the wall is noticeable
         if (Physics.Raycast(position, direction, out hitData, speed * 0.15f))
         {
+            //draw bullethole if bullethole layer
+            if (LayerManager.main.IsGunholeLayer(hitData.collider.gameObject))
+            {
+                //not a decal, but kinda works for drawing a small plane
+                GameObject bhole = Instantiate(bullethole, hitData.point + (hitData.normal * 0.01f),
+                    Quaternion.FromToRotation(Vector3.up, hitData.normal));
+                bhole.transform.parent = hitData.collider.transform;
+                if (bulletholeLifetime >= 0)
+                {
+                    Destroy(bhole, bulletholeLifetime);
+                }
+            }
+
             //phase through it if it's a pass-through layer
-            //compare in a weird way because layer masks are bit-flag fields
-            if ((passThroughLayers & 1 << hitData.collider.gameObject.layer) != 0)
+            if (LayerManager.main.IsPassThroughLayer(hitData.collider.gameObject))
             {
                 return;
             }
@@ -129,17 +145,7 @@ public class BulletController : MonoBehaviour
             TryToApplyShootable(hitData.collider.gameObject);
 
             //destroy bullet if object is non-ricochetable
-            //compare in a weird way because layer masks are bit-flags fields
-            if((nonRicochetLayers & 1 << hitData.collider.gameObject.layer)
-                != 0)
-            {
-                //not a decal, but kinda works for drawing a small plane
-                GameObject bhole = Instantiate(bullethole, hitData.point + (hitData.normal * 0.01f),
-                    Quaternion.FromToRotation(Vector3.up, hitData.normal));
-                if(bulletholeLifetime >= 0)
-                {
-                    Destroy(bhole, bulletholeLifetime);
-                }
+            if (LayerManager.main.IsNoRicochetLayer(hitData.collider.gameObject)) {                 
                 gunAudioController.PlayCollision();
                 DestroyBullet();
                 return;
@@ -215,7 +221,7 @@ public class BulletController : MonoBehaviour
         //zoom main cam to look at bullet
         if (!lunaPOVCam)
         {
-            mainCamera.Follow = gameObject.transform;
+            mainCamera.Follow = redirectLookPoint;
             formerCamOrthoSize = mainCamera.m_Lens.OrthographicSize;
 
             //tween camera ortho size to zoom in
@@ -259,6 +265,10 @@ public class BulletController : MonoBehaviour
         //sleeeep
         Thread.Sleep(sleepMS);
 
+        //screenshake
+        ScreenShakeScript ss = mainCamera.gameObject.GetComponent<ScreenShakeScript>();
+        if (ss != null) ss.ShakeCam(shakeIntensity, shakeDuration);
+
         //hide luna
         luna.SetActive(false);
 
@@ -271,6 +281,22 @@ public class BulletController : MonoBehaviour
         //resume bullet movement
         inLunaMode = false;
 
+        StartCoroutine(ResetCam());
+
+        //reset trailrenderer to previously saved value
+        GetComponent<TrailRenderer>().time = trailRendererTime;
+
+        //reset bullet speed to normal
+        speed *= 10f;
+
+        //disable line renderer
+        aimLineRenderer.positionCount = 1;
+    }
+
+    //change from luna cam to normal cam after some period of time
+    private IEnumerator ResetCam(bool instant = false)
+    {
+        if(!instant) yield return new WaitForSeconds(followBulletDuration);
         if (lunaPOVCam)
         {
             //set transition speed for camera
@@ -290,15 +316,6 @@ public class BulletController : MonoBehaviour
             //insta snap
             //mainCamera.m_Lens.OrthographicSize = formerCamOrthoSize;
         }
-
-        //reset trailrenderer to previously saved value
-        GetComponent<TrailRenderer>().time = trailRendererTime;
-
-        //reset bullet speed to normal
-        speed *= 10f;
-
-        //disable line renderer
-        aimLineRenderer.positionCount = 1;
     }
 
     private IEnumerator DrawLunaLineRoutine()
@@ -343,7 +360,8 @@ public class BulletController : MonoBehaviour
 
     private void DestroyBullet()
     {
-        //can eventually do something cooler like make a dud noise
+        //instantly reset cam instead of waiting, since this script will be destroyed this frame.
+        StartCoroutine(ResetCam(true));
         Destroy(gameObject);
     }
 
