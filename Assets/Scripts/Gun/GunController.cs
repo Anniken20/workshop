@@ -11,6 +11,8 @@ using StarterAssets;
  * Shoot gun in isometric setup with ricochet capabilities
  * Includes option to redirect most recent bullet fired in mid-air within a time window
  * 
+ * Ghost ammo of (3) bullets. Takes time before bullets return back to player
+ * 
  * 
  * Closely related to BulletController script and AimController script
  * 
@@ -43,13 +45,15 @@ public class GunController : MonoBehaviour
         "\nIf time elapses, the bullet slips away at its current redirect angle.")]
     public float lunaWindowTime;
 
-    //private vars
+    //hidden vars
     [HideInInspector] public bool canShoot = true;
     private Vector3 aimAngle;
     private GameObject mostRecentBullet;
     private bool lunaMode;
     private Animator animator;
     private ThirdPersonController thirdPersonController;
+    private int ghostAmmo;
+    private int maxGhostAmmo = 3;
 
     private void Start()
     {
@@ -60,6 +64,8 @@ public class GunController : MonoBehaviour
             reducedSpeedFactor = 0.5f;
             Debug.LogWarning("reducedSpeedFactor field of GunController on Player was 0. Set to 0.5 Teehee!");
         }
+
+        ghostAmmo = maxGhostAmmo;
     }
 
     private void Update()
@@ -68,7 +74,8 @@ public class GunController : MonoBehaviour
     }
 
     private void GetInput()
-    {   
+    {
+        if (PauseMenu.paused) return;
         
         //get angle data from 1 script, so it will be consistent across lasso/gun
         aimAngle = aimController.GetAimAngle();
@@ -98,19 +105,32 @@ public class GunController : MonoBehaviour
 
             if (!canShoot) return;
 
-            //otherwise fire new bullet                
-            StartCoroutine(FreezePlayerRoutine());
+            //otherwise fire new bullet
             FireGun();
         }
     }
 
     private void FireGun()
     {
+        if (!HasAmmo())
+        {
+            Misfire();
+            return;
+        }
+
+        //slow player down temporarily
+        StartCoroutine(FreezePlayerRoutine());
+
+        //animation trigger
         anim = GetComponent<Animator>();
         anim.Play("Shoot");
+
         //instantiate and fire bullet
         GameObject bullet = Instantiate(bulletPrefab);
         BulletController bulletController = bullet.GetComponent<BulletController>();
+        bulletController.mainCamera = playerFollowCam;
+        bulletController.playerCamRoot = playerCamRoot;
+        bulletController.player = gameObject;
         bulletController.Fire(gameObject.transform, aimAngle);
 
         //store this so we know which bullet to redirect
@@ -118,15 +138,13 @@ public class GunController : MonoBehaviour
 
         //pass in the information of the main cam, target, and player
         //so we know how to modify properly
-        bulletController.mainCamera = playerFollowCam;
-        bulletController.playerCamRoot = playerCamRoot;
-        bulletController.player = gameObject;
+        
          //anim = GetComponent<Animator>();
        // anim.SetBool("isShooting", false);
 
         //trigger animation trigger
-        animator.SetTrigger("shootTrigger");
-
+        //animator.SetTrigger("shootTrigger");
+        ghostAmmo--;
     }
 
     //slow down the player speed by some factor
@@ -148,7 +166,6 @@ public class GunController : MonoBehaviour
     public void ReenableShooting()
     {
         canShoot = true;
-
         //will eventually make our HUD yay
     }
 
@@ -196,6 +213,23 @@ public class GunController : MonoBehaviour
 
         FinishRedirect();
     }
+
+    public void RestoreBullet()
+    {
+        ghostAmmo++;
+    }
+
+    private void Misfire()
+    {
+        Debug.Log("You don't have enough bullets.");
+    }
+
+    private bool HasAmmo()
+    {
+        return ghostAmmo > 0;
+    }
+
+
     private void Awake(){
         iaControls = new CharacterMovement();
     }
