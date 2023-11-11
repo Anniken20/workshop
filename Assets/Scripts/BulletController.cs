@@ -266,8 +266,8 @@ public class BulletController : MonoBehaviour
         Thread.Sleep(sleepMS);
 
         //screenshake
-        ScreenShakeScript ss = GetComponentInChildren<ScreenShakeScript>();
-        ss.ShakeCam(shakeIntensity, shakeDuration);
+        ScreenShakeScript ss = mainCamera.gameObject.GetComponent<ScreenShakeScript>();
+        if (ss != null) ss.ShakeCam(shakeIntensity, shakeDuration);
 
         //hide luna
         luna.SetActive(false);
@@ -294,9 +294,9 @@ public class BulletController : MonoBehaviour
     }
 
     //change from luna cam to normal cam after some period of time
-    private IEnumerator ResetCam()
+    private IEnumerator ResetCam(bool instant = false)
     {
-        yield return new WaitForSeconds(followBulletDuration);
+        if(!instant) yield return new WaitForSeconds(followBulletDuration);
         if (lunaPOVCam)
         {
             //set transition speed for camera
@@ -360,8 +360,8 @@ public class BulletController : MonoBehaviour
 
     private void DestroyBullet()
     {
-        if (inLunaMode) Redirect();
-        //can eventually do something cooler like make a dud noise
+        //instantly reset cam instead of waiting, since this script will be destroyed this frame.
+        StartCoroutine(ResetCam(true));
         Destroy(gameObject);
     }
 
