@@ -3,7 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class EnemyAttackState : EnemyState {
+
+/*
+public class EnemyAttackState : EnemyState
+{
+
+
 
     public EnemyAttackState(Enemy enemy, EnemyStateMachine enemyStateMachine) : base(enemy, enemyStateMachine)
     {
@@ -40,3 +45,4 @@ public class EnemyAttackState : EnemyState {
         return base.ToString();
     }
 }
+*/

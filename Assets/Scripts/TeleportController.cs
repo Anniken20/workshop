@@ -4,10 +4,13 @@ using UnityEngine;
 
 public class TeleportController : MonoBehaviour
 {
-   public GameObject toPoint;
+    public GameObject toPoint;
     private CharacterController characterController;
     private bool isTransitioning = false;
-    public float walkDistance = 1.0f;
+    public float walkDistance = 5.0f;  //Adjust this as needed
+    public float walkDuration = 1.0f;  // Adjust this as needed
+    private Vector3 teleportDestination;
+    private Vector3 intermediatePosition;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -24,32 +27,39 @@ public class TeleportController : MonoBehaviour
 
         characterController.enabled = false;
 
-        //Determines direction player is facing
+        // Calculate the intermediate position just in front of the door
         Vector3 playerForward = player.transform.forward;
+        Vector3 doorPosition = toPoint.transform.position;
+        intermediatePosition = doorPosition - playerForward * walkDistance; 
 
-        //Calculates destination position
-        Vector3 destination = toPoint.transform.position;
+        // Calculate the number of steps based on the walk duration
+        int numSteps = Mathf.FloorToInt(walkDuration / Time.fixedDeltaTime);
+        float stepDistance = Vector3.Distance(player.transform.position, intermediatePosition) / numSteps;
 
-        //Calculates offset position in front of midpoint
-        Vector3 offset = playerForward * walkDistance;
-        Vector3 midpoint = (player.transform.position + offset + destination) / 2f;
-
-        float transitionDuration = 1.0f;
-        float elapsedTime = 0f;
-
-        while (elapsedTime < transitionDuration)
+        // Move the player step by step
+        for (int step = 0; step < numSteps; step++)
         {
-            //Interpolates position to create smoother transition
-            player.transform.position = Vector3.Lerp(player.transform.position, midpoint, elapsedTime / transitionDuration);
+            player.transform.position = Vector3.MoveTowards(player.transform.position, intermediatePosition, stepDistance);
+            yield return new WaitForFixedUpdate();
+        }
 
-            //Rotates player to face same direction
-            player.transform.forward = playerForward;
+        // Store the teleport destination
+        teleportDestination = doorPosition;
 
-            elapsedTime += Time.deltaTime;
+        // Wait for the specified walk duration
+        float startTime = Time.time;
+        float elapsedTime = 0f;
+        while (elapsedTime < walkDuration)
+        {
+            elapsedTime = Time.time - startTime;
             yield return null;
         }
 
-        player.transform.position = destination;
+        // Teleport the player to the final destination
+        player.transform.position = teleportDestination;
+
+        // Wait for a very short moment to avoid jitter
+        yield return new WaitForSeconds(0.1f);
 
         characterController.enabled = true;
 

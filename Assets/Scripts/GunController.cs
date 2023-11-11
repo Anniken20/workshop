@@ -4,6 +4,7 @@ using UnityEngine;
 using Cinemachine;
 using DG.Tweening;
 using UnityEngine.InputSystem;
+using StarterAssets;
 
 /* Core Gun Mechanic for Ghost Moon High Noon
  * 
@@ -26,6 +27,9 @@ public class GunController : MonoBehaviour
     private InputAction redirect;
     public GameObject bulletPrefab;
     public AimController aimController;
+    
+    [Header("Additional Animations")]
+    private Animator anim;
     [Tooltip("Attach the main camera here")]
     public CinemachineVirtualCamera playerFollowCam;
     [Tooltip("Attach the PlayeraCameraRoot object, a child of the Player")]
@@ -33,6 +37,8 @@ public class GunController : MonoBehaviour
 
     [Tooltip("Time in seconds while player is motionless firing gun.")]
     public float fireTime;
+    [Tooltip("For fireTime seconds after firing, the player will speed will multiply by this factor.")]
+    public float reducedSpeedFactor = 0.5f;
     [Tooltip("The amount of time the player has to redirect the shot. " +
         "\nIf time elapses, the bullet slips away at its current redirect angle.")]
     public float lunaWindowTime;
@@ -42,6 +48,19 @@ public class GunController : MonoBehaviour
     private Vector3 aimAngle;
     private GameObject mostRecentBullet;
     private bool lunaMode;
+    private Animator animator;
+    private ThirdPersonController thirdPersonController;
+
+    private void Start()
+    {
+        animator = GetComponent<Animator>();
+        thirdPersonController = GetComponent<ThirdPersonController>();
+        if(reducedSpeedFactor <= 0)
+        {
+            reducedSpeedFactor = 0.5f;
+            Debug.LogWarning("reducedSpeedFactor field of GunController on Player was 0. Set to 0.5 Teehee!");
+        }
+    }
 
     private void Update()
     {
@@ -49,7 +68,8 @@ public class GunController : MonoBehaviour
     }
 
     private void GetInput()
-    {
+    {   
+        
         //get angle data from 1 script, so it will be consistent across lasso/gun
         aimAngle = aimController.GetAimAngle();
 
@@ -86,6 +106,8 @@ public class GunController : MonoBehaviour
 
     private void FireGun()
     {
+        anim = GetComponent<Animator>();
+        anim.Play("Shoot");
         //instantiate and fire bullet
         GameObject bullet = Instantiate(bulletPrefab);
         BulletController bulletController = bullet.GetComponent<BulletController>();
@@ -99,22 +121,27 @@ public class GunController : MonoBehaviour
         bulletController.mainCamera = playerFollowCam;
         bulletController.playerCamRoot = playerCamRoot;
         bulletController.player = gameObject;
+         //anim = GetComponent<Animator>();
+       // anim.SetBool("isShooting", false);
+
+        //trigger animation trigger
+        animator.SetTrigger("shootTrigger");
 
     }
 
+    //slow down the player speed by some factor
     private IEnumerator FreezePlayerRoutine()
     {
-        //PlayerController.main.firingGun = true;
+        thirdPersonController.ChangeSpeedByFactor(reducedSpeedFactor);
         canShoot = false;
         yield return new WaitForSeconds(fireTime);
         canShoot = true;
-        //PlayerController.main.firingGun = false;
+        thirdPersonController.ChangeSpeedByFactor(1/reducedSpeedFactor);
     }
 
     public void DisableShooting()
     {
         canShoot = false;
-
         //will eventually disable/grey out gun HUD
     }
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
+/*
 public class EnemyState
 {
     protected Enemy enemy;
@@ -22,3 +23,4 @@ public class EnemyState
     public virtual void AnimationTriggerEvent(Enemy.AnimationTriggerType triggerType) {} 
 
 }
+*/

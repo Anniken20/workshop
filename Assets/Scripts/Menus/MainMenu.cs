@@ -9,7 +9,7 @@ public class MainMenu : MonoBehaviour
 
     public void PlayButton()
     {
-        SceneManager.LoadScene("GameplayPrototype");
+        SceneManager.LoadScene("VSLevel");
     }
 
     public void SettingsButton()
@@ -20,7 +20,7 @@ public class MainMenu : MonoBehaviour
 
     public void StartGame()
     {
-        SceneManager.LoadScene("Level 1");
+        SceneManager.LoadScene("VSLevel");
     }
 
     public void LoadHub()
