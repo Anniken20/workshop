@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-
+/*
 public class EnemyPacingState : EnemyState
 {
     private float currentTimer;
@@ -57,3 +57,4 @@ public class EnemyPacingState : EnemyState
         base.PhysicsUpdate();
     }
 }
+*/

@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Enemy : MonoBehaviour
+
+/*
+ * public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable
+
 {
     [Header("Global")]
     public float maxHealth = 100f;
@@ -42,3 +45,4 @@ public class Enemy : MonoBehaviour
         Destroy(gameObject);
     }
 }
+*/

@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/*
 public class IdleTrigger : MonoBehaviour
 {
     private Boring enemy;
@@ -27,3 +27,4 @@ public class IdleTrigger : MonoBehaviour
         }
     }
 }
+*/

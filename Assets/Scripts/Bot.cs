@@ -7,7 +7,7 @@ using UnityEngine.AI;
 !Has bugs!
 Sometimes unpredictable ones
 
-Last edited by 11/02/23 Anniken creator of said AI
+Last edited by 11/02/23 Anniken 
 */
 public class Bot : MonoBehaviour
 {
