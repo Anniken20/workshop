@@ -1,4 +1,4 @@
-/*using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -57,4 +57,3 @@ public class EnemyShootState : EnemyState
         nextFireTime = Time.time + 1 / fireRate;
     }
 }
-*/

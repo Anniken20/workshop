@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-
-/*
- * public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable
+public class Enemy : MonoBehaviour
 
 {
     [Header("Global")]
     public float maxHealth = 100f;
     [HideInInspector] public float currentHealth;
     [HideInInspector] public EnemyStateMachine stateMachine;
+
+    public float DefaultMovementSpeed;
 
     protected void MyAwake()
     {
@@ -45,4 +45,3 @@ using UnityEngine.AI;
         Destroy(gameObject);
     }
 }
-*/

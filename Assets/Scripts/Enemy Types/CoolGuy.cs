@@ -1,14 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
 
-public class Boring : Enemy
+public class CoolGuy : Enemy
 {
     [HideInInspector] public EnemyIdleState idleState;
     [HideInInspector] public EnemyAttackState attackState;
     [HideInInspector] public EnemyPacingState pacingState;
-    [HideInInspector] public EnemyAOEAttackState enemyAOEAttackState;
 
     [Header("Pacing Variables")]
     public Vector2 frequencyBounds = new Vector2(2f, 6f);
@@ -20,7 +18,6 @@ public class Boring : Enemy
         idleState = new EnemyIdleState(this, stateMachine);
         attackState = new EnemyAttackState(this, stateMachine);
         pacingState = new EnemyPacingState(this, stateMachine);
-        enemyAOEAttackState = new EnemyAOEAttackState(this, stateMachine);
 
         //set default state
         stateMachine.Initialize(pacingState);
@@ -35,12 +32,4 @@ public class Boring : Enemy
     {
         stateMachine.ChangeState(pacingState);
     }
-
-    public void EnterAOEState()
-    {
-        if (currentHealth < 10) return;
-
-        stateMachine.ChangeState(enemyAOEAttackState);
-    }
 }
-
