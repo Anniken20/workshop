@@ -305,7 +305,7 @@ public class BulletController : MonoBehaviour
     private void ExitLunaModeEarly()
     {
         //hide luna
-        luna.SetActive(false);
+        if(luna != null) luna.SetActive(false);
 
         //unlock our player movement
         player.GetComponent<ThirdPersonController>()._lunaLocked = false;
