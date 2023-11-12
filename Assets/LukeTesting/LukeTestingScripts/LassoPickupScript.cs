@@ -61,14 +61,14 @@ public class LassoPickupScript : MonoBehaviour, ILassoable
     private GunController gunCon;
 
     private LayerMask playerLayer;
-    // commented out this for rn
+    private Vector3 startPos;
     
 
 
 
 
     private void Start(){
-        
+        startPos = transform.position;
         //playerLayer = LayerMask.GetMask("Player");
         mainCam = Camera.main;
         internalThrowWindow = throwWindow;
@@ -106,6 +106,7 @@ public class LassoPickupScript : MonoBehaviour, ILassoable
         if(inCombat && internalThrowWindow <= 0){
             LaunchToCursor();
             throwEnabled = false;
+            player.endThrow = true;
 
         }
 
@@ -121,23 +122,13 @@ public class LassoPickupScript : MonoBehaviour, ILassoable
             DropObject();
         }
 
-        /*if(Input.GetKeyDown(KeyCode.F) && !inCombat){
-            manipulateObject = true;
-            playerForward = player.transform.forward;
-            //attachOrigin = attachPoint;
-        }
-        else if(Input.GetKeyUp(KeyCode.F) && !inCombat){
-            manipulateObject = false;
-            //attachPoint.transform.position = attachOrigin.transform.position;
-        }*/
-
         iaControls.CharacterControls.Manipulate.started += OnManipulateStart;
         iaControls.CharacterControls.Manipulate.canceled += OnManipulateEnd;
 
         player.holdingItem = lassoActive;
     }
     public void Lassoed(Transform lassoAttachPoint, bool active, GameObject otherObject){
-        //gunCon.DisableShooting();
+        gunCon.DisableShooting();
         if(!inCombat){
             //rb.excludeLayers = playerLayer;
             lassoActive = active;
@@ -181,6 +172,7 @@ public class LassoPickupScript : MonoBehaviour, ILassoable
             throwing = true;
             player.lassoCombatAiming.SetActive(false);
             lassoActive = false;
+            gunCon.ReenableShooting();
     }
     public void DropObject(){
         player.startLassoCooldown = true;
@@ -193,6 +185,16 @@ public class LassoPickupScript : MonoBehaviour, ILassoable
         player.drawToLasso = false;
         player.drawToLassoLine.enabled = false;
         lassoObject.GetComponent<LassoDetection>().recall = true;
+        player.endThrow = true;
+        gunCon.ReenableShooting();
+        RaycastHit hit;
+        if(Physics.Raycast(transform.position, (player.gameObject.transform.position - transform.position), out hit)){
+            if(hit.transform.gameObject.GetComponent<CharacterController>() == null){
+                transform.position = startPos;
+            }
+
+            
+        }
     }
 
     private void FixedUpdate(){

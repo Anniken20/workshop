@@ -23,6 +23,7 @@ public class LassoDetection : MonoBehaviour
     public AudioClip missSound;
     private bool playMissOnce;
     private bool allowPickup;
+
     
     void Update()
     {
@@ -39,10 +40,10 @@ public class LassoDetection : MonoBehaviour
             rotation.x = 0;
             rotation.z = 0;
             transform.rotation = rotation;
-            if(!pickupScript.manipulateObject){
+            if(!pickupScript.manipulateObject && player.GetComponent<LassoGrappleScript>().grapple != true && player.GetComponent<LassoGrappleScript>().canLasso == true){
                 otherObject.transform.rotation = transform.rotation;
             }
-            else{
+            else if(player.GetComponent<LassoGrappleScript>().grapple != true && player.GetComponent<LassoGrappleScript>().grappling != true && player.GetComponent<LassoGrappleScript>().canLasso == true){
                 transform.rotation = otherObject.transform.rotation;
             }
 
@@ -78,13 +79,9 @@ public class LassoDetection : MonoBehaviour
             Vector3 otherExtents = other.bounds.extents;
             if(transform.position.y>= (otherExtents.y) * 2){
                 
-                //Destroy(gameObject);
                 GetComponent<Rigidbody>().isKinematic = true;
                 onObject = true;
                 otherObject = other.gameObject;
-                //transform.position = other.transform.position;
-                //lassoController.drawToLasso = false;
-                //lassoController.drawToLassoLine.enabled = false;
                 lassoable.Lassoed(lassoAttachPoint, lassoActive, other.gameObject);
             }
             else{
@@ -94,12 +91,17 @@ public class LassoDetection : MonoBehaviour
             }
         }
         else if(other.gameObject.CompareTag("Grapple")){
+            onObject = true;
+            otherObject = other.gameObject;
             //AudioManager.main.Play(AudioManager.AudioSourceChannel.SFX, grappleSound);
             grappleScript.Grappled(lassoActive, other.transform.gameObject);
             hitObject = true;
-            Destroy(gameObject);
+            //Destroy(gameObject);
+            GetComponent<Rigidbody>().isKinematic = true;
             lassoController.drawToLasso = false;
             lassoController.drawToLassoLine.enabled = false;
+            player.GetComponent<LassoGrappleScript>().lassoConnectPoint = lassoAttachPoint;
+
         }
         else if(other.gameObject.tag != "Player" && onObject == false || other.gameObject.tag != "Player" && onObject == true && otherObject.GetComponent<LassoPickupScript>().manipulateObject){
             lassoController.drawToLasso = false;
