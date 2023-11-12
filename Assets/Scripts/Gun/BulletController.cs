@@ -34,6 +34,7 @@ public class BulletController : MonoBehaviour
     public GameObject bullethole;
     [Tooltip("After this many seconds, the bullethole will disappear. If negative, then never disappear.")]
     public float bulletholeLifetime;
+    public GameObject ghostBullet;
 
     [Header("Damage")]
     public float baseDmg = 50f;
@@ -117,11 +118,13 @@ public class BulletController : MonoBehaviour
         //if hits object, ricochet
         //scale with speed because higher speed means more likely to clip through walls
         //but on low speed the jump to the wall is noticeable
-        if (Physics.Raycast(position, direction, out hitData, speed * 0.15f))
+        if (Physics.Raycast(position, direction, out hitData, speed * 0.05f))
         {
             //draw bullethole if bullethole layer
             if (LayerManager.main.IsGunholeLayer(hitData.collider.gameObject))
             {
+                transform.position = hitData.point;
+
                 //not a decal, but kinda works for drawing a small plane
                 GameObject bhole = Instantiate(bullethole, hitData.point + (hitData.normal * 0.01f),
                     Quaternion.FromToRotation(Vector3.up, hitData.normal));
@@ -145,7 +148,8 @@ public class BulletController : MonoBehaviour
             TryToApplyShootable(hitData.collider.gameObject);
 
             //destroy bullet if object is non-ricochetable
-            if (LayerManager.main.IsNoRicochetLayer(hitData.collider.gameObject)) {                 
+            if (LayerManager.main.IsNoRicochetLayer(hitData.collider.gameObject)) {
+                transform.position = hitData.point;
                 gunAudioController.PlayCollision();
                 DestroyBullet();
                 return;
@@ -160,25 +164,30 @@ public class BulletController : MonoBehaviour
                 }
             }
 
-            //teleport to point to prevent inconsistency from sometimes bouncing early
-            position = hitData.point;
-
-            //reflect over the normal of the collision
-            direction = Vector3.Reflect(direction, hitData.normal);
-
-            //rotate to point in right direction
-            gameObject.transform.LookAt(gameObject.transform.position + (direction * 10));
-
-            //increment bounces
-            currBounces++;
-
-            //multiply dmg
-            currDmg *= bounceDmgMultiplier;
-            currDmg = Mathf.Clamp(currDmg, 0, maxDmg);
-
-            //play sound
-            gunAudioController.PlayRicochet("CUTE", currBounces-1);
+            Bounce(hitData);
         }
+    }
+
+    private void Bounce(RaycastHit hitData)
+    {
+        //teleport to point to prevent inconsistency from sometimes bouncing early
+        position = hitData.point;
+
+        //reflect over the normal of the collision
+        direction = Vector3.Reflect(direction, hitData.normal);
+
+        //rotate to point in right direction
+        gameObject.transform.LookAt(gameObject.transform.position + (direction * 10));
+
+        //increment bounces
+        currBounces++;
+
+        //multiply dmg
+        currDmg *= bounceDmgMultiplier;
+        currDmg = Mathf.Clamp(currDmg, 0, maxDmg);
+
+        //play sound
+        gunAudioController.PlayRicochet("CUTE", currBounces - 1);
     }
 
     private void TryToApplyDamage(GameObject obj)
@@ -247,7 +256,7 @@ public class BulletController : MonoBehaviour
         trailRenderer.time *= 10f;
 
         //while in luna mode, make bullet move slowly
-        speed = speed / 10f;
+        speed /= 10f;
 
         //enable line renderer
         aimLineRenderer.positionCount = 2;
@@ -288,6 +297,29 @@ public class BulletController : MonoBehaviour
 
         //reset bullet speed to normal
         speed *= 10f;
+
+        //disable line renderer
+        aimLineRenderer.positionCount = 1;
+    }
+
+    private void ExitLunaModeEarly()
+    {
+        //hide luna
+        luna.SetActive(false);
+
+        //unlock our player movement
+        player.GetComponent<ThirdPersonController>()._lunaLocked = false;
+
+        //unlock our player aiming
+        player.GetComponent<AimController>().inLuna = false;
+
+        //resume bullet movement
+        inLunaMode = false;
+
+        StartCoroutine(ResetCam(true));
+
+        //reset trailrenderer to previously saved value
+        GetComponent<TrailRenderer>().time = trailRendererTime;
 
         //disable line renderer
         aimLineRenderer.positionCount = 1;
@@ -361,7 +393,15 @@ public class BulletController : MonoBehaviour
     private void DestroyBullet()
     {
         //instantly reset cam instead of waiting, since this script will be destroyed this frame.
-        StartCoroutine(ResetCam(true));
+        ExitLunaModeEarly();
+
+        //spawn ghost bullet
+        GameObject ghost = Instantiate(ghostBullet);
+        ghost.transform.position = gameObject.transform.position;
+        Debug.Log("Bullet pos: " + gameObject.transform.position + ", Ghost bullet pos: " + ghost.transform.position);
+        ghost.GetComponent<GhostBulletController>().Spawn(player);
+
+        //destroy this object
         Destroy(gameObject);
     }
 
