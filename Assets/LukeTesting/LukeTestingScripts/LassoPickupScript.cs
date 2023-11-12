@@ -189,7 +189,7 @@ public class LassoPickupScript : MonoBehaviour, ILassoable
         gunCon.ReenableShooting();
         RaycastHit hit;
         if(Physics.Raycast(transform.position, (player.gameObject.transform.position - transform.position), out hit)){
-            if(hit.transform.gameObject.GetComponent<CharacterController>() == null){
+            if(hit.transform.gameObject.layer == LayerMask.NameToLayer("Wall")){
                 transform.position = startPos;
             }
 
