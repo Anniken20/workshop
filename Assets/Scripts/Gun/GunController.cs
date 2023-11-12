@@ -44,6 +44,7 @@ public class GunController : MonoBehaviour
     [Tooltip("The amount of time the player has to redirect the shot. " +
         "\nIf time elapses, the bullet slips away at its current redirect angle.")]
     public float lunaWindowTime;
+    public int maxGhostAmmo = 5;
 
     //hidden vars
     [HideInInspector] public bool canShoot = true;
@@ -53,7 +54,6 @@ public class GunController : MonoBehaviour
     private Animator animator;
     private ThirdPersonController thirdPersonController;
     private int ghostAmmo;
-    private int maxGhostAmmo = 3;
 
     private void Start()
     {

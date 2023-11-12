@@ -42,7 +42,9 @@ public class GhostBulletController : MonoBehaviour
         while (true)
         {
             gameObject.transform.position = 
-                Vector3.MoveTowards(gameObject.transform.position, _player.transform.position, currSpeed * Time.deltaTime);
+                Vector3.MoveTowards(gameObject.transform.position, 
+                _player.transform.position + new Vector3(0f, 1f), 
+                currSpeed * Time.deltaTime);
 
             //ramp up speed by some factor
             currSpeed *= 1f + (retrievalAcceleration * Time.deltaTime);
@@ -62,12 +64,12 @@ public class GhostBulletController : MonoBehaviour
 
     private bool ReachedPlayer()
     {
-        return Vector3.Distance(transform.position, _player.transform.position) < 0.1f;
+        return Vector3.Distance(transform.position, _player.transform.position + new Vector3(0f, 1f)) < 0.5f;
     }
 
     private void Despawn()
     {
-        AudioManager.main.Play(AudioManager.AudioSourceChannel.SFX, retrieveSounds[(int)Random.Range(0, spawnSounds.Length)]);
+        AudioManager.main.Play(AudioManager.AudioSourceChannel.SFX, retrieveSounds[0]);
         _gunController.RestoreBullet();
         Destroy(gameObject);
     }

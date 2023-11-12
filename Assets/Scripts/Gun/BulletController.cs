@@ -123,7 +123,7 @@ public class BulletController : MonoBehaviour
             //draw bullethole if bullethole layer
             if (LayerManager.main.IsGunholeLayer(hitData.collider.gameObject))
             {
-                transform.position = hitData.collider.transform.position;
+                transform.position = hitData.point;
 
                 //not a decal, but kinda works for drawing a small plane
                 GameObject bhole = Instantiate(bullethole, hitData.point + (hitData.normal * 0.01f),
@@ -149,7 +149,7 @@ public class BulletController : MonoBehaviour
 
             //destroy bullet if object is non-ricochetable
             if (LayerManager.main.IsNoRicochetLayer(hitData.collider.gameObject)) {
-                transform.position = hitData.collider.transform.position;
+                transform.position = hitData.point;
                 gunAudioController.PlayCollision();
                 DestroyBullet();
                 return;
@@ -302,6 +302,29 @@ public class BulletController : MonoBehaviour
         aimLineRenderer.positionCount = 1;
     }
 
+    private void ExitLunaModeEarly()
+    {
+        //hide luna
+        luna.SetActive(false);
+
+        //unlock our player movement
+        player.GetComponent<ThirdPersonController>()._lunaLocked = false;
+
+        //unlock our player aiming
+        player.GetComponent<AimController>().inLuna = false;
+
+        //resume bullet movement
+        inLunaMode = false;
+
+        StartCoroutine(ResetCam(true));
+
+        //reset trailrenderer to previously saved value
+        GetComponent<TrailRenderer>().time = trailRendererTime;
+
+        //disable line renderer
+        aimLineRenderer.positionCount = 1;
+    }
+
     //change from luna cam to normal cam after some period of time
     private IEnumerator ResetCam(bool instant = false)
     {
@@ -370,11 +393,12 @@ public class BulletController : MonoBehaviour
     private void DestroyBullet()
     {
         //instantly reset cam instead of waiting, since this script will be destroyed this frame.
-        StartCoroutine(ResetCam(true));
+        ExitLunaModeEarly();
 
         //spawn ghost bullet
         GameObject ghost = Instantiate(ghostBullet);
         ghost.transform.position = gameObject.transform.position;
+        Debug.Log("Bullet pos: " + gameObject.transform.position + ", Ghost bullet pos: " + ghost.transform.position);
         ghost.GetComponent<GhostBulletController>().Spawn(player);
 
         //destroy this object
