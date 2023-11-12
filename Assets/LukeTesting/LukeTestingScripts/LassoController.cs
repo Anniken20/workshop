@@ -79,6 +79,8 @@ public class LassoController : MonoBehaviour
         if(endThrow){
             animator.SetBool("isThrowing", false);
             animator.SetBool("isLassoing", false);
+            endThrow = false;
+            
         }
         if(cancel.triggered){
             CancelAiming();
