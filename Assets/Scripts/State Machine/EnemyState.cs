@@ -16,6 +16,14 @@ public class EnemyState : MonoBehaviour
         this.enemyStateMachine = enemyStateMachine;
         this.nav = enemy.GetComponent<NavMeshAgent>();
     }
+
+    public void Initialize(Enemy enemy, EnemyStateMachine enemyStateMachine)
+    {
+        this.enemy = enemy;
+        this.enemyStateMachine = enemyStateMachine;
+        this.nav = enemy.GetComponent<NavMeshAgent>();
+    }
+
     public virtual void EnterState() {}
     public virtual void ExitState() {}
     public virtual void FrameUpdate() {}

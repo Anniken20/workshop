@@ -66,4 +66,23 @@ public class EnemyAOEAttackState : EnemyState
         // Set the cooldown for the next AOE attack
         nextAttackTime = Time.time + attackCooldown;
     }
+
+    public void SetupAttackData(GameObject aoeAttackPrefab, Transform aoeAttackPoint, float aoeRadius, float attackCooldown)
+    {
+        this.aoeAttackPrefab = aoeAttackPrefab;
+        this.aoeAttackPoint = aoeAttackPoint;
+        this.aoeRadius = aoeRadius;
+        this.attackCooldown = attackCooldown;
+    }
+
+    //testing out scriptable objects. didnt quite work work game object and transform references -------------
+    /*
+    public void SetupAttackData(AOEAttackData data)
+    {
+        aoeAttackPrefab = data.aoeAttackPrefab;
+        aoeAttackPoint = data.aoeAttackPoint;
+        aoeRadius = data.aoeRadius;
+        attackCooldown = data.attackCooldown;
+    }
+    */
 }
