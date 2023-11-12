@@ -10,7 +10,7 @@ public class LassoGrappleScript : MonoBehaviour, IGrappleable
     private InputAction lasso;
     private InputAction cancel;
 
-    private bool grapple;
+    [HideInInspector] public bool grapple;
     private GameObject grapplePoint;
     //[SerializeField] float breakDistance = 3.0f;
     [SerializeField] float boostSpeed;
@@ -23,7 +23,7 @@ public class LassoGrappleScript : MonoBehaviour, IGrappleable
     private Vector3 lassoOrigin;
     private LassoController lassoCon;
 
-    private bool grappling;
+    [HideInInspector] public bool grappling;
 
     public bool canLasso = true;
 
@@ -40,6 +40,9 @@ public class LassoGrappleScript : MonoBehaviour, IGrappleable
 
     [SerializeField] float cancelDistance;
     private float walkSpeed;
+
+    [HideInInspector] public Transform lassoConnectPoint;
+    private GameObject lassoObject;
     
 
 
@@ -81,16 +84,18 @@ public class LassoGrappleScript : MonoBehaviour, IGrappleable
 
 
         if(grapple){
+            lassoObject.transform.position = grapplePoint.transform.position;
             lineRend.enabled = true;
             Vector3[] grappleConPos = new Vector3[3];
             grappleConPos[0] = lassoCon.lassoHipLocation.transform.position;
             grappleConPos[1] = lassoCon.lassoHandLocation.transform.position;
-            //grappleConPos[1] = lassoOrigin;
-            grappleConPos[2] = grapplePoint.transform.position;
+
+            //grappleConPos[2] = grapplePoint.transform.position;
+
+            grappleConPos[2] = lassoConnectPoint.position;
+
             lineRend.positionCount = grappleConPos.Length;
             lineRend.SetPositions(grappleConPos);
-            //lineRend.SetPosition(0, lassoOrigin);
-            //lineRend.SetPosition(1, grapplePoint.transform.position);
         }
     }
 
@@ -138,8 +143,13 @@ public class LassoGrappleScript : MonoBehaviour, IGrappleable
     }
 
     private void EndGrapple(){
-        Debug.Log("Ending");
         grappling = false;
+        if(lassoObject != null){
+            lassoObject.GetComponent<LassoDetection>().recall = true;
+        }
+        lassoCon.endThrow = true;
+        Debug.Log("Ending");
+        //grappling = false;
         grapple = false;
         if(gJoint != null){
             Destroy(gJoint);
@@ -162,6 +172,8 @@ public class LassoGrappleScript : MonoBehaviour, IGrappleable
     }
 
     private void Update(){
+        lassoObject = GetComponent<LassoController>().projectile;
+        lassoConnectPoint = GetComponent<LassoController>().connectPoint;
         //Debug.Log(Vector3.Distance(gameObject.transform.position, gPoint));
         if(grapple){
             iaControls.CharacterControls.Lasso.started += StartGrapple;
@@ -187,84 +199,21 @@ public class LassoGrappleScript : MonoBehaviour, IGrappleable
 
     private IEnumerator EndDelay(){
         yield return new WaitForSeconds(0.5f);
+        EnableChar();
         canLasso = true;
     }
 
     private void OnCollisionEnter(Collision other){
         if(detectCol){
-            GetComponent<ThirdPersonController>().enabled = true;
-            GetComponent<CharacterController>().enabled = true;
-            GetComponent<Rigidbody>().velocity = Vector3.zero;
+            EnableChar();
         }
+    }
+
+    private void EnableChar(){
+        GetComponent<ThirdPersonController>().enabled = true;
+        GetComponent<CharacterController>().enabled = true;
+        GetComponent<Rigidbody>().velocity = Vector3.zero;
     }
 
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-    private IEnumerator HookLifetime(){
-        GetComponent<CharacterController>().enabled = false;
-        yield return new WaitForSeconds(8f);
-        lineRend.enabled = false;
-        grapple = false;
-        rb.velocity = Vector3.zero;
-        GetComponent<CharacterController>().enabled = true;
-    }
-
-    private void Update(){
-        if(grapplePoint != null){
-            float distance = Vector3.Distance(transform.position, grapplePoint.transform.position);
-            //Debug.Log(distance);
-            if(distance <= breakDistance){
-                //Debug.Log("Breaking off");
-                grapple = false;
-                lineRend.enabled = false;
-                rb.velocity = Vector3.zero;
-                GetComponent<CharacterController>().enabled = true;
-            }
-        }
-        if(grapple){
-            //lineRend.enabled = true;
-            //lineRend.SetPosition(0, lassoOrigin);
-            //lineRend.SetPosition(1, grapplePoint.transform.position);
-            internalCheckDelay -= Time.deltaTime;
-        }
-        else{
-            internalCheckDelay = checkCollisionDelay;
-        }
-
-        if(Input.GetMouseButtonUp(1)){
-            grapple = false;
-            GetComponent<CharacterController>().enabled = true;
-            rb.velocity = Vector3.zero;
-            lineRend.enabled = false;
-        }
-    }
-
-    private void OnCollisionEnter(Collision other){
-        if(internalCheckDelay <= 0){
-            grapple = false;
-            lineRend.enabled = false;
-            GetComponent<CharacterController>().enabled = true;
-        }
-    }
-}*/
-
