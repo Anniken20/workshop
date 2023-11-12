@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.AI;
 
 
-/*
 public class EnemyAttackState : EnemyState
 {
 
@@ -45,4 +44,4 @@ public class EnemyAttackState : EnemyState
         return base.ToString();
     }
 }
-*/
+

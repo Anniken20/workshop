@@ -156,6 +156,7 @@ public class AimController : MonoBehaviour
     {
         if (!useAimReticle) return;
         if (PauseMenu.paused) return;
+
         bool hitSomething = Physics.Raycast(shootPoint.position, angle, out RaycastHit hitData, 100f, LayerManager.main.shootableLayers);
         if (hitSomething)
         {
