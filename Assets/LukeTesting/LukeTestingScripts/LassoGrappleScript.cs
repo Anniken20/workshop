@@ -100,6 +100,7 @@ public class LassoGrappleScript : MonoBehaviour, IGrappleable
     }
 
     private void StartGrapple(InputAction.CallbackContext context){
+        StopAllCoroutines();
         Debug.Log("starting");
         detectCol = false;
         GetComponent<Rigidbody>().AddForce((grapplePoint.transform.position - transform.position) * boostSpeed, ForceMode.VelocityChange);
@@ -157,6 +158,7 @@ public class LassoGrappleScript : MonoBehaviour, IGrappleable
         lineRend.enabled = false;
         detectCol = true;
         StartCoroutine(EndDelay());
+        StartCoroutine(CharDelay());
     }
     private void OnEnable(){
         lasso = iaControls.CharacterControls.Lasso;
@@ -198,9 +200,12 @@ public class LassoGrappleScript : MonoBehaviour, IGrappleable
     }
 
     private IEnumerator EndDelay(){
-        yield return new WaitForSeconds(0.5f);
-        EnableChar();
+        yield return new WaitForSeconds(0.2f);
         canLasso = true;
+    }
+    private IEnumerator CharDelay(){
+        yield return new WaitForSeconds(1.5f);
+        EnableChar();
     }
 
     private void OnCollisionEnter(Collision other){
