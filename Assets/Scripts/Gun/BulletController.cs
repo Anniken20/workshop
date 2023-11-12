@@ -237,8 +237,6 @@ public class BulletController : MonoBehaviour
             DOTween.To(() => mainCamera.m_Lens.OrthographicSize, 
                 x => mainCamera.m_Lens.OrthographicSize = x, 
                 lunaCamOrthoSize, camZoomTime).SetEase(Ease.OutCubic);
-            
-            //insta snap
             //mainCamera.m_Lens.OrthographicSize = lunaCamOrthoSize;
         }
 
@@ -344,8 +342,7 @@ public class BulletController : MonoBehaviour
             DOTween.To(() => mainCamera.m_Lens.OrthographicSize,
                 x => mainCamera.m_Lens.OrthographicSize = x,
                 formerCamOrthoSize, camZoomTime).SetEase(Ease.OutCubic);
-
-            //insta snap
+            
             //mainCamera.m_Lens.OrthographicSize = formerCamOrthoSize;
         }
     }
@@ -393,12 +390,11 @@ public class BulletController : MonoBehaviour
     private void DestroyBullet()
     {
         //instantly reset cam instead of waiting, since this script will be destroyed this frame.
-        ExitLunaModeEarly();
+        if(inLunaMode) ExitLunaModeEarly();
 
         //spawn ghost bullet
         GameObject ghost = Instantiate(ghostBullet);
         ghost.transform.position = gameObject.transform.position;
-        Debug.Log("Bullet pos: " + gameObject.transform.position + ", Ghost bullet pos: " + ghost.transform.position);
         ghost.GetComponent<GhostBulletController>().Spawn(player);
 
         //destroy this object
