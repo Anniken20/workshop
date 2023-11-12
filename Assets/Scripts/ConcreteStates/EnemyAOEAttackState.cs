@@ -1,4 +1,4 @@
-/*using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -25,8 +25,6 @@ public class EnemyAOEAttackState : EnemyState
 
     public override void FrameUpdate()
     {
-        base.FrameUpdate();
-
         if (CanPerformAOEAttack())
         {
             PerformAOEAttack();
@@ -69,4 +67,3 @@ public class EnemyAOEAttackState : EnemyState
         nextAttackTime = Time.time + attackCooldown;
     }
 }
-*/

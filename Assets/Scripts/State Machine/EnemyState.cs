@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-/*
-public class EnemyState
+
+public class EnemyState : MonoBehaviour
 {
     protected Enemy enemy;
     protected EnemyStateMachine enemyStateMachine;
@@ -23,4 +23,4 @@ public class EnemyState
     public virtual void AnimationTriggerEvent(Enemy.AnimationTriggerType triggerType) {} 
 
 }
-*/
+

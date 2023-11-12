@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class IdleTrigger : MonoBehaviour
+public class BoringAOETrigger : MonoBehaviour
 {
     private Boring enemy;
 
@@ -13,17 +13,9 @@ public class IdleTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.CompareTag("Player"))
+        if (other.gameObject.GetComponent<BulletController>() != null)
         {
-            enemy.InIdleRange();
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            enemy.BeginPacing();
+            enemy.EnterAOEState();
         }
     }
 }
