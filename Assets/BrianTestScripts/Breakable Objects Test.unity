@@ -4295,6 +4295,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26e54e5a728a9234ab24fcf1460ed8a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  targetSpeed: 0
   MoveSpeed: 2
   SprintSpeed: 5.335
   RotationSmoothTime: 0.12
@@ -5396,7 +5397,10 @@ MonoBehaviour:
   playerFollowCam: {fileID: 2070925443028286826}
   playerCamRoot: {fileID: 8338988565591873048}
   fireTime: 0.4
+  reducedSpeedFactor: 0.5
   lunaWindowTime: 2
+  maxGhostAmmo: 5
+  canShoot: 1
 --- !u!114 &6982812147933622150
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5420,7 +5424,7 @@ MonoBehaviour:
   reticleDistFromCollision: 0
   drawReticleWhenNoCollision: 1
   reticleDistFromPlayer: 5
-  activeIK: 0
+  activeIK: 1
   lookAtTarget: {fileID: 1452989817}
   lookAtRotator: {fileID: 1219796009}
   canAim: 0
