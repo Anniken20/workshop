@@ -72,7 +72,11 @@ public class PauseMenu : MonoBehaviour
 
     public void QuitGame()
     {
-        SceneManager.LoadScene(mainMenuScene);
+        //Continue();
+        //SceneManager.LoadScene(mainMenuScene);
+
+        //temporary fix
+        Application.Quit();
     }
 
     //when not in-game but looking at settings

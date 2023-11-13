@@ -25,6 +25,7 @@ public class BulletController : MonoBehaviour
     private float trailRendererTime;
     private float formerCamOrthoSize;
     private GunAudioController gunAudioController;
+    private bool camFollowingBullet;
 
     //inspector fields --------------------------
     [Header("Stats")]
@@ -259,6 +260,8 @@ public class BulletController : MonoBehaviour
         //enable line renderer
         aimLineRenderer.positionCount = 2;
         StartCoroutine(DrawLunaLineRoutine());
+
+        camFollowingBullet = true;
     }
 
     public void Redirect()
@@ -345,6 +348,7 @@ public class BulletController : MonoBehaviour
             
             //mainCamera.m_Lens.OrthographicSize = formerCamOrthoSize;
         }
+        camFollowingBullet = false;
     }
 
     private IEnumerator DrawLunaLineRoutine()
@@ -390,10 +394,10 @@ public class BulletController : MonoBehaviour
     private void DestroyBullet()
     {
         //instantly reset cam instead of waiting, since this script will be destroyed this frame.
-        if(inLunaMode) ExitLunaModeEarly();
+        if(inLunaMode || camFollowingBullet) ExitLunaModeEarly();
 
         //always do this
-        mainCamera.Follow = playerCamRoot.transform;
+        //if(camFollowingBullet) mainCamera.Follow = playerCamRoot.transform;
 
         //spawn ghost bullet
         GameObject ghost = Instantiate(ghostBullet);
