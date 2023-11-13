@@ -392,6 +392,9 @@ public class BulletController : MonoBehaviour
         //instantly reset cam instead of waiting, since this script will be destroyed this frame.
         if(inLunaMode) ExitLunaModeEarly();
 
+        //always do this
+        mainCamera.Follow = playerCamRoot.transform;
+
         //spawn ghost bullet
         GameObject ghost = Instantiate(ghostBullet);
         ghost.transform.position = gameObject.transform.position;
