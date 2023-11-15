@@ -9,12 +9,13 @@ public class EnemyHidingState : EnemyState
 
     public EnemyHidingState(Enemy enemy, EnemyStateMachine enemyStateMachine) : base(enemy, enemyStateMachine)
     {
-        player = GameObject.FindGameObjectWithTag("Player").transform; 
+        
     }
 
     public override void EnterState()
     {
         base.EnterState();
+        player = GameObject.FindGameObjectWithTag("Player").transform;
         Debug.Log("Started hiding");
         nav.speed = enemy.hidingSpeed;
         CalculateHidingSpot();
@@ -38,6 +39,7 @@ public class EnemyHidingState : EnemyState
     private void CalculateHidingSpot()
     {
         // Calculate a position away from the player by the hidingDistance
+        Debug.Log("player: " + player);
         Vector3 hidingSpot = transform.position + (transform.position - player.position).normalized * enemy.hidingDistance;
         nav.SetDestination(hidingSpot);
     }
