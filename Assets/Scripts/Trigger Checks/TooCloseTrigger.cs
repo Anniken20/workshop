@@ -13,10 +13,9 @@ public class TooCloseTrigger : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        Debug.Log("yep");
         if (other.gameObject.CompareTag("Player"))
         {
-            Debug.Log("hello");
+            Debug.Log("bye");
             s.runaway();
         }
         

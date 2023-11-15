@@ -33,5 +33,10 @@ public class Sheriff : Enemy
     {
         stateMachine.ChangeState(hidingState);
     }
+
+    public void startshooting()
+    {
+        stateMachine.ChangeState(shootState);
+    }
 }
 
