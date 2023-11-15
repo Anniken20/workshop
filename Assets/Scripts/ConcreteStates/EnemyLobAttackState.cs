@@ -5,9 +5,6 @@ using UnityEngine.AI;
 
 public class EnemyLobAttackState : EnemyState
 {
-    public GameObject lobProjectilePrefab; // The projectile to be lobbed
-    public Transform lobTarget; // The target where the lobbed projectile will land
-    public float lobSpeed = 10.0f; // Speed of the lobbed projectile
     private bool hasAttacked; // Flag to track if the enemy has performed a lob attack
 
     public EnemyLobAttackState(Enemy enemy, EnemyStateMachine enemyStateMachine) : base(enemy, enemyStateMachine)
@@ -36,14 +33,14 @@ public class EnemyLobAttackState : EnemyState
         if (!hasAttacked)
         {
             // Create and lob the projectile
-            GameObject projectile = Instantiate(lobProjectilePrefab, transform.position, Quaternion.identity);
+            GameObject projectile = Instantiate(enemy.lobProjectilePrefab, transform.position, Quaternion.identity);
             Rigidbody projectileRigidbody = projectile.GetComponent<Rigidbody>();
 
             // Calculate the direction to the lob target
-            Vector3 direction = (lobTarget.position - transform.position).normalized;
+            Vector3 direction = (enemy.lobTarget.position - transform.position).normalized;
 
             // Apply force to the projectile to make it land at the lob target
-            projectileRigidbody.velocity = direction * lobSpeed;
+            projectileRigidbody.velocity = direction * enemy.lobSpeed;
 
             hasAttacked = true;
         }

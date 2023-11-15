@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CoolGuy : Enemy
+public class Santana : Enemy
 {
     [HideInInspector] public EnemyIdleState idleState;
     [HideInInspector] public EnemyAttackState attackState;
     [HideInInspector] public EnemyPacingState pacingState;
+
     private void Awake()
     {
         base.MyAwake();
@@ -28,3 +29,4 @@ public class CoolGuy : Enemy
         stateMachine.ChangeState(pacingState);
     }
 }
+
