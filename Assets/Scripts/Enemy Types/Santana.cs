@@ -4,29 +4,41 @@ using UnityEngine;
 
 public class Santana : Enemy
 {
-    [HideInInspector] public EnemyIdleState idleState;
-    [HideInInspector] public EnemyAttackState attackState;
     [HideInInspector] public EnemyPacingState pacingState;
-
+    [HideInInspector] public EnemyLobAttackState lobAttackState;
+    [HideInInspector] public EnemyAOEAttackState AOEAttackState;
+    
     private void Awake()
     {
         base.MyAwake();
-        idleState = new EnemyIdleState(this, stateMachine);
-        attackState = new EnemyAttackState(this, stateMachine);
-        pacingState = new EnemyPacingState(this, stateMachine);
+
+        pacingState = gameObject.AddComponent<EnemyPacingState>();
+        pacingState.Initialize(this, stateMachine);
+
+        lobAttackState = gameObject.AddComponent<EnemyLobAttackState>();
+        lobAttackState.Initialize(this, stateMachine);
+
+        AOEAttackState = gameObject.AddComponent<EnemyAOEAttackState>();
+        AOEAttackState.Initialize(this, stateMachine);
 
         //set default state
         stateMachine.Initialize(pacingState);
-    }
-
-    public void InIdleRange()
-    {
-        stateMachine.ChangeState(idleState);
     }
 
     public void BeginPacing()
     {
         stateMachine.ChangeState(pacingState);
     }
+
+    public void BeginLob()
+    {
+        stateMachine.ChangeState(lobAttackState);
+    }
+
+    public void BeginAOE()
+    {
+        stateMachine.ChangeState(AOEAttackState);
+    }
+
 }
 
