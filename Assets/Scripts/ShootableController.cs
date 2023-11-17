@@ -6,7 +6,7 @@ using UnityEngine.Events;
 public class ShootableController : MonoBehaviour
 {
     public UnityEvent onShot;
-    public GameObject gate;
+    public bool multiTrigger;
 
     public void OnShot()
     {
@@ -14,7 +14,6 @@ public class ShootableController : MonoBehaviour
         {
             onShot.Invoke();
         }
-
-        Destroy(gameObject);
+        if(!multiTrigger) Destroy(this);
     }
 }

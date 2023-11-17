@@ -5,8 +5,12 @@ using DG.Tweening;
 
 public class GateController : MonoBehaviour
 {
-    public void OpenGate()
+    public float xDegrees;
+    public float yDegrees;
+    public float zDegrees;
+
+    public void OpenGate(float time = 1.0f)
     {
-        transform.DORotate(new Vector3(0, 90, 0), 1.0f);
+        transform.DORotate(new Vector3(yDegrees, xDegrees, zDegrees), time);
     }
 }
