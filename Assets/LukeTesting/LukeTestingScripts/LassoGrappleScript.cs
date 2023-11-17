@@ -14,6 +14,7 @@ public class LassoGrappleScript : MonoBehaviour, IGrappleable
     private GameObject grapplePoint;
     //[SerializeField] float breakDistance = 3.0f;
     [SerializeField] float boostSpeed;
+    [SerializeField] float testingBoostSpeed;
     [SerializeField] LineRenderer lineRend;
     private float checkCollisionDelay = .1f;
     private float internalCheckDelay;
@@ -43,6 +44,8 @@ public class LassoGrappleScript : MonoBehaviour, IGrappleable
 
     [HideInInspector] public Transform lassoConnectPoint;
     private GameObject lassoObject;
+
+    [HideInInspector] public bool triggerGrapOnce;
     
 
 
@@ -96,18 +99,24 @@ public class LassoGrappleScript : MonoBehaviour, IGrappleable
 
             lineRend.positionCount = grappleConPos.Length;
             lineRend.SetPositions(grappleConPos);
+            if(triggerGrapOnce){
+                AutoGrapple();
+                triggerGrapOnce = false;
+            }
         }
     }
 
     private void StartGrapple(InputAction.CallbackContext context){
-        StopAllCoroutines();
+        EndGrapple();
+        /*StopAllCoroutines();
         Debug.Log("starting");
         detectCol = false;
-        GetComponent<Rigidbody>().AddForce((grapplePoint.transform.position - transform.position) * boostSpeed, ForceMode.VelocityChange);
+        //GetComponent<Rigidbody>().AddForce((grapplePoint.transform.position - transform.position) * boostSpeed, ForceMode.VelocityChange);
+        GetComponent<Rigidbody>().AddForce(Vector3.up * boostSpeed, ForceMode.Impulse);
         if(grapple && gPoint != null){
             grappling = true;
             //Maybe move this to fixed update idk yet
-            if(GetComponent<CharacterController>().isGrounded == false){
+            //if(GetComponent<CharacterController>().isGrounded == false){
                 GetComponent<CharacterController>().enabled = false;
                 GetComponent<ThirdPersonController>().enabled = false;
                 GetComponent<Rigidbody>().velocity = Vector3.zero;
@@ -133,13 +142,53 @@ public class LassoGrappleScript : MonoBehaviour, IGrappleable
 
                     
                 }
-            }
-        }
+            //}
+        }*/
 
     }
 
+    private void AutoGrapple(){
+        StopAllCoroutines();
+        Debug.Log("starting");
+        detectCol = false;
+        //GetComponent<Rigidbody>().AddForce((grapplePoint.transform.position - transform.position) * boostSpeed, ForceMode.VelocityChange);
+        var distanceBoost = Vector3.Distance(transform.position, grapplePoint.transform.position);
+        GetComponent<Rigidbody>().AddForce((Vector3.up * boostSpeed) * distanceBoost, ForceMode.VelocityChange);
+        if(grapple && gPoint != null){
+            grappling = true;
+            //Maybe move this to fixed update idk yet
+            //if(GetComponent<CharacterController>().isGrounded == false){
+                GetComponent<CharacterController>().enabled = false;
+                GetComponent<ThirdPersonController>().enabled = false;
+                GetComponent<Rigidbody>().velocity = Vector3.zero;
+                gPoint = grapplePoint.transform.position;
+                if(GetComponent<SpringJoint>() == null){
+                    gJoint = gameObject.AddComponent<SpringJoint>();
+                }
+                if(gJoint != null){
+                    gJoint.autoConfigureConnectedAnchor = false;
+                    gJoint.connectedAnchor = gPoint;
+
+                    float dist = Vector3.Distance(gameObject.transform.position, gPoint);
+                    gJoint.maxDistance = dist * maxDist;
+                    gJoint.minDistance = dist * minDist;
+
+                    //gJoint.maxDistance = maxDist;
+                    //gJoint.minDistance = minDist;
+
+
+                    gJoint.spring = sPower;
+                    gJoint.damper = dPower;
+                    gJoint.massScale = mScale;
+
+                    
+                }
+            //}
+        }
+    }
+
     private void EndGrapplePressed(InputAction.CallbackContext context){
-        EndGrapple();
+        //EndGrapple();
 
     }
 

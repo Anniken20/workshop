@@ -101,6 +101,7 @@ public class LassoDetection : MonoBehaviour
             lassoController.drawToLasso = false;
             lassoController.drawToLassoLine.enabled = false;
             player.GetComponent<LassoGrappleScript>().lassoConnectPoint = lassoAttachPoint;
+            player.GetComponent<LassoGrappleScript>().triggerGrapOnce = true;
 
         }
         else if(other.gameObject.tag != "Player" && onObject == false || other.gameObject.tag != "Player" && onObject == true && otherObject.GetComponent<LassoPickupScript>().manipulateObject){
