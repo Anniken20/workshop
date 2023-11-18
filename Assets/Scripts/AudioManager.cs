@@ -30,6 +30,12 @@ public class AudioManager : MonoBehaviour
     [HideInInspector] public const string DIALOGUE_KEY = "dialogueVolume";
     [HideInInspector] public const string AMBIENCE_KEY = "ambienceVolume";
 
+    [HideInInspector] public const string MASTER_UNMUTED = "masterUnmuted";
+    [HideInInspector] public const string MUSIC_UNMUTED = "musicUnmuted";
+    [HideInInspector] public const string SFX_UNMUTED = "sfxUnmuted";
+    [HideInInspector] public const string DIALOGUE_UNMUTED = "dialogueUnmuted";
+    [HideInInspector] public const string AMBIENCE_UNMUTED = "ambienceUnmuted";
+
     //enum used when passing in calls from other scripts
     public enum AudioSourceChannel
     {
@@ -55,7 +61,7 @@ public class AudioManager : MonoBehaviour
     {
         //this goes in Start because Unity warns of unexpected behavior
         //when changing mixer values in Awake
-        LoadVolume();
+        LoadMutedVolumes();
     }
 
     public void Play(AudioSourceChannel channel, AudioClip clip, float volume = 1.0f)
@@ -90,6 +96,7 @@ public class AudioManager : MonoBehaviour
 
     public void LoadMasterVolume()
     {
+        if (PlayerPrefs.GetInt(MASTER_UNMUTED) == 0) return;
         mixer.SetFloat(MASTER_KEY,
             Mathf.Log10(PlayerPrefs.GetFloat(MASTER_KEY, 0.8f)) * 20f);
         if (Mathf.Approximately(PlayerPrefs.GetFloat(MASTER_KEY), 0))
@@ -98,6 +105,7 @@ public class AudioManager : MonoBehaviour
 
     public void LoadMusicVolume()
     {
+        if (PlayerPrefs.GetInt(MUSIC_UNMUTED) == 0) return;
         mixer.SetFloat(MUSIC_KEY,
             Mathf.Log10(PlayerPrefs.GetFloat(MUSIC_KEY, 0.8f)) * 20f);
         if (Mathf.Approximately(PlayerPrefs.GetFloat(MUSIC_KEY), 0))
@@ -107,6 +115,7 @@ public class AudioManager : MonoBehaviour
 
     public void LoadSFXVolume()
     {
+        if (PlayerPrefs.GetInt(SFX_UNMUTED) == 0) return;
         mixer.SetFloat(SFX_KEY,
             Mathf.Log10(PlayerPrefs.GetFloat(SFX_KEY, 0.8f)) * 20f);
         if (Mathf.Approximately(PlayerPrefs.GetFloat(SFX_KEY), 0))
@@ -115,6 +124,7 @@ public class AudioManager : MonoBehaviour
 
     public void LoadDialogueVolume()
     {
+        if (PlayerPrefs.GetInt(DIALOGUE_UNMUTED) == 0) return;
         mixer.SetFloat(DIALOGUE_KEY,
             Mathf.Log10(PlayerPrefs.GetFloat(DIALOGUE_KEY, 0.8f)) * 20f);
         if (Mathf.Approximately(PlayerPrefs.GetFloat(DIALOGUE_KEY), 0))
@@ -123,9 +133,77 @@ public class AudioManager : MonoBehaviour
 
     public void LoadAmbienceVolume()
     {
+        if (PlayerPrefs.GetInt(AMBIENCE_UNMUTED) == 0) return;
         mixer.SetFloat(AMBIENCE_KEY,
             Mathf.Log10(PlayerPrefs.GetFloat(AMBIENCE_KEY, 0.8f)) * 20f);
         if (Mathf.Approximately(PlayerPrefs.GetFloat(AMBIENCE_KEY), 0))
             mixer.SetFloat(AMBIENCE_KEY, -80f);
+    }
+
+    public void LoadMasterToggle()
+    {
+        if(PlayerPrefs.GetInt(MASTER_UNMUTED, 1) == 0) {
+            mixer.SetFloat(MASTER_KEY, -9999);
+        } else
+        {
+            LoadMasterVolume();
+        }
+    }
+
+    public void LoadMusicToggle()
+    {
+        if (PlayerPrefs.GetInt(MUSIC_UNMUTED, 1) == 0)
+        {
+            mixer.SetFloat(MUSIC_UNMUTED, -9999);
+        }
+        else
+        {
+            LoadMusicVolume();
+        }
+    }
+
+    public void LoadSFXToggle()
+    {
+        if (PlayerPrefs.GetInt(SFX_UNMUTED, 1) == 0)
+        {
+            mixer.SetFloat(SFX_UNMUTED, -9999);
+        }
+        else
+        {
+            LoadSFXVolume();
+        }
+    }
+
+    public void LoadDialogueToggle()
+    {
+        if (PlayerPrefs.GetInt(DIALOGUE_UNMUTED, 1) == 0)
+        {
+            mixer.SetFloat(DIALOGUE_UNMUTED, -9999);
+        }
+        else
+        {
+            LoadDialogueVolume();
+        }
+    }
+
+    public void LoadAmbienceToggle()
+    {
+        if (PlayerPrefs.GetInt(AMBIENCE_UNMUTED, 1) == 0)
+        {
+            mixer.SetFloat(AMBIENCE_KEY, -9999);
+        }
+        else
+        {
+            LoadAmbienceVolume();
+        }
+    }
+
+    public void LoadMutedVolumes()
+    {
+        LoadMasterToggle();
+        LoadMusicToggle();
+        LoadSFXToggle();
+        LoadAmbienceToggle();
+        LoadDialogueToggle();
     }
 }
