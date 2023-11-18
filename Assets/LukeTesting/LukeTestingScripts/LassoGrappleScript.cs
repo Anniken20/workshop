@@ -13,8 +13,7 @@ public class LassoGrappleScript : MonoBehaviour, IGrappleable
     [HideInInspector] public bool grapple;
     private GameObject grapplePoint;
     //[SerializeField] float breakDistance = 3.0f;
-    [SerializeField] float boostSpeed;
-    [SerializeField] float testingBoostSpeed;
+    [SerializeField] float boostSpeed = 0.75;
     [SerializeField] LineRenderer lineRend;
     private float checkCollisionDelay = .1f;
     private float internalCheckDelay;

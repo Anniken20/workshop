@@ -39,7 +39,7 @@ public class LassoController : MonoBehaviour
     [SerializeField] public GameObject lassoHandLocation;
     [SerializeField] public GameObject lassoHipLocation;
     private Transform spinningConnectPoint;
-    private GameObject spinningLasso;
+    [HideInInspector] public GameObject spinningLasso;
     private bool spinning = false;
     private LayerMask lassoAimMask;
     public bool inCombat;
