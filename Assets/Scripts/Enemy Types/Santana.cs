@@ -29,15 +29,30 @@ public class Santana : Enemy
     {
         stateMachine.ChangeState(pacingState);
     }
+    
+    public void StopPacing()
+    {
+        stateMachine.ChangeState(AOEAttackState);
+    }
 
     public void BeginLob()
     {
         stateMachine.ChangeState(lobAttackState);
     }
 
+    public void StopLob()
+    {
+        stateMachine.ChangeState(AOEAttackState);
+    }
+
     public void BeginAOE()
     {
         stateMachine.ChangeState(AOEAttackState);
+    }
+
+    public void StopAOE()
+    {
+        stateMachine.ChangeState(lobAttackState);
     }
 
 }
