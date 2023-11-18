@@ -9,8 +9,9 @@ public class GateController : MonoBehaviour
     public float yDegrees;
     public float zDegrees;
 
-    public void OpenGate(float time = 1.0f)
+    public void OpenGate(float time)
     {
-        transform.DORotate(new Vector3(yDegrees, xDegrees, zDegrees), time);
+        transform.DORotate(new Vector3(xDegrees, yDegrees, zDegrees), time, RotateMode.WorldAxisAdd);
     }
+
 }
