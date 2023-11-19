@@ -9,13 +9,13 @@ public class EnemyMeleeAttackState : EnemyState
     private float nextAttackTime; // Time for the next melee attack
 
     public EnemyMeleeAttackState(Enemy enemy, EnemyStateMachine enemyStateMachine) : base(enemy, enemyStateMachine)
-    {
-        player = GameObject.FindGameObjectWithTag("Player").transform; 
+    { 
     }
 
     public override void EnterState()
     {
         base.EnterState();
+        player = GameObject.FindGameObjectWithTag("Player").transform;
         Debug.Log("Started melee attack");
         nextAttackTime = Time.time;
     }
@@ -26,7 +26,11 @@ public class EnemyMeleeAttackState : EnemyState
 
         if (CanMeleeAttack())
         {
+            FacePlayer();
             MeleeAttack();
+        } else
+        {
+            nav.updateRotation = true;
         }
     }
 
@@ -57,5 +61,11 @@ public class EnemyMeleeAttackState : EnemyState
 
         // Set the cooldown for the next melee attack
         nextAttackTime = Time.time + enemy.attackCooldown;
+    }
+
+    private void FacePlayer()
+    {
+        nav.updateRotation = false;
+        transform.LookAt(player);
     }
 }

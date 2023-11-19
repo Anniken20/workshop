@@ -33,10 +33,38 @@ public class Sheriff : Enemy
     {
         stateMachine.ChangeState(hidingState);
     }
+    public void stoprun()
+    {
+        stateMachine.ChangeState(shootState);
+    }
 
     public void startshooting()
     {
         stateMachine.ChangeState(shootState);
+    }
+    public void stopshooting()
+    {
+        stateMachine.ChangeState(pacingState);
+    }
+
+    public void idle()
+    {
+        stateMachine.ChangeState(idleState);
+    }
+
+    public void stopidle()
+    {
+        stateMachine.ChangeState(pacingState);
+    }
+
+    public void pacing()
+    {
+        stateMachine.ChangeState(pacingState);
+    }
+
+    public void stoppacing()
+    {
+        stateMachine.ChangeState(idleState);
     }
 }
 

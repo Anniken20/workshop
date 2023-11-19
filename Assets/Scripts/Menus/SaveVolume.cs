@@ -9,7 +9,7 @@ public struct SliderAndLabel
 {
     public TMP_Text label;
     public Slider slider;
-    //public Toggle muteBox;
+    public Toggle muteBox;
 }
 
 public class SaveVolume : MonoBehaviour
@@ -42,6 +42,8 @@ public class SaveVolume : MonoBehaviour
         v1 = PlayerPrefs.GetFloat(AudioManager.AMBIENCE_KEY, 0.8f);
         ambience.label.text = ((int)(100 * v1)).ToString();
         ambience.slider.value = v1;
+
+        SetMuteBoxes();
     }
 
     public void UpdateMaster()
@@ -79,7 +81,43 @@ public class SaveVolume : MonoBehaviour
         AudioManager.main.LoadAmbienceVolume();
     }
 
-    /*public void ToggleMuteMaster() { master.muteBox.isOn = !master.muteBox.isOn; 
-        PlayerPrefs.SetInt("MasterMuted", 1); }*/
+    private void SetMuteBoxes()
+    {
+        master.muteBox.isOn = PlayerPrefs.GetInt(AudioManager.MASTER_UNMUTED, 1) == 1;
+        music.muteBox.isOn = PlayerPrefs.GetInt(AudioManager.MUSIC_UNMUTED, 1) == 1;
+        sfx.muteBox.isOn = PlayerPrefs.GetInt(AudioManager.SFX_UNMUTED, 1) == 1;
+        dialogue.muteBox.isOn = PlayerPrefs.GetInt(AudioManager.DIALOGUE_UNMUTED, 1) == 1;
+        ambience.muteBox.isOn = PlayerPrefs.GetInt(AudioManager.AMBIENCE_UNMUTED, 1) == 1;
+    }
+
+    public void ToggleMuteMaster() {
+        PlayerPrefs.SetInt(AudioManager.MASTER_UNMUTED, master.muteBox.isOn ? 1 : 0);
+        AudioManager.main.LoadMasterToggle();
+    }
+
+    public void ToggleMuteMusic()
+    {
+        PlayerPrefs.SetInt("AudioManager.MASTER_UNMUTED", music.muteBox.isOn ? 1 : 0);
+        AudioManager.main.LoadMusicToggle();
+    }
+
+    public void ToggleMuteSFX()
+    {
+        PlayerPrefs.SetInt("AudioManager.MASTER_UNMUTED", sfx.muteBox.isOn ? 1 : 0);
+        AudioManager.main.LoadSFXToggle();
+    }
+
+    public void ToggleMuteDialogue()
+    {
+        PlayerPrefs.SetInt("AudioManager.MASTER_UNMUTED", dialogue.muteBox.isOn ? 1 : 0);
+        AudioManager.main.LoadDialogueToggle();
+    }
+
+    public void ToggleMuteAmbience()
+    {
+        PlayerPrefs.SetInt("AudioManager.MASTER_UNMUTED", ambience.muteBox.isOn ? 1 : 0);
+        AudioManager.main.LoadAmbienceToggle();
+    }
+
 
 }

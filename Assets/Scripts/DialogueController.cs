@@ -66,7 +66,7 @@ public class DialogueController : MonoBehaviour
         audioSource.Play();
 
         //if audio is audible, write to subtitles
-        if((!spatialMixing) || InSpatialRange()) StartCoroutine(WriteToScreen(clip));
+        if(((!spatialMixing) || InSpatialRange()) && PlayerPrefs.GetInt("SubtitlesOn", 1) == 1) StartCoroutine(WriteToScreen(clip));
     }
 
     private IEnumerator WriteToScreen(DialogueClip clip)
