@@ -152,6 +152,15 @@ public partial class @CharacterMovement: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Interact"",
+                    ""type"": ""Button"",
+                    ""id"": ""1f920b4e-be32-464d-990e-1cdf3dadfb51"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -495,6 +504,17 @@ public partial class @CharacterMovement: IInputActionCollection2, IDisposable
                     ""action"": ""CancelAim"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ea8e4475-fef3-41e1-8b32-0b27f7922e86"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -517,6 +537,7 @@ public partial class @CharacterMovement: IInputActionCollection2, IDisposable
         m_CharacterControls_Jump = m_CharacterControls.FindAction("Jump", throwIfNotFound: true);
         m_CharacterControls_Sprint = m_CharacterControls.FindAction("Sprint", throwIfNotFound: true);
         m_CharacterControls_CancelAim = m_CharacterControls.FindAction("CancelAim", throwIfNotFound: true);
+        m_CharacterControls_Interact = m_CharacterControls.FindAction("Interact", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -592,6 +613,7 @@ public partial class @CharacterMovement: IInputActionCollection2, IDisposable
     private readonly InputAction m_CharacterControls_Jump;
     private readonly InputAction m_CharacterControls_Sprint;
     private readonly InputAction m_CharacterControls_CancelAim;
+    private readonly InputAction m_CharacterControls_Interact;
     public struct CharacterControlsActions
     {
         private @CharacterMovement m_Wrapper;
@@ -610,6 +632,7 @@ public partial class @CharacterMovement: IInputActionCollection2, IDisposable
         public InputAction @Jump => m_Wrapper.m_CharacterControls_Jump;
         public InputAction @Sprint => m_Wrapper.m_CharacterControls_Sprint;
         public InputAction @CancelAim => m_Wrapper.m_CharacterControls_CancelAim;
+        public InputAction @Interact => m_Wrapper.m_CharacterControls_Interact;
         public InputActionMap Get() { return m_Wrapper.m_CharacterControls; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -661,6 +684,9 @@ public partial class @CharacterMovement: IInputActionCollection2, IDisposable
             @CancelAim.started += instance.OnCancelAim;
             @CancelAim.performed += instance.OnCancelAim;
             @CancelAim.canceled += instance.OnCancelAim;
+            @Interact.started += instance.OnInteract;
+            @Interact.performed += instance.OnInteract;
+            @Interact.canceled += instance.OnInteract;
         }
 
         private void UnregisterCallbacks(ICharacterControlsActions instance)
@@ -707,6 +733,9 @@ public partial class @CharacterMovement: IInputActionCollection2, IDisposable
             @CancelAim.started -= instance.OnCancelAim;
             @CancelAim.performed -= instance.OnCancelAim;
             @CancelAim.canceled -= instance.OnCancelAim;
+            @Interact.started -= instance.OnInteract;
+            @Interact.performed -= instance.OnInteract;
+            @Interact.canceled -= instance.OnInteract;
         }
 
         public void RemoveCallbacks(ICharacterControlsActions instance)
@@ -740,5 +769,6 @@ public partial class @CharacterMovement: IInputActionCollection2, IDisposable
         void OnJump(InputAction.CallbackContext context);
         void OnSprint(InputAction.CallbackContext context);
         void OnCancelAim(InputAction.CallbackContext context);
+        void OnInteract(InputAction.CallbackContext context);
     }
 }
