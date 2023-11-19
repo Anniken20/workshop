@@ -39,7 +39,7 @@ public class LassoController : MonoBehaviour
     [SerializeField] public GameObject lassoHandLocation;
     [SerializeField] public GameObject lassoHipLocation;
     private Transform spinningConnectPoint;
-    private GameObject spinningLasso;
+    [HideInInspector] public GameObject spinningLasso;
     private bool spinning = false;
     private LayerMask lassoAimMask;
     public bool inCombat;
@@ -92,8 +92,8 @@ public class LassoController : MonoBehaviour
         
         looking = look.ReadValue<Vector2>();
 
-        iaControls.CharacterControls.Lasso.started += OnLassoDown;
-        iaControls.CharacterControls.Lasso.canceled += OnLassoRelease;
+        //iaControls.CharacterControls.Lasso.started += OnLassoDown;
+        //iaControls.CharacterControls.Lasso.canceled += OnLassoRelease;
 
 
 
@@ -287,6 +287,10 @@ public class LassoController : MonoBehaviour
         }
     }
     private void FixedUpdate(){
+
+        iaControls.CharacterControls.Lasso.started += OnLassoDown;
+        iaControls.CharacterControls.Lasso.canceled += OnLassoRelease;
+        
         /*if(inCombat){
             lassoCombatAiming.SetActive(true);
         }*/
