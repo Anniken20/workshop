@@ -152,6 +152,15 @@ public partial class @CharacterMovement: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Interact"",
+                    ""type"": ""Button"",
+                    ""id"": ""1f920b4e-be32-464d-990e-1cdf3dadfb51"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -290,7 +299,7 @@ public partial class @CharacterMovement: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""c366667c-e922-4d64-a9d0-d41c49a43d3b"",
-                    ""path"": ""<Keyboard>/upArrow"",
+                    ""path"": ""<Keyboard>/#(W)"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -301,7 +310,7 @@ public partial class @CharacterMovement: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""cc967044-630f-4ef5-a588-6b2084fdaea7"",
-                    ""path"": ""<Keyboard>/downArrow"",
+                    ""path"": ""<Keyboard>/#(S)"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -477,7 +486,7 @@ public partial class @CharacterMovement: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""40d403a5-ab29-41e1-97b5-d2f22acb4c56"",
-                    ""path"": ""<Keyboard>/#(G)"",
+                    ""path"": ""<Keyboard>/#(F)"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -493,6 +502,28 @@ public partial class @CharacterMovement: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""CancelAim"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ea8e4475-fef3-41e1-8b32-0b27f7922e86"",
+                    ""path"": ""<Keyboard>/#(E)"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5edfd9cb-17e0-4901-aa94-a9141c97b933"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Interact"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -517,6 +548,7 @@ public partial class @CharacterMovement: IInputActionCollection2, IDisposable
         m_CharacterControls_Jump = m_CharacterControls.FindAction("Jump", throwIfNotFound: true);
         m_CharacterControls_Sprint = m_CharacterControls.FindAction("Sprint", throwIfNotFound: true);
         m_CharacterControls_CancelAim = m_CharacterControls.FindAction("CancelAim", throwIfNotFound: true);
+        m_CharacterControls_Interact = m_CharacterControls.FindAction("Interact", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -592,6 +624,7 @@ public partial class @CharacterMovement: IInputActionCollection2, IDisposable
     private readonly InputAction m_CharacterControls_Jump;
     private readonly InputAction m_CharacterControls_Sprint;
     private readonly InputAction m_CharacterControls_CancelAim;
+    private readonly InputAction m_CharacterControls_Interact;
     public struct CharacterControlsActions
     {
         private @CharacterMovement m_Wrapper;
@@ -610,6 +643,7 @@ public partial class @CharacterMovement: IInputActionCollection2, IDisposable
         public InputAction @Jump => m_Wrapper.m_CharacterControls_Jump;
         public InputAction @Sprint => m_Wrapper.m_CharacterControls_Sprint;
         public InputAction @CancelAim => m_Wrapper.m_CharacterControls_CancelAim;
+        public InputAction @Interact => m_Wrapper.m_CharacterControls_Interact;
         public InputActionMap Get() { return m_Wrapper.m_CharacterControls; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -661,6 +695,9 @@ public partial class @CharacterMovement: IInputActionCollection2, IDisposable
             @CancelAim.started += instance.OnCancelAim;
             @CancelAim.performed += instance.OnCancelAim;
             @CancelAim.canceled += instance.OnCancelAim;
+            @Interact.started += instance.OnInteract;
+            @Interact.performed += instance.OnInteract;
+            @Interact.canceled += instance.OnInteract;
         }
 
         private void UnregisterCallbacks(ICharacterControlsActions instance)
@@ -707,6 +744,9 @@ public partial class @CharacterMovement: IInputActionCollection2, IDisposable
             @CancelAim.started -= instance.OnCancelAim;
             @CancelAim.performed -= instance.OnCancelAim;
             @CancelAim.canceled -= instance.OnCancelAim;
+            @Interact.started -= instance.OnInteract;
+            @Interact.performed -= instance.OnInteract;
+            @Interact.canceled -= instance.OnInteract;
         }
 
         public void RemoveCallbacks(ICharacterControlsActions instance)
@@ -740,5 +780,6 @@ public partial class @CharacterMovement: IInputActionCollection2, IDisposable
         void OnJump(InputAction.CallbackContext context);
         void OnSprint(InputAction.CallbackContext context);
         void OnCancelAim(InputAction.CallbackContext context);
+        void OnInteract(InputAction.CallbackContext context);
     }
 }

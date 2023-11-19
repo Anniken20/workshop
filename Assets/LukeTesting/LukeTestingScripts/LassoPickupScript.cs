@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using StarterAssets;
 
 public class LassoPickupScript : MonoBehaviour, ILassoable
 {
@@ -62,6 +63,10 @@ public class LassoPickupScript : MonoBehaviour, ILassoable
 
     private LayerMask playerLayer;
     private Vector3 startPos;
+
+    private bool triggerPushSoundOnce;
+    private bool triggerPullSoundOnce;
+
     
 
 
@@ -204,6 +209,7 @@ public class LassoPickupScript : MonoBehaviour, ILassoable
 
         if(manipulateObject && lassoedObject != null){
             player.GetComponent<AimController>().canAim = false;
+            player.GetComponent<ThirdPersonController>()._canMove = false;
             var looking = look.ReadValue<Vector2>();
             float yRotation = looking.y;
             float xRotation = looking.x;
@@ -226,6 +232,7 @@ public class LassoPickupScript : MonoBehaviour, ILassoable
                     mWheelDistance = 0f;
                 }
             }
+            
         
             }
             if(lassoedObject != null && manipulateObject == true && !inCombat){

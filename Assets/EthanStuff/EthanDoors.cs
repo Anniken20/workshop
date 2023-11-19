@@ -121,9 +121,15 @@ public class EthanDoors : MonoBehaviour
     private void OnTriggerExit(Collider collision)
     {
         if (collision.CompareTag("Player"))
+    {
+        StartCoroutine(SwitchUpDelay(switchDelay));
+
+        // Check if it's a pressure plate door and the close switch is activated
+        if (PressurePlateDoor && isDoorCloseSwitch && doorController.isDoorOpen)
         {
-            StartCoroutine(SwitchUpDelay(switchDelay));
+            doorController.isDoorOpen = !doorController.isDoorOpen;
         }
+    }
     }
 
     //adds delay to switch moving up and down
