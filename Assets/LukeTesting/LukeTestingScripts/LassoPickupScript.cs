@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using StarterAssets;
 
 public class LassoPickupScript : MonoBehaviour, ILassoable
 {
@@ -28,7 +29,7 @@ public class LassoPickupScript : MonoBehaviour, ILassoable
 
     [SerializeField] float launchForce;
 
-    private bool lassoActive;
+    [HideInInspector] public bool lassoActive;
 
     private LassoController player;
 
@@ -38,7 +39,7 @@ public class LassoPickupScript : MonoBehaviour, ILassoable
 
     private Vector3 playerForward;
 
-    private GameObject lassoedObject;
+    [HideInInspector] public GameObject lassoedObject;
 
 
     private float throwWindow = 3f;
@@ -61,7 +62,7 @@ public class LassoPickupScript : MonoBehaviour, ILassoable
     private GunController gunCon;
 
     private LayerMask playerLayer;
-    private Vector3 startPos;
+    //private Vector3 startPos;
 
     private bool triggerPushSoundOnce;
     private bool triggerPullSoundOnce;
@@ -72,7 +73,7 @@ public class LassoPickupScript : MonoBehaviour, ILassoable
 
 
     private void Start(){
-        startPos = transform.position;
+        //startPos = transform.position;
         //playerLayer = LayerMask.GetMask("Player");
         mainCam = Camera.main;
         internalThrowWindow = throwWindow;
@@ -191,14 +192,14 @@ public class LassoPickupScript : MonoBehaviour, ILassoable
         lassoObject.GetComponent<LassoDetection>().recall = true;
         player.endThrow = true;
         gunCon.ReenableShooting();
-        RaycastHit hit;
+        /*RaycastHit hit;
         if(Physics.Raycast(transform.position, (player.gameObject.transform.position - transform.position), out hit)){
             if(hit.transform.gameObject.layer == LayerMask.NameToLayer("Wall")){
                 transform.position = startPos;
             }
 
             
-        }
+        }*/
     }
 
     private void FixedUpdate(){
@@ -208,6 +209,7 @@ public class LassoPickupScript : MonoBehaviour, ILassoable
 
         if(manipulateObject && lassoedObject != null){
             player.GetComponent<AimController>().canAim = false;
+            player.GetComponent<ThirdPersonController>()._canMove = false;
             var looking = look.ReadValue<Vector2>();
             float yRotation = looking.y;
             float xRotation = looking.x;

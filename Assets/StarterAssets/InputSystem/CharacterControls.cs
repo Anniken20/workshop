@@ -299,7 +299,7 @@ public partial class @CharacterMovement: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""c366667c-e922-4d64-a9d0-d41c49a43d3b"",
-                    ""path"": ""<Keyboard>/upArrow"",
+                    ""path"": ""<Keyboard>/#(W)"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -310,7 +310,7 @@ public partial class @CharacterMovement: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""cc967044-630f-4ef5-a588-6b2084fdaea7"",
-                    ""path"": ""<Keyboard>/downArrow"",
+                    ""path"": ""<Keyboard>/#(S)"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -486,7 +486,7 @@ public partial class @CharacterMovement: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""40d403a5-ab29-41e1-97b5-d2f22acb4c56"",
-                    ""path"": ""<Keyboard>/#(G)"",
+                    ""path"": ""<Keyboard>/#(F)"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -508,7 +508,18 @@ public partial class @CharacterMovement: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""ea8e4475-fef3-41e1-8b32-0b27f7922e86"",
-                    ""path"": ""<Keyboard>/e"",
+                    ""path"": ""<Keyboard>/#(E)"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5edfd9cb-17e0-4901-aa94-a9141c97b933"",
+                    ""path"": ""<Gamepad>/buttonWest"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
