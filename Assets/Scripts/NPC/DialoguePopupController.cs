@@ -14,7 +14,7 @@ public struct DialogueFrame
     public UnityEvent onWriteEvent;
 }
 
-public class DialoguePopupController : MonoBehaviour
+public class DialoguePopupController : MonoBehaviour, IInteractable
 {
     public GameObject dialoguePanel;
     public Sprite characterPortrait;
@@ -25,6 +25,17 @@ public class DialoguePopupController : MonoBehaviour
     public DialogueFrame[] dialogues;
 
     private int dialogueIndex = 0;
+
+    public void Interacted()
+    {
+        if (dialoguePanel.activeSelf)
+        {
+            GoNext();
+        } else
+        {
+            BeginSpeaking();
+        }
+    }
 
     public void GoNext()
     {
