@@ -5,6 +5,7 @@ using DG.Tweening;
 
 public class Shake : MonoBehaviour
 {
+    [Tooltip("If no reference is attached here, this object will shake")]
     public GameObject target;
     public float intensity;
     public float duration;
@@ -16,16 +17,16 @@ public class Shake : MonoBehaviour
 
     public void ShakeIt()
     {
-        transform.DOShakePosition(intensity, duration);
+        target.transform.DOShakePosition(intensity, duration);
     }
 
     public void ShakeForOneTenthSecond(float newIntensity)
     {
-        transform.DOShakePosition(newIntensity, 2f);
+        target.transform.DOShakePosition(newIntensity, 2f);
     }
 
     public void ShakeForOneSecond(float newIntensity)
     {
-        transform.DOShakePosition(newIntensity, 1f);
+        target.transform.DOShakePosition(newIntensity, 1f);
     }
 }

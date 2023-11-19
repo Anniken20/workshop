@@ -19,7 +19,6 @@ public class InteractionController : MonoBehaviour
     }
     void Update()
     {
-        
         if(interact.triggered){
             ShootInteractRay();
         }

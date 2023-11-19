@@ -4,13 +4,14 @@ using UnityEngine;
 
 public class EnemyBullet : MonoBehaviour
 {
-    [SerializeField] private Vector3 direction;
+    private Vector3 direction;
     [SerializeField] private float speed;
     [SerializeField] private float maxDistance = 100f;
-    [SerializeField] private float distanceTraveled;
-    [SerializeField] private int currBounces;
+    private float distanceTraveled;
+    private int currBounces;
     [SerializeField] private int maxBounces;
-    [SerializeField] private float currDmg;
+    [SerializeField] private int baseDmg;
+    private float currDmg;
     [SerializeField] private float dmgMultiplier;
     private GunAudioController gunAudioController;
 
@@ -27,6 +28,12 @@ public class EnemyBullet : MonoBehaviour
         this.maxBounces = maxBounces;
         currDmg = baseDmg;
         this.dmgMultiplier = dmgMultiplier;
+    }
+
+    public void Initialize(Vector3 direction)
+    {
+        this.direction = direction;
+        currDmg = baseDmg;
     }
 
     private void Update()
@@ -108,7 +115,7 @@ public class EnemyBullet : MonoBehaviour
 
     private void DestroyBullet()
     {
-
+        Destroy(gameObject);
     }
 
     private void Bounce(RaycastHit hitData)
