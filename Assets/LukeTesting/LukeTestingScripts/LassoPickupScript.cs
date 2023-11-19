@@ -62,6 +62,10 @@ public class LassoPickupScript : MonoBehaviour, ILassoable
 
     private LayerMask playerLayer;
     private Vector3 startPos;
+
+    private bool triggerPushSoundOnce;
+    private bool triggerPullSoundOnce;
+
     
 
 
@@ -226,6 +230,7 @@ public class LassoPickupScript : MonoBehaviour, ILassoable
                     mWheelDistance = 0f;
                 }
             }
+            
         
             }
             if(lassoedObject != null && manipulateObject == true && !inCombat){

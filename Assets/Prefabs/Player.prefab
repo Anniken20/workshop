@@ -2220,13 +2220,15 @@ MonoBehaviour:
   lassoSpinLocation: {fileID: 7458316205651445083}
   lassoHandLocation: {fileID: 1822706932256099712}
   lassoHipLocation: {fileID: 6374664512634277021}
+  spinningLasso: {fileID: 0}
   inCombat: 0
   connectPoint: {fileID: 0}
-  spinSound: {fileID: 8300000, guid: 83b3d988746b58c4086235d9edae4b5a, type: 3}
-  thrownSound: {fileID: 8300000, guid: 74abef03d5d903b4c82c88e2f0f6b990, type: 3}
+  spinSound: {fileID: 8300000, guid: 4cd4ddf0e62d4124d8ed781460e92c07, type: 3}
+  thrownSound: {fileID: 8300000, guid: f7c6a4d04ba561646bf01a5eccac0782, type: 3}
   cancelAim: 0
   lassoCombatAiming: {fileID: 8108737925021744416}
   spinSpeed: 5
+  endThrow: 1
 --- !u!114 &4901091049988681363
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2239,8 +2241,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b47bda96fee91947a572d1a15da6ea4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  grapple: 0
   boostSpeed: 0.5
   lineRend: {fileID: 1104946622970226255}
+  grappling: 0
   canLasso: 1
   detectCol: 0
   maxDist: 0.35
@@ -2249,6 +2253,8 @@ MonoBehaviour:
   dPower: 7
   mScale: 5.5
   cancelDistance: 10
+  lassoConnectPoint: {fileID: 0}
+  triggerGrapOnce: 0
 --- !u!136 &5463405241709320486
 CapsuleCollider:
   m_ObjectHideFlags: 0

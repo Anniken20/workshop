@@ -21,6 +21,7 @@ public class LassoDetection : MonoBehaviour
     private float yScale;
     [HideInInspector] public bool recall;
     public AudioClip missSound;
+    public AudioClip lassoGrabSound;
     private bool playMissOnce;
     private bool allowPickup;
 
@@ -54,6 +55,7 @@ public class LassoDetection : MonoBehaviour
         ILassoable lassoable = other.gameObject.GetComponent<ILassoable>();
         //IGrappleable grappleable = GetComponent<IGrappleable>();
         if(lassoable != null){
+            AudioManager.main.Play(AudioManager.AudioSourceChannel.SFX, lassoGrabSound);
             //AudioManager.main.Play(AudioManager.AudioSourceChannel.SFX, lassoedSound);
             hitObject = true;
             Vector3 otherExtents = other.bounds.extents;
@@ -71,6 +73,7 @@ public class LassoDetection : MonoBehaviour
             }
         }
         else if(other.gameObject.CompareTag("Grapple")){
+            AudioManager.main.Play(AudioManager.AudioSourceChannel.SFX, lassoGrabSound);
             onObject = true;
             otherObject = other.gameObject;
             //AudioManager.main.Play(AudioManager.AudioSourceChannel.SFX, grappleSound);
