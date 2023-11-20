@@ -21,33 +21,14 @@ public class LassoDetection : MonoBehaviour
     private float yScale;
     [HideInInspector] public bool recall;
     public AudioClip missSound;
+    public AudioClip lassoGrabSound;
     private bool playMissOnce;
     private bool allowPickup;
 
     
     void Update()
     {
-        lassoAttachPoint = lassoController.lassoAttachPoint;
-        if(onObject){
-            var xScale = otherObject.transform.localScale.x + .15f;
-            var zScale = otherObject.transform.localScale.z + .15f;
-            transform.localScale = new Vector3(xScale, transform.localScale.y, zScale);
-            transform.position = otherObject.transform.position;
-            Vector3 aDirection = transform.position - player.gameObject.transform.position;
-            Quaternion aRotation = Quaternion.LookRotation(aDirection);
-            transform.rotation = aRotation;
-            var rotation = transform.rotation;
-            rotation.x = 0;
-            rotation.z = 0;
-            transform.rotation = rotation;
-            if(!pickupScript.manipulateObject && player.GetComponent<LassoGrappleScript>().grapple != true && player.GetComponent<LassoGrappleScript>().canLasso == true){
-                otherObject.transform.rotation = transform.rotation;
-            }
-            else if(player.GetComponent<LassoGrappleScript>().grapple != true && player.GetComponent<LassoGrappleScript>().grappling != true && player.GetComponent<LassoGrappleScript>().canLasso == true){
-                transform.rotation = otherObject.transform.rotation;
-            }
-
-        }
+    
         if(otherObject != null){
             if(hitObject == false && otherObject.GetComponent<LassoController>().holdingItem == false){
                 StartCoroutine(LassoLifespan());
@@ -74,6 +55,7 @@ public class LassoDetection : MonoBehaviour
         ILassoable lassoable = other.gameObject.GetComponent<ILassoable>();
         //IGrappleable grappleable = GetComponent<IGrappleable>();
         if(lassoable != null){
+            AudioManager.main.Play(AudioManager.AudioSourceChannel.SFX, lassoGrabSound);
             //AudioManager.main.Play(AudioManager.AudioSourceChannel.SFX, lassoedSound);
             hitObject = true;
             Vector3 otherExtents = other.bounds.extents;
@@ -91,6 +73,7 @@ public class LassoDetection : MonoBehaviour
             }
         }
         else if(other.gameObject.CompareTag("Grapple")){
+            AudioManager.main.Play(AudioManager.AudioSourceChannel.SFX, lassoGrabSound);
             onObject = true;
             otherObject = other.gameObject;
             //AudioManager.main.Play(AudioManager.AudioSourceChannel.SFX, grappleSound);
@@ -101,9 +84,10 @@ public class LassoDetection : MonoBehaviour
             lassoController.drawToLasso = false;
             lassoController.drawToLassoLine.enabled = false;
             player.GetComponent<LassoGrappleScript>().lassoConnectPoint = lassoAttachPoint;
+            player.GetComponent<LassoGrappleScript>().triggerGrapOnce = true;
 
         }
-        else if(other.gameObject.tag != "Player" && onObject == false || other.gameObject.tag != "Player" && onObject == true && otherObject.GetComponent<LassoPickupScript>().manipulateObject){
+        else if(other.gameObject.tag != "Player" && onObject == false && other.gameObject.GetComponent<OutOfBoundsScript>() == null|| other.gameObject.tag != "Player" && onObject == true && otherObject.GetComponent<LassoPickupScript>().manipulateObject && other.gameObject.GetComponent<OutOfBoundsScript>() == null){
             lassoController.drawToLasso = false;
             lassoController.drawToLassoLine.enabled = false;
             //Destroy(gameObject);
@@ -145,6 +129,35 @@ public class LassoDetection : MonoBehaviour
                 playMissOnce = false;
             }
         }
+        if(player.spinningLasso == null){
+            RotateTowardsPlayer();
+        }
+        lassoAttachPoint = lassoController.lassoAttachPoint;
+        if(onObject){
+            var xScale = otherObject.transform.localScale.x + .15f;
+            var zScale = otherObject.transform.localScale.z + .15f;
+            transform.localScale = new Vector3(xScale, transform.localScale.y, zScale);
+            transform.position = otherObject.transform.position;
+
+        }
+    }
+
+    private void RotateTowardsPlayer(){
+        Vector3 aDirection = transform.position - player.gameObject.transform.position;
+            Quaternion aRotation = Quaternion.LookRotation(aDirection);
+            transform.rotation = aRotation;
+            var rotation = transform.rotation;
+            rotation.x = 0;
+            rotation.z = 0;
+            transform.rotation = rotation;
+            if(otherObject != null){
+                if(!pickupScript.manipulateObject && player.GetComponent<LassoGrappleScript>().grapple != true && player.GetComponent<LassoGrappleScript>().canLasso == true){
+                    otherObject.transform.rotation = transform.rotation;
+                }
+                else if(player.GetComponent<LassoGrappleScript>().grapple != true && player.GetComponent<LassoGrappleScript>().grappling != true && player.GetComponent<LassoGrappleScript>().canLasso == true){
+                    transform.rotation = otherObject.transform.rotation;
+                }
+            }
     }
     
 }
