@@ -97,25 +97,25 @@ public class SaveVolume : MonoBehaviour
 
     public void ToggleMuteMusic()
     {
-        PlayerPrefs.SetInt("AudioManager.MASTER_UNMUTED", music.muteBox.isOn ? 1 : 0);
+        PlayerPrefs.SetInt(AudioManager.MUSIC_UNMUTED, music.muteBox.isOn ? 1 : 0);
         AudioManager.main.LoadMusicToggle();
     }
 
     public void ToggleMuteSFX()
     {
-        PlayerPrefs.SetInt("AudioManager.MASTER_UNMUTED", sfx.muteBox.isOn ? 1 : 0);
+        PlayerPrefs.SetInt(AudioManager.SFX_UNMUTED, sfx.muteBox.isOn ? 1 : 0);
         AudioManager.main.LoadSFXToggle();
     }
 
     public void ToggleMuteDialogue()
     {
-        PlayerPrefs.SetInt("AudioManager.MASTER_UNMUTED", dialogue.muteBox.isOn ? 1 : 0);
+        PlayerPrefs.SetInt(AudioManager.DIALOGUE_UNMUTED, dialogue.muteBox.isOn ? 1 : 0);
         AudioManager.main.LoadDialogueToggle();
     }
 
     public void ToggleMuteAmbience()
     {
-        PlayerPrefs.SetInt("AudioManager.MASTER_UNMUTED", ambience.muteBox.isOn ? 1 : 0);
+        PlayerPrefs.SetInt(AudioManager.AMBIENCE_UNMUTED, ambience.muteBox.isOn ? 1 : 0);
         AudioManager.main.LoadAmbienceToggle();
     }
 
