@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.InputSystem;
 public class PauseMenu : MonoBehaviour
 {
     public GameObject PausePanel;
@@ -20,9 +21,17 @@ public class PauseMenu : MonoBehaviour
 
     private const string mainMenuScene = "MainMenu";
 
+    private InputAction pause;
+    public CharacterMovement iaControls;
+
+    private void Awake()
+    {
+        iaControls = new CharacterMovement();
+    }
+
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.P))
+        if(pause.triggered)
         {
             if(paused)
             {
@@ -90,5 +99,16 @@ public class PauseMenu : MonoBehaviour
     {
         settingsPanel.SetActive(false);
         PausePanel.SetActive(true);
+    }
+
+    private void OnEnable()
+    {
+        pause = iaControls.CharacterControls.Pause;
+
+        pause.Enable();
+    }
+    private void OnDisable()
+    {
+        pause.Disable();
     }
 }

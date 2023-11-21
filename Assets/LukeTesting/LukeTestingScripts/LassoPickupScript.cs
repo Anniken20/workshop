@@ -289,12 +289,16 @@ public class LassoPickupScript : MonoBehaviour, ILassoable
     private void OnManipulateStart(InputAction.CallbackContext context){
             manipulateObject = true;
             playerForward = player.transform.forward;
+            ThirdPersonController controller = player.GetComponent<ThirdPersonController>();
+            controller._manipulatingLasso = true;
             //attachOrigin = attachPoint;
     }
     private void OnManipulateEnd(InputAction.CallbackContext context){
             manipulateObject = false;
             player.GetComponent<AimController>().canAim = true;
-            //attachPoint.transform.position = attachOrigin.transform.position;
+            ThirdPersonController controller = player.GetComponent<ThirdPersonController>();
+            controller._manipulatingLasso = false;
+        //attachPoint.transform.position = attachOrigin.transform.position;
     }
 
     private void OnPullStart(InputAction.CallbackContext context){

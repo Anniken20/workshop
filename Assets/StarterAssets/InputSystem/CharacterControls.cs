@@ -55,15 +55,6 @@ public partial class @CharacterMovement: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Pick-Up"",
-                    ""type"": ""Button"",
-                    ""id"": ""3aa39968-6211-4236-b219-08716bb6718b"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""Redirect"",
                     ""type"": ""Button"",
                     ""id"": ""c7e8dac0-d111-4fe9-a7f7-102d9a0e5b58"",
@@ -161,13 +152,31 @@ public partial class @CharacterMovement: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""69c662b4-bc59-498a-a9ab-99c7803a9d1f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""RecenterAim"",
+                    ""type"": ""Button"",
+                    ""id"": ""ac1e212f-2bee-497b-b8ad-c71afaa6117b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
                 {
                     ""name"": """",
                     ""id"": ""4110b22a-45d2-43c6-9205-cc93ebcc8fbc"",
-                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -227,17 +236,6 @@ public partial class @CharacterMovement: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Lasso"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""368a04f4-d17a-4968-b70b-9145d17ffcfa"",
-                    ""path"": ""<Gamepad>/buttonNorth"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Pick-Up"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -354,7 +352,7 @@ public partial class @CharacterMovement: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""02189c2a-c50e-4b81-92da-c8a1d9b84156"",
-                    ""path"": ""<Keyboard>/#(E)"",
+                    ""path"": ""<Keyboard>/1"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -365,7 +363,7 @@ public partial class @CharacterMovement: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""9ddd1d4c-1065-447c-ad36-959a047349cf"",
-                    ""path"": ""<Gamepad>/rightStickPress"",
+                    ""path"": ""<Gamepad>/buttonEast"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -453,7 +451,7 @@ public partial class @CharacterMovement: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""13646823-4214-47fa-bec0-d19b2f9aca2d"",
-                    ""path"": ""<XInputController>/buttonSouth"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -497,7 +495,7 @@ public partial class @CharacterMovement: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""630c4b33-94e1-480c-be90-a2af11eb159e"",
-                    ""path"": ""<Gamepad>/dpad/left"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -526,6 +524,61 @@ public partial class @CharacterMovement: IInputActionCollection2, IDisposable
                     ""action"": ""Interact"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""31defd7a-ec27-40bd-a66e-d81405adc700"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3161487f-7487-448e-9eb0-9bdd1523eb76"",
+                    ""path"": ""<Keyboard>/p"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1d304c49-caf8-4f88-8899-82f9fdc910e1"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""663b9b03-8b61-46ad-bf2b-420866b21014"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RecenterAim"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""954257dc-e284-4409-9fa3-38133387053a"",
+                    ""path"": ""<Gamepad>/rightStickPress"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RecenterAim"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -537,7 +590,6 @@ public partial class @CharacterMovement: IInputActionCollection2, IDisposable
         m_CharacterControls_Phase = m_CharacterControls.FindAction("Phase", throwIfNotFound: true);
         m_CharacterControls_Shoot = m_CharacterControls.FindAction("Shoot", throwIfNotFound: true);
         m_CharacterControls_Lasso = m_CharacterControls.FindAction("Lasso", throwIfNotFound: true);
-        m_CharacterControls_PickUp = m_CharacterControls.FindAction("Pick-Up", throwIfNotFound: true);
         m_CharacterControls_Redirect = m_CharacterControls.FindAction("Redirect", throwIfNotFound: true);
         m_CharacterControls_Manipulate = m_CharacterControls.FindAction("Manipulate", throwIfNotFound: true);
         m_CharacterControls_Push = m_CharacterControls.FindAction("Push", throwIfNotFound: true);
@@ -549,6 +601,8 @@ public partial class @CharacterMovement: IInputActionCollection2, IDisposable
         m_CharacterControls_Sprint = m_CharacterControls.FindAction("Sprint", throwIfNotFound: true);
         m_CharacterControls_CancelAim = m_CharacterControls.FindAction("CancelAim", throwIfNotFound: true);
         m_CharacterControls_Interact = m_CharacterControls.FindAction("Interact", throwIfNotFound: true);
+        m_CharacterControls_Pause = m_CharacterControls.FindAction("Pause", throwIfNotFound: true);
+        m_CharacterControls_RecenterAim = m_CharacterControls.FindAction("RecenterAim", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -613,7 +667,6 @@ public partial class @CharacterMovement: IInputActionCollection2, IDisposable
     private readonly InputAction m_CharacterControls_Phase;
     private readonly InputAction m_CharacterControls_Shoot;
     private readonly InputAction m_CharacterControls_Lasso;
-    private readonly InputAction m_CharacterControls_PickUp;
     private readonly InputAction m_CharacterControls_Redirect;
     private readonly InputAction m_CharacterControls_Manipulate;
     private readonly InputAction m_CharacterControls_Push;
@@ -625,6 +678,8 @@ public partial class @CharacterMovement: IInputActionCollection2, IDisposable
     private readonly InputAction m_CharacterControls_Sprint;
     private readonly InputAction m_CharacterControls_CancelAim;
     private readonly InputAction m_CharacterControls_Interact;
+    private readonly InputAction m_CharacterControls_Pause;
+    private readonly InputAction m_CharacterControls_RecenterAim;
     public struct CharacterControlsActions
     {
         private @CharacterMovement m_Wrapper;
@@ -632,7 +687,6 @@ public partial class @CharacterMovement: IInputActionCollection2, IDisposable
         public InputAction @Phase => m_Wrapper.m_CharacterControls_Phase;
         public InputAction @Shoot => m_Wrapper.m_CharacterControls_Shoot;
         public InputAction @Lasso => m_Wrapper.m_CharacterControls_Lasso;
-        public InputAction @PickUp => m_Wrapper.m_CharacterControls_PickUp;
         public InputAction @Redirect => m_Wrapper.m_CharacterControls_Redirect;
         public InputAction @Manipulate => m_Wrapper.m_CharacterControls_Manipulate;
         public InputAction @Push => m_Wrapper.m_CharacterControls_Push;
@@ -644,6 +698,8 @@ public partial class @CharacterMovement: IInputActionCollection2, IDisposable
         public InputAction @Sprint => m_Wrapper.m_CharacterControls_Sprint;
         public InputAction @CancelAim => m_Wrapper.m_CharacterControls_CancelAim;
         public InputAction @Interact => m_Wrapper.m_CharacterControls_Interact;
+        public InputAction @Pause => m_Wrapper.m_CharacterControls_Pause;
+        public InputAction @RecenterAim => m_Wrapper.m_CharacterControls_RecenterAim;
         public InputActionMap Get() { return m_Wrapper.m_CharacterControls; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -662,9 +718,6 @@ public partial class @CharacterMovement: IInputActionCollection2, IDisposable
             @Lasso.started += instance.OnLasso;
             @Lasso.performed += instance.OnLasso;
             @Lasso.canceled += instance.OnLasso;
-            @PickUp.started += instance.OnPickUp;
-            @PickUp.performed += instance.OnPickUp;
-            @PickUp.canceled += instance.OnPickUp;
             @Redirect.started += instance.OnRedirect;
             @Redirect.performed += instance.OnRedirect;
             @Redirect.canceled += instance.OnRedirect;
@@ -698,6 +751,12 @@ public partial class @CharacterMovement: IInputActionCollection2, IDisposable
             @Interact.started += instance.OnInteract;
             @Interact.performed += instance.OnInteract;
             @Interact.canceled += instance.OnInteract;
+            @Pause.started += instance.OnPause;
+            @Pause.performed += instance.OnPause;
+            @Pause.canceled += instance.OnPause;
+            @RecenterAim.started += instance.OnRecenterAim;
+            @RecenterAim.performed += instance.OnRecenterAim;
+            @RecenterAim.canceled += instance.OnRecenterAim;
         }
 
         private void UnregisterCallbacks(ICharacterControlsActions instance)
@@ -711,9 +770,6 @@ public partial class @CharacterMovement: IInputActionCollection2, IDisposable
             @Lasso.started -= instance.OnLasso;
             @Lasso.performed -= instance.OnLasso;
             @Lasso.canceled -= instance.OnLasso;
-            @PickUp.started -= instance.OnPickUp;
-            @PickUp.performed -= instance.OnPickUp;
-            @PickUp.canceled -= instance.OnPickUp;
             @Redirect.started -= instance.OnRedirect;
             @Redirect.performed -= instance.OnRedirect;
             @Redirect.canceled -= instance.OnRedirect;
@@ -747,6 +803,12 @@ public partial class @CharacterMovement: IInputActionCollection2, IDisposable
             @Interact.started -= instance.OnInteract;
             @Interact.performed -= instance.OnInteract;
             @Interact.canceled -= instance.OnInteract;
+            @Pause.started -= instance.OnPause;
+            @Pause.performed -= instance.OnPause;
+            @Pause.canceled -= instance.OnPause;
+            @RecenterAim.started -= instance.OnRecenterAim;
+            @RecenterAim.performed -= instance.OnRecenterAim;
+            @RecenterAim.canceled -= instance.OnRecenterAim;
         }
 
         public void RemoveCallbacks(ICharacterControlsActions instance)
@@ -769,7 +831,6 @@ public partial class @CharacterMovement: IInputActionCollection2, IDisposable
         void OnPhase(InputAction.CallbackContext context);
         void OnShoot(InputAction.CallbackContext context);
         void OnLasso(InputAction.CallbackContext context);
-        void OnPickUp(InputAction.CallbackContext context);
         void OnRedirect(InputAction.CallbackContext context);
         void OnManipulate(InputAction.CallbackContext context);
         void OnPush(InputAction.CallbackContext context);
@@ -781,5 +842,7 @@ public partial class @CharacterMovement: IInputActionCollection2, IDisposable
         void OnSprint(InputAction.CallbackContext context);
         void OnCancelAim(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
+        void OnPause(InputAction.CallbackContext context);
+        void OnRecenterAim(InputAction.CallbackContext context);
     }
 }

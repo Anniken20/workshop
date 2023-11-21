@@ -103,6 +103,7 @@ namespace StarterAssets
         [HideInInspector] public bool _stunned;
         [HideInInspector] public bool _canMove = true;
         [HideInInspector] public bool _inDialogue;
+        [HideInInspector] public bool _manipulatingLasso;
 
         // animation IDs
         private int _animIDSpeed;
@@ -447,7 +448,15 @@ namespace StarterAssets
         //for example, unpausing shouldn't unlock from luna's redirect movement lock
         private bool IsMovementLocked()
         {
-            return _paused || _lunaLocked || _stunned || !_canMove || _inDialogue;
+            //dont delete this stuff because it's helpful debug.
+            /*
+            Debug.Log("_paused: " + _paused);
+            Debug.Log("_lunaLocked: " + _lunaLocked);
+            Debug.Log("!_canMove: " + !_canMove);
+            Debug.Log("_inDialogue: " + _inDialogue);
+            Debug.Log("_manipulatingLasso: " + _manipulatingLasso);
+            */
+            return _paused || _lunaLocked || _stunned || _inDialogue || _manipulatingLasso;
         }
 
         private void OnEnable(){

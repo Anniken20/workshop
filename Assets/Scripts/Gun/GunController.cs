@@ -76,6 +76,7 @@ public class GunController : MonoBehaviour
     private void GetInput()
     {
         if (PauseMenu.paused) return;
+        if (thirdPersonController._inDialogue) return;
         
         //get angle data from 1 script, so it will be consistent across lasso/gun
         aimAngle = aimController.GetAimAngle();

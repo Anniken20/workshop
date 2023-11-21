@@ -9,6 +9,7 @@ public class AimController : MonoBehaviour
     public CharacterMovement iaControls;
     private InputAction look;
     private InputAction aim;
+    private InputAction recenter;
     public LineRenderer aimLine;
 
     [Tooltip("(Roughly) 2 => 90* of freedom. 0.5 => 30* of freedom.")]
@@ -117,7 +118,7 @@ public class AimController : MonoBehaviour
         }
 
         //recenter aim
-        if (Input.GetKeyDown(KeyCode.Tab))
+        if (recenter.triggered)
         {
             StartCoroutine(RecenterAimRoutine());
         }
@@ -213,13 +214,16 @@ public class AimController : MonoBehaviour
     private void OnEnable(){
         look = iaControls.CharacterControls.Look;
         aim = iaControls.CharacterControls.Aim;
+        recenter = iaControls.CharacterControls.RecenterAim;
 
         look.Enable();
         aim.Enable();
+        recenter.Enable();
     }
     private void OnDisable(){
         look.Disable();
         aim.Disable();
+        recenter.Disable();
     }
 
     //control whether our head can turn or not
