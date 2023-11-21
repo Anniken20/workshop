@@ -14,10 +14,12 @@ public class ShotSound : MonoBehaviour, IShootable
         audioSource = gameObject.GetComponent<AudioSource>();
         if (bullet.HasBouncesRemaining())
         {
-            audioSource.PlayOneShot(ricochetClip);
+            if(ricochetClip != null)
+                audioSource.PlayOneShot(ricochetClip);
         } else
         {
-            audioSource.PlayOneShot(throughClip);
+            if (throughClip != null)
+                audioSource.PlayOneShot(throughClip);
         }
     }
 }
