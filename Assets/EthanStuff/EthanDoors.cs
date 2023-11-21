@@ -45,6 +45,18 @@ public class EthanDoors : MonoBehaviour
         {
             MoveSwitchUp();
         }
+
+        if (BreakObjDoor && DoorOpenerObj == null)
+        {
+            if (isDoorOpenSwitch && !doorController.isDoorOpen)
+            {
+                doorController.isDoorOpen = !doorController.isDoorOpen;
+            }
+            else if (isDoorCloseSwitch && doorController.isDoorOpen)
+            {
+                doorController.isDoorOpen = !doorController.isDoorOpen;
+            }
+        }
     }
 
     //moves switch down
@@ -73,18 +85,6 @@ public class EthanDoors : MonoBehaviour
             isPressingSwitch = !isPressingSwitch;
 
             if (KeyDoor && HasRequiredItem(requiredItem))
-            {
-                if (isDoorOpenSwitch && !doorController.isDoorOpen)
-                {
-                    doorController.isDoorOpen = !doorController.isDoorOpen;
-                }
-                else if (isDoorCloseSwitch && doorController.isDoorOpen)
-                {
-                    doorController.isDoorOpen = !doorController.isDoorOpen;
-                }
-            }
-
-            if (BreakObjDoor && DoorOpenerObj == null)
             {
                 if (isDoorOpenSwitch && !doorController.isDoorOpen)
                 {
