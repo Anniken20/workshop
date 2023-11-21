@@ -45,16 +45,9 @@ public class EnemyShootState : EnemyState
         // Create a projectile and set its position and rotation
         GameObject newProjectile = Instantiate(enemy.projectilePrefab, enemy.firePoint.position, enemy.firePoint.rotation);
         EnemyBullet bullet = newProjectile.GetComponent<EnemyBullet>();
-        // bullet.Initialize();
 
-        // Set the projectile's initial velocity
-        /*
-        Rigidbody rb = newProjectile.GetComponent<Rigidbody>();
-        if (rb != null)
-        {
-            rb.velocity = enemy.firePoint.forward * enemy.projectileSpeed;
-        }
-        */
+        bullet.Initialize(transform.forward);
+
 
         // Update the next fire time based on the fire rate
         nextFireTime = Time.time + 1 / enemy.fireRate;

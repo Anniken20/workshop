@@ -1726,10 +1726,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73be614d7632a304db5e7f58dfa71754, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dialoguePanel: {fileID: 711424711}
-  characterPortrait: {fileID: 0}
+  dialoguePanel: {fileID: 1684000728}
+  characterPortrait: {fileID: 711424713}
   characterNameText: {fileID: 1275293607}
   characterText: {fileID: 1853632860}
+  player: {fileID: 4416926083347132232}
   characterName: Bloodthirsty Super Killer
   dialogues:
   - portrait: {fileID: 21300000, guid: 82c5b153004e23347a32b240479c8c85, type: 3}
@@ -1762,6 +1763,17 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+  - portrait: {fileID: 21300000, guid: 459a91f40cde94e4583336df3f3592f7, type: 3}
+    message: 'Also, if I need to type something really long like this it will look
+      like this and that''s okay because it will fit the dialogue box pretty well.
+      Or at least, I hope so! Hahaha... Well, life is like a box of chocolate or
+      something. A lot of it yummy, but some of it is dark. No, that''s not quite
+      right... A lot of it''s sweet, but some of it''s crunchy...? No. Not that either.
+      Hmm... Back to the drawing board for me. '
+    writeWaitTime: 0.01
+    onWriteEvent:
+      m_PersistentCalls:
+        m_Calls: []
 --- !u!114 &814282400
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1774,9 +1786,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a18a398a78953c409d678074095888c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 1684000728}
-  intensity: 1
-  duration: 0.2
+  target: {fileID: 711424711}
+  intensity: 15
+  duration: 0.5
 --- !u!1001 &862707497
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3185,7 +3197,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1287318396}
-  m_LocalRotation: {x: 0.050206646, y: 0.4596027, z: -0.026034681, w: 0.88632214}
+
   m_LocalPosition: {x: -5.066155, y: 8.193821, z: 1.3593984}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -3775,13 +3787,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1458605659}
-  m_LocalRotation: {x: 0.050206646, y: 0.4596027, z: -0.026034681, w: 0.88632214}
+  m_LocalRotation: {x: 0.050206654, y: 0.4596027, z: -0.026034683, w: 0.88632214}
   m_LocalPosition: {x: -5.066155, y: 8.193821, z: 1.3593984}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1458605664
 MonoBehaviour:
@@ -4173,7 +4185,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
   m_AnchoredPosition: {x: 0, y: 200}
-  m_SizeDelta: {x: 1800, y: 300}
+  m_SizeDelta: {x: 1800, y: 400}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1684000730
 MonoBehaviour:
@@ -4448,7 +4460,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 1050, y: -187.5}
+  m_AnchoredPosition: {x: 1050, y: -190}
   m_SizeDelta: {x: 1500, y: 225}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1853632860
@@ -4514,7 +4526,7 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 0
+  m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
@@ -5638,7 +5650,8 @@ PrefabInstance:
         type: 3}
       propertyPath: fragments.Array.data[3]
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 919132149155446097, guid: 3c510603104004e938a504b34b3dd344,
+        type: 3}
     - target: {fileID: 726987148610263800, guid: 46fe5ebe0569e8c498636345420fbd93,
         type: 3}
       propertyPath: fragments.Array.data[4]
@@ -5663,7 +5676,8 @@ PrefabInstance:
         type: 3}
       propertyPath: fragments.Array.data[8]
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 919132149155446097, guid: 27663f6e6b345484fae9da5afaf7e5ba,
+        type: 3}
     - target: {fileID: 726987148610263800, guid: 46fe5ebe0569e8c498636345420fbd93,
         type: 3}
       propertyPath: fragments.Array.data[9]
@@ -5672,7 +5686,7 @@ PrefabInstance:
     - target: {fileID: 5069707170131067640, guid: 46fe5ebe0569e8c498636345420fbd93,
         type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 5069707170131067640, guid: 46fe5ebe0569e8c498636345420fbd93,
         type: 3}
@@ -6057,7 +6071,7 @@ Transform:
   m_Children:
   - {fileID: 2070925443526839471}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 30, y: 45, z: 0}
 --- !u!114 &2070925443028286828
 MonoBehaviour:
@@ -6246,7 +6260,7 @@ Transform:
   - {fileID: 542508512}
   - {fileID: 874605736}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2114283754330233424
 GameObject:
@@ -6886,7 +6900,7 @@ Transform:
   - {fileID: 1778301397}
   - {fileID: 1455047863}
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &3964097222371235843
 Transform:
@@ -7083,6 +7097,7 @@ GameObject:
   - component: {fileID: 6982812147933622150}
   - component: {fileID: 6982812147933622148}
   - component: {fileID: 6982812147933622151}
+  - component: {fileID: 6982812147933622152}
   m_Layer: 7
   m_Name: Player
   m_TagString: Player
@@ -7139,6 +7154,7 @@ MonoBehaviour:
   _paused: 0
   _stunned: 0
   _canMove: 0
+  _inDialogue: 0
   pickupUnderPlayer: {fileID: 0}
 --- !u!143 &4416926083347132233
 CharacterController:
@@ -7479,7 +7495,7 @@ PrefabInstance:
     - target: {fileID: 2756381801034907267, guid: 2692599006d2378478129ad24ff293e9,
         type: 3}
       propertyPath: m_RootOrder
-      value: 11
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2756381801034907267, guid: 2692599006d2378478129ad24ff293e9,
         type: 3}
@@ -8298,6 +8314,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &6982812147933622152
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4416926083347132227}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3777307566f97524d985e849cdd14994, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactionRange: 2
 --- !u!4 &6983258930626336602
 Transform:
   m_ObjectHideFlags: 0
@@ -9040,7 +9069,7 @@ PrefabInstance:
     - target: {fileID: 8345070699079395522, guid: 09aade0ecefd01e4b8f7661acf64f5c2,
         type: 3}
       propertyPath: m_RootOrder
-      value: 6
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 8345070699079395522, guid: 09aade0ecefd01e4b8f7661acf64f5c2,
         type: 3}
@@ -9476,7 +9505,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &8963279146701422821
 Transform:
@@ -9675,7 +9704,7 @@ PrefabInstance:
     - target: {fileID: 9166142694223345598, guid: 031eac3f7cfa07547b722a0602b113c1,
         type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 9166142694223345598, guid: 031eac3f7cfa07547b722a0602b113c1,
         type: 3}

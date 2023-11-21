@@ -87,7 +87,7 @@ public class LassoDetection : MonoBehaviour
             player.GetComponent<LassoGrappleScript>().triggerGrapOnce = true;
 
         }
-        else if(other.gameObject.tag != "Player" && onObject == false || other.gameObject.tag != "Player" && onObject == true && otherObject.GetComponent<LassoPickupScript>().manipulateObject){
+        else if(other.gameObject.tag != "Player" && onObject == false && other.gameObject.GetComponent<OutOfBoundsScript>() == null|| other.gameObject.tag != "Player" && onObject == true && otherObject.GetComponent<LassoPickupScript>().manipulateObject && other.gameObject.GetComponent<OutOfBoundsScript>() == null){
             lassoController.drawToLasso = false;
             lassoController.drawToLassoLine.enabled = false;
             //Destroy(gameObject);

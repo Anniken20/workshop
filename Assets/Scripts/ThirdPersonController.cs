@@ -101,7 +101,8 @@ namespace StarterAssets
         [HideInInspector] public bool _lunaLocked;
         [HideInInspector] public bool _paused;
         [HideInInspector] public bool _stunned;
-        [HideInInspector] public bool _canMove;
+        [HideInInspector] public bool _canMove = true;
+        [HideInInspector] public bool _inDialogue;
 
         // animation IDs
         private int _animIDSpeed;
@@ -155,6 +156,7 @@ namespace StarterAssets
                 _mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
             }
             iaControls = new CharacterMovement();
+            _canMove = true;
         }
 
         private void Start()
@@ -445,7 +447,7 @@ namespace StarterAssets
         //for example, unpausing shouldn't unlock from luna's redirect movement lock
         private bool IsMovementLocked()
         {
-            return _paused || _lunaLocked || _stunned || _canMove;
+            return _paused || _lunaLocked || _stunned || !_canMove || _inDialogue;
         }
 
         private void OnEnable(){
