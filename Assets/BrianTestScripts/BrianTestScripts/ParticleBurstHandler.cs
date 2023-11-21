@@ -5,13 +5,32 @@ using UnityEngine;
 public class ParticleBurstHandler : MonoBehaviour
 {
     public ParticleSystem particleSystem;
-    public int burstCount = 10; // Adjust the number of particles emitted per burst.
+    public float[] normalizedTimeToEmit; // Array of normalized times to emit particles
 
-    public void EmitBurst()
+    private Animator animator;
+    private bool[] hasEmitted; // To track if particles have been emitted at each time
+
+    void Start()
     {
-        if (particleSystem != null)
+        animator = GetComponent<Animator>();
+        hasEmitted = new bool[normalizedTimeToEmit.Length];
+    }
+
+    void Update()
+    {
+        float normalizedTime = animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
+
+        for (int i = 0; i < normalizedTimeToEmit.Length; i++)
         {
-            particleSystem.Emit(burstCount);
+            if (!hasEmitted[i] && normalizedTime >= normalizedTimeToEmit[i])
+            {
+                if (particleSystem != null)
+                {
+                    Debug.Log("Emitting particles at normalized time: " + normalizedTimeToEmit[i]);
+                    particleSystem.Emit(10); // Adjust particle count as needed
+                    hasEmitted[i] = true;
+                }
+            }
         }
     }
 }

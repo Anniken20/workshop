@@ -4,27 +4,66 @@ using UnityEngine;
 
 public class Diana : Enemy
 {
-    [HideInInspector] public EnemyIdleState idleState;
-    [HideInInspector] public EnemyAttackState attackState;
+    [HideInInspector] public EnemyLobAttackState lobAttackState;
     [HideInInspector] public EnemyPacingState pacingState;
+    [HideInInspector] public EnemyShootState shootState;
+    [HideInInspector] public EnemyEvadeState evadeState;
 
     private void Awake()
     {
         base.MyAwake();
-        idleState = new EnemyIdleState(this, stateMachine);
-        attackState = new EnemyAttackState(this, stateMachine);
-        pacingState = new EnemyPacingState(this, stateMachine);
+
+        lobAttackState = gameObject.AddComponent<EnemyLobAttackState>();
+        lobAttackState.Initialize(this, stateMachine);
+
+        pacingState = gameObject.AddComponent<EnemyPacingState>();
+        pacingState.Initialize(this, stateMachine);
+
+        shootState = gameObject.AddComponent<EnemyShootState>();
+        shootState.Initialize(this, stateMachine);
+
+        evadeState = gameObject.AddComponent<EnemyEvadeState>();
+        evadeState.Initialize(this, stateMachine);
 
         //set default state
         stateMachine.Initialize(pacingState);
     }
-
-    public void InIdleRange()
+    public void BeginPacing()
     {
-        stateMachine.ChangeState(idleState);
+        stateMachine.ChangeState(pacingState);
+    }
+    
+    public void StopPacing()
+    {
+        stateMachine.ChangeState(shootState);
     }
 
-    public void BeginPacing()
+    public void BeginLob()
+    {
+        stateMachine.ChangeState(lobAttackState);
+    }
+    
+    public void StopLob()
+    {
+        stateMachine.ChangeState(shootState);
+    }
+
+    public void StartShooting()
+    {
+        stateMachine.ChangeState(shootState);
+    }
+
+    public void StopShooting()
+    {
+        stateMachine.ChangeState(pacingState);
+    }
+
+    public void BeginEvade()
+    {
+        stateMachine.ChangeState(evadeState);
+    }
+    
+    public void StopEvade()
     {
         stateMachine.ChangeState(pacingState);
     }

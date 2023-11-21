@@ -41,9 +41,6 @@ public class GhostController : MonoBehaviour
                         DisableAbility();
                     }
                 }
-
-        
-        
     }
 
     void ToggleAbility()
@@ -91,42 +88,6 @@ public class GhostController : MonoBehaviour
         abilityEnabled = !abilityEnabled;
 
     }
-
-    /*private Vector3 GetValidPositionOutsideBox()
-    {
-        Vector3 boxCenter = box.position;
-        Vector3 randomDirection = Random.onUnitSphere;
-        randomDirection.y = 0; // Ensure no vertical displacement
-
-        Vector3 randomPosition = boxCenter + randomDirection.normalized * teleportDistance;
-
-        // Ensure that the random position is not inside the box
-        while (IsPointInsideBox(randomPosition))
-        {
-            randomDirection = Random.onUnitSphere;
-            randomDirection.y = 0;
-            randomPosition = boxCenter + randomDirection.normalized * teleportDistance;
-        }
-
-        // Cast a ray from the random position downwards to find the ground
-        RaycastHit hit;
-        if (Physics.Raycast(randomPosition + Vector3.up * 100f, Vector3.down, out hit, 200f, LayerMask.GetMask("Ground")))
-        {
-            randomPosition = hit.point;
-        }
-
-        return randomPosition;
-    }
-
-    private bool IsPointInsideBox(Vector3 point)
-    {
-        Vector3 boxCenter = box.position;
-        Vector3 boxSize = box.localScale;
-
-        // Check if the point is inside the box using the box's size
-        return Mathf.Abs(point.x - boxCenter.x) < boxSize.x / 2f
-            && Mathf.Abs(point.z - boxCenter.z) < boxSize.z / 2f;
-    }*/
 
     void OnTriggerEnter(Collider other){
         if(other.gameObject.CompareTag("Player")){

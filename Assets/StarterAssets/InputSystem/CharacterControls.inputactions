@@ -33,15 +33,6 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Pick-Up",
-                    "type": "Button",
-                    "id": "3aa39968-6211-4236-b219-08716bb6718b",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "Redirect",
                     "type": "Button",
                     "id": "c7e8dac0-d111-4fe9-a7f7-102d9a0e5b58",
@@ -130,13 +121,40 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Interact",
+                    "type": "Button",
+                    "id": "1f920b4e-be32-464d-990e-1cdf3dadfb51",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Pause",
+                    "type": "Button",
+                    "id": "69c662b4-bc59-498a-a9ab-99c7803a9d1f",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "RecenterAim",
+                    "type": "Button",
+                    "id": "ac1e212f-2bee-497b-b8ad-c71afaa6117b",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
                 {
                     "name": "",
                     "id": "4110b22a-45d2-43c6-9205-cc93ebcc8fbc",
-                    "path": "<Gamepad>/buttonWest",
+                    "path": "<Gamepad>/buttonNorth",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -201,17 +219,6 @@
                 },
                 {
                     "name": "",
-                    "id": "368a04f4-d17a-4968-b70b-9145d17ffcfa",
-                    "path": "<Gamepad>/buttonNorth",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Pick-Up",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "a3838056-1c9a-462d-9239-7a86735d99f9",
                     "path": "<Keyboard>/#(R)",
                     "interactions": "",
@@ -268,7 +275,7 @@
                 {
                     "name": "",
                     "id": "c366667c-e922-4d64-a9d0-d41c49a43d3b",
-                    "path": "<Keyboard>/upArrow",
+                    "path": "<Keyboard>/#(W)",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -279,7 +286,7 @@
                 {
                     "name": "",
                     "id": "cc967044-630f-4ef5-a588-6b2084fdaea7",
-                    "path": "<Keyboard>/downArrow",
+                    "path": "<Keyboard>/#(S)",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -323,7 +330,7 @@
                 {
                     "name": "",
                     "id": "02189c2a-c50e-4b81-92da-c8a1d9b84156",
-                    "path": "<Keyboard>/#(E)",
+                    "path": "<Keyboard>/1",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -334,7 +341,7 @@
                 {
                     "name": "",
                     "id": "9ddd1d4c-1065-447c-ad36-959a047349cf",
-                    "path": "<Gamepad>/rightStickPress",
+                    "path": "<Gamepad>/buttonEast",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -422,7 +429,7 @@
                 {
                     "name": "",
                     "id": "13646823-4214-47fa-bec0-d19b2f9aca2d",
-                    "path": "<XInputController>/buttonSouth",
+                    "path": "<Gamepad>/buttonSouth",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -455,7 +462,7 @@
                 {
                     "name": "",
                     "id": "40d403a5-ab29-41e1-97b5-d2f22acb4c56",
-                    "path": "<Keyboard>/#(G)",
+                    "path": "<Keyboard>/#(F)",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -466,11 +473,88 @@
                 {
                     "name": "",
                     "id": "630c4b33-94e1-480c-be90-a2af11eb159e",
-                    "path": "<Gamepad>/dpad/left",
+                    "path": "<Gamepad>/leftShoulder",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "CancelAim",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ea8e4475-fef3-41e1-8b32-0b27f7922e86",
+                    "path": "<Keyboard>/#(E)",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5edfd9cb-17e0-4901-aa94-a9141c97b933",
+                    "path": "<Gamepad>/buttonWest",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "31defd7a-ec27-40bd-a66e-d81405adc700",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Pause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3161487f-7487-448e-9eb0-9bdd1523eb76",
+                    "path": "<Keyboard>/p",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Pause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1d304c49-caf8-4f88-8899-82f9fdc910e1",
+                    "path": "<Gamepad>/start",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Pause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "663b9b03-8b61-46ad-bf2b-420866b21014",
+                    "path": "<Keyboard>/tab",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RecenterAim",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "954257dc-e284-4409-9fa3-38133387053a",
+                    "path": "<Gamepad>/rightStickPress",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RecenterAim",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
