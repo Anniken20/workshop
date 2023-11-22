@@ -154,7 +154,7 @@ public class AudioManager : MonoBehaviour
     {
         if (PlayerPrefs.GetInt(MUSIC_UNMUTED, 1) == 0)
         {
-            mixer.SetFloat(MUSIC_UNMUTED, -9999);
+            mixer.SetFloat(MUSIC_KEY, -9999);
         }
         else
         {
@@ -166,7 +166,7 @@ public class AudioManager : MonoBehaviour
     {
         if (PlayerPrefs.GetInt(SFX_UNMUTED, 1) == 0)
         {
-            mixer.SetFloat(SFX_UNMUTED, -9999);
+            mixer.SetFloat(SFX_KEY, -9999);
         }
         else
         {
@@ -178,7 +178,7 @@ public class AudioManager : MonoBehaviour
     {
         if (PlayerPrefs.GetInt(DIALOGUE_UNMUTED, 1) == 0)
         {
-            mixer.SetFloat(DIALOGUE_UNMUTED, -9999);
+            mixer.SetFloat(DIALOGUE_KEY, -9999);
         }
         else
         {
