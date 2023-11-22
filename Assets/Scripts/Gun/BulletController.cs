@@ -207,6 +207,11 @@ public class BulletController : MonoBehaviour
         {
             shootableController.OnShot();
         }
+        
+        IShootable[] shootables = obj.GetComponents<IShootable>();
+        foreach (IShootable s in shootables){
+            s.OnShot(this);
+        }
     }
 
     public void EnterLunaMode()
@@ -406,6 +411,11 @@ public class BulletController : MonoBehaviour
 
         //destroy this object
         Destroy(gameObject);
+    }
+
+    public bool HasBouncesRemaining()
+    {
+        return currBounces < maxBounces;
     }
 
     private void Awake(){
