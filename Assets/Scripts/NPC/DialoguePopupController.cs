@@ -29,7 +29,10 @@ public class DialoguePopupController : MonoBehaviour, IInteractable
 
     [Header("Settings")]
     public bool onlyOnce;
+    [Tooltip("Allow the player to use the SHOOT button to continue speaking")]
     public bool clickToContinue;
+    [Tooltip("Useful for keeping the player locked even after dialogue.")]
+    public bool dontUnlock;
 
     [Header("Dialogue")]
     public string characterName;
@@ -41,10 +44,11 @@ public class DialoguePopupController : MonoBehaviour, IInteractable
     public CharacterMovement iaControls;
     private InputAction next;
     private bool spokenTo;
+    private bool inDialogue;
 
     public void Interacted()
     {
-        if (dialoguePanel.activeSelf)
+        if (inDialogue)
         {
             GoNext();
         } else
@@ -52,6 +56,7 @@ public class DialoguePopupController : MonoBehaviour, IInteractable
             if(!onlyOnce || !spokenTo)
             {
                 BeginSpeaking();
+                inDialogue = true;
                 spokenTo = true;
                 if (clickToContinue) StartCoroutine(InputRoutine());
             }   
@@ -61,11 +66,13 @@ public class DialoguePopupController : MonoBehaviour, IInteractable
     public void GoNext()
     {
         dialogueIndex++;
-        if(dialogueIndex >= dialogues.Length - 1)
+        if(dialogueIndex >= dialogues.Length)
         {
             StopSpeaking();
+        } else
+        {
+            DisplayDialoguePiece(dialogueIndex);
         }
-        DisplayDialoguePiece(dialogueIndex);
     }
 
     public void BeginSpeaking()
@@ -81,9 +88,10 @@ public class DialoguePopupController : MonoBehaviour, IInteractable
     
     public void StopSpeaking()
     { 
-        player._inDialogue = false;
+        if(!dontUnlock) player._inDialogue = false;
         dialoguePanel.SetActive(false);
         if (clickToContinue) StopCoroutine(nameof(InputRoutine));
+        inDialogue = false;
         onFinishedChatting.Invoke();
     }
 
