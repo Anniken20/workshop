@@ -98,13 +98,13 @@ public class PauseMenu : MonoBehaviour
     public void Back()
     {
         if(mainMenu != null) mainMenu.SetActive(true);
-        PausePanel.SetActive(false);
+        if(PausePanel != null) PausePanel.SetActive(false);
     }
 
     public void LeaveSettings()
     {
         settingsPanel.SetActive(false);
-        PausePanel.SetActive(true);
+        if(PausePanel != null) PausePanel.SetActive(true);
     }
 
     private void OnEnable()
