@@ -105,7 +105,7 @@ public class AimController : MonoBehaviour
             RaycastHit hit;
             Physics.Raycast(ray, out hit);
             lookAtTarget2.position = hit.point;
-            angle = lookAtTarget2.position - shootPoint.position;
+            angle = hit.point - shootPoint.position;
         }
             
         modifiedAngle.y += yDelta;
