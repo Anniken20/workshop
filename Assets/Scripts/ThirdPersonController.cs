@@ -247,7 +247,7 @@ namespace StarterAssets
 
             // set target speed based on move speed, sprint speed and if sprint is pressed
             //float targetSpeed = sprint.triggered ? SprintSpeed : MoveSpeed;
-            if(sprint.triggered){
+            if(sprint.IsPressed()){
                 targetSpeed = SprintSpeed;
             }
             else{
