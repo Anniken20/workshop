@@ -32,6 +32,8 @@ public class AimController : MonoBehaviour
     public bool activeIK;
     public Transform lookAtTarget;
     public Transform lookAtRotator;
+    public Transform lookAtTarget2;
+    public Camera cam;
 
     [HideInInspector] public bool canAim = true;
     [HideInInspector] public bool inLuna = false;
@@ -97,8 +99,13 @@ public class AimController : MonoBehaviour
         //rotate horizontal
         if(horizontalRotate)
         {
-            lookAtRotator.Rotate(new Vector3(0f, xDelta, 0f));
-            LimitHorizontalRotation();
+            //lookAtRotator.Rotate(new Vector3(0f, xDelta, 0f));
+            //LimitHorizontalRotation();
+            Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+            Physics.Raycast(ray, out hit);
+            lookAtTarget2.position = hit.point;
+            angle = lookAtTarget2.position - shootPoint.position;
         }
             
         modifiedAngle.y += yDelta;
@@ -109,7 +116,7 @@ public class AimController : MonoBehaviour
         //restore y angle
         modifiedAngle.y = ySave;
 
-        angle = lookAtTarget.position - shootPoint.position;
+        //angle = lookAtTarget.position - shootPoint.position;
 
         //toggle aim draw
         if (aim.triggered)
@@ -236,7 +243,8 @@ public class AimController : MonoBehaviour
                 if(lookAtTarget != null)
                 {
                     animator.SetLookAtWeight(1);
-                    animator.SetLookAtPosition(lookAtTarget.position);
+                    //animator.SetLookAtPosition(lookAtTarget.position);
+                    animator.SetLookAtPosition(lookAtTarget2.position);
                 }
             } else
             {
