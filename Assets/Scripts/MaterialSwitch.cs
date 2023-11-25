@@ -13,7 +13,10 @@ public class MaterialSwitch : MonoBehaviour
     public CharacterMovement iaControls;
     private InputAction phase;
     public Material material1;
-    public Material material2;
+    public GameObject parentMat;
+  //  public Material material2;
+    private Shader originalShader;
+    private Shader replacedShader; 
     public float switchInterval = 5f; // Time interval for material switching in seconds
     //public KeyCode switchKey = KeyCode.T; // Key to initiate material switching
     public float switchDelay = 5f; // Delay in seconds before switching is allowed again
@@ -25,6 +28,10 @@ public class MaterialSwitch : MonoBehaviour
     {
         rend = GetComponent<Renderer>();
         rend.material = material1; // Initialize with Material1
+        originalShader = Shader.Find("Shader Graphs/ToonShader");
+        replacedShader = Shader.Find("Shader Graphs/Ghost Shader");
+        
+
     }
 
     private void Update()
@@ -41,14 +48,27 @@ public class MaterialSwitch : MonoBehaviour
 
     private void SwitchMaterial()
     {
-        rend.material = material2; // Change to Material2
+        Renderer[] allMats = parentMat.GetComponentsInChildren<Renderer>();
+
+        foreach (Renderer mat in allMats){
+        if (mat.material.shader != null)
+        {
+            mat.material.shader = replacedShader;
+         // Change to ghotshader
+        }
+        }
     }
 
     private IEnumerator SwitchCooldown()
-    {
+    {   
+        Renderer[] allMats = parentMat.GetComponentsInChildren<Renderer>();
         canSwitch = false;
         yield return new WaitForSeconds(switchInterval);
-        rend.material = material1; // Change back to Material1
+        foreach (Renderer mat in allMats)
+        {
+            mat.material.shader = originalShader;
+        }
+        //rend.material = material1; // Change back to Material1
         //yield return new WaitForSeconds(switchDelay);
         canSwitch = true;
     }
