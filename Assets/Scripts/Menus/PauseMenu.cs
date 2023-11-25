@@ -68,9 +68,9 @@ public class PauseMenu : MonoBehaviour
     }
     public void Restart()
     {
+        Continue();
         int scene = SceneManager.GetActiveScene().buildIndex;
         SceneManager.LoadScene(scene, LoadSceneMode.Single);
-        Time.timeScale = 1;
     }
 
     public void Settings()
@@ -81,11 +81,17 @@ public class PauseMenu : MonoBehaviour
 
     public void QuitGame()
     {
-        //Continue();
-        //SceneManager.LoadScene(mainMenuScene);
+        paused = false;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        PausePanel.SetActive(false);
+        Time.timeScale = 1;
+        onResume?.Invoke();
+
+        SceneManager.LoadScene(mainMenuScene);
 
         //temporary fix
-        Application.Quit();
+        //Application.Quit();
     }
 
     //when not in-game but looking at settings
