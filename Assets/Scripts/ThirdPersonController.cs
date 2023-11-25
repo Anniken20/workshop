@@ -459,6 +459,16 @@ namespace StarterAssets
             return _paused || _lunaLocked || _stunned || _inDialogue || _manipulatingLasso;
         }
 
+        public void ForceStartConversation()
+        {
+            _inDialogue = true;
+        }
+
+        public void ForceStopConversation()
+        {
+            _inDialogue = false;
+        }
+
         private void OnEnable(){
             sprint = iaControls.CharacterControls.Sprint;
             move = iaControls.CharacterControls.Move;

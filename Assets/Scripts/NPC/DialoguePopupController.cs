@@ -6,6 +6,7 @@ using TMPro;
 using UnityEngine.UI;
 using DG.Tweening;
 using StarterAssets;
+using UnityEngine.InputSystem;
 
 [System.Serializable]
 public struct DialogueFrame
@@ -26,12 +27,20 @@ public class DialoguePopupController : MonoBehaviour, IInteractable
     public TMP_Text characterText;
     public ThirdPersonController player;
 
+    [Header("Settings")]
+    public bool onlyOnce;
+    public bool clickToContinue;
+
     [Header("Dialogue")]
     public string characterName;
+    public UnityEvent onFinishedChatting;
     public DialogueFrame[] dialogues;
 
     private int dialogueIndex = 0;
     private Coroutine writeRoutine;
+    public CharacterMovement iaControls;
+    private InputAction next;
+    private bool spokenTo;
 
     public void Interacted()
     {
@@ -40,14 +49,19 @@ public class DialoguePopupController : MonoBehaviour, IInteractable
             GoNext();
         } else
         {
-            BeginSpeaking();
+            if(!onlyOnce || !spokenTo)
+            {
+                BeginSpeaking();
+                spokenTo = true;
+                if (clickToContinue) StartCoroutine(InputRoutine());
+            }   
         }
     }
 
     public void GoNext()
     {
         dialogueIndex++;
-        if(dialogueIndex >= dialogues.Length)
+        if(dialogueIndex >= dialogues.Length - 1)
         {
             StopSpeaking();
         }
@@ -69,6 +83,8 @@ public class DialoguePopupController : MonoBehaviour, IInteractable
     { 
         player._inDialogue = false;
         dialoguePanel.SetActive(false);
+        if (clickToContinue) StopCoroutine(nameof(InputRoutine));
+        onFinishedChatting.Invoke();
     }
 
     private void DisplayDialoguePiece(int i)
@@ -89,5 +105,35 @@ public class DialoguePopupController : MonoBehaviour, IInteractable
             characterText.text += msg[i];
             i++;
         }
+    }
+
+    private IEnumerator InputRoutine()
+    {
+        while (true)
+        {
+            if (next.triggered)
+            {
+                Interacted();
+            }
+
+            //wait a frame
+            yield return null;
+        }
+    }
+
+    private void Awake()
+    {
+        iaControls = new CharacterMovement();
+    }
+
+    private void OnEnable()
+    {
+        next = iaControls.CharacterControls.Shoot;
+        next.Enable();
+    }
+
+    private void OnDisable()
+    {
+        next.Disable();
     }
 }
