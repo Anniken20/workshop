@@ -16,22 +16,22 @@ PrefabInstance:
     - target: {fileID: 8718778828885884488, guid: e5f4daf24146ee040b5a2d7a73b30aa0,
         type: 3}
       propertyPath: m_RootOrder
-      value: -1
+      value: 69
       objectReference: {fileID: 0}
     - target: {fileID: 8718778828885884488, guid: e5f4daf24146ee040b5a2d7a73b30aa0,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 115.18713
+      value: -45.865963
       objectReference: {fileID: 0}
     - target: {fileID: 8718778828885884488, guid: e5f4daf24146ee040b5a2d7a73b30aa0,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.01
+      value: 5.4990826
       objectReference: {fileID: 0}
     - target: {fileID: 8718778828885884488, guid: e5f4daf24146ee040b5a2d7a73b30aa0,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 31.780035
+      value: -4.4099655
       objectReference: {fileID: 0}
     - target: {fileID: 8718778828885884488, guid: e5f4daf24146ee040b5a2d7a73b30aa0,
         type: 3}
@@ -81,6 +81,12 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 7600306234796008219}
   m_SourcePrefab: {fileID: 100100000, guid: e5f4daf24146ee040b5a2d7a73b30aa0, type: 3}
+--- !u!4 &3834574143855461455 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8718778828885884488, guid: e5f4daf24146ee040b5a2d7a73b30aa0,
+    type: 3}
+  m_PrefabInstance: {fileID: 5604861645841463815}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &4734161253077193136 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 899428459418414007, guid: e5f4daf24146ee040b5a2d7a73b30aa0,
@@ -100,7 +106,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
-  box: {fileID: 0}
+  box: {fileID: 3834574143855461455}
   teleportDistance: 1
   inGhost: 0
 --- !u!114 &7600306234796008219
@@ -115,7 +121,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77a483b7605651d4db61f2fcc56e5d08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  material1: {fileID: 0}
+  material1: {fileID: 2100000, guid: 7ab977a21c92388468ee65ad1c0e5a78, type: 2}
+  newMaterial: {fileID: 2100000, guid: 945ea9f2e3ca9594c971974a3e694845, type: 2}
   parentMat: {fileID: 4734161253077193136}
   switchInterval: 5
   switchDelay: 5
