@@ -5,6 +5,7 @@ using UnityEngine;
 public class KeyController : MonoBehaviour
 {
     [SerializeField] InventoryManager.AllItems itemType;
+     [SerializeField] GameObject collectedItemImage;
 
     //pickup key
     private void OnTriggerEnter(Collider collision)
@@ -13,6 +14,12 @@ public class KeyController : MonoBehaviour
         {
             InventoryManager.Instance.AddItem(itemType);
             Destroy(gameObject);
+             ShowCollectedItemImage(); 
         }
+    }
+
+    void ShowCollectedItemImage()
+    {
+        collectedItemImage.SetActive(true);
     }
 }
