@@ -9,6 +9,8 @@ public class InventoryManager : MonoBehaviour
     //Our Inventory items
     public List<AllItems> inventoryItems = new List<AllItems>();
 
+    [SerializeField] GameObject[] itemUIImages;
+
     private void Awake()
     {
         Instance = this;
@@ -29,6 +31,20 @@ public class InventoryManager : MonoBehaviour
         if(inventoryItems.Contains(item))
         {
             inventoryItems.Remove(item);
+        }
+    }
+
+    public void UpdateCollectedItemUI()
+    {
+        foreach (AllItems item in inventoryItems)
+        {
+            // Enable the UI image corresponding to the collected item
+            int itemIndex = (int)item;
+            if (itemIndex >= 0 && itemIndex < itemUIImages.Length)
+            {
+                itemUIImages[itemIndex].SetActive(true);
+                
+            }
         }
     }
 
