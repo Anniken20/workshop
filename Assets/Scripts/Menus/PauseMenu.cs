@@ -8,6 +8,7 @@ public class PauseMenu : MonoBehaviour
     public GameObject PausePanel;
     public GameObject settingsPanel;
     public GameObject mainMenu;
+    public GameObject HUD;
 
     //delegate events that every script can subscribe to.
     //when this is called via this script, every script's subscriber function is called
@@ -49,6 +50,7 @@ public class PauseMenu : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         PausePanel.SetActive(true);
+        HUD.SetActive(false);
         Time.timeScale = 0;
         onPause?.Invoke();
     }
@@ -58,6 +60,7 @@ public class PauseMenu : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         PausePanel.SetActive(false);
+        HUD.SetActive(true);
         Time.timeScale = 1;
         onResume?.Invoke();
     }
