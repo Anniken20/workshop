@@ -17,6 +17,7 @@ public class AimController : MonoBehaviour
     public float cursorSensitivity = 10f;
     public Transform shootPoint;
     public GameObject aimReticle;
+    public LayerMask aimLayer;
     public bool useAimReticle = true;
     [Tooltip("The distance the reticle will be drawn from collision.")]
     public float reticleDistFromCollision;
@@ -38,13 +39,11 @@ public class AimController : MonoBehaviour
     private Vector3 angle;
     private Vector3 modifiedAngle;
     private bool showingAimLine = false;
-    private float xDelta;
-    private float yDelta;
-
-    private float yAngleFreedom;
     [HideInInspector] public float sensitivity = 5f;
-    private float horizontalFreedom = 0.5f;
-    private bool horizontalRotate = true;
+
+    //debug
+    private Vector3 pointA;
+    private Vector3 pointB;
 
     private void Awake()
     {
@@ -69,19 +68,21 @@ public class AimController : MonoBehaviour
             }
         }
 
+        aimCursor.transform.position = Input.mousePosition;
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
     }
 
     private void Update()
     {
-        MoveCursor();
-        UpdateAim();
-        DrawAimReticle();
+        
     }
 
     private void FixedUpdate()
     {
+        MoveCursor();
+        UpdateAim();
+        DrawAimReticle();
         DrawLine();
     }
 
@@ -105,51 +106,27 @@ public class AimController : MonoBehaviour
             return;
         }
 
-        //get input from mouse
-        var looking = look.ReadValue<Vector2>();
-        xDelta = looking.x;
-        yDelta = looking.y;
-
-        //apply sensitivity
-        xDelta *= sensitivity / 2;
-        yDelta *= sensitivity / 100;
-
-        //rotate horizontal
-        if(horizontalRotate)
-        {
-            //lookAtRotator.Rotate(new Vector3(0f, xDelta, 0f));
-            //LimitHorizontalRotation();
-            //Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-            
-        }
-
         Ray ray = cam.ScreenPointToRay(aimCursor.transform.position);
         RaycastHit hit;
-        Physics.Raycast(ray, out hit);
+        Physics.Raycast(ray, out hit, Mathf.Infinity, aimLayer);
         lookPoint.position = hit.point;
         angle = hit.point - shootPoint.position;
-
-        modifiedAngle.y += yDelta;
-
-        //clamp and save y-value 
-        float ySave = Mathf.Clamp(modifiedAngle.y, -yAngleFreedom / 2, yAngleFreedom / 2);
-
-        //restore y angle
-        modifiedAngle.y = ySave;
-
-        //angle = lookAtTarget.position - shootPoint.position;
+        pointA = hit.point;
+        pointB = hit.point;
 
         //toggle aim draw
         if (aim.triggered)
         {
             showingAimLine = !showingAimLine;
         }
+    }
 
-        //recenter aim
-        if (recenter.triggered)
-        {
-            StartCoroutine(RecenterAimRoutine());
-        }
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawLine(pointA, pointB);
+        RaycastHit h;
+        Physics.Raycast(pointB, Vector3.down, out h, LayerManager.main.shootableLayers);
+        Gizmos.DrawLine(pointB, h.point);
     }
 
     private void DrawLine()
@@ -204,36 +181,6 @@ public class AimController : MonoBehaviour
             }
         }
     }
-
-    private IEnumerator RecenterAimRoutine()
-    {
-        canAim = false;
-        Tween tween = lookAtRotator.DOLocalRotate(new Vector3(0, 0, 0), 0.1f);
-        yield return tween.WaitForCompletion();
-        canAim = true;
-    }
-
-    private void LimitHorizontalRotation()
-    {
-        float pivotRotY = lookAtRotator.transform.localRotation.eulerAngles.y;
-        if(pivotRotY > 180f && pivotRotY < 360f &&  pivotRotY < 360f-(horizontalFreedom * 90f))
-        {
-            float clampedRotY = 360 - (horizontalFreedom * 90f);
-            lookAtRotator.transform.localRotation =
-            Quaternion.Euler(lookAtRotator.rotation.x,
-                clampedRotY,
-                0f);
-        }
-        else if(pivotRotY <= 180f && pivotRotY > 0 && pivotRotY > horizontalFreedom * 90f)
-        {
-            float clampedRotY = horizontalFreedom * 90f;
-            lookAtRotator.transform.localRotation =
-            Quaternion.Euler(lookAtRotator.rotation.x,
-                clampedRotY,
-                0f);
-        }
-    }
-
     public Vector3 GetAimAngle()
     {
         return angle;
@@ -264,8 +211,7 @@ public class AimController : MonoBehaviour
                 if(lookAtTarget != null)
                 {
                     animator.SetLookAtWeight(1);
-                    //animator.SetLookAtPosition(lookAtTarget.position);
-                    animator.SetLookAtPosition(lookPoint.position);
+                    animator.SetLookAtPosition(aimReticle.transform.position);
                 }
             } else
             {
