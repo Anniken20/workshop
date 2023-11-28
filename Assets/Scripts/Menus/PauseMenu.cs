@@ -24,9 +24,13 @@ public class PauseMenu : MonoBehaviour
     private InputAction pause;
     public CharacterMovement iaControls;
 
+    //singleton
+    public static PauseMenu main;
+
     private void Awake()
     {
         iaControls = new CharacterMovement();
+        main = this;
     }
 
     private void Update()
@@ -61,6 +65,23 @@ public class PauseMenu : MonoBehaviour
         Time.timeScale = 1;
         onResume?.Invoke();
     }
+
+    public void PauseNoUI()
+    {
+        paused = true;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        Time.timeScale = 0;
+    }
+
+    public void UnPauseNoUI()
+    {
+        paused = false;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+        Time.timeScale = 1;
+    }
+
     public void LoadMenu()
     {
         Time.timeScale = 1;

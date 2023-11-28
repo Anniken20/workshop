@@ -12,11 +12,9 @@ public class AimController : MonoBehaviour
     private InputAction recenter;
     public LineRenderer aimLine;
 
-    [Tooltip("(Roughly) 2 => 90* of freedom. 0.5 => 30* of freedom.")]
-    public float yAngleFreedom;
-    public float sensitivity = 5f;
-    public float horizontalFreedom = 0.5f;
-    public bool horizontalRotate = true;
+    [Header("General")]
+    public GameObject aimCursor;
+    public float cursorSensitivity = 10f;
     public Transform shootPoint;
     public GameObject aimReticle;
     public bool useAimReticle = true;
@@ -43,6 +41,11 @@ public class AimController : MonoBehaviour
     private float xDelta;
     private float yDelta;
 
+    private float yAngleFreedom;
+    [HideInInspector] public float sensitivity = 5f;
+    private float horizontalFreedom = 0.5f;
+    private bool horizontalRotate = true;
+
     private void Awake()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -65,10 +68,14 @@ public class AimController : MonoBehaviour
                 reticleDistFromCollision = 0.05f;
             }
         }
+
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     private void Update()
     {
+        MoveCursor();
         UpdateAim();
         DrawAimReticle();
     }
@@ -77,6 +84,17 @@ public class AimController : MonoBehaviour
     {
         DrawLine();
     }
+
+    private void MoveCursor()
+    {
+        //cringe doing this every frame but whatever ?
+        var looking = look.ReadValue<Vector2>();
+
+        aimCursor.transform.position += new Vector3(
+            cursorSensitivity * looking.x, 
+            cursorSensitivity * looking.y);
+    }
+
     private void UpdateAim()
     {
         //in case locked during menus or game cutscenes etc.
@@ -101,13 +119,16 @@ public class AimController : MonoBehaviour
         {
             //lookAtRotator.Rotate(new Vector3(0f, xDelta, 0f));
             //LimitHorizontalRotation();
-            Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-            Physics.Raycast(ray, out hit);
-            lookAtTarget2.position = hit.point;
-            angle = hit.point - shootPoint.position;
-        }
+            //Ray ray = cam.ScreenPointToRay(Input.mousePosition);
             
+        }
+
+        Ray ray = cam.ScreenPointToRay(aimCursor.transform.position);
+        RaycastHit hit;
+        Physics.Raycast(ray, out hit);
+        lookAtTarget2.position = hit.point;
+        angle = hit.point - shootPoint.position;
+
         modifiedAngle.y += yDelta;
 
         //clamp and save y-value 
