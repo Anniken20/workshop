@@ -101,7 +101,7 @@ public class AimController : MonoBehaviour
         //currently referenced by BulletController when redirecting
         if (PauseMenu.paused || !canAim || inLuna)
         {
-            angle = lookAtTarget.position - shootPoint.position;
+            angle = lookPoint.position - shootPoint.position;
             return;
         }
 
