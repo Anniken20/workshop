@@ -28,9 +28,9 @@ public class AimController : MonoBehaviour
     [Header("IK Setup")]
     private Animator animator;
     public bool activeIK;
-    public Transform lookAtTarget;
-    public Transform lookAtRotator;
-    public Transform lookAtTarget2;
+    [HideInInspector] public Transform lookAtTarget;
+    [HideInInspector] public Transform lookAtRotator;
+    public Transform lookPoint;
     public Camera cam;
 
     [HideInInspector] public bool canAim = true;
@@ -126,7 +126,7 @@ public class AimController : MonoBehaviour
         Ray ray = cam.ScreenPointToRay(aimCursor.transform.position);
         RaycastHit hit;
         Physics.Raycast(ray, out hit);
-        lookAtTarget2.position = hit.point;
+        lookPoint.position = hit.point;
         angle = hit.point - shootPoint.position;
 
         modifiedAngle.y += yDelta;
@@ -265,7 +265,7 @@ public class AimController : MonoBehaviour
                 {
                     animator.SetLookAtWeight(1);
                     //animator.SetLookAtPosition(lookAtTarget.position);
-                    animator.SetLookAtPosition(lookAtTarget2.position);
+                    animator.SetLookAtPosition(lookPoint.position);
                 }
             } else
             {
