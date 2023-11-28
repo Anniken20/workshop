@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(AudioSource))]
 public class ShotSound : MonoBehaviour, IShootable
 { 
     [Tooltip("This will play when the bullet ricochets")]
