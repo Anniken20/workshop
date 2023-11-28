@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class FootstepParticleController : MonoBehaviour
 {
-public ParticleSystem leftFootParticles; // Reference to the particle system for the left foot
+    public ParticleSystem leftFootParticles; // Reference to the particle system for the left foot
     public ParticleSystem rightFootParticles; // Reference to the particle system for the right foot
 
    [SerializeField]
@@ -24,7 +24,7 @@ public ParticleSystem leftFootParticles; // Reference to the particle system for
     void Update()
     {
         // Check if the character is in the "walking" state
-        bool walkingState = animator.GetBool("IsWalking");
+        bool walkingState = animator.GetBool("Idle Walk Run Blend");
 
         // If the walking state changes, trigger footstep particles
         if (walkingState && !isWalking)
