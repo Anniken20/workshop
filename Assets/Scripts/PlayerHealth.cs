@@ -5,17 +5,12 @@ using UnityEngine.UI;
 
 public class PlayerHealth : MonoBehaviour
 {
-Lucas-MiniMap-Test
     public int maxHealth = 100;
     public int currentHealth;
-
-public int maxHealth = 100;
-    private int currentHealth;
 
     public Slider healthSlider; 
     public DeathScreenManager deathScreenManager;
 
-main
     void Start()
     {
         currentHealth = maxHealth;
