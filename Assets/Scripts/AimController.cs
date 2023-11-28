@@ -12,11 +12,9 @@ public class AimController : MonoBehaviour
     private InputAction recenter;
     public LineRenderer aimLine;
 
-    [Tooltip("(Roughly) 2 => 90* of freedom. 0.5 => 30* of freedom.")]
-    public float yAngleFreedom;
-    public float sensitivity = 5f;
-    public float horizontalFreedom = 0.5f;
-    public bool horizontalRotate = true;
+    [Header("General")]
+    public GameObject aimCursor;
+    public float cursorSensitivity = 10f;
     public Transform shootPoint;
     public GameObject aimReticle;
     public bool useAimReticle = true;
@@ -30,8 +28,10 @@ public class AimController : MonoBehaviour
     [Header("IK Setup")]
     private Animator animator;
     public bool activeIK;
-    public Transform lookAtTarget;
-    public Transform lookAtRotator;
+    [HideInInspector] public Transform lookAtTarget;
+    [HideInInspector] public Transform lookAtRotator;
+    public Transform lookPoint;
+    public Camera cam;
 
     [HideInInspector] public bool canAim = true;
     [HideInInspector] public bool inLuna = false;
@@ -40,6 +40,11 @@ public class AimController : MonoBehaviour
     private bool showingAimLine = false;
     private float xDelta;
     private float yDelta;
+
+    private float yAngleFreedom;
+    [HideInInspector] public float sensitivity = 5f;
+    private float horizontalFreedom = 0.5f;
+    private bool horizontalRotate = true;
 
     private void Awake()
     {
@@ -63,10 +68,14 @@ public class AimController : MonoBehaviour
                 reticleDistFromCollision = 0.05f;
             }
         }
+
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     private void Update()
     {
+        MoveCursor();
         UpdateAim();
         DrawAimReticle();
     }
@@ -75,13 +84,24 @@ public class AimController : MonoBehaviour
     {
         DrawLine();
     }
+
+    private void MoveCursor()
+    {
+        //cringe doing this every frame but whatever ?
+        var looking = look.ReadValue<Vector2>();
+
+        aimCursor.transform.position += new Vector3(
+            cursorSensitivity * looking.x, 
+            cursorSensitivity * looking.y);
+    }
+
     private void UpdateAim()
     {
         //in case locked during menus or game cutscenes etc.
         //currently referenced by BulletController when redirecting
         if (PauseMenu.paused || !canAim || inLuna)
         {
-            angle = lookAtTarget.position - shootPoint.position;
+            angle = lookPoint.position - shootPoint.position;
             return;
         }
 
@@ -97,10 +117,18 @@ public class AimController : MonoBehaviour
         //rotate horizontal
         if(horizontalRotate)
         {
-            lookAtRotator.Rotate(new Vector3(0f, xDelta, 0f));
-            LimitHorizontalRotation();
-        }
+            //lookAtRotator.Rotate(new Vector3(0f, xDelta, 0f));
+            //LimitHorizontalRotation();
+            //Ray ray = cam.ScreenPointToRay(Input.mousePosition);
             
+        }
+
+        Ray ray = cam.ScreenPointToRay(aimCursor.transform.position);
+        RaycastHit hit;
+        Physics.Raycast(ray, out hit);
+        lookPoint.position = hit.point;
+        angle = hit.point - shootPoint.position;
+
         modifiedAngle.y += yDelta;
 
         //clamp and save y-value 
@@ -109,7 +137,7 @@ public class AimController : MonoBehaviour
         //restore y angle
         modifiedAngle.y = ySave;
 
-        angle = lookAtTarget.position - shootPoint.position;
+        //angle = lookAtTarget.position - shootPoint.position;
 
         //toggle aim draw
         if (aim.triggered)
@@ -236,7 +264,8 @@ public class AimController : MonoBehaviour
                 if(lookAtTarget != null)
                 {
                     animator.SetLookAtWeight(1);
-                    animator.SetLookAtPosition(lookAtTarget.position);
+                    //animator.SetLookAtPosition(lookAtTarget.position);
+                    animator.SetLookAtPosition(lookPoint.position);
                 }
             } else
             {
