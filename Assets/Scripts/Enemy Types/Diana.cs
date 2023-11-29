@@ -36,41 +36,72 @@ public class Diana : Enemy
     {
         stateMachine.ChangeState(pacingState);
         animator.SetBool("moving", true);
+        animator.SetBool("shooting", false);
+        animator.SetBool("throwing", false);
+        animator.SetBool("stunned", false);
     }
     
     public void StopPacing()
     {
         stateMachine.ChangeState(shootState);
+        animator.SetBool("moving", false);
+        animator.SetBool("shooting", false);
+        animator.SetBool("throwing", false);
+        animator.SetBool("stunned", false);
     }
 
     public void BeginLob()
     {
         stateMachine.ChangeState(lobAttackState);
+        animator.SetBool("moving", false);
+        animator.SetBool("shooting", false);
+        animator.SetBool("throwing", true);
+        animator.SetBool("stunned", false);
     }
     
     public void StopLob()
     {
         stateMachine.ChangeState(shootState);
+        animator.SetBool("moving", false);
+        animator.SetBool("shooting", false);
+        animator.SetBool("throwing", false);
+        animator.SetBool("stunned", false);
     }
 
     public void StartShooting()
     {
         stateMachine.ChangeState(shootState);
+        animator.SetBool("moving", false);
+        animator.SetBool("shooting", true);
+        animator.SetBool("throwing", false);
+        animator.SetBool("stunned", false);
     }
 
     public void StopShooting()
     {
         stateMachine.ChangeState(pacingState);
+        animator.SetBool("moving", false);
+        animator.SetBool("shooting", false);
+        animator.SetBool("throwing", false);
+        animator.SetBool("stunned", false);
     }
 
     public void BeginEvade()
     {
         stateMachine.ChangeState(evadeState);
+        animator.SetBool("moving", true);
+        animator.SetBool("shooting", false);
+        animator.SetBool("throwing", false);
+        animator.SetBool("stunned", false);
     }
     
     public void StopEvade()
     {
         stateMachine.ChangeState(pacingState);
+        animator.SetBool("moving", false);
+        animator.SetBool("shooting", false);
+        animator.SetBool("throwing", false);
+        animator.SetBool("stunned", false);
     }
 }
 
