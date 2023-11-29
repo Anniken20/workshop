@@ -9,6 +9,9 @@ public class Diana : Enemy
     [HideInInspector] public EnemyShootState shootState;
     [HideInInspector] public EnemyEvadeState evadeState;
 
+    [Header("Diana specific")]
+    public Animator animator;
+
     private void Awake()
     {
         base.MyAwake();
@@ -27,10 +30,12 @@ public class Diana : Enemy
 
         //set default state
         stateMachine.Initialize(pacingState);
+        animator.SetBool("moving", true);
     }
     public void BeginPacing()
     {
         stateMachine.ChangeState(pacingState);
+        animator.SetBool("moving", true);
     }
     
     public void StopPacing()
