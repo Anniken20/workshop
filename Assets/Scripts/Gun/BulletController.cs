@@ -222,6 +222,14 @@ public class BulletController : MonoBehaviour
     {
         //show luna
         luna.SetActive(true);
+        Animator lunaAnimator = GetComponentInChildren<Animator>();
+        if(lunaAnimator != null)
+        {
+            lunaAnimator.SetTrigger("Appear");
+            Transform lunaTransform = lunaAnimator.transform;
+            lunaTransform.localPosition += new Vector3(0, 0, -10);
+            lunaTransform.DOLocalMove(new Vector3(0, lunaTransform.localPosition.y, 0), 0.3f);
+        }
 
         //lock movement
         player.GetComponent<ThirdPersonController>()._lunaLocked = true;
@@ -289,7 +297,7 @@ public class BulletController : MonoBehaviour
         if (ss != null) ss.ShakeCam(shakeIntensity, shakeDuration);
 
         //hide luna
-        luna.SetActive(false);
+        LunaModelExits();
 
         //unlock our player movement
         player.GetComponent<ThirdPersonController>()._lunaLocked = false;
@@ -315,7 +323,7 @@ public class BulletController : MonoBehaviour
     private void ExitLunaModeEarly()
     {
         //hide luna
-        if(luna != null) luna.SetActive(false);
+        LunaModelExits();
 
         //unlock our player movement
         player.GetComponent<ThirdPersonController>()._lunaLocked = false;
@@ -333,6 +341,21 @@ public class BulletController : MonoBehaviour
 
         //disable line renderer
         aimLineRenderer.positionCount = 1;
+    }
+
+    private void LunaModelExits()
+    {
+        Animator lunaAnimator = GetComponentInChildren<Animator>();
+        if (lunaAnimator != null)
+        {
+            lunaAnimator.SetTrigger("Bat");
+            Transform lunaTransform = lunaAnimator.transform;
+            lunaTransform.DOLocalMove(new Vector3(0, lunaTransform.localPosition.y, -10), 1f);
+            //lunaTransform.parent = null;
+            lunaTransform.DOScale(0f, 1f);
+            //lunaTransform.DOLocalRotate(new Vector3(0, 0, 90), 1f, RotateMode.LocalAxisAdd);
+            Destroy(lunaAnimator.gameObject, 1f);
+        }
     }
 
     //change from luna cam to normal cam after some period of time
