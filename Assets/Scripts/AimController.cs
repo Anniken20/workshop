@@ -37,7 +37,7 @@ public class AimController : MonoBehaviour
     [HideInInspector] public bool canAim = true;
     [HideInInspector] public bool inLuna = false;
     private Vector3 angle;
-    private Vector3 modifiedAngle;
+    private Vector3 angleWithIntensity;
     private bool showingAimLine = false;
     [HideInInspector] public float sensitivity = 5f;
 
@@ -49,7 +49,7 @@ public class AimController : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.Locked;
         angle = new Vector3();
-        modifiedAngle = new Vector3();
+        angleWithIntensity = new Vector3();
         canAim = true;
         inLuna = false;
         iaControls = new CharacterMovement();
@@ -67,10 +67,10 @@ public class AimController : MonoBehaviour
                 reticleDistFromCollision = 0.05f;
             }
         }
-
-        aimCursor.transform.position = Input.mousePosition;
+        
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
+        aimCursor.transform.position = Input.mousePosition;
     }
 
     private void Update()
@@ -94,6 +94,11 @@ public class AimController : MonoBehaviour
         aimCursor.transform.position += new Vector3(
             cursorSensitivity * looking.x, 
             cursorSensitivity * looking.y);
+
+        //clamp cursor to screen bounds
+        float xClamp = Mathf.Clamp(aimCursor.transform.position.x, 0, Screen.width);
+        float yClamp = Mathf.Clamp(aimCursor.transform.position.y, 0, Screen.height);
+        aimCursor.transform.position = new Vector3(xClamp, yClamp, 0f);
     }
 
     private void UpdateAim()
@@ -103,16 +108,31 @@ public class AimController : MonoBehaviour
         if (PauseMenu.paused || !canAim || inLuna)
         {
             angle = lookPoint.position - shootPoint.position;
+            angle = angle.normalized;
             return;
         }
 
         Ray ray = cam.ScreenPointToRay(aimCursor.transform.position);
         RaycastHit hit;
         Physics.Raycast(ray, out hit, Mathf.Infinity, aimLayer);
-        lookPoint.position = hit.point;
-        angle = hit.point - shootPoint.position;
-        pointA = hit.point;
-        pointB = hit.point;
+        Vector3 goodPoint = new Vector3(hit.point.x, shootPoint.position.y, hit.point.z);
+        lookPoint.position = goodPoint;
+        angle = goodPoint - shootPoint.position;
+        angle = angle.normalized;
+
+        //adding intensity by scaling the angle with the mouse cursor's distance from center of screen
+        //taking absolute value so it doesn't flip the angle
+        //dividing it by screen size so it's screen resolution independent on its intensity
+        Vector3 alpha = aimCursor.transform.position - new Vector3(Screen.width / 2f, Screen.height / 2f);
+        alpha.x /= Screen.width;
+        alpha.y /= Screen.height;
+        float intensity = Mathf.Abs(Vector3.Magnitude(alpha)) * 10f;
+        angleWithIntensity = angle * intensity;
+            
+        
+        //debug tools
+        pointA = ray.origin;
+        pointB = goodPoint;
 
         //toggle aim draw
         if (aim.triggered)
@@ -184,6 +204,11 @@ public class AimController : MonoBehaviour
     public Vector3 GetAimAngle()
     {
         return angle;
+    }
+
+    public Vector3 GetAimAngleWithIntensity()
+    {
+        return angleWithIntensity;
     }
     
     private void OnEnable(){
