@@ -7,51 +7,44 @@ using UnityEngine.SceneManagement;
 public class DeathScreenManager : MonoBehaviour
 {
     public GameObject deathScreen;
-    public static DeathScreenManager main;
-    private PlayerRespawn respawner;
 
-    private void Awake()
+    private bool isDeathScreenActive = false;
+
+    private void Update()
     {
-        //Singleton behavior
-        if (main != null)
-            Destroy(gameObject);
+        if (isDeathScreenActive)
+        {
+            Cursor.visible = true; // Show the cursor when the death screen is active
+            Cursor.lockState = CursorLockMode.None; // Allow the cursor to move freely
+        }
         else
         {
-            DontDestroyOnLoad(gameObject);
-            main = this;
+            Cursor.visible = false; // Hide the cursor during gameplay
+            Cursor.lockState = CursorLockMode.Locked; // Lock the cursor during gameplay
         }
     }
 
     public void ShowDeathScreen()
     {
         deathScreen.SetActive(true);
-
-        //this method handles the global time scale and pause boolean
-        //so that things like shooting arent allowed
-        PauseMenu.main.PauseNoUI();
+        isDeathScreenActive = true;
+        Time.timeScale = 0f; // Pause the game
     }
 
     public void HideDeathScreen()
     {
         deathScreen.SetActive(false);
-
-        //this method handles the global time scale and pause boolean
-        //so that things like shooting arent allowed
-        PauseMenu.main.UnPauseNoUI();
+        isDeathScreenActive = false;
+        Time.timeScale = 1f; // Resume the game
     }
 
     public void RestartFromCheckpoint()
     {
-        respawner = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerRespawn>();
-        respawner.RestartFromCheckpoint();
-        HideDeathScreen();
-        
-        //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     public void QuitToMainMenu()
     {
-        HideDeathScreen();
         SceneManager.LoadScene("MainMenu");
     }
 }

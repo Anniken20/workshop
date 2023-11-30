@@ -25,13 +25,9 @@ public class PauseMenu : MonoBehaviour
     private InputAction pause;
     public CharacterMovement iaControls;
 
-    //singleton
-    public static PauseMenu main;
-
     private void Awake()
     {
         iaControls = new CharacterMovement();
-        main = this;
     }
 
     private void Update()
@@ -68,23 +64,6 @@ public class PauseMenu : MonoBehaviour
         Time.timeScale = 1;
         onResume?.Invoke();
     }
-
-    public void PauseNoUI()
-    {
-        paused = true;
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
-        Time.timeScale = 0;
-    }
-
-    public void UnPauseNoUI()
-    {
-        paused = false;
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-        Time.timeScale = 1;
-    }
-
     public void LoadMenu()
     {
         Time.timeScale = 1;
@@ -92,9 +71,9 @@ public class PauseMenu : MonoBehaviour
     }
     public void Restart()
     {
-        Continue();
         int scene = SceneManager.GetActiveScene().buildIndex;
         SceneManager.LoadScene(scene, LoadSceneMode.Single);
+        Time.timeScale = 1;
     }
 
     public void Settings()
@@ -105,30 +84,24 @@ public class PauseMenu : MonoBehaviour
 
     public void QuitGame()
     {
-        paused = false;
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
-        PausePanel.SetActive(false);
-        Time.timeScale = 1;
-        onResume?.Invoke();
-
-        SceneManager.LoadScene(mainMenuScene);
+        //Continue();
+        //SceneManager.LoadScene(mainMenuScene);
 
         //temporary fix
-        //Application.Quit();
+        Application.Quit();
     }
 
     //when not in-game but looking at settings
     public void Back()
     {
         if(mainMenu != null) mainMenu.SetActive(true);
-        if(PausePanel != null) PausePanel.SetActive(false);
+        PausePanel.SetActive(false);
     }
 
     public void LeaveSettings()
     {
         settingsPanel.SetActive(false);
-        if(PausePanel != null) PausePanel.SetActive(true);
+        PausePanel.SetActive(true);
     }
 
     private void OnEnable()

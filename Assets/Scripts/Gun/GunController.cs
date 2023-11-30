@@ -11,7 +11,7 @@ using StarterAssets;
  * Shoot gun in isometric setup with ricochet capabilities
  * Includes option to redirect most recent bullet fired in mid-air within a time window
  * 
- * Ghost ammo of X bullets. Takes time before bullets return back to player
+ * Ghost ammo of (3) bullets. Takes time before bullets return back to player
  * 
  * 
  * Closely related to BulletController script and AimController script

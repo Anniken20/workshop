@@ -6,7 +6,6 @@ using TMPro;
 using UnityEngine.UI;
 using DG.Tweening;
 using StarterAssets;
-using UnityEngine.InputSystem;
 
 [System.Serializable]
 public struct DialogueFrame
@@ -27,39 +26,21 @@ public class DialoguePopupController : MonoBehaviour, IInteractable
     public TMP_Text characterText;
     public ThirdPersonController player;
 
-    [Header("Settings")]
-    public bool onlyOnce;
-    [Tooltip("Allow the player to use the SHOOT button to continue speaking")]
-    public bool clickToContinue;
-    [Tooltip("Useful for keeping the player locked even after dialogue.")]
-    public bool dontUnlock;
-
     [Header("Dialogue")]
     public string characterName;
-    public UnityEvent onFinishedChatting;
     public DialogueFrame[] dialogues;
 
     private int dialogueIndex = 0;
     private Coroutine writeRoutine;
-    public CharacterMovement iaControls;
-    private InputAction next;
-    private bool spokenTo;
-    private bool inDialogue;
 
     public void Interacted()
     {
-        if (inDialogue)
+        if (dialoguePanel.activeSelf)
         {
             GoNext();
         } else
         {
-            if(!onlyOnce || !spokenTo)
-            {
-                BeginSpeaking();
-                inDialogue = true;
-                spokenTo = true;
-                if (clickToContinue) StartCoroutine(InputRoutine());
-            }   
+            BeginSpeaking();
         }
     }
 
@@ -69,10 +50,8 @@ public class DialoguePopupController : MonoBehaviour, IInteractable
         if(dialogueIndex >= dialogues.Length)
         {
             StopSpeaking();
-        } else
-        {
-            DisplayDialoguePiece(dialogueIndex);
         }
+        DisplayDialoguePiece(dialogueIndex);
     }
 
     public void BeginSpeaking()
@@ -88,11 +67,8 @@ public class DialoguePopupController : MonoBehaviour, IInteractable
     
     public void StopSpeaking()
     { 
-        if(!dontUnlock) player._inDialogue = false;
+        player._inDialogue = false;
         dialoguePanel.SetActive(false);
-        if (clickToContinue) StopCoroutine(nameof(InputRoutine));
-        inDialogue = false;
-        onFinishedChatting.Invoke();
     }
 
     private void DisplayDialoguePiece(int i)
@@ -113,35 +89,5 @@ public class DialoguePopupController : MonoBehaviour, IInteractable
             characterText.text += msg[i];
             i++;
         }
-    }
-
-    private IEnumerator InputRoutine()
-    {
-        while (true)
-        {
-            if (next.triggered)
-            {
-                Interacted();
-            }
-
-            //wait a frame
-            yield return null;
-        }
-    }
-
-    private void Awake()
-    {
-        iaControls = new CharacterMovement();
-    }
-
-    private void OnEnable()
-    {
-        next = iaControls.CharacterControls.Shoot;
-        next.Enable();
-    }
-
-    private void OnDisable()
-    {
-        next.Disable();
     }
 }

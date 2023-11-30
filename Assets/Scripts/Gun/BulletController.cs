@@ -65,9 +65,6 @@ public class BulletController : MonoBehaviour
     public float shakeIntensity;
     public float shakeDuration;
 
-    [Header("Bullet VFX")]
-    public ParticleSystem sparksSystem;
-
 
     public void Fire(Transform source, Vector3 dir)
     {
@@ -78,7 +75,6 @@ public class BulletController : MonoBehaviour
         StartCoroutine(BulletMove(source));
         StartCoroutine(RedirectWindowRoutine());
         gunAudioController.PlayFire();
-        sparksSystem.Play();
     }
 
     private IEnumerator BulletMove(Transform source)

@@ -247,7 +247,7 @@ namespace StarterAssets
 
             // set target speed based on move speed, sprint speed and if sprint is pressed
             //float targetSpeed = sprint.triggered ? SprintSpeed : MoveSpeed;
-            if(sprint.IsPressed()){
+            if(sprint.triggered){
                 targetSpeed = SprintSpeed;
             }
             else{
@@ -457,16 +457,6 @@ namespace StarterAssets
             Debug.Log("_manipulatingLasso: " + _manipulatingLasso);
             */
             return _paused || _lunaLocked || _stunned || _inDialogue || _manipulatingLasso;
-        }
-
-        public void ForceStartConversation()
-        {
-            _inDialogue = true;
-        }
-
-        public void ForceStopConversation()
-        {
-            _inDialogue = false;
         }
 
         private void OnEnable(){
