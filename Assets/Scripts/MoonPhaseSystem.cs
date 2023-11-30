@@ -18,7 +18,6 @@ public class MoonPhaseSystem : MonoBehaviour
     public ThirdPersonController player;
     public Enemy enemy;
     public GameObject enemyCam;
-    public Scale HUD;
 
     public void PhaseAnimation()
     {
@@ -46,7 +45,6 @@ public class MoonPhaseSystem : MonoBehaviour
         backgroundImage.DOColor(Color.clear, 1f);
         yield return new WaitForSeconds(1f);
         StartShowdown();
-        HUD.ScaleTo(1f);
     }
 
     public void StartShowdown()

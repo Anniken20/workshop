@@ -15,8 +15,9 @@ public class GhostController : MonoBehaviour
     private bool abilityEnabled = false;
     private float abilityDuration = 5.0f;
     private float countdownTimer = 5.0f;
+    private Vector3 randomPosition;
+
     private bool playerInBox;
-    private Vector3 originalPosition;
     //public ParticleSystem smokeParticleSystem; // 
 
     //can add the smoke to her hands if we want to, might need tweaking and editing but easy fix
@@ -27,6 +28,7 @@ public class GhostController : MonoBehaviour
     {  
         if (phase.triggered)
         {
+            randomPosition = player.position;
             ToggleAbility();
         }
         
@@ -37,14 +39,12 @@ public class GhostController : MonoBehaviour
                     if (countdownTimer <= 0)
                     {
                         DisableAbility();
-                        GetComponent<MaterialSwitch>().ToggleMaterial();
                     }
                 }
     }
 
     void ToggleAbility()
     {
-        GetComponent<MaterialSwitch>().ToggleMaterial();
         abilityEnabled = !abilityEnabled;
         
         if (abilityEnabled)
@@ -64,23 +64,28 @@ public class GhostController : MonoBehaviour
        // smokeParticleSystem.Play();
         GetComponent<BoxCollider> ().isTrigger = true;
         inGhost = true;
-        originalPosition = player.position;
+        Debug.Log("ACTIVE");
     }
 
     void DisableAbility()
     {
-        //smokeParticleSystem.Stop();
+       // smokeParticleSystem.Stop();
         GetComponent<BoxCollider> ().isTrigger = false;
         inGhost = false;
+        Debug.Log("DISABLED");
         
+        // Find a valid position on the ground outside the box
+        //Vector3 randomPosition = GetValidPositionOutsideBox();
+
         // Teleport the player to the valid position
         if(playerInBox){
             player.gameObject.GetComponent<CharacterController>().enabled = false;
-            player.position = originalPosition;
+            randomPosition.y = 0;
+            player.position = randomPosition;
             player.gameObject.GetComponent<CharacterController>().enabled = true;
             playerInBox = false;
         }
-        abilityEnabled = false;
+        abilityEnabled = !abilityEnabled;
 
     }
 

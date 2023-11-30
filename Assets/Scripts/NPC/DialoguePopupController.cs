@@ -7,7 +7,6 @@ using UnityEngine.UI;
 using DG.Tweening;
 using StarterAssets;
 using UnityEngine.InputSystem;
-using System;
 
 [System.Serializable]
 public struct DialogueFrame
@@ -46,13 +45,6 @@ public class DialoguePopupController : MonoBehaviour, IInteractable
     private InputAction next;
     private bool spokenTo;
     private bool inDialogue;
-    private Scale HUDScaler;
-    private bool writing = false;
-
-    private void Start()
-    {
-        HUDScaler = GameObject.FindGameObjectWithTag("HUD").GetComponentInChildren<Scale>();
-    }
 
     public void Interacted()
     {
@@ -73,11 +65,6 @@ public class DialoguePopupController : MonoBehaviour, IInteractable
 
     public void GoNext()
     {
-        if (writing)
-        {
-            FinishLine();
-            return;
-        }
         dialogueIndex++;
         if(dialogueIndex >= dialogues.Length)
         {
@@ -97,10 +84,6 @@ public class DialoguePopupController : MonoBehaviour, IInteractable
         dialoguePanel.transform.DOScale(new Vector3(1, 1), 1f).SetEase(Ease.OutExpo);
         characterNameText.text = characterName;
         DisplayDialoguePiece(dialogueIndex);
-
-        //GameObject[] objs = GameObject.FindGameObjectsWithTag("UI");
-        //Array.Find(objs, element => element.name == "HUD");
-        HUDScaler.ScaleTo(3f);
     }
     
     public void StopSpeaking()
@@ -124,14 +107,12 @@ public class DialoguePopupController : MonoBehaviour, IInteractable
     {
         characterText.text = "";
         int i = 0;
-        writing = true;
         while(i < msg.Length)
         {
             yield return new WaitForSeconds(waitTime);
             characterText.text += msg[i];
             i++;
         }
-        writing = false;
     }
 
     private IEnumerator InputRoutine()
@@ -146,13 +127,6 @@ public class DialoguePopupController : MonoBehaviour, IInteractable
             //wait a frame
             yield return null;
         }
-    }
-
-    private void FinishLine()
-    {
-        if (writeRoutine != null) StopCoroutine(writeRoutine);
-        characterText.text = dialogues[dialogueIndex].message;
-        writing = false;
     }
 
     private void Awake()

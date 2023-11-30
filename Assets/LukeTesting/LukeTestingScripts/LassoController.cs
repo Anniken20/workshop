@@ -241,7 +241,7 @@ public class LassoController : MonoBehaviour
         //yAdjusted.x = mouseX;
         //lassoSpinLocation.transform.Rotate(new Vector3(0f, mouseX, 0f));
         //aimAngle = lassoSpinLocation.transform.forward;
-        aimAngle = aimController.GetAimAngleWithIntensity();
+        aimAngle = aimController.GetAimAngle();
         //Debug.Log(aimAngle);
         aimAngle *= 0.2f;
         //aimAngle = gameObject.transform.forward;
