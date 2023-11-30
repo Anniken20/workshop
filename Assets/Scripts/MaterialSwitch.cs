@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using System;
 
 //NO MORE BUGS WOOO
 //All numbers can be edited but too different can make it cause issues in ghost controller too
@@ -14,28 +13,23 @@ public class MaterialSwitch : MonoBehaviour
     public CharacterMovement iaControls;
     private InputAction phase;
     public Material material1;
-    public Material newMaterial;
-    public GameObject parentMat;
-  //  public Material material2;
-    private Shader originalShader;
-    private Shader replacedShader; 
+    public Material material2;
     public float switchInterval = 5f; // Time interval for material switching in seconds
     //public KeyCode switchKey = KeyCode.T; // Key to initiate material switching
     public float switchDelay = 5f; // Delay in seconds before switching is allowed again
 
     private Renderer rend;
     private bool canSwitch = true;
-    Material[] materialsArray;
+
+    private bool baseMatActive = true;
 
     private void Start()
     {
         rend = GetComponent<Renderer>();
         rend.material = material1; // Initialize with Material1
-        originalShader = Shader.Find("Shader Graphs/ToonShader");
-        replacedShader = Shader.Find("Shader Graphs/Ghost Shader");
-
     }
 
+    /*
     private void Update()
     {
         if (phase.triggered)
@@ -47,44 +41,31 @@ public class MaterialSwitch : MonoBehaviour
             }
         }
     }
+    */
 
-    private void SwitchMaterial()
+    public void ToggleMaterial()
     {
-        Renderer[] allMats = parentMat.GetComponentsInChildren<Renderer>();
-        
-        foreach (Renderer mat in allMats){
-        if (mat.material.shader != null)
-        
+        if (baseMatActive)
         {
-            mat.material.shader = replacedShader;
-            
-         // Change to ghotshader
-        
-        }
-            Material[] materialsArray = new Material[(mat.materials.Length +1)];
-            mat.materials.CopyTo(materialsArray,0);
-            materialsArray[materialsArray.Length - 1] = newMaterial;
-            mat.materials = materialsArray;
-
-            //add new ghost material
+            baseMatActive = false;
+            rend.material = material2;
+        } else
+        {
+            baseMatActive = true;
+            rend.material = material1;
         }
     }
 
-    private IEnumerator SwitchCooldown()
-    {   
-        Renderer[] allMats = parentMat.GetComponentsInChildren<Renderer>();
+    private void SwitchMaterial()
+    {
+        rend.material = material2; // Change to Material2
+    }
 
+    private IEnumerator SwitchCooldown()
+    {
         canSwitch = false;
         yield return new WaitForSeconds(switchInterval);
-        foreach (Renderer mat in allMats)
-        {
-            mat.material.shader = originalShader;
-            Material[] materialsArray = new Material[(mat.materials.Length-1)];  
-            Array.Copy(mat.materials, 0, materialsArray, 0, materialsArray.Length);  
-         //   mat.materials.CopyTo(materialsArray,0);
-            mat.materials = materialsArray;
-
-        }
+        rend.material = material1; // Change back to Material1
         //yield return new WaitForSeconds(switchDelay);
         canSwitch = true;
     }
@@ -101,4 +82,3 @@ public class MaterialSwitch : MonoBehaviour
         phase.Disable();
     }
 }
-
