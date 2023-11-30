@@ -9,8 +9,6 @@ public class Sheriff : Enemy
     [HideInInspector] public EnemyShootState shootState;
     [HideInInspector] public EnemyHidingState hidingState;
 
-    public Animator animator;
-
     private void Awake()
     {
         base.MyAwake();
@@ -29,62 +27,44 @@ public class Sheriff : Enemy
 
         //set default state
         stateMachine.Initialize(idleState);
-
-        animator = gameObject.GetComponent<Animator>();
     }
 
     public void runaway()
     {
         stateMachine.ChangeState(hidingState);
-        animator.SetBool("isRunning", true);
-        animator.SetBool("isShooting", false);
     }
     public void stoprun()
     {
         stateMachine.ChangeState(shootState);
-        animator.SetBool("isRunning", false);
-        animator.SetBool("isShooting", true);
     }
 
     public void startshooting()
     {
         stateMachine.ChangeState(shootState);
-        animator.SetBool("isRunning", false);
-        animator.SetBool("isShooting", true);
     }
     public void stopshooting()
     {
         stateMachine.ChangeState(pacingState);
-        animator.SetBool("isRunning", true);
-        animator.SetBool("isShooting", false);
     }
 
     public void idle()
     {
         stateMachine.ChangeState(idleState);
-        animator.SetBool("isRunning", false);
-        animator.SetBool("isShooting", false);
     }
 
     public void stopidle()
     {
         stateMachine.ChangeState(pacingState);
-        animator.SetBool("isRunning", true);
-        animator.SetBool("isShooting", false);
     }
 
     public void pacing()
     {
         stateMachine.ChangeState(pacingState);
-        animator.SetBool("isRunning", true);
-        animator.SetBool("isShooting", false);
     }
 
     public void stoppacing()
     {
         stateMachine.ChangeState(idleState);
-        animator.SetBool("isRunning", false);
-        animator.SetBool("isShooting", false);
     }
 }
 
