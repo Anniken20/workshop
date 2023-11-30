@@ -24,7 +24,6 @@ public class PlayerRespawn : MonoBehaviour
         {
             // Update the respawn position when colliding with a checkpoint
             respawnPosition = checkpoint.transform.position;
-            Debug.Log("Checkpoint reached! Position: " + respawnPosition); // Log checkpoint position
         }
         if (other.CompareTag("DeathZone"))
         {
@@ -39,7 +38,18 @@ public class PlayerRespawn : MonoBehaviour
 
     public void RestartFromCheckpoint()
     {
-        transform.position = respawnPosition; // Move the player to the checkpoint position
+        //Move the player to the checkpoint position
+
+        //must temporarily turn off character controller to modify the transform
+        CharacterController cc = GetComponent<CharacterController>();
+        cc.enabled = false;
+        transform.position = respawnPosition;
+        cc.enabled = true;
+    }
+
+    public void RestartFromPosition(Vector3 pos)
+    {
+        transform.position = pos;
         deathScreenManager.HideDeathScreen();
     }
 }
