@@ -65,11 +65,7 @@ public class LassoDetection : MonoBehaviour
                 onObject = true;
                 otherObject = other.gameObject;
                 lassoable.Lassoed(lassoAttachPoint, lassoActive, other.gameObject);
-            }
-            else{
-                //Destroy(gameObject);
-                //lassoController.drawToLasso = false;
-                //lassoController.drawToLassoLine.enabled = false;
+                lassoController.holdingItem = true;
             }
         }
         else if(other.gameObject.CompareTag("Grapple")){
@@ -83,6 +79,7 @@ public class LassoDetection : MonoBehaviour
             GetComponent<Rigidbody>().isKinematic = true;
             lassoController.drawToLasso = false;
             lassoController.drawToLassoLine.enabled = false;
+            lassoController.holdingItem = true;
             player.GetComponent<LassoGrappleScript>().lassoConnectPoint = lassoAttachPoint;
             player.GetComponent<LassoGrappleScript>().triggerGrapOnce = true;
 
