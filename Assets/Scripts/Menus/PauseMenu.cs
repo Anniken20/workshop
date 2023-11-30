@@ -8,6 +8,7 @@ public class PauseMenu : MonoBehaviour
     public GameObject PausePanel;
     public GameObject settingsPanel;
     public GameObject mainMenu;
+    public GameObject HUD;
 
     //delegate events that every script can subscribe to.
     //when this is called via this script, every script's subscriber function is called
@@ -24,9 +25,13 @@ public class PauseMenu : MonoBehaviour
     private InputAction pause;
     public CharacterMovement iaControls;
 
+    //singleton
+    public static PauseMenu main;
+
     private void Awake()
     {
         iaControls = new CharacterMovement();
+        main = this;
     }
 
     private void Update()
@@ -49,6 +54,7 @@ public class PauseMenu : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         PausePanel.SetActive(true);
+        HUD.SetActive(false);
         Time.timeScale = 0;
         onPause?.Invoke();
     }
@@ -58,9 +64,27 @@ public class PauseMenu : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         PausePanel.SetActive(false);
+        HUD.SetActive(true);
         Time.timeScale = 1;
         onResume?.Invoke();
     }
+
+    public void PauseNoUI()
+    {
+        paused = true;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        Time.timeScale = 0;
+    }
+
+    public void UnPauseNoUI()
+    {
+        paused = false;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+        Time.timeScale = 1;
+    }
+
     public void LoadMenu()
     {
         Time.timeScale = 1;
@@ -68,9 +92,9 @@ public class PauseMenu : MonoBehaviour
     }
     public void Restart()
     {
+        Continue();
         int scene = SceneManager.GetActiveScene().buildIndex;
         SceneManager.LoadScene(scene, LoadSceneMode.Single);
-        Time.timeScale = 1;
     }
 
     public void Settings()
@@ -81,24 +105,30 @@ public class PauseMenu : MonoBehaviour
 
     public void QuitGame()
     {
-        //Continue();
-        //SceneManager.LoadScene(mainMenuScene);
+        paused = false;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        PausePanel.SetActive(false);
+        Time.timeScale = 1;
+        onResume?.Invoke();
+
+        SceneManager.LoadScene(mainMenuScene);
 
         //temporary fix
-        Application.Quit();
+        //Application.Quit();
     }
 
     //when not in-game but looking at settings
     public void Back()
     {
         if(mainMenu != null) mainMenu.SetActive(true);
-        PausePanel.SetActive(false);
+        if(PausePanel != null) PausePanel.SetActive(false);
     }
 
     public void LeaveSettings()
     {
         settingsPanel.SetActive(false);
-        PausePanel.SetActive(true);
+        if(PausePanel != null) PausePanel.SetActive(true);
     }
 
     private void OnEnable()
