@@ -120,7 +120,7 @@ public class AimController : MonoBehaviour
             showingAimLine = !showingAimLine;
         }
     }
-
+    /*
     private void OnDrawGizmos()
     {
         Gizmos.DrawLine(pointA, pointB);
@@ -128,7 +128,7 @@ public class AimController : MonoBehaviour
         Physics.Raycast(pointB, Vector3.down, out h, LayerManager.main.shootableLayers);
         Gizmos.DrawLine(pointB, h.point);
     }
-
+    */
     private void DrawLine()
     {
         if (!showingAimLine)
