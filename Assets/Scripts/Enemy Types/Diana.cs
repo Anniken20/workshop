@@ -34,6 +34,7 @@ public class Diana : Enemy
         
         //set default state
         stateMachine.Initialize(idleState);
+        animator = gameObject.GetComponent<Animator>();
 
         animator.SetBool("Moving", false);
         animator.SetBool("Shooting", false);
