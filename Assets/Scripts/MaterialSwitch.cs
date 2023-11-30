@@ -21,15 +21,12 @@ public class MaterialSwitch : MonoBehaviour
     private Renderer rend;
     private bool canSwitch = true;
 
-    private bool baseMatActive = true;
-
     private void Start()
     {
         rend = GetComponent<Renderer>();
         rend.material = material1; // Initialize with Material1
     }
 
-    /*
     private void Update()
     {
         if (phase.triggered)
@@ -39,20 +36,6 @@ public class MaterialSwitch : MonoBehaviour
                 SwitchMaterial();
                 StartCoroutine(SwitchCooldown());
             }
-        }
-    }
-    */
-
-    public void ToggleMaterial()
-    {
-        if (baseMatActive)
-        {
-            baseMatActive = false;
-            rend.material = material2;
-        } else
-        {
-            baseMatActive = true;
-            rend.material = material1;
         }
     }
 
