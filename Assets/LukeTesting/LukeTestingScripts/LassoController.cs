@@ -16,14 +16,13 @@ public class LassoController : MonoBehaviour
     private Vector3 lineStart;
     private bool lassoActive;
     [SerializeField] public Transform lassoAttachPoint;
-    //[SerializeField] Vector3 lineOrigin;
-    //[SerializeField] float rayDistance;
+
+    [HideInInspector] public bool toggleShooting;
+
 
     [Header("For Lasso Specific Aiming")]
     [SerializeField] Transform launchPoint;
     [SerializeField] LineRenderer lineRend;
-    //[SerializeField] Transform releasePos;
-    //[SerializeField] [Range(10,100)] private int linePoints = 25;
     private int linePoints = 25;
     [SerializeField] [Range(0.01f, 0.25f)] private float tBetween = 0.1f;
     [SerializeField] GameObject lassoObject;
@@ -63,9 +62,11 @@ public class LassoController : MonoBehaviour
     private Animator animator;
 
     [HideInInspector] public bool endThrow = true;
+    private GunController gunCon;
 
 
     private void Awake(){
+        gunCon = GetComponent<GunController>();
         internalCooldown = lassoCooldown;
         int lassoLayer = lassoObject.gameObject.layer;
         for(int i = 0; i<32; i++){
@@ -74,6 +75,7 @@ public class LassoController : MonoBehaviour
             }
         }
         iaControls = new CharacterMovement();
+        lassoAimMask &= ~(1<<LayerMask.NameToLayer("AimLayer"));
     }
     void Update(){
         if(endThrow){
@@ -92,62 +94,19 @@ public class LassoController : MonoBehaviour
         
         looking = look.ReadValue<Vector2>();
 
-        //iaControls.CharacterControls.Lasso.started += OnLassoDown;
-        //iaControls.CharacterControls.Lasso.canceled += OnLassoRelease;
-
-
-
-        /*if(drawToLasso){
-            if(projectile != null){
-                connectPoint = projectile.transform.Find("ConnectPoint");
-                
-                /*lineStart = new Vector3(gameObject.transform.position.x,
-                gameObject.transform.position.y + 1.5f,
-                gameObject.transform.position.z)
-                + (gameObject.transform.forward * 0.25f);////
-                drawToLassoLine.enabled = true;
-                drawToLassoLine.SetPosition(0, lassoHipLocation.transform.position);
-                drawToLassoLine.SetPosition(1, connectPoint.position);
-            }
-        }
-        else if(drawToLasso == false){
-            drawToLassoLine.enabled = false;
-        }*/
         if(startLassoCooldown){
             internalCooldown -= 1f * Time.deltaTime;
         }
         if(internalCooldown <= 0){
             internalCooldown = 0;
         }
-       /* if(Input.GetMouseButtonDown(1)){
-            if(holdingItem == false){
-                lassoActive = true;
-                
-            }
+        if(toggleShooting){
+            gunCon.DisableShooting();
         }
-        if(Input.GetMouseButtonUp(1)){
-            lassoActive = false;
-            if(holdingItem == false && internalCooldown <= 0){
-                LaunchLasso();
-                internalCooldown = lassoCooldown;
-                lineRend.enabled = false;
-            }
-        }*/
-
-        
-
-
-
-        /*if(lassoActive && holdingItem == false){
-            startPos = new Vector3(gameObject.transform.position.x,
-            gameObject.transform.position.y + 1.5f,
-            gameObject.transform.position.z)
-            + (gameObject.transform.forward * 0.25f);
-            if(internalCooldown <= 0){
-                DrawLassoLine();
-            }
+        else{
+            gunCon.ReenableShooting();
         }
-        LassoAiming();*/
+      
     }
 
 

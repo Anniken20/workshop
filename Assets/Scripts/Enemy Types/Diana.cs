@@ -8,6 +8,7 @@ public class Diana : Enemy
     [HideInInspector] public EnemyPacingState pacingState;
     [HideInInspector] public EnemyShootState shootState;
     [HideInInspector] public EnemyEvadeState evadeState;
+    [HideInInspector] public EnemyIdleState idleState;
 
     [Header("Diana specific")]
     public Animator animator;
@@ -28,80 +29,103 @@ public class Diana : Enemy
         evadeState = gameObject.AddComponent<EnemyEvadeState>();
         evadeState.Initialize(this, stateMachine);
 
+        idleState = gameObject.AddComponent<EnemyIdleState>();
+        idleState.Initialize(this, stateMachine);
+        
         //set default state
-        stateMachine.Initialize(pacingState);
-        animator.SetBool("moving", true);
+        stateMachine.Initialize(idleState);
+        animator = gameObject.GetComponent<Animator>();
+
+        animator.SetBool("Moving", false);
+        animator.SetBool("Shooting", false);
+        animator.SetBool("Throwing", false);
+        animator.SetBool("Stunned", false);
     }
     public void BeginPacing()
     {
         stateMachine.ChangeState(pacingState);
-        animator.SetBool("moving", true);
-        animator.SetBool("shooting", false);
-        animator.SetBool("throwing", false);
-        animator.SetBool("stunned", false);
+        animator.SetBool("Moving", true);
+        animator.SetBool("Shooting", false);
+        animator.SetBool("Throwing", false);
+        animator.SetBool("Stunned", false);
     }
     
     public void StopPacing()
     {
         stateMachine.ChangeState(shootState);
-        animator.SetBool("moving", false);
-        animator.SetBool("shooting", false);
-        animator.SetBool("throwing", false);
-        animator.SetBool("stunned", false);
+        animator.SetBool("Moving", false);
+        animator.SetBool("Shooting", false);
+        animator.SetBool("Throwing", false);
+        animator.SetBool("Stunned", false);
     }
 
     public void BeginLob()
     {
         stateMachine.ChangeState(lobAttackState);
-        animator.SetBool("moving", false);
-        animator.SetBool("shooting", false);
-        animator.SetBool("throwing", true);
-        animator.SetBool("stunned", false);
+        animator.SetBool("Moving", false);
+        animator.SetBool("Shooting", false);
+        animator.SetBool("Throwing", true);
+        animator.SetBool("Stunned", false);
     }
     
     public void StopLob()
     {
         stateMachine.ChangeState(shootState);
-        animator.SetBool("moving", false);
-        animator.SetBool("shooting", false);
-        animator.SetBool("throwing", false);
-        animator.SetBool("stunned", false);
+        animator.SetBool("Moving", false);
+        animator.SetBool("Shooting", false);
+        animator.SetBool("Throwing", false);
+        animator.SetBool("Stunned", false);
     }
 
     public void StartShooting()
     {
         stateMachine.ChangeState(shootState);
-        animator.SetBool("moving", false);
-        animator.SetBool("shooting", true);
-        animator.SetBool("throwing", false);
-        animator.SetBool("stunned", false);
+        animator.SetBool("Moving", false);
+        animator.SetBool("Shooting", true);
+        animator.SetBool("Throwing", false);
+        animator.SetBool("Stunned", false);
     }
 
     public void StopShooting()
     {
         stateMachine.ChangeState(pacingState);
-        animator.SetBool("moving", false);
-        animator.SetBool("shooting", false);
-        animator.SetBool("throwing", false);
-        animator.SetBool("stunned", false);
+        animator.SetBool("Moving", false);
+        animator.SetBool("Shooting", false);
+        animator.SetBool("Throwing", false);
+        animator.SetBool("Stunned", false);
     }
 
     public void BeginEvade()
     {
         stateMachine.ChangeState(evadeState);
-        animator.SetBool("moving", true);
-        animator.SetBool("shooting", false);
-        animator.SetBool("throwing", false);
-        animator.SetBool("stunned", false);
+        animator.SetBool("Moving", true);
+        animator.SetBool("Shooting", false);
+        animator.SetBool("Throwing", false);
+        animator.SetBool("Stunned", false);
     }
     
     public void StopEvade()
     {
         stateMachine.ChangeState(pacingState);
-        animator.SetBool("moving", false);
-        animator.SetBool("shooting", false);
-        animator.SetBool("throwing", false);
-        animator.SetBool("stunned", false);
+        animator.SetBool("Moving", false);
+        animator.SetBool("Shooting", false);
+        animator.SetBool("Throwing", false);
+        animator.SetBool("Stunned", false);
+    }
+        public void idle()
+    {
+        stateMachine.ChangeState(idleState);
+        animator.SetBool("Moving", false);
+        animator.SetBool("Shooting", false);
+        animator.SetBool("Throwing", false);
+        animator.SetBool("Stunned", false);
+    }
+
+    public void stopidle()
+    {
+        stateMachine.ChangeState(pacingState);
+        animator.SetBool("Moving", true);
+        animator.SetBool("Idle", false);
     }
 }
 

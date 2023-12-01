@@ -8,20 +8,22 @@ public class PlayerHealth : MonoBehaviour
     public int maxHealth = 100;
     public int currentHealth;
 
-    public Slider healthSlider; 
+    public Image healthBarImage; 
     public DeathScreenManager deathScreenManager;
 
     void Start()
     {
         currentHealth = maxHealth;
         UpdateHealthUI();
+        
     }
 
     void UpdateHealthUI()
     {
-        if (healthSlider != null)
+    if (healthBarImage != null)
         {
-            healthSlider.value = (float)currentHealth / maxHealth; 
+            float fillAmount = (float)currentHealth / maxHealth; // Calculate fill amount based on health
+            healthBarImage.fillAmount = fillAmount; // Update the fill amount of the image
         }
     }
 
@@ -34,6 +36,7 @@ public class PlayerHealth : MonoBehaviour
 
         currentHealth -= damage;
         UpdateHealthUI();
+        Debug.Log("Player health: " + currentHealth);
 
         if (currentHealth <= 0)
         {

@@ -29,7 +29,7 @@ public class LassoPickupScript : MonoBehaviour, ILassoable
 
     [SerializeField] float launchForce;
 
-    [HideInInspector] public bool lassoActive;
+    public bool lassoActive;
 
     private LassoController player;
 
@@ -133,7 +133,8 @@ public class LassoPickupScript : MonoBehaviour, ILassoable
         player.holdingItem = lassoActive;
     }
     public void Lassoed(Transform lassoAttachPoint, bool active, GameObject otherObject){
-        gunCon.DisableShooting();
+        player.toggleShooting = true;
+        //gunCon.DisableShooting();
         if(!inCombat){
             //rb.excludeLayers = playerLayer;
             lassoActive = active;
@@ -177,7 +178,7 @@ public class LassoPickupScript : MonoBehaviour, ILassoable
             throwing = true;
             player.lassoCombatAiming.SetActive(false);
             lassoActive = false;
-            gunCon.ReenableShooting();
+            //gunCon.ReenableShooting();
     }
     public void DropObject(){
         player.startLassoCooldown = true;
@@ -191,7 +192,8 @@ public class LassoPickupScript : MonoBehaviour, ILassoable
         player.drawToLassoLine.enabled = false;
         lassoObject.GetComponent<LassoDetection>().recall = true;
         player.endThrow = true;
-        gunCon.ReenableShooting();
+        //gunCon.ReenableShooting();
+        player.toggleShooting = false;
         /*RaycastHit hit;
         if(Physics.Raycast(transform.position, (player.gameObject.transform.position - transform.position), out hit)){
             if(hit.transform.gameObject.layer == LayerMask.NameToLayer("Wall")){
