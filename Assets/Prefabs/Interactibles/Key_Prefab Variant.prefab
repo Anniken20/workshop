@@ -4966,7 +4966,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 8b3f92306d7a42e4181e909b3371d189,
         type: 3}
       propertyPath: m_RootOrder
-      value: -1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8b3f92306d7a42e4181e909b3371d189,
         type: 3}
@@ -5063,6 +5063,14 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 8153410820266774884}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 8b3f92306d7a42e4181e909b3371d189,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1296103948117428906}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 8b3f92306d7a42e4181e909b3371d189,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 380324338723501515}
   m_SourcePrefab: {fileID: 100100000, guid: 8b3f92306d7a42e4181e909b3371d189, type: 3}
 --- !u!4 &6250637710810373661 stripped
 Transform:
@@ -5109,5 +5117,41 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 57.250687, y: 200.80423, z: 20.914604}
-  m_Center: {x: 1.8186136, y: -10.253183, z: 0.29515788}
+  m_Size: {x: 57.250687, y: 200.80423, z: 37.50596}
+  m_Center: {x: 1.8186136, y: -10.253183, z: -0.9242906}
+--- !u!114 &1296103948117428906
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6770433398251127975}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60881a15845dee54fb2b0f98090ea28f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  randomStart: 1
+  rotationSpeed: 1
+  xAxis: 0
+  yAxis: 0
+  zAxis: 0
+--- !u!114 &380324338723501515
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6770433398251127975}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b445127fab58cad4d8d68762d109922b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  randomStart: 1
+  hoverAutomatically: 1
+  startOffset: 0
+  cycleDuration: 0
+  xDelta: 0
+  yDelta: 0
+  zDelta: 0
