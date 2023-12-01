@@ -145,8 +145,8 @@ public class AimController : MonoBehaviour
     {
         Gizmos.DrawLine(pointA, pointB);
         RaycastHit h;
-       // Physics.Raycast(pointB, Vector3.down, out h, LayerManager.main.shootableLayers);
-        //Gizmos.DrawLine(pointB, h.point);
+        Physics.Raycast(pointB, Vector3.down, out h, LayerManager.main.shootableLayers);
+        Gizmos.DrawLine(pointB, h.point);
     }
 
     private void DrawLine()

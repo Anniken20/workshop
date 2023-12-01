@@ -63,8 +63,6 @@ public class LassoController : MonoBehaviour
 
     [HideInInspector] public bool endThrow = true;
     private GunController gunCon;
-    
-
 
 
     private void Awake(){
@@ -77,7 +75,6 @@ public class LassoController : MonoBehaviour
             }
         }
         iaControls = new CharacterMovement();
-        lassoAimMask &= ~(1<<LayerMask.NameToLayer("AimLayer"));
     }
     void Update(){
         if(endThrow){

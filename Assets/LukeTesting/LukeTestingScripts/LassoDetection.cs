@@ -52,8 +52,6 @@ public class LassoDetection : MonoBehaviour
 
     }
     private void OnTriggerEnter(Collider other){
-        var objLayer = other.gameObject.layer;
-        string layerName = LayerMask.LayerToName(objLayer);
         ILassoable lassoable = other.gameObject.GetComponent<ILassoable>();
         //IGrappleable grappleable = GetComponent<IGrappleable>();
         if(lassoable != null){
@@ -86,7 +84,7 @@ public class LassoDetection : MonoBehaviour
             player.GetComponent<LassoGrappleScript>().triggerGrapOnce = true;
 
         }
-        else if(other.gameObject.tag != "Player" && onObject == false && other.gameObject.GetComponent<OutOfBoundsScript>() == null && layerName != "AimLayer" || other.gameObject.tag != "Player" && onObject == true && otherObject.GetComponent<LassoPickupScript>().manipulateObject && other.gameObject.GetComponent<OutOfBoundsScript>() == null && layerName != "AimLayer"){
+        else if(other.gameObject.tag != "Player" && onObject == false && other.gameObject.GetComponent<OutOfBoundsScript>() == null|| other.gameObject.tag != "Player" && onObject == true && otherObject.GetComponent<LassoPickupScript>().manipulateObject && other.gameObject.GetComponent<OutOfBoundsScript>() == null){
             lassoController.drawToLasso = false;
             lassoController.drawToLassoLine.enabled = false;
             //Destroy(gameObject);
@@ -157,9 +155,6 @@ public class LassoDetection : MonoBehaviour
                     transform.rotation = otherObject.transform.rotation;
                 }
             }
-    }
-    private void PlayParticles(){
-        
     }
     
 }
