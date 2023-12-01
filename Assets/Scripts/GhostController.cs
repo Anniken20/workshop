@@ -20,21 +20,33 @@ public class GhostController : MonoBehaviour
     private bool playerInBox;
     //public ParticleSystem smokeParticleSystem; // 
 
+    public Image abilityDurationBar;
     //can add the smoke to her hands if we want to, might need tweaking and editing but easy fix
     //The timer for the countdown need to be the same as the ability and match the material switch or it will bug out
     
+ 
     //Once per frame
     void Update()
     {  
+
         if (phase.triggered)
         {
             randomPosition = player.position;
             ToggleAbility();
+
+            if (abilityEnabled)
+            {
+                abilityDurationBar.fillAmount = 1.0f; //Sets fill amount to 100% initially
+            }
         }
         
             if (abilityEnabled)
                 {
                     countdownTimer -= Time.deltaTime;
+
+                    // Update UI bar based on remaining duration
+                    abilityDurationBar.fillAmount = countdownTimer / abilityDuration;
+
 
                     if (countdownTimer <= 0)
                     {
@@ -86,6 +98,8 @@ public class GhostController : MonoBehaviour
             playerInBox = false;
         }
         abilityEnabled = !abilityEnabled;
+
+        abilityDurationBar.fillAmount = 1f;
 
     }
 
