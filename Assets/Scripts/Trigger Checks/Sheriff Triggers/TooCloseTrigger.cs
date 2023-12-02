@@ -5,10 +5,12 @@ using UnityEngine;
 public class TooCloseTrigger : MonoBehaviour
 {
     private Sheriff s;
+    private Diana d;
 
     void Start()
     {
         s = GetComponentInParent<Sheriff>();
+        d = GetComponentInParent<Diana>();
     }
 
     void OnTriggerEnter(Collider other)
@@ -17,6 +19,7 @@ public class TooCloseTrigger : MonoBehaviour
         {
             Debug.Log("bye");
             s.runaway();
+            d.stateMachine.ChangeState(d.evadeState);
         }
         
     }
