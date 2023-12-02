@@ -39,7 +39,6 @@ public class Diana : Enemy
         animator.SetBool("Moving", false);
         animator.SetBool("Shooting", false);
         animator.SetBool("Throwing", false);
-        animator.SetBool("Stunned", false);
     }
     public void BeginPacing()
     {
@@ -47,7 +46,6 @@ public class Diana : Enemy
         animator.SetBool("Moving", true);
         animator.SetBool("Shooting", false);
         animator.SetBool("Throwing", false);
-        animator.SetBool("Stunned", false);
     }
     
     public void StopPacing()
@@ -56,7 +54,6 @@ public class Diana : Enemy
         animator.SetBool("Moving", false);
         animator.SetBool("Shooting", false);
         animator.SetBool("Throwing", false);
-        animator.SetBool("Stunned", false);
     }
 
     public void BeginLob()
@@ -65,7 +62,6 @@ public class Diana : Enemy
         animator.SetBool("Moving", false);
         animator.SetBool("Shooting", false);
         animator.SetBool("Throwing", true);
-        animator.SetBool("Stunned", false);
     }
     
     public void StopLob()
@@ -74,7 +70,6 @@ public class Diana : Enemy
         animator.SetBool("Moving", false);
         animator.SetBool("Shooting", false);
         animator.SetBool("Throwing", false);
-        animator.SetBool("Stunned", false);
     }
 
     public void StartShooting()
@@ -83,7 +78,6 @@ public class Diana : Enemy
         animator.SetBool("Moving", false);
         animator.SetBool("Shooting", true);
         animator.SetBool("Throwing", false);
-        animator.SetBool("Stunned", false);
     }
 
     public void StopShooting()
@@ -92,7 +86,6 @@ public class Diana : Enemy
         animator.SetBool("Moving", false);
         animator.SetBool("Shooting", false);
         animator.SetBool("Throwing", false);
-        animator.SetBool("Stunned", false);
     }
 
     public void BeginEvade()
@@ -101,7 +94,6 @@ public class Diana : Enemy
         animator.SetBool("Moving", true);
         animator.SetBool("Shooting", false);
         animator.SetBool("Throwing", false);
-        animator.SetBool("Stunned", false);
     }
     
     public void StopEvade()
@@ -110,7 +102,6 @@ public class Diana : Enemy
         animator.SetBool("Moving", false);
         animator.SetBool("Shooting", false);
         animator.SetBool("Throwing", false);
-        animator.SetBool("Stunned", false);
     }
         public void idle()
     {
@@ -118,7 +109,6 @@ public class Diana : Enemy
         animator.SetBool("Moving", false);
         animator.SetBool("Shooting", false);
         animator.SetBool("Throwing", false);
-        animator.SetBool("Stunned", false);
     }
 
     public void stopidle()
