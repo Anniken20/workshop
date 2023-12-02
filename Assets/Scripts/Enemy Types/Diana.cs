@@ -91,7 +91,7 @@ public class Diana : Enemy
     public void BeginEvade()
     {
         stateMachine.ChangeState(evadeState);
-        animator.SetBool("Moving", true);
+        animator.SetBool("Moving", false);
         animator.SetBool("Shooting", false);
         animator.SetBool("Throwing", false);
     }
@@ -114,8 +114,9 @@ public class Diana : Enemy
     public void stopidle()
     {
         stateMachine.ChangeState(pacingState);
-        animator.SetBool("Moving", true);
-        animator.SetBool("Idle", false);
+        animator.SetBool("Moving", false);
+        animator.SetBool("Shooting", false);
+        animator.SetBool("Throwing", false);
     }
 }
 
