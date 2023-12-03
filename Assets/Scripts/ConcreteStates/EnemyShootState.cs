@@ -56,6 +56,7 @@ public class EnemyShootState : EnemyState
     private void FacePlayer()
     {
         nav.updateRotation = false;
-        transform.LookAt(player);
+        Vector3 lookVector = new Vector3(player.transform.position.x, gameObject.transform.position.y, player.transform.position.z);
+        transform.LookAt(lookVector);
     }
 }
