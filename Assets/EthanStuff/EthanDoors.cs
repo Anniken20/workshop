@@ -37,7 +37,7 @@ public class EthanDoors : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (isPressingSwitch)
+        if (isPressingSwitch && !PressurePlateDoor)
         {
             MoveSwitchDown();
         }
@@ -121,15 +121,15 @@ public class EthanDoors : MonoBehaviour
     private void OnTriggerExit(Collider collision)
     {
         if (collision.CompareTag("Player"))
-    {
-        StartCoroutine(SwitchUpDelay(switchDelay));
+        {
+            StartCoroutine(SwitchUpDelay(switchDelay));
+        }
 
         // Check if it's a pressure plate door and the close switch is activated
         if (PressurePlateDoor && isDoorCloseSwitch && doorController.isDoorOpen)
         {
             doorController.isDoorOpen = !doorController.isDoorOpen;
         }
-    }
     }
 
     //adds delay to switch moving up and down
