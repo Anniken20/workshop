@@ -9,14 +9,17 @@ public class BreakController : MonoBehaviour
     public float explosionRadius = 5f;
     public float disableRigidbodyDelay = 30f; // Time before disabling rigidbodies
     public float enableRigidbodyDelay = 30f; // Time to enable rigidbodies again if not motionless
+    public AudioClip breakSound;
 
     private Rigidbody[] fragmentRigidbodies;
     private Vector3[] initialFragmentPositions;
     private bool rigidbodiesDisabled = false;
     private float lastMovementTime;
+    private AudioSource audioSource;
 
     private void Start()
     {
+         audioSource = GetComponent<AudioSource>();
         // Check if there are fragments assigned
         if (fragments != null && fragments.Length > 0)
         {
@@ -113,13 +116,27 @@ public class BreakController : MonoBehaviour
                     }
                 }
             }
+            PlayBreakSound();
 
             // Destroy the original object
             Destroy(gameObject);
+            
         }
         else
         {
             Debug.LogError("Fragments not assigned in the Inspector.");
+        }
+    }
+
+    private void PlayBreakSound()
+    {
+        if (audioSource != null && breakSound != null)
+        {
+            audioSource.PlayOneShot(breakSound); 
+        }
+        else
+        {
+            Debug.LogError("AudioSource or breakSound not set.");
         }
     }
 }
