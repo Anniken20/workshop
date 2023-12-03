@@ -6,6 +6,7 @@ using UnityEngine.AI;
 public class EnemyPacingState : EnemyState
 {
     private float currentTimer;
+    private Animator animator;
 
     //constructor
     public EnemyPacingState(Enemy enemy, EnemyStateMachine enemyStateMachine): base(enemy, enemyStateMachine)
@@ -21,6 +22,8 @@ public class EnemyPacingState : EnemyState
     public override void EnterState()
     {
         StartPace();
+        animator = GetComponent<Animator>();
+        Debug.Log(gameObject.name + " started pacing");
     }
 
     //start a random timer between 2 values
@@ -49,6 +52,8 @@ public class EnemyPacingState : EnemyState
             //set new timer to go to another point
             StartPace();
         }
+        animator.SetBool("Moving", nav.remainingDistance > 0);
+
     }
 
     //this is akin to a Unity FixedUpdate loop
