@@ -52,7 +52,7 @@ public class LassoPickupScript : MonoBehaviour, ILassoable
     Camera mainCam;
 
     private Vector3 throwPoint;
-    private float lassoCooldown;
+    //private float lassoCooldown;
     private bool throwing;
     private GameObject lassoObject;
     private float mWheelDistance;
@@ -80,7 +80,7 @@ public class LassoPickupScript : MonoBehaviour, ILassoable
         rb = GetComponent<Rigidbody>();
         objectCollider = GetComponent<Collider>();
         player = FindObjectOfType<LassoController>();
-        lassoCooldown = player.lassoCooldown;
+        //lassoCooldown = player.lassoCooldown;
         gunCon = player.GetComponent<GunController>();
         //combatLaunchStrength = player.GetComponent<LassoController>().combatLaunchStrength;
 
@@ -145,7 +145,8 @@ public class LassoPickupScript : MonoBehaviour, ILassoable
             moveObject = active;
             rb.velocity = Vector3.zero;
             //manipulateObject = true;
-            player.startLassoCooldown = false;
+            //player.startLassoCooldown = false;
+            player.StartLassoCD(false);
             mWheelDistance = 0;
             
         }
@@ -173,15 +174,15 @@ public class LassoPickupScript : MonoBehaviour, ILassoable
             throwEnabled = false;
             lassoedObject = null;
 
-            player.internalCooldown = lassoCooldown;
-            player.startLassoCooldown = true;
+            //player.internalCooldown = lassoCooldown;
+            player.StartLassoCD(true);
             throwing = true;
             player.lassoCombatAiming.SetActive(false);
             lassoActive = false;
             //gunCon.ReenableShooting();
     }
     public void DropObject(){
-        player.startLassoCooldown = true;
+        player.StartLassoCD(true);
         rb.useGravity = true;
         objectCollider.isTrigger = false;
         moveObject = false;
