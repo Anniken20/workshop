@@ -22,10 +22,13 @@ public class LassoDetection : MonoBehaviour
     [HideInInspector] public bool recall;
     public AudioClip missSound;
     public AudioClip lassoGrabSound;
+    private AudioSource lassoSounds;
     private bool playMissOnce;
     private bool allowPickup;
+    public ParticleSystem hitParticles;
+    bool triggerParticlesOnce = true;
+    bool detectCollOnce = true;
 
-    
     void Update()
     {
     
@@ -40,7 +43,7 @@ public class LassoDetection : MonoBehaviour
         }
     }
     void Start(){
-
+        lassoSounds = GetComponent<AudioSource>();
         //StartCoroutine(LassoLifespan());
 
         lassoController = FindObjectOfType<LassoController>();
@@ -52,49 +55,70 @@ public class LassoDetection : MonoBehaviour
 
     }
     private void OnTriggerEnter(Collider other){
-        var objLayer = other.gameObject.layer;
-        string layerName = LayerMask.LayerToName(objLayer);
-        ILassoable lassoable = other.gameObject.GetComponent<ILassoable>();
-        //IGrappleable grappleable = GetComponent<IGrappleable>();
-        if(lassoable != null){
-            AudioManager.main.Play(AudioManager.AudioSourceChannel.SFX, lassoGrabSound);
-            //AudioManager.main.Play(AudioManager.AudioSourceChannel.SFX, lassoedSound);
-            hitObject = true;
-            Vector3 otherExtents = other.bounds.extents;
-            if(transform.position.y>= (otherExtents.y) * 2){
-                
-                GetComponent<Rigidbody>().isKinematic = true;
+        if(detectCollOnce = true){
+            var objLayer = other.gameObject.layer;
+            string layerName = LayerMask.LayerToName(objLayer);
+
+            ILassoable lassoable = other.gameObject.GetComponent<ILassoable>();
+            //IGrappleable grappleable = GetComponent<IGrappleable>();
+            if(lassoable != null){
+                PlayFX(transform.position);
+                //hitParticles.Play();
+                //AudioManager.main.Play(AudioManager.AudioSourceChannel.SFX, lassoGrabSound);
+                lassoSounds.PlayOneShot(lassoGrabSound);
+                //AudioManager.main.Play(AudioManager.AudioSourceChannel.SFX, lassoedSound);
+                hitObject = true;
+                Vector3 otherExtents = other.bounds.extents;
+                if(transform.position.y>= (otherExtents.y) * 2){
+                    
+                    GetComponent<Rigidbody>().isKinematic = true;
+                    onObject = true;
+                    otherObject = other.gameObject;
+                    lassoable.Lassoed(lassoAttachPoint, lassoActive, other.gameObject);
+                    lassoController.holdingItem = true;
+                }
+            }
+            else if(other.gameObject.CompareTag("Grapple")){
+                PlayFX(transform.position);
+                //hitParticles.Play();
+                //AudioManager.main.Play(AudioManager.AudioSourceChannel.SFX, lassoGrabSound);
+                lassoSounds.PlayOneShot(lassoGrabSound);
                 onObject = true;
                 otherObject = other.gameObject;
-                lassoable.Lassoed(lassoAttachPoint, lassoActive, other.gameObject);
+                //AudioManager.main.Play(AudioManager.AudioSourceChannel.SFX, grappleSound);
+                grappleScript.Grappled(lassoActive, other.transform.gameObject);
+                hitObject = true;
+                //Destroy(gameObject);
+                GetComponent<Rigidbody>().isKinematic = true;
+                lassoController.drawToLasso = false;
+                lassoController.drawToLassoLine.enabled = false;
                 lassoController.holdingItem = true;
-            }
-        }
-        else if(other.gameObject.CompareTag("Grapple")){
-            AudioManager.main.Play(AudioManager.AudioSourceChannel.SFX, lassoGrabSound);
-            onObject = true;
-            otherObject = other.gameObject;
-            //AudioManager.main.Play(AudioManager.AudioSourceChannel.SFX, grappleSound);
-            grappleScript.Grappled(lassoActive, other.transform.gameObject);
-            hitObject = true;
-            //Destroy(gameObject);
-            GetComponent<Rigidbody>().isKinematic = true;
-            lassoController.drawToLasso = false;
-            lassoController.drawToLassoLine.enabled = false;
-            lassoController.holdingItem = true;
-            player.GetComponent<LassoGrappleScript>().lassoConnectPoint = lassoAttachPoint;
-            player.GetComponent<LassoGrappleScript>().triggerGrapOnce = true;
+                player.GetComponent<LassoGrappleScript>().lassoConnectPoint = lassoAttachPoint;
+                player.GetComponent<LassoGrappleScript>().triggerGrapOnce = true;
 
-        }
-        else if(other.gameObject.tag != "Player" && onObject == false && other.gameObject.GetComponent<OutOfBoundsScript>() == null && layerName != "AimLayer"|| other.gameObject.tag != "Player" && onObject == true && otherObject.GetComponent<LassoPickupScript>().manipulateObject && other.gameObject.GetComponent<OutOfBoundsScript>() == null && layerName != "AimLayer"){
-            lassoController.drawToLasso = false;
-            lassoController.drawToLassoLine.enabled = false;
-            //Destroy(gameObject);
-            playMissOnce = true;
-            recall = true;
-            if(otherObject != null){
-                otherObject.GetComponent<LassoPickupScript>().DropObject();
             }
+            else if(other.gameObject.tag != "Player" && onObject == false && other.gameObject.GetComponent<OutOfBoundsScript>() == null && layerName != "AimLayer"|| other.gameObject.tag != "Player" && onObject == true && otherObject.GetComponent<LassoPickupScript>().manipulateObject && other.gameObject.GetComponent<OutOfBoundsScript>() == null && layerName != "AimLayer"){
+                //hitParticles.Play();
+                PlayFX(transform.position);
+                lassoController.drawToLasso = false;
+                lassoController.drawToLassoLine.enabled = false;
+                //Destroy(gameObject);
+                playMissOnce = true;
+                recall = true;
+                if(otherObject != null){
+                    otherObject.GetComponent<LassoPickupScript>().DropObject();
+                }
+            }
+            detectCollOnce = false;
+        }
+    }
+    private void PlayFX(Vector3 location){
+        if(triggerParticlesOnce){
+            //hitParticles.PlayParticleSystemAtPoint(location.position);
+            var particlesLocation = hitParticles.gameObject;
+            particlesLocation.transform.position = location;
+            hitParticles.Play();
+        triggerParticlesOnce = false;
         }
     }
 
@@ -124,7 +148,8 @@ public class LassoDetection : MonoBehaviour
             if(playMissOnce){
                 //aSource.PlayOneShot(missSound);
                 //aSource.Play();
-                AudioManager.main.Play(AudioManager.AudioSourceChannel.SFX, missSound);
+                //AudioManager.main.Play(AudioManager.AudioSourceChannel.SFX, missSound);
+                lassoSounds.PlayOneShot(missSound);
                 playMissOnce = false;
             }
         }
