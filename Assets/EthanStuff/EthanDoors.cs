@@ -37,7 +37,7 @@ public class EthanDoors : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (isPressingSwitch)
+        if (isPressingSwitch && !PressurePlateDoor)
         {
             MoveSwitchDown();
         }
