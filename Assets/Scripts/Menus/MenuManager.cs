@@ -10,8 +10,8 @@ public class MenuManager : MonoBehaviour
 
     [SerializeField] GameObject oneFirstSelected;
     [SerializeField] GameObject twoFirstSelected;
-    public GameObject currentHovered;
-    public GameObject previousHovered;
+    private GameObject currentHovered;
+    private GameObject previousHovered;
     private bool doOnce;
 
     private void Awake(){
