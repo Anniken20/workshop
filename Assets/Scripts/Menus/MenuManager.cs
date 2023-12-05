@@ -7,7 +7,6 @@ public class MenuManager : MonoBehaviour
 {
     [SerializeField] GameObject firstMenu;
     [SerializeField] GameObject secondMenu;
-
     [SerializeField] GameObject oneFirstSelected;
     [SerializeField] GameObject twoFirstSelected;
     private GameObject currentHovered;
