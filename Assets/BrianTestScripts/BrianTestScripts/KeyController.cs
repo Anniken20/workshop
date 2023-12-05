@@ -15,11 +15,17 @@ public class KeyController : MonoBehaviour
             InventoryManager.Instance.AddItem(itemType);
             Destroy(gameObject);
              ShowCollectedItemImage(); 
+             Invoke("HideCollectedItemImage", 60f);
         }
     }
 
     void ShowCollectedItemImage()
     {
         collectedItemImage.SetActive(true);
+    }
+
+    void HideCollectedItemImage()
+    {
+        collectedItemImage.SetActive(false);
     }
 }
