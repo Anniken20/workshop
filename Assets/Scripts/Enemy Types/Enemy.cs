@@ -9,7 +9,7 @@ public class Enemy : MonoBehaviour
 {
     [Header("Global")]
     public float maxHealth = 100f;
-    [HideInInspector] public float currentHealth;
+    public float currentHealth;
     [HideInInspector] public EnemyStateMachine stateMachine;
 
     [Header("AOEAttack Variables")]
