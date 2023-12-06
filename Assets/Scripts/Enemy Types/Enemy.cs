@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using DG.Tweening;
 
 public class Enemy : MonoBehaviour
 
@@ -85,6 +86,32 @@ public class Enemy : MonoBehaviour
 
     public void Die()
     {
+        StartCoroutine(DeathRoutine());
+    }
+
+    private IEnumerator DeathRoutine()
+    {
+        //turn off components so it stops moving
+        GetComponent<Animator>().enabled = false;
+        GetComponent<NavMeshAgent>().enabled = false;
+
+        yield return new WaitForSeconds(0.5f);
+        transform.DORotate(new Vector3(-88, 0, 0), 1.5f, RotateMode.WorldAxisAdd).SetEase(Ease.OutBounce);
+        
+        //destroy this script
+        Destroy(this);
+
+        //destroy this object
         Destroy(gameObject);
+    }
+
+    public void TakeDamage(int delta)
+    {
+        currentHealth -= delta;
+        if(currentHealth < 0)
+        {
+            Die();
+        }
+
     }
 }
