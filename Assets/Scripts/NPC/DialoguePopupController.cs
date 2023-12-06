@@ -111,7 +111,6 @@ public class DialoguePopupController : MonoBehaviour, IInteractable
         if (clickToContinue) StopCoroutine(nameof(InputRoutine));
         inDialogue = false;
         onFinishedChatting.Invoke();
-        HUDScaler.ScaleTo(1f);
     }
 
     private void DisplayDialoguePiece(int i)
