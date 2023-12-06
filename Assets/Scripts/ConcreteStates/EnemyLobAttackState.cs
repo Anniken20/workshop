@@ -6,6 +6,8 @@ using UnityEngine.AI;
 public class EnemyLobAttackState : EnemyState
 {
     private bool hasAttacked; // Flag to track if the enemy has performed a lob attack
+    //private float timeBetweenAttacks = 1f;
+    //private float timer;
 
     public EnemyLobAttackState(Enemy enemy, EnemyStateMachine enemyStateMachine) : base(enemy, enemyStateMachine)
     {
@@ -15,8 +17,11 @@ public class EnemyLobAttackState : EnemyState
     {
         base.EnterState();
         Debug.Log("Started lob attack");
-        hasAttacked = false;
-        StartCoroutine(LobAttack());
+        //timer -= Time.deltaTime;
+        //if(timer < 0f)
+        //{
+            StartCoroutine(LobAttack());
+        //}
     }
 
     public override void ExitState()
@@ -29,12 +34,14 @@ public class EnemyLobAttackState : EnemyState
     {
         // Wait for a moment before performing the lob attack (optional)
         yield return new WaitForSeconds(1.0f);
+        //timer = timeBetweenAttacks;
 
         if (!hasAttacked)
         {
             // Create and lob the projectile
-            GameObject projectile = Instantiate(enemy.lobProjectilePrefab, transform.position, Quaternion.identity);
+            GameObject projectile = Instantiate(enemy.lobProjectilePrefab, enemy.launchPoint.position, Quaternion.identity);
             Rigidbody projectileRigidbody = projectile.GetComponent<Rigidbody>();
+            Destroy(projectile, 10f);
 
             // Calculate the direction to the lob target
             Vector3 direction = (enemy.lobTarget.position - transform.position).normalized;
