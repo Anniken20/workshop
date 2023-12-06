@@ -43,12 +43,10 @@ public class PlayerHealth : MonoBehaviour
             Die();
         }
     }
-        void Die()
-        {
-            if (deathScreenManager != null)
-        {
-            deathScreenManager.ShowDeathScreen();
-        }
-            //Add animation?
-        }
+    public void Die()
+    {
+        currentHealth = maxHealth;
+        UpdateHealthUI();
+        GetComponent<PlayerRespawn>().Die();
+    }
 }
