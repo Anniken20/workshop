@@ -2,13 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using DG.Tweening;
+using UnityEngine.Events;
 
 public class Enemy : MonoBehaviour
 
 {
     [Header("Global")]
     public float maxHealth = 100f;
-    [HideInInspector] public float currentHealth;
+    public float currentHealth;
     [HideInInspector] public EnemyStateMachine stateMachine;
 
     [Header("AOEAttack Variables")]
@@ -54,6 +56,11 @@ public class Enemy : MonoBehaviour
     public float evadeSpeed = 5.0f; // Speed at which the enemy evades
 
     public float DefaultMovementSpeed;
+
+    [Header("Death")]
+    public UnityEvent onDeath;
+    public bool standWhileDead;
+
     protected NavMeshAgent nav;
 
     protected void MyAwake()
@@ -85,6 +92,37 @@ public class Enemy : MonoBehaviour
 
     public void Die()
     {
-        Destroy(gameObject);
+        StartCoroutine(DeathRoutine());
+    }
+
+    private IEnumerator DeathRoutine()
+    {
+        //turn off components so it stops moving
+        GetComponent<Animator>().enabled = false;
+        GetComponent<NavMeshAgent>().enabled = false;
+
+        yield return new WaitForSeconds(0.5f);
+        if(!standWhileDead) transform.DORotate(new Vector3(-88, 0, 0), 1.5f, RotateMode.WorldAxisAdd).SetEase(Ease.OutBounce);
+
+        yield return new WaitForSeconds(2f);
+        if (!standWhileDead) transform.DOMove(new Vector3(transform.position.x, transform.position.y -10, transform.position.z), 1f);
+
+        //destroy this object
+        if (!standWhileDead) Destroy(gameObject, 3f);
+
+        onDeath?.Invoke();
+
+        //destroy this script
+        if (!standWhileDead) Destroy(this);
+    }
+
+    public void TakeDamage(int delta)
+    {
+        currentHealth -= delta;
+        if(currentHealth < 0)
+        {
+            Die();
+        }
+
     }
 }

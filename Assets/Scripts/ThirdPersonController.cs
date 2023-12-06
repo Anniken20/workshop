@@ -158,6 +158,7 @@ namespace StarterAssets
             }
             iaControls = new CharacterMovement();
             _canMove = true;
+            _inDialogue = false;
         }
 
         private void Start()
