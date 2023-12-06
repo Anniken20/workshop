@@ -11,14 +11,13 @@ public class BossHealthBar : MonoBehaviour
         Santana,
         Diana
     }
-    public float currentHealth;
     [SerializeField] Boss boss = new Boss();
 
     void Update(){
         if(boss.ToString() == "Sheriff"){
             var Sheriff = this.GetComponent<Sheriff>();
             float maxHealth = Sheriff.maxHealth;
-            currentHealth = Sheriff.currentHealth;
+            var currentHealth = Sheriff.currentHealth;
             float healthPercentage = (currentHealth / maxHealth);
             healthSlider.value = healthPercentage;
             
@@ -26,7 +25,7 @@ public class BossHealthBar : MonoBehaviour
         else if(boss.ToString() == "Santana"){
             var Santana = this.GetComponent<Santana>();
             float maxHealth = Santana.maxHealth;
-            currentHealth = Santana.currentHealth;
+            var currentHealth = Santana.currentHealth;
             float healthPercentage = (currentHealth / maxHealth);
             healthSlider.value = healthPercentage;
             
@@ -34,7 +33,7 @@ public class BossHealthBar : MonoBehaviour
         else if(boss.ToString() == "Diana"){
             var Diana = this.GetComponent<Diana>();
             float maxHealth = Diana.maxHealth;
-            currentHealth = Diana.currentHealth;
+            var currentHealth = Diana.currentHealth;
             float healthPercentage = (currentHealth / maxHealth);
             healthSlider.value = healthPercentage;
             
