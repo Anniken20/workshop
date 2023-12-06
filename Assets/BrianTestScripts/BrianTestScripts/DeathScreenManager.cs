@@ -31,6 +31,9 @@ public class DeathScreenManager : MonoBehaviour
         EventSystem.current.SetSelectedGameObject(startingButton);
         deathScreen.SetActive(true);
 
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
         StartCoroutine(ShowDeathScreenRoutine());
 
         //this method handles the global time scale and pause boolean
@@ -56,11 +59,11 @@ public class DeathScreenManager : MonoBehaviour
 
     public void HideDeathScreen()
     {
+        PauseMenu.main.UnPauseNoUI();
         deathScreen.SetActive(false);
 
         //this method handles the global time scale and pause boolean
         //so that things like shooting arent allowed
-        PauseMenu.main.UnPauseNoUI();
     }
 
     public void RestartFromCheckpoint()
