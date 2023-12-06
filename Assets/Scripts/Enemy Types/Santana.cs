@@ -48,7 +48,7 @@ public class Santana : Enemy
         animator.SetBool("Lobbing", false);
         animator.SetBool("Moving", false);
         animator.SetBool("AOE", false);
-        animator.SetBool("Pacing",false);
+        animator.SetBool("Pacing",true);
     }
 
     public void BeginPacing()
@@ -65,7 +65,7 @@ public class Santana : Enemy
     {
         stateMachine.ChangeState(AOEAttackState);
         animator.SetBool("Pacing",false);
-        animator.SetBool("Idle", false);
+        animator.SetBool("Idle", true);
         animator.SetBool("Lobbing", false);
         animator.SetBool("Moving", false);
         animator.SetBool("AOE", false);
@@ -91,7 +91,7 @@ public class Santana : Enemy
         animator.SetBool("Lobbing", false);
         animator.SetBool("Moving", false);
         animator.SetBool("AOE", false);
-        animator.SetBool("Pacing",false);
+        animator.SetBool("Pacing",true);
     }
 
     public void BeginAOE()
@@ -113,7 +113,7 @@ public class Santana : Enemy
         animator.SetBool("Lobbing", false);
         animator.SetBool("Moving", false);
         animator.SetBool("AOE", false);
-        animator.SetBool("Pacing",false);
+        animator.SetBool("Pacing",true);
     }
 
 }

@@ -43,9 +43,16 @@ public class InventoryManager : MonoBehaviour
             if (itemIndex >= 0 && itemIndex < itemUIImages.Length)
             {
                 itemUIImages[itemIndex].SetActive(true);
+                StartCoroutine(HideUIAfterDelay(itemUIImages[itemIndex]));
                 
             }
         }
+    }
+    
+    private IEnumerator HideUIAfterDelay(GameObject uiElement)
+    {
+        yield return new WaitForSeconds(60f); // Wait for 60 seconds (1 minute)
+        uiElement.SetActive(false); // Hide the UI element after 1 minute
     }
 
     //All Available Inventory Items in game

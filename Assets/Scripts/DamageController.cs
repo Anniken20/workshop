@@ -34,22 +34,18 @@ public class DamageController : MonoBehaviour
     public BreakController breakController;
     private bool isTakingDamage;
     private float lastDamageTime;
+    private bool healthBarVisible;
 
     private void Start()
     {
         currDmg = startingDamage;
         breakController = GetComponent<BreakController>();
         lastDamageTime = Time.time;
+        healthBarVisible = false; 
 
         if (debugText != null) debugText.text = currDmg + " / " + dmgTilBreak + " DMG";
 
-        if (hasHealthBar && fullHealthBar != null && healthBarMask != null)
-        {
-            // Initialize the health bar
-            fullHealthBar.fillAmount = 1f; // Full health at the beginning
-            healthBarMask.fillAmount = 0f; // Initialize the mask to zero
-            SetHealthBarVisible(false);
-        }
+        SetHealthBarVisible(false);
     }
 
     private void Update()
@@ -58,6 +54,7 @@ public class DamageController : MonoBehaviour
         {
             isTakingDamage = false;
             SetHealthBarVisible(false);
+            healthBarVisible = false; 
         }
     }
 
@@ -66,7 +63,13 @@ public class DamageController : MonoBehaviour
     {
         currDmg += dmg;
 
-        if (hasHealthBar && fullHealthBar != null && healthBarMask != null)
+        if (!healthBarVisible && (fullHealthBar != null && healthBarMask != null))
+        {
+            SetHealthBarVisible(true);
+            healthBarVisible = true; // Update visibility flag
+        }
+
+        if (fullHealthBar != null && healthBarMask != null)
         {
             // Update health bar
             float healthPercentage = 1 - (currDmg / dmgTilBreak);
@@ -74,7 +77,6 @@ public class DamageController : MonoBehaviour
 
             lastDamageTime = Time.time;
             isTakingDamage = true;
-            SetHealthBarVisible(true);
         }
 
         if (currDmg >= dmgTilBreak)
@@ -90,8 +92,8 @@ public class DamageController : MonoBehaviour
 
     private void SetHealthBarVisible(bool isVisible)
     {
-        fullHealthBar.enabled = isVisible;
-        healthBarMask.enabled = isVisible;
+        if (fullHealthBar != null) fullHealthBar.enabled = isVisible;
+        if (healthBarMask != null) healthBarMask.enabled = isVisible;
     }
 
     // Apply force to rigidbody to knockback

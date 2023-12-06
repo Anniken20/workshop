@@ -158,6 +158,7 @@ namespace StarterAssets
             }
             iaControls = new CharacterMovement();
             _canMove = true;
+            _inDialogue = false;
         }
 
         private void Start()
@@ -349,8 +350,9 @@ namespace StarterAssets
                 }
 
                 // Jump
-                if (jump.triggered && _jumpTimeoutDelta <= 0.0f)
+                if (jump.triggered && _jumpTimeoutDelta <= 0.0f || GetComponent<LassoGrappleScript>().grappling && _jumpTimeoutDelta <= 0.0f)
                 {
+                    _jumpTimeoutDelta = 0;
                     // the square root of H * -2 * G = how much velocity needed to reach desired height
                     _verticalVelocity = Mathf.Sqrt(JumpHeight * -2f * Gravity);
 

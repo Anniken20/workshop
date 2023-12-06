@@ -63,6 +63,12 @@ public class EnemyBullet : MonoBehaviour
         //but on low speed the jump to the wall is noticeable
         if (Physics.Raycast(transform.position, direction, out hitData, speed * 0.05f))
         {
+            if (hitData.collider.gameObject.CompareTag("Player"))
+            {
+                hitData.collider.gameObject.GetComponent<PlayerHealth>().TakeDamage((int)currDmg);
+                Destroy(gameObject);
+            }
+
             //draw bullethole if bullethole layer
             if (LayerManager.main.IsGunholeLayer(hitData.collider.gameObject))
             {

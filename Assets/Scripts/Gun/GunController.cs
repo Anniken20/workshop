@@ -54,6 +54,7 @@ public class GunController : MonoBehaviour
     private Animator animator;
     private ThirdPersonController thirdPersonController;
     private int ghostAmmo;
+    private BulletHUD bulletHUD;
 
     private void Start()
     {
@@ -66,6 +67,9 @@ public class GunController : MonoBehaviour
         }
 
         ghostAmmo = maxGhostAmmo;
+
+        bulletHUD = FindObjectOfType<BulletHUD>();
+        bulletHUD.StartBulletHUD(ghostAmmo);
     }
 
     private void Update()
@@ -140,12 +144,14 @@ public class GunController : MonoBehaviour
         //pass in the information of the main cam, target, and player
         //so we know how to modify properly
         
-         //anim = GetComponent<Animator>();
-       // anim.SetBool("isShooting", false);
+        //anim = GetComponent<Animator>();
+        //anim.SetBool("isShooting", false);
 
         //trigger animation trigger
         //animator.SetTrigger("shootTrigger");
         ghostAmmo--;
+        bulletHUD.SubtractBulletHUD();
+
     }
 
     //slow down the player speed by some factor
@@ -218,6 +224,7 @@ public class GunController : MonoBehaviour
     public void RestoreBullet()
     {
         ghostAmmo++;
+        bulletHUD.AddBulletHUD();
     }
 
     private void Misfire()

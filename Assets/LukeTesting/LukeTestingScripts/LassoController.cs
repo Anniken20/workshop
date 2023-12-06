@@ -28,7 +28,7 @@ public class LassoController : MonoBehaviour
     [SerializeField] GameObject lassoObject;
     [SerializeField] [Range(1f, 15f)] private float lassoLaunchStrength;
     [Range(0.5f, 5f)] public float lassoCooldown;
-    [HideInInspector] public float internalCooldown;
+    public float internalCooldown;
     [HideInInspector] public bool startLassoCooldown = true;
     [HideInInspector] public bool holdingItem;
     [HideInInspector] public bool drawToLasso;
@@ -46,13 +46,17 @@ public class LassoController : MonoBehaviour
     private float mouseY;
     private float mouseX;
     private Vector3 yAdjusted;
+    private Vector3 xAdjusted;
     private float sens;
-    private float yAngleFreedom = 1f;
+    //private float yAngleFreedom = 0.5f;
+    private float yAngleFreedom = 0.75f;
     private string lassoState;
     private Vector2 looking;
     
     [SerializeField] private AudioClip spinSound;
+    private bool StartSpinSound;
     public AudioClip thrownSound;
+    private AudioSource lassoSounds;
     [SerializeField] private bool cancelAim;
     public GameObject lassoCombatAiming;
 
@@ -91,6 +95,9 @@ public class LassoController : MonoBehaviour
             spinningLasso.transform.Rotate(Vector3.up, spinSpeed);
             animator.SetBool("isLassoing", true);
         }
+        else{
+            StartSpinSound = true;
+        }
         
         looking = look.ReadValue<Vector2>();
 
@@ -114,7 +121,7 @@ public class LassoController : MonoBehaviour
         drawToLasso = true;
         if(spinning && lassoActive && holdingItem == false){
             spinningLasso = Instantiate(lassoObject, lassoSpinLocation.transform);
-            AudioManager.main.Play(AudioManager.AudioSourceChannel.SFX, spinSound);
+            //AudioManager.main.Play(AudioManager.AudioSourceChannel.SFX, spinSound);
             spinning = false;
         }
         //spinningLasso = Instantiate(lassoObject, lassoSpinLocation.transform);
@@ -122,6 +129,13 @@ public class LassoController : MonoBehaviour
             spinningConnectPoint = spinningLasso.transform.Find("ConnectPoint");
             drawToLassoLine.enabled = true;
             spinningLasso.GetComponent<Rigidbody>().isKinematic = true;
+            lassoSounds = spinningLasso.GetComponent<AudioSource>();
+            lassoSounds.clip = spinSound;
+            if(StartSpinSound){
+                lassoSounds.Play();
+                StartSpinSound = false;
+            }
+            
         
         
         //drawToLassoLine.SetPosition(0, lassoHipLocation.transform.position);
@@ -187,23 +201,28 @@ public class LassoController : MonoBehaviour
     private void LassoAiming(){
 
         mouseY = looking.y;
-        //mouseX = looking.x;
+        mouseX = looking.x;
 
         mouseY *= sens / 100;
-        //mouseX *= sens / 2;
+        mouseX *= sens / 2;
 
-        yAdjusted.y += mouseY;
+        //float distBoost = mouseX + mouseY;
+
+        yAdjusted.y += Mathf.Abs(mouseY);
 
         float yClamp = Mathf.Clamp(yAdjusted.y, -yAngleFreedom / 2, yAngleFreedom / 2);
 
+        //yAdjusted.y = Mathf.Abs(yClamp);
         yAdjusted.y = yClamp;
         //yAdjusted.x = mouseX;
         //lassoSpinLocation.transform.Rotate(new Vector3(0f, mouseX, 0f));
         //aimAngle = lassoSpinLocation.transform.forward;
         aimAngle = aimController.GetAimAngleWithIntensity();
+        //aimAngle = aimController.GetAimAngle();
         //Debug.Log(aimAngle);
         aimAngle *= 0.2f;
         //aimAngle = gameObject.transform.forward;
+        //newaimAngle += yAdjusted;
         aimAngle += yAdjusted;
 
         
@@ -322,6 +341,10 @@ public class LassoController : MonoBehaviour
         drawToLassoLine.enabled = false;
         cancelAim = true;
         Destroy(spinningLasso);
+    }
+    public void StartLassoCD(bool cd){
+        internalCooldown = lassoCooldown;
+        startLassoCooldown = cd;
     }
 
 }

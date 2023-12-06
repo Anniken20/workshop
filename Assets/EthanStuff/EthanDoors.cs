@@ -25,6 +25,8 @@ public class EthanDoors : MonoBehaviour
     [SerializeField] bool PressurePlateDoor;
     [SerializeField] GameObject DoorOpenerObj;
 
+    int objectsOnPlate = 0;
+
 
     void Awake()
     {
@@ -37,7 +39,7 @@ public class EthanDoors : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (isPressingSwitch)
+        if (isPressingSwitch && !PressurePlateDoor)
         {
             MoveSwitchDown();
         }
@@ -57,6 +59,7 @@ public class EthanDoors : MonoBehaviour
                 doorController.isDoorOpen = !doorController.isDoorOpen;
             }
         }
+
     }
 
     //moves switch down
@@ -78,58 +81,49 @@ public class EthanDoors : MonoBehaviour
     }
 
     //trigger to make sure you are on switch
-    private void OnTriggerEnter(Collider collision)
+    void OnTriggerEnter(Collider collision)
     {
-        if (collision.CompareTag("Player"))
+        if (collision.CompareTag("Player") || collision.CompareTag("Lassoable"))
         {
-            isPressingSwitch = !isPressingSwitch;
+            objectsOnPlate++; // Increment the counter
 
-            if (KeyDoor && HasRequiredItem(requiredItem))
+            if (objectsOnPlate == 1) // If it's the first object on the plate
             {
-                if (isDoorOpenSwitch && !doorController.isDoorOpen)
+                if ((KeyDoor && HasRequiredItem(requiredItem)) || PressurePlateDoor)
                 {
-                    doorController.isDoorOpen = !doorController.isDoorOpen;
-                }
-                else if (isDoorCloseSwitch && doorController.isDoorOpen)
-                {
-                    doorController.isDoorOpen = !doorController.isDoorOpen;
-                }
-            }
-
-        }
-
-
-        if (collision.CompareTag("Lassoable"))
-        {
-            isPressingSwitch = !isPressingSwitch;
-
-            if (PressurePlateDoor)
-            {
-                if (isDoorOpenSwitch && !doorController.isDoorOpen)
-                {
-                    doorController.isDoorOpen = !doorController.isDoorOpen;
-                }
-                else if (isDoorCloseSwitch && doorController.isDoorOpen)
-                {
-                    doorController.isDoorOpen = !doorController.isDoorOpen;
+                    ToggleDoor(); // Toggle the door state
                 }
             }
         }
     }
 
     //trigger to make sure you are off switch
-    private void OnTriggerExit(Collider collision)
+    void OnTriggerExit(Collider collision)
     {
-        if (collision.CompareTag("Player"))
-    {
-        StartCoroutine(SwitchUpDelay(switchDelay));
+        if (collision.CompareTag("Player") || collision.CompareTag("Lassoable"))
+        {
+            objectsOnPlate--; // Decrement the counter
 
-        // Check if it's a pressure plate door and the close switch is activated
-        if (PressurePlateDoor && isDoorCloseSwitch && doorController.isDoorOpen)
+            if (objectsOnPlate == 0) // If no objects remain on the plate
+            {
+                if (PressurePlateDoor && isDoorCloseSwitch && doorController.isDoorOpen)
+                {
+                    ToggleDoor(); // Toggle the door state
+                }
+            }
+        }
+    }
+
+     void ToggleDoor()
+    {
+        if (isDoorOpenSwitch && !doorController.isDoorOpen)
         {
             doorController.isDoorOpen = !doorController.isDoorOpen;
         }
-    }
+        else if (isDoorCloseSwitch && doorController.isDoorOpen)
+        {
+            doorController.isDoorOpen = !doorController.isDoorOpen;
+        }
     }
 
     //adds delay to switch moving up and down

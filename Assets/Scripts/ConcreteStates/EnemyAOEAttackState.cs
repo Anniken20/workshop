@@ -15,7 +15,9 @@ public class EnemyAOEAttackState : EnemyState
     {
         base.EnterState();
         Debug.Log("Started AOE attack");
-        nextAttackTime = Time.time;
+
+        //arbitrary 1 second buffer
+        nextAttackTime = Time.time + 1f;
         PerformAOEAttack();
     }
 
@@ -30,7 +32,6 @@ public class EnemyAOEAttackState : EnemyState
     public override void ExitState()
     {
         base.ExitState();
-        Debug.Log("Stopped AOE attack");
     }
 
     private bool CanPerformAOEAttack()
@@ -42,7 +43,9 @@ public class EnemyAOEAttackState : EnemyState
     {
         // Create the AOE attack effect
         GameObject aoeAttackEffect = Instantiate(enemy.aoeAttackPrefab, enemy.aoeAttackPoint.position, Quaternion.identity);
+        Destroy(aoeAttackEffect, 2f);
 
+        /*
         // Apply the AOE attack within the specified radius
         Collider[] colliders = Physics.OverlapSphere(enemy.aoeAttackPoint.position, enemy.aoeRadius);
 
@@ -55,9 +58,11 @@ public class EnemyAOEAttackState : EnemyState
                 if (playerHealth != null)
                 {
                     playerHealth.TakeDamage(10); // Adjust the damage as needed
+                    Debug.Log("DEALING AOE DAMAGE");
                 }
             }
         }
+        */
 
         // Set the cooldown for the next AOE attack
         nextAttackTime = Time.time + enemy.attackCooldown;
