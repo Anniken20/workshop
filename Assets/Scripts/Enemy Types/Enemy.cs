@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using DG.Tweening;
+using UnityEngine.Events;
 
 public class Enemy : MonoBehaviour
 
@@ -55,6 +56,11 @@ public class Enemy : MonoBehaviour
     public float evadeSpeed = 5.0f; // Speed at which the enemy evades
 
     public float DefaultMovementSpeed;
+
+    [Header("Death")]
+    public UnityEvent onDeath;
+    public bool standWhileDead;
+
     protected NavMeshAgent nav;
 
     protected void MyAwake()
@@ -96,13 +102,18 @@ public class Enemy : MonoBehaviour
         GetComponent<NavMeshAgent>().enabled = false;
 
         yield return new WaitForSeconds(0.5f);
-        transform.DORotate(new Vector3(-88, 0, 0), 1.5f, RotateMode.WorldAxisAdd).SetEase(Ease.OutBounce);
-        
-        //destroy this script
-        Destroy(this);
+        if(!standWhileDead) transform.DORotate(new Vector3(-88, 0, 0), 1.5f, RotateMode.WorldAxisAdd).SetEase(Ease.OutBounce);
+
+        yield return new WaitForSeconds(2f);
+        if (!standWhileDead) transform.DOMove(new Vector3(transform.position.x, transform.position.y -10, transform.position.z), 1f);
 
         //destroy this object
-        Destroy(gameObject);
+        if (!standWhileDead) Destroy(gameObject, 3f);
+
+        onDeath?.Invoke();
+
+        //destroy this script
+        if (!standWhileDead) Destroy(this);
     }
 
     public void TakeDamage(int delta)
