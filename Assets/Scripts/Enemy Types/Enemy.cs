@@ -11,6 +11,7 @@ public class Enemy : MonoBehaviour
     [Header("Global")]
     public float maxHealth = 100f;
     public float currentHealth;
+    public GameObject  itemPortrait;
     [HideInInspector] public EnemyStateMachine stateMachine;
 
     [Header("AOEAttack Variables")]
@@ -93,6 +94,7 @@ public class Enemy : MonoBehaviour
     public void Die()
     {
         StartCoroutine(DeathRoutine());
+        itemPortrait.SetActive(false);
     }
 
     private IEnumerator DeathRoutine()
