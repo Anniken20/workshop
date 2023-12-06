@@ -97,7 +97,7 @@ public class LassoDetection : MonoBehaviour
                 player.GetComponent<LassoGrappleScript>().triggerGrapOnce = true;
 
             }
-            else if(other.gameObject.tag != "Player" && onObject == false && other.gameObject.GetComponent<OutOfBoundsScript>() == null && layerName != "AimLayer"|| other.gameObject.tag != "Player" && onObject == true && otherObject.GetComponent<LassoPickupScript>().manipulateObject && other.gameObject.GetComponent<OutOfBoundsScript>() == null && layerName != "AimLayer"){
+            else if(other.gameObject.tag != "Player" && onObject == false && other.gameObject.GetComponent<OutOfBoundsScript>() == null && layerName != "AimLayer" && layerName != "BulletPassThrough"|| other.gameObject.tag != "Player" && onObject == true && otherObject.GetComponent<LassoPickupScript>().manipulateObject && other.gameObject.GetComponent<OutOfBoundsScript>() == null && layerName != "AimLayer" && layerName != "BulletPassThrough"){
                 //hitParticles.Play();
                 PlayFX(transform.position);
                 lassoController.drawToLasso = false;

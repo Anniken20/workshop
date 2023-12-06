@@ -80,6 +80,7 @@ public class LassoController : MonoBehaviour
         }
         iaControls = new CharacterMovement();
         lassoAimMask &= ~(1<<LayerMask.NameToLayer("AimLayer"));
+        lassoAimMask &= ~(1<<LayerMask.NameToLayer("BulletPassThrough"));
     }
     void Update(){
         if(endThrow){
