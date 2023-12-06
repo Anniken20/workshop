@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
 using DG.Tweening;
+using UnityEngine.EventSystems;
 
 public class DeathScreenManager : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class DeathScreenManager : MonoBehaviour
     public static DeathScreenManager main;
     private PlayerRespawn respawner;
     public AudioClip drawTextSound;
+    [SerializeField] GameObject startingButton;
 
     private void Awake()
     {
@@ -26,6 +28,7 @@ public class DeathScreenManager : MonoBehaviour
 
     public void ShowDeathScreen()
     {
+        EventSystem.current.SetSelectedGameObject(startingButton);
         deathScreen.SetActive(true);
 
         StartCoroutine(ShowDeathScreenRoutine());
