@@ -12,6 +12,7 @@ using System;
 [System.Serializable]
 public struct DialogueFrame
 {
+    public string name;
     public Sprite portrait;
     public string message;
     [Tooltip("The time it takes between each character")]
@@ -95,7 +96,7 @@ public class DialoguePopupController : MonoBehaviour, IInteractable
         player._inDialogue = true;
         dialoguePanel.transform.localScale = new Vector3(0f, 0f);
         dialoguePanel.transform.DOScale(new Vector3(1, 1), 1f).SetEase(Ease.OutExpo);
-        characterNameText.text = characterName;
+        //characterNameText.text = characterName;
         DisplayDialoguePiece(dialogueIndex);
 
         //GameObject[] objs = GameObject.FindGameObjectsWithTag("UI");
@@ -116,6 +117,7 @@ public class DialoguePopupController : MonoBehaviour, IInteractable
     private void DisplayDialoguePiece(int i)
     {
         dialogues[i].onWriteEvent.Invoke();
+        characterNameText.text = dialogues[i].name;
         characterPortrait.sprite = dialogues[i].portrait;
         if (writeRoutine != null) StopCoroutine(writeRoutine);
         writeRoutine = StartCoroutine(WriteRoutine(dialogues[i].message, dialogues[i].writeWaitTime));
