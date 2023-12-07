@@ -90,7 +90,7 @@ public class LassoController : MonoBehaviour
             endThrow = false;
             
         }
-        if(cancel.triggered){
+        if(cancel.triggered && holdingItem == false){
             CancelAiming();
         }
         if(spinningLasso != null){
