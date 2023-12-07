@@ -28,6 +28,8 @@ public class LassoDetection : MonoBehaviour
     public ParticleSystem hitParticles;
     bool triggerParticlesOnce = true;
     bool detectCollOnce = true;
+    [SerializeField] [Range(-1f, 1f)] float yscaleAdjustment;
+    [SerializeField] [Range(-1f, 1f)] float xscaleAdjustment;
 
     void Update()
     {
@@ -158,8 +160,8 @@ public class LassoDetection : MonoBehaviour
         }
         lassoAttachPoint = lassoController.lassoAttachPoint;
         if(onObject){
-            var xScale = otherObject.transform.localScale.x + .15f;
-            var zScale = otherObject.transform.localScale.z + .15f;
+            var xScale = otherObject.transform.localScale.x -.4f;// * xscaleAdjustment;
+            var zScale = otherObject.transform.localScale.z - 1f;// * yscaleAdjustment;
             transform.localScale = new Vector3(xScale, transform.localScale.y, zScale);
             transform.position = otherObject.transform.position;
 
