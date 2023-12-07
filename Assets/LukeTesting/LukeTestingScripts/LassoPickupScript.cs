@@ -53,7 +53,7 @@ public class LassoPickupScript : MonoBehaviour, ILassoable
 
     private Vector3 throwPoint;
     //private float lassoCooldown;
-    private bool throwing;
+    private bool throwing = false;
     private GameObject lassoObject;
     private float mWheelDistance;
     private bool pulling;
@@ -290,6 +290,8 @@ public class LassoPickupScript : MonoBehaviour, ILassoable
     }
 
     private void OnManipulateStart(InputAction.CallbackContext context){
+            player.drawToLasso = true;
+            player.drawToLassoLine.enabled = true;
             manipulateObject = true;
             playerForward = player.transform.forward;
             ThirdPersonController controller = player.GetComponent<ThirdPersonController>();
