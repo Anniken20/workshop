@@ -125,9 +125,16 @@ public class BulletController : MonoBehaviour
         //but on low speed the jump to the wall is noticeable
         if (Physics.Raycast(position, direction, out hitData, speed * 0.05f))
         {
+            //phase through it if it's a pass-through layer
+            if (LayerManager.main.IsPassThroughLayer(hitData.collider.gameObject))
+            {
+                return;
+            }
+
             Enemy enemy = hitData.collider.gameObject.GetComponent<Enemy>();
             if (enemy != null)
             {
+                //Debug.Log("Enemy hit: " + enemy.name);
                 enemy.TakeDamage((int)currDmg);
             }
 
@@ -146,11 +153,7 @@ public class BulletController : MonoBehaviour
                 }
             }
 
-            //phase through it if it's a pass-through layer
-            if (LayerManager.main.IsPassThroughLayer(hitData.collider.gameObject))
-            {
-                return;
-            }
+            
 
             //try to apply damage if it's a damage-able object
             TryToApplyDamage(hitData.collider.gameObject);

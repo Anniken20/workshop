@@ -9,7 +9,8 @@ public class MainMenu : MonoBehaviour
 
     public void PlayButton()
     {
-        SceneManager.LoadScene("VSLevel");
+        //SceneManager.LoadScene("VSLevel");
+        SceneManager.LoadScene("IntroCutscene");
     }
 
     public void SettingsButton()
@@ -20,7 +21,8 @@ public class MainMenu : MonoBehaviour
 
     public void StartGame()
     {
-        SceneManager.LoadScene("VSLevel");
+        //SceneManager.LoadScene("VSLevel");
+        SceneManager.LoadScene("IntroCutscene");
     }
 
     public void LoadHub()

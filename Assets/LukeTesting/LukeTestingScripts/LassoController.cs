@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 public class LassoController : MonoBehaviour
 
 {
+    public GameObject player;
     public CharacterMovement iaControls;
     private InputAction lasso;
     private InputAction look;
@@ -80,6 +81,7 @@ public class LassoController : MonoBehaviour
         }
         iaControls = new CharacterMovement();
         lassoAimMask &= ~(1<<LayerMask.NameToLayer("AimLayer"));
+        lassoAimMask &= ~(1<<LayerMask.NameToLayer("BulletPassThrough"));
     }
     void Update(){
         if(endThrow){
@@ -88,7 +90,7 @@ public class LassoController : MonoBehaviour
             endThrow = false;
             
         }
-        if(cancel.triggered){
+        if(cancel.triggered && holdingItem == false){
             CancelAiming();
         }
         if(spinningLasso != null){
@@ -113,7 +115,6 @@ public class LassoController : MonoBehaviour
         else{
             gunCon.ReenableShooting();
         }
-      
     }
 
 
@@ -248,6 +249,7 @@ public class LassoController : MonoBehaviour
             lassoActive = true;  
             spinning = true;
             cancelAim = false;
+            player.GetComponent<LineRenderer>().enabled = !player.GetComponent<LineRenderer>().enabled;
         }
     }
     private void OnLassoRelease(InputAction.CallbackContext context){
@@ -257,6 +259,7 @@ public class LassoController : MonoBehaviour
             internalCooldown = lassoCooldown;
             lineRend.enabled = false;
             cancelAim = false;
+            player.GetComponent<LineRenderer>().enabled = !player.GetComponent<LineRenderer>().enabled;
         }
         if(spinningLasso != null){
             foreach (Transform child in lassoSpinLocation.transform){

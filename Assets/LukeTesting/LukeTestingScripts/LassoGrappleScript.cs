@@ -192,21 +192,23 @@ public class LassoGrappleScript : MonoBehaviour, IGrappleable
     }
 
     private void EndGrapple(){
-        grappling = false;
-        if(lassoObject != null){
-            lassoObject.GetComponent<LassoDetection>().recall = true;
+        if(grappling){
+            if(lassoObject != null){
+                lassoObject.GetComponent<LassoDetection>().recall = true;
+            }
+            grappling = false;
+            lassoCon.endThrow = true;
+            Debug.Log("Ending");
+            //grappling = false;
+            grapple = false;
+            if(gJoint != null){
+                Destroy(gJoint);
+            }
+            lineRend.enabled = false;
+            detectCol = true;
+            StartCoroutine(EndDelay());
+            StartCoroutine(CharDelay());
         }
-        lassoCon.endThrow = true;
-        Debug.Log("Ending");
-        //grappling = false;
-        grapple = false;
-        if(gJoint != null){
-            Destroy(gJoint);
-        }
-        lineRend.enabled = false;
-        detectCol = true;
-        StartCoroutine(EndDelay());
-        StartCoroutine(CharDelay());
     }
     private void OnEnable(){
         lasso = iaControls.CharacterControls.Lasso;
@@ -237,7 +239,7 @@ public class LassoGrappleScript : MonoBehaviour, IGrappleable
         }
         if(grapplePoint != null){
             if(Vector3.Distance(gameObject.transform.position, grapplePoint.transform.position) > cancelDistance && grapple){
-                Debug.Log(Vector3.Distance(gameObject.transform.position, grapplePoint.transform.position));
+                //Debug.Log(Vector3.Distance(gameObject.transform.position, grapplePoint.transform.position));
                 EndGrapple();
             }
         }
