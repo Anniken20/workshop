@@ -4,59 +4,42 @@ using UnityEngine;
 
 public class TeleportController : MonoBehaviour
 {
-    public GameObject toPoint;
+    public GameObject walkToPoint;
+    public GameObject waitPoint;
+    public GameObject teleportPoint;
     private CharacterController characterController;
     private bool isTransitioning = false;
-    public float walkDistance = 5.0f;  //Adjust this as needed
-    public float walkDuration = 1.0f;  // Adjust this as needed
+    public float walkSpeed = 2.0f;  // Adjust this as needed
+    public float waitDuration = 2.0f;  // Adjust this as needed
     private Vector3 teleportDestination;
-    private Vector3 intermediatePosition;
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Player") && !isTransitioning)
         {
+            Debug.Log("Player triggered the teleport");
             characterController = other.gameObject.GetComponent<CharacterController>();
-            StartCoroutine(TransitionThroughDoor(other.gameObject));
+            StartCoroutine(TransitionSequence(other.gameObject));
         }
     }
 
-    IEnumerator TransitionThroughDoor(GameObject player)
+    IEnumerator TransitionSequence(GameObject player)
     {
         isTransitioning = true;
 
         characterController.enabled = false;
 
-        // Calculate the intermediate position just in front of the door
-        Vector3 playerForward = player.transform.forward;
-        Vector3 doorPosition = toPoint.transform.position;
-        intermediatePosition = doorPosition - playerForward * walkDistance; 
+        // Walk to the designated walk point
+        Debug.Log("Walking to the walk point");
+        yield return WalkToPosition(player, walkToPoint.transform.position);
 
-        // Calculate the number of steps based on the walk duration
-        int numSteps = Mathf.FloorToInt(walkDuration / Time.fixedDeltaTime);
-        float stepDistance = Vector3.Distance(player.transform.position, intermediatePosition) / numSteps;
+        // Wait at the wait point for the specified duration
+        Debug.Log("Waiting at the wait point");
+        yield return new WaitForSeconds(waitDuration);
 
-        // Move the player step by step
-        for (int step = 0; step < numSteps; step++)
-        {
-            player.transform.position = Vector3.MoveTowards(player.transform.position, intermediatePosition, stepDistance);
-            yield return new WaitForFixedUpdate();
-        }
-
-        // Store the teleport destination
-        teleportDestination = doorPosition;
-
-        // Wait for the specified walk duration
-        float startTime = Time.time;
-        float elapsedTime = 0f;
-        while (elapsedTime < walkDuration)
-        {
-            elapsedTime = Time.time - startTime;
-            yield return null;
-        }
-
-        // Teleport the player to the final destination
-        player.transform.position = teleportDestination;
+        // Teleport to the final destination
+        Debug.Log("Teleporting to the final destination");
+        player.transform.position = teleportPoint.transform.position;
 
         // Wait for a very short moment to avoid jitter
         yield return new WaitForSeconds(0.1f);
@@ -64,5 +47,14 @@ public class TeleportController : MonoBehaviour
         characterController.enabled = true;
 
         isTransitioning = false;
+    }
+
+    IEnumerator WalkToPosition(GameObject player, Vector3 targetPosition)
+    {
+        while (Vector3.Distance(player.transform.position, targetPosition) > 0.1f)
+        {
+            player.transform.position = Vector3.MoveTowards(player.transform.position, targetPosition, walkSpeed * Time.deltaTime);
+            yield return null;
+        }
     }
 }
