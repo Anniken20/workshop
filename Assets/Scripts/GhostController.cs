@@ -3,69 +3,77 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
+
 public class GhostController : MonoBehaviour
 {   
     public CharacterMovement iaControls;
     private InputAction phase;
-    public Transform player; // Reference to the player's Transform
-    public Transform box; // Reference to the box's Transform
+    public Transform player; 
+    public Transform box; 
     public float teleportDistance = 1f;
+
+    public AudioSource src;
+    public AudioClip enterAudio;
+    public AudioClip duringAudio;
+    public AudioClip exitAudio;
 
     [HideInInspector] public bool inGhost = false;
     private bool abilityEnabled = false;
     private float abilityDuration = 5.0f;
-    private float countdownTimer = 5.0f;
+    private float cooldownDuration = 10.0f;
+    private float cooldownTimer = 0.0f;
+    private float regenerationRate = 0.2f; 
     private bool playerInBox;
     private Vector3 originalPosition;
-    //public ParticleSystem smokeParticleSystem; // 
 
     public Image abilityDurationBar;
-    //can add the smoke to her hands if we want to, might need tweaking and editing but easy fix
-    //The timer for the countdown need to be the same as the ability and match the material switch or it will bug out
     
- 
-    //Once per frame
     void Update()
     {  
+        if (cooldownTimer > 0)
+        {
+            cooldownTimer -= Time.deltaTime;
+            abilityDurationBar.fillAmount = cooldownTimer / cooldownDuration;
+        }
 
         if (phase.triggered)
         {
             ToggleAbility();
+        }
 
-            if (abilityEnabled)
+        if (abilityEnabled)
+        {
+            abilityDurationBar.fillAmount -= Time.deltaTime / abilityDuration;
+
+            if (abilityDurationBar.fillAmount <= 0)
             {
-                abilityDurationBar.fillAmount = 1.0f; //Sets fill amount to 100% initially
+                DisableAbility();
+                GetComponent<MaterialSwitch>().ToggleMaterial();
+                cooldownTimer = cooldownDuration;
             }
         }
-        
-            if (abilityEnabled)
-                {
-                    countdownTimer -= Time.deltaTime;
-
-                    // Update UI bar based on remaining duration
-                    abilityDurationBar.fillAmount = countdownTimer / abilityDuration;
-
-
-                    if (countdownTimer <= 0)
-                    {
-                        DisableAbility();
-                        GetComponent<MaterialSwitch>().ToggleMaterial();
-                    }
-                }
+        else if (cooldownTimer < cooldownDuration)
+        {
+            cooldownTimer = Mathf.Min(cooldownTimer + regenerationRate * Time.deltaTime, cooldownDuration);
+            abilityDurationBar.fillAmount = cooldownTimer / cooldownDuration;
+        }
     }
 
     void ToggleAbility()
     {
-        GetComponent<MaterialSwitch>().ToggleMaterial();
-        abilityEnabled = !abilityEnabled;
-        
-        if (abilityEnabled)
+        if (!abilityEnabled && cooldownTimer <= 0)
         {
-            countdownTimer = abilityDuration;
+            GetComponent<MaterialSwitch>().ToggleMaterial();
+            abilityEnabled = true;
+
+            if (abilityDurationBar != null)
+            {
+                abilityDurationBar.fillAmount = 1f;
+            }
 
             EnableAbility();
         }
-        else
+        else if (abilityEnabled)
         {
             DisableAbility();
         }
@@ -73,51 +81,62 @@ public class GhostController : MonoBehaviour
 
     void EnableAbility()
     {
-       // smokeParticleSystem.Play();
-        GetComponent<BoxCollider> ().isTrigger = true;
+        src.PlayOneShot(enterAudio);
+
+        GetComponent<BoxCollider>().isTrigger = true;
         inGhost = true;
         originalPosition = player.position;
     }
 
     void DisableAbility()
     {
-        //smokeParticleSystem.Stop();
-        GetComponent<BoxCollider> ().isTrigger = false;
+        src.PlayOneShot(exitAudio);
+
+        GetComponent<BoxCollider>().isTrigger = false;
         inGhost = false;
-        
-        // Teleport the player to the valid position
-        if(playerInBox){
+
+        if (playerInBox)
+        {
             player.gameObject.GetComponent<CharacterController>().enabled = false;
             player.position = originalPosition;
             player.gameObject.GetComponent<CharacterController>().enabled = true;
             playerInBox = false;
         }
+
         abilityEnabled = false;
-
-        abilityDurationBar.fillAmount = 1f;
-
     }
 
-    void OnTriggerEnter(Collider other){
-        if(other.gameObject.CompareTag("Player")){
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Player"))
+        {
             playerInBox = true;
+            src.PlayOneShot(duringAudio);
         }
     }
 
-    void OnTriggerExit(Collider other){
-        if(other.gameObject.CompareTag("Player")){
+    void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.CompareTag("Player"))
+        {
             playerInBox = false;
+            src.PlayOneShot(exitAudio);
         }
     }
-    private void Awake(){
+
+    private void Awake()
+    {
         iaControls = new CharacterMovement();
     }
-    private void OnEnable(){
-        phase = iaControls.CharacterControls.Phase;
 
+    private void OnEnable()
+    {
+        phase = iaControls.CharacterControls.Phase;
         phase.Enable();
     }
-    private void OnDisable(){
+
+    private void OnDisable()
+    {
         phase.Disable();
     }
 }
