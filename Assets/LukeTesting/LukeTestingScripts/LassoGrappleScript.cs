@@ -45,6 +45,7 @@ public class LassoGrappleScript : MonoBehaviour, IGrappleable
     private GameObject lassoObject;
 
     [HideInInspector] public bool triggerGrapOnce;
+    private bool autoRelease;
     
 
 
@@ -76,9 +77,6 @@ public class LassoGrappleScript : MonoBehaviour, IGrappleable
             StartCoroutine(HookLifetime());*/
         }
 
-
-            ///Added///
-
         lassoOrigin = new Vector3(gameObject.transform.position.x,
             gameObject.transform.position.y + 1.5f,
             gameObject.transform.position.z)
@@ -92,7 +90,6 @@ public class LassoGrappleScript : MonoBehaviour, IGrappleable
             grappleConPos[0] = lassoCon.lassoHipLocation.transform.position;
             grappleConPos[1] = lassoCon.lassoHandLocation.transform.position;
 
-            //grappleConPos[2] = grapplePoint.transform.position;
 
             grappleConPos[2] = lassoConnectPoint.position;
 
@@ -103,60 +100,28 @@ public class LassoGrappleScript : MonoBehaviour, IGrappleable
                 triggerGrapOnce = false;
             }
         }
+
+        if(grapplePoint != null){
+            if(autoRelease && this.transform.position.y - grapplePoint.transform.position.y >= -2.25){
+                EndGrapple();
+            }
+        }
+        
     }
 
     private void StartGrapple(InputAction.CallbackContext context){
         EndGrapple();
-        /*StopAllCoroutines();
-        Debug.Log("starting");
-        detectCol = false;
-        //GetComponent<Rigidbody>().AddForce((grapplePoint.transform.position - transform.position) * boostSpeed, ForceMode.VelocityChange);
-        GetComponent<Rigidbody>().AddForce(Vector3.up * boostSpeed, ForceMode.Impulse);
-        if(grapple && gPoint != null){
-            grappling = true;
-            //Maybe move this to fixed update idk yet
-            //if(GetComponent<CharacterController>().isGrounded == false){
-                GetComponent<CharacterController>().enabled = false;
-                GetComponent<ThirdPersonController>().enabled = false;
-                GetComponent<Rigidbody>().velocity = Vector3.zero;
-                gPoint = grapplePoint.transform.position;
-                if(GetComponent<SpringJoint>() == null){
-                    gJoint = gameObject.AddComponent<SpringJoint>();
-                }
-                if(gJoint != null){
-                    gJoint.autoConfigureConnectedAnchor = false;
-                    gJoint.connectedAnchor = gPoint;
-
-                    float dist = Vector3.Distance(gameObject.transform.position, gPoint);
-                    gJoint.maxDistance = dist * maxDist;
-                    gJoint.minDistance = dist * minDist;
-
-                    //gJoint.maxDistance = maxDist;
-                    //gJoint.minDistance = minDist;
-
-
-                    gJoint.spring = sPower;
-                    gJoint.damper = dPower;
-                    gJoint.massScale = mScale;
-
-                    
-                }
-            //}
-        }*/
-
     }
 
     private void AutoGrapple(){
         StopAllCoroutines();
         Debug.Log("starting");
         detectCol = false;
-        //GetComponent<Rigidbody>().AddForce((grapplePoint.transform.position - transform.position) * boostSpeed, ForceMode.VelocityChange);
         var distanceBoost = Vector3.Distance(transform.position, grapplePoint.transform.position);
         GetComponent<Rigidbody>().AddForce((Vector3.up * boostSpeed) * distanceBoost, ForceMode.VelocityChange);
         if(grapple && gPoint != null){
             grappling = true;
-            //Maybe move this to fixed update idk yet
-            //if(GetComponent<CharacterController>().isGrounded == false){
+            StartCoroutine(ReleaseDelay());
                 GetComponent<CharacterController>().enabled = false;
                 GetComponent<ThirdPersonController>().enabled = false;
                 GetComponent<Rigidbody>().velocity = Vector3.zero;
@@ -172,17 +137,12 @@ public class LassoGrappleScript : MonoBehaviour, IGrappleable
                     gJoint.maxDistance = dist * maxDist;
                     gJoint.minDistance = dist * minDist;
 
-                    //gJoint.maxDistance = maxDist;
-                    //gJoint.minDistance = minDist;
-
-
                     gJoint.spring = sPower;
                     gJoint.damper = dPower;
                     gJoint.massScale = mScale;
 
                     
                 }
-            //}
         }
     }
 
@@ -199,7 +159,6 @@ public class LassoGrappleScript : MonoBehaviour, IGrappleable
             grappling = false;
             lassoCon.endThrow = true;
             Debug.Log("Ending");
-            //grappling = false;
             grapple = false;
             if(gJoint != null){
                 Destroy(gJoint);
@@ -208,6 +167,7 @@ public class LassoGrappleScript : MonoBehaviour, IGrappleable
             detectCol = true;
             StartCoroutine(EndDelay());
             StartCoroutine(CharDelay());
+            autoRelease = false;
         }
     }
     private void OnEnable(){
@@ -226,7 +186,6 @@ public class LassoGrappleScript : MonoBehaviour, IGrappleable
     private void Update(){
         lassoObject = GetComponent<LassoController>().projectile;
         lassoConnectPoint = GetComponent<LassoController>().connectPoint;
-        //Debug.Log(Vector3.Distance(gameObject.transform.position, gPoint));
         if(grapple){
             iaControls.CharacterControls.Lasso.started += StartGrapple;
             iaControls.CharacterControls.Lasso.canceled += EndGrapplePressed;
@@ -238,8 +197,7 @@ public class LassoGrappleScript : MonoBehaviour, IGrappleable
             EndGrapple();
         }
         if(grapplePoint != null){
-            if(Vector3.Distance(gameObject.transform.position, grapplePoint.transform.position) > cancelDistance && grapple){
-                //Debug.Log(Vector3.Distance(gameObject.transform.position, grapplePoint.transform.position));
+            if(Vector3.Distance(gameObject.transform.position, grapplePoint.transform.position) > cancelDistance && grapple){;
                 EndGrapple();
             }
         }
@@ -262,6 +220,10 @@ public class LassoGrappleScript : MonoBehaviour, IGrappleable
         if(detectCol){
             EnableChar();
         }
+    }
+    private IEnumerator ReleaseDelay(){
+        yield return new WaitForSeconds(0.1f);
+        autoRelease = true;
     }
 
     private void EnableChar(){
