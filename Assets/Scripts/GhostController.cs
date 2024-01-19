@@ -20,9 +20,11 @@ public class GhostController : MonoBehaviour
     [HideInInspector] public bool inGhost = false;
     private bool abilityEnabled = false;
     private float abilityDuration = 5.0f;
-    private float cooldownDuration = 10.0f;
+    private float cooldownDuration = 5.0f;
     private float cooldownTimer = 0.0f;
     private float regenerationRate = 0.2f; 
+    private float currentCooldownTimer = 0.0f;
+
     private bool playerInBox;
     private Vector3 originalPosition;
 
@@ -30,10 +32,10 @@ public class GhostController : MonoBehaviour
     
     void Update()
     {  
-        if (cooldownTimer > 0)
+        if (currentCooldownTimer > 0)
         {
-            cooldownTimer -= Time.deltaTime;
-            abilityDurationBar.fillAmount = cooldownTimer / cooldownDuration;
+            currentCooldownTimer -= Time.deltaTime;
+            abilityDurationBar.fillAmount = currentCooldownTimer / cooldownDuration;
         }
 
         if (phase.triggered)
@@ -48,20 +50,19 @@ public class GhostController : MonoBehaviour
             if (abilityDurationBar.fillAmount <= 0)
             {
                 DisableAbility();
-                GetComponent<MaterialSwitch>().ToggleMaterial();
-                cooldownTimer = cooldownDuration;
+                currentCooldownTimer = cooldownDuration;
             }
         }
-        else if (cooldownTimer < cooldownDuration)
+        else if (currentCooldownTimer < cooldownDuration)
         {
-            cooldownTimer = Mathf.Min(cooldownTimer + regenerationRate * Time.deltaTime, cooldownDuration);
-            abilityDurationBar.fillAmount = cooldownTimer / cooldownDuration;
+            currentCooldownTimer = Mathf.Min(currentCooldownTimer + regenerationRate * Time.deltaTime, cooldownDuration);
+            abilityDurationBar.fillAmount = currentCooldownTimer / cooldownDuration;
         }
     }
 
     void ToggleAbility()
     {
-        if (!abilityEnabled && cooldownTimer <= 0)
+        if (!abilityEnabled && currentCooldownTimer <= 0)
         {
             GetComponent<MaterialSwitch>().ToggleMaterial();
             abilityEnabled = true;
