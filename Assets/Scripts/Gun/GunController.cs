@@ -46,6 +46,26 @@ public class GunController : MonoBehaviour
     public float lunaWindowTime;
     public int maxGhostAmmo = 5;
 
+    [Header("Optional features")]
+    public bool fireOnMouseUp;
+    public bool recoilInAir;
+    public bool recoilOnGround;
+    public float recoilStrength;
+    public float recoilAirFactor;
+    public float recoilDuration;
+    public bool snapToBounceAngle;
+    public int snapBounceIncrement;
+    public bool damageNumbersOnBounce;
+    public bool showBounceAim;
+    public bool grabLiveBullets;
+
+    [Header("Public but don't attach")]
+    public Rigidbody rb;
+    public CharacterController characterController;
+
+    private bool aimingToShoot;
+
+
     //hidden vars
     [HideInInspector] public bool canShoot = true;
     private Vector3 aimAngle;
@@ -60,6 +80,8 @@ public class GunController : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         thirdPersonController = GetComponent<ThirdPersonController>();
+        rb = GetComponent<Rigidbody>();
+        characterController = GetComponent<CharacterController>();
         if(reducedSpeedFactor <= 0)
         {
             reducedSpeedFactor = 0.5f;
@@ -70,6 +92,8 @@ public class GunController : MonoBehaviour
 
         bulletHUD = FindObjectOfType<BulletHUD>();
         bulletHUD.StartBulletHUD(ghostAmmo);
+
+        if (fireOnMouseUp) aimController.fireOnMouseUp = true;
     }
 
     private void Update()
@@ -99,7 +123,7 @@ public class GunController : MonoBehaviour
             RedirectBullet();
         }
 
-        if (shoot.triggered)
+        if (shoot.IsPressed())
         {
             //dont allow more bullets fired if in luna redirection mode
             if (lunaMode)
@@ -110,8 +134,30 @@ public class GunController : MonoBehaviour
 
             if (!canShoot) return;
 
-            //otherwise fire new bullet
-            FireGun();
+            if (fireOnMouseUp)
+            {
+                aimingToShoot = true;
+                aimController.DrawLine();
+                aimController.HideCursor();
+            }
+            else
+            {
+                //otherwise fire new bullet
+                FireGun();
+            }
+        } else
+        {
+            if (aimingToShoot)
+            {
+                FireGun();
+                aimingToShoot = false;
+            }
+
+            if (fireOnMouseUp)
+            {
+                aimController.HideLine();
+                aimController.ShowCursor();
+            }
         }
     }
 
@@ -122,6 +168,7 @@ public class GunController : MonoBehaviour
             Misfire();
             return;
         }
+        Recoil();
 
         //slow player down temporarily
         StartCoroutine(FreezePlayerRoutine());
@@ -131,6 +178,8 @@ public class GunController : MonoBehaviour
         anim.Play("Shoot");
 
         //instantiate and fire bullet
+        //pass in the information of the main cam, target, and player
+        //so we know how to modify properly
         GameObject bullet = Instantiate(bulletPrefab);
         BulletController bulletController = bullet.GetComponent<BulletController>();
         bulletController.mainCamera = playerFollowCam;
@@ -140,9 +189,6 @@ public class GunController : MonoBehaviour
 
         //store this so we know which bullet to redirect
         mostRecentBullet = bullet;
-
-        //pass in the information of the main cam, target, and player
-        //so we know how to modify properly
         
         //anim = GetComponent<Animator>();
         //anim.SetBool("isShooting", false);
@@ -211,7 +257,6 @@ public class GunController : MonoBehaviour
                 yield break;
             }
 
-
             remainingTime -= Time.deltaTime;
 
             //wait a frame before resuming while loop
@@ -237,6 +282,41 @@ public class GunController : MonoBehaviour
         return ghostAmmo > 0;
     }
 
+    private void Recoil()
+    {
+        if (thirdPersonController.Grounded)
+            GroundRecoil();
+        else
+            AirRecoil();
+    }
+
+    private void GroundRecoil()
+    {
+        if (recoilOnGround)
+        {
+            StartCoroutine(RecoilRoutine(-(transform.forward.normalized) * recoilStrength));
+        }
+    }
+    private void AirRecoil()
+    {
+        if (recoilInAir)
+        {
+            StartCoroutine(RecoilRoutine(-(transform.forward.normalized) * (recoilStrength * recoilAirFactor)));
+        }
+    }
+
+    private IEnumerator RecoilRoutine(Vector3 force)
+    {
+        float duration = recoilDuration;
+        while (duration > 0f)
+        {
+            thirdPersonController.SetMotion((duration / recoilDuration) * Time.deltaTime * force);
+            duration -= Time.deltaTime;
+            //wait a frame before resuming loop
+            yield return null;
+        }
+        thirdPersonController.SetMotion(new Vector3(0, 0, 0));
+    }
 
     private void Awake(){
         iaControls = new CharacterMovement();

@@ -87,6 +87,7 @@ namespace StarterAssets
         [HideInInspector] public bool _inDialogue;
         [HideInInspector] public bool _manipulatingLasso;
         [HideInInspector] public bool _inCinematic;
+        private Vector3 extraMotion;
 
         // animation IDs
         private int _animIDSpeed;
@@ -266,8 +267,10 @@ namespace StarterAssets
                 _animationBlend = 0.0f;
             }
             // move the player
-            _controller.Move(targetDirection.normalized * (_speed * Time.deltaTime) +
-                             new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
+            Vector3 moveVector = targetDirection.normalized * (_speed * Time.deltaTime) +
+                             new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime;
+            Debug.Log("Move vector: " + moveVector + "\nMotion vector: " + extraMotion);
+            _controller.Move(moveVector + extraMotion);
 
             // update animator if using character
             if (_hasAnimator)
@@ -461,6 +464,11 @@ namespace StarterAssets
         {
             SprintSpeed *= factor;
             MoveSpeed *= factor;
+        }
+
+        public void SetMotion(Vector3 motion)
+        {
+            extraMotion = motion;
         }
 
     }
