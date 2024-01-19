@@ -2,6 +2,8 @@
 #if ENABLE_INPUT_SYSTEM 
 using UnityEngine.InputSystem;
 #endif
+using System.Collections;
+using System.Collections.Generic;
 
 /* Note: animations are called via the controller for both the character and capsule using animator null checks
  */
@@ -84,6 +86,7 @@ namespace StarterAssets
         [HideInInspector] public bool _canMove = true;
         [HideInInspector] public bool _inDialogue;
         [HideInInspector] public bool _manipulatingLasso;
+        [HideInInspector] public bool _inCinematic;
 
         // animation IDs
         private int _animIDSpeed;
@@ -191,7 +194,6 @@ namespace StarterAssets
 
         private void Move()
         {
-
             // set target speed based on move speed, sprint speed and if sprint is pressed
             //float targetSpeed = sprint.triggered ? SprintSpeed : MoveSpeed;
             if(sprint.IsPressed()){
@@ -296,7 +298,9 @@ namespace StarterAssets
                 }
 
                 // Jump
-                if (jump.triggered && _jumpTimeoutDelta <= 0.0f || GetComponent<LassoGrappleScript>().grappling && _jumpTimeoutDelta <= 0.0f)
+                if ((jump.triggered && _jumpTimeoutDelta <= 0.0f || 
+                    GetComponent<LassoGrappleScript>().grappling && _jumpTimeoutDelta <= 0.0f)
+                    && !_movementLocked)
                 {
                     _jumpTimeoutDelta = 0;
                     // the square root of H * -2 * G = how much velocity needed to reach desired height
@@ -404,7 +408,22 @@ namespace StarterAssets
             Debug.Log("_inDialogue: " + _inDialogue);
             Debug.Log("_manipulatingLasso: " + _manipulatingLasso);
             */
-            return _paused || _lunaLocked || _stunned || _inDialogue || _manipulatingLasso;
+            return _paused 
+                || _lunaLocked || _stunned 
+                || _inDialogue || _manipulatingLasso 
+                || _inCinematic;
+        }
+
+        public void LockPlayerForDuration(float seconds)
+        {
+            StartCoroutine(LockPlayerRoutine(seconds));
+        }
+
+        private IEnumerator LockPlayerRoutine(float seconds)
+        {
+            _inCinematic = true;
+            yield return new WaitForSeconds(seconds);
+            _inCinematic = false;
         }
 
         public void ForceStartConversation()
