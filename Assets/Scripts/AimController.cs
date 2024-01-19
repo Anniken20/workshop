@@ -40,6 +40,7 @@ public class AimController : MonoBehaviour
     private Vector3 angleWithIntensity;
     private bool showingAimLine = false;
     [HideInInspector] public float sensitivity = 5f;
+    [HideInInspector] public bool fireOnMouseUp;
 
     //debug
     private Vector3 pointA;
@@ -73,17 +74,18 @@ public class AimController : MonoBehaviour
         aimCursor.transform.position = Input.mousePosition;
     }
 
-    private void Update()
-    {
-        
-    }
-
     private void FixedUpdate()
     {
         MoveCursor();
         UpdateAim();
-        DrawAimReticle();
-        DrawLine();
+        if (fireOnMouseUp)
+        {
+
+        } else
+        {
+            DrawAimReticle();
+            DrawLine();
+        }
     }
 
     private void MoveCursor()
@@ -150,15 +152,30 @@ public class AimController : MonoBehaviour
         //Gizmos.DrawLine(pointB, h.point);
     }
 
-
-    private void DrawLine()
+    public void ShowCursor()
     {
+        aimCursor.SetActive(true);
+    }
+    public void HideCursor()
+    {
+        aimCursor.SetActive(false);
+    }
+
+    public void HideLine()
+    {
+        aimLine.positionCount = 0;
+    }
+
+    public void DrawLine()
+    {
+     /*   
         if (!showingAimLine)
         {
             aimLine.positionCount = 0;
             return;
         }
-
+     */
+        
         if (PauseMenu.paused) return;
 
         //add 2 positions to line renderer so a line is drawn
@@ -180,7 +197,7 @@ public class AimController : MonoBehaviour
         }
     }
 
-    private void DrawAimReticle()
+    public void DrawAimReticle()
     {
         if (!useAimReticle) return;
         if (PauseMenu.paused) return;
