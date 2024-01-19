@@ -16,7 +16,7 @@ public class GhostController : MonoBehaviour
     private float abilityDuration = 5.0f;
     private float countdownTimer = 5.0f;
     private bool playerInBox;
-
+    
     public AudioSource src;
     public AudioClip enterAudio;
     public AudioClip duringAudio;
@@ -71,6 +71,24 @@ public class GhostController : MonoBehaviour
         if (abilityEnabled)
         {
             countdownTimer = abilityDuration * abilityDurationBar.fillAmount;
+            // smokeParticleSystem.Play();
+            GetComponent<BoxCollider> ().isTrigger = true;
+            inGhost = true;
+            originalPosition = player.position;
+        }
+        if (abilityEnabled == false)
+        {
+            //smokeParticleSystem.Stop();
+            GetComponent<BoxCollider> ().isTrigger = false;
+            inGhost = false;
+
+            // Teleport the player to the valid position
+        if(playerInBox){
+            player.gameObject.GetComponent<CharacterController>().enabled = false;
+            player.position = originalPosition;
+            player.gameObject.GetComponent<CharacterController>().enabled = true;
+            playerInBox = false;
+        }
         }
     }
 
