@@ -3108,6 +3108,19 @@ MonoBehaviour:
   reducedSpeedFactor: 0.5
   lunaWindowTime: 2
   maxGhostAmmo: 5
+  fireOnMouseUp: 0
+  recoilInAir: 0
+  recoilOnGround: 0
+  recoilStrength: 0
+  recoilAirFactor: 0
+  recoilDuration: 0
+  snapToBounceAngle: 0
+  snapBounceIncrement: 0
+  damageNumbersOnBounce: 0
+  showBounceAim: 0
+  grabLiveBullets: 0
+  rb: {fileID: 0}
+  characterController: {fileID: 0}
   canShoot: 1
 --- !u!114 &9175328255296314604
 MonoBehaviour:
@@ -3141,6 +3154,7 @@ MonoBehaviour:
   canAim: 1
   inLuna: 0
   sensitivity: 5
+  fireOnMouseUp: 0
 --- !u!120 &8513374625079915996
 LineRenderer:
   serializedVersion: 2
@@ -3267,7 +3281,7 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 0
+  m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 112
@@ -3339,6 +3353,7 @@ MonoBehaviour:
   cancelDistance: 10
   lassoConnectPoint: {fileID: 0}
   triggerGrapOnce: 0
+  autoRelease: 0
 --- !u!136 &5463405241709320486
 CapsuleCollider:
   m_ObjectHideFlags: 0

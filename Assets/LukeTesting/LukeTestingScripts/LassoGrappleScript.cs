@@ -45,7 +45,7 @@ public class LassoGrappleScript : MonoBehaviour, IGrappleable
     private GameObject lassoObject;
 
     [HideInInspector] public bool triggerGrapOnce;
-    private bool autoRelease;
+    public bool autoRelease = false;
     
 
 
@@ -102,8 +102,10 @@ public class LassoGrappleScript : MonoBehaviour, IGrappleable
         }
 
         if(grapplePoint != null){
-            if(autoRelease && this.transform.position.y - grapplePoint.transform.position.y >= -2.25){
-                EndGrapple();
+            if(autoRelease == true){
+                if(this.transform.position.y - grapplePoint.transform.position.y >= -2.8){
+                    EndGrapple();
+                }
             }
         }
         
@@ -222,7 +224,7 @@ public class LassoGrappleScript : MonoBehaviour, IGrappleable
         }
     }
     private IEnumerator ReleaseDelay(){
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(1f);
         autoRelease = true;
     }
 
