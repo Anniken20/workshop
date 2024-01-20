@@ -2,6 +2,8 @@
 #if ENABLE_INPUT_SYSTEM 
 using UnityEngine.InputSystem;
 #endif
+using System.Collections;
+using System.Collections.Generic;
 
 /* Note: animations are called via the controller for both the character and capsule using animator null checks
  */
@@ -64,26 +66,6 @@ namespace StarterAssets
         [Tooltip("What layers the character uses as ground")]
         public LayerMask GroundLayers;
 
-        [Header("Cinemachine")]
-        [Tooltip("The follow target set in the Cinemachine Virtual Camera that the camera will follow")]
-        public GameObject CinemachineCameraTarget;
-
-        [Tooltip("How far in degrees can you move the camera up")]
-        public float TopClamp = 70.0f;
-
-        [Tooltip("How far in degrees can you move the camera down")]
-        public float BottomClamp = -30.0f;
-
-        [Tooltip("Additional degress to override the camera. Useful for fine tuning camera position when locked")]
-        public float CameraAngleOverride = 0.0f;
-
-        [Tooltip("For locking the camera position on all axis")]
-        public bool LockCameraPosition = false;
-
-        // cinemachine
-        private float _cinemachineTargetYaw;
-        private float _cinemachineTargetPitch;
-
         // player
         private float _speed;
         private float _animationBlend;
@@ -104,6 +86,8 @@ namespace StarterAssets
         [HideInInspector] public bool _canMove = true;
         [HideInInspector] public bool _inDialogue;
         [HideInInspector] public bool _manipulatingLasso;
+        [HideInInspector] public bool _inCinematic;
+        private Vector3 extraMotion;
 
         // animation IDs
         private int _animIDSpeed;
@@ -126,7 +110,6 @@ namespace StarterAssets
         private Animator _animator;
         private CharacterController _controller;
         private StarterAssetsInputs _input;
-        private GameObject _mainCamera;
 
         private const float _threshold = 0.01f;
 
@@ -151,20 +134,13 @@ namespace StarterAssets
 
         private void Awake()
         {
-            // get a reference to our main camera
-            if (_mainCamera == null)
-            {
-                _mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
-            }
             iaControls = new CharacterMovement();
             _canMove = true;
             _inDialogue = false;
         }
 
         private void Start()
-        {
-            _cinemachineTargetYaw = CinemachineCameraTarget.transform.rotation.eulerAngles.y;
-            
+        {            
             _hasAnimator = TryGetComponent(out _animator);
             _controller = GetComponent<CharacterController>();
             _input = GetComponent<StarterAssetsInputs>();
@@ -192,11 +168,6 @@ namespace StarterAssets
 
         }
 
-        private void LateUpdate()
-        {
-            CameraRotation();
-        }
-
         private void AssignAnimationIDs()
         {
             _animIDSpeed = Animator.StringToHash("Speed");
@@ -222,30 +193,8 @@ namespace StarterAssets
             }
         }
 
-        private void CameraRotation()
-        {
-            // if there is an input and camera position is not fixed
-            if (_input.look.sqrMagnitude >= _threshold && !LockCameraPosition)
-            {
-                //Don't multiply mouse input by Time.deltaTime;
-                float deltaTimeMultiplier = IsCurrentDeviceMouse ? 1.0f : Time.deltaTime;
-
-                _cinemachineTargetYaw += _input.look.x * deltaTimeMultiplier;
-                _cinemachineTargetPitch += _input.look.y * deltaTimeMultiplier;
-            }
-
-            // clamp our rotations so our values are limited 360 degrees
-            _cinemachineTargetYaw = ClampAngle(_cinemachineTargetYaw, float.MinValue, float.MaxValue);
-            _cinemachineTargetPitch = ClampAngle(_cinemachineTargetPitch, BottomClamp, TopClamp);
-
-            // Cinemachine will follow this target
-            CinemachineCameraTarget.transform.rotation = Quaternion.Euler(_cinemachineTargetPitch + CameraAngleOverride,
-                _cinemachineTargetYaw, 0.0f);
-        }
-
         private void Move()
         {
-
             // set target speed based on move speed, sprint speed and if sprint is pressed
             //float targetSpeed = sprint.triggered ? SprintSpeed : MoveSpeed;
             if(sprint.IsPressed()){
@@ -296,7 +245,7 @@ namespace StarterAssets
             if (move.ReadValue<Vector2>() != Vector2.zero)
             {
                 _targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg +
-                                  _mainCamera.transform.eulerAngles.y;
+                                  Camera.main.transform.eulerAngles.y;
                 float rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, _targetRotation, ref _rotationVelocity,
                     RotationSmoothTime);
 
@@ -318,8 +267,10 @@ namespace StarterAssets
                 _animationBlend = 0.0f;
             }
             // move the player
-            _controller.Move(targetDirection.normalized * (_speed * Time.deltaTime) +
-                             new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
+            Vector3 moveVector = targetDirection.normalized * (_speed * Time.deltaTime) +
+                             new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime;
+            Debug.Log("Move vector: " + moveVector + "\nMotion vector: " + extraMotion);
+            _controller.Move(moveVector + extraMotion);
 
             // update animator if using character
             if (_hasAnimator)
@@ -350,7 +301,9 @@ namespace StarterAssets
                 }
 
                 // Jump
-                if (jump.triggered && _jumpTimeoutDelta <= 0.0f || GetComponent<LassoGrappleScript>().grappling && _jumpTimeoutDelta <= 0.0f)
+                if ((jump.triggered && _jumpTimeoutDelta <= 0.0f || 
+                    GetComponent<LassoGrappleScript>().grappling && _jumpTimeoutDelta <= 0.0f)
+                    && !_movementLocked)
                 {
                     _jumpTimeoutDelta = 0;
                     // the square root of H * -2 * G = how much velocity needed to reach desired height
@@ -458,7 +411,22 @@ namespace StarterAssets
             Debug.Log("_inDialogue: " + _inDialogue);
             Debug.Log("_manipulatingLasso: " + _manipulatingLasso);
             */
-            return _paused || _lunaLocked || _stunned || _inDialogue || _manipulatingLasso;
+            return _paused 
+                || _lunaLocked || _stunned 
+                || _inDialogue || _manipulatingLasso 
+                || _inCinematic;
+        }
+
+        public void LockPlayerForDuration(float seconds)
+        {
+            StartCoroutine(LockPlayerRoutine(seconds));
+        }
+
+        private IEnumerator LockPlayerRoutine(float seconds)
+        {
+            _inCinematic = true;
+            yield return new WaitForSeconds(seconds);
+            _inCinematic = false;
         }
 
         public void ForceStartConversation()
@@ -496,6 +464,11 @@ namespace StarterAssets
         {
             SprintSpeed *= factor;
             MoveSpeed *= factor;
+        }
+
+        public void SetMotion(Vector3 motion)
+        {
+            extraMotion = motion;
         }
 
     }

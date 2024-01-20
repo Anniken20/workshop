@@ -122,10 +122,8 @@ public class LassoController : MonoBehaviour
         drawToLasso = true;
         if(spinning && lassoActive && holdingItem == false){
             spinningLasso = Instantiate(lassoObject, lassoSpinLocation.transform);
-            //AudioManager.main.Play(AudioManager.AudioSourceChannel.SFX, spinSound);
             spinning = false;
         }
-        //spinningLasso = Instantiate(lassoObject, lassoSpinLocation.transform);
         if(spinningLasso != null){
             spinningConnectPoint = spinningLasso.transform.Find("ConnectPoint");
             drawToLassoLine.enabled = true;
@@ -139,8 +137,6 @@ public class LassoController : MonoBehaviour
             
         
         
-        //drawToLassoLine.SetPosition(0, lassoHipLocation.transform.position);
-        //drawToLassoLine.SetPosition(1, spinningConnectPoint.position);
         
 
 
@@ -175,13 +171,11 @@ public class LassoController : MonoBehaviour
         animator.SetBool("isLassoing", false);
         endThrow = false;
         animator.SetBool("isThrowing", true);
-        //lassoSpinLocation.transform.Rotate(new Vector3(0f, 0f, 0f));
         AudioManager.main.Play(AudioManager.AudioSourceChannel.SFX, thrownSound);
         spinning = false;
         Destroy(spinningLasso);
         projectile = Instantiate(lassoObject, lassoSpinLocation.transform.position, launchPoint.rotation);
         projectile.transform.Rotate(0f, aimAngle.y, 0f);
-        //aimAngle = aimController.GetAimAngle();
         projectile.GetComponent<Rigidbody>().AddForce(aimAngle * lassoLaunchStrength, ForceMode.Impulse);
         drawToLasso = true;
 

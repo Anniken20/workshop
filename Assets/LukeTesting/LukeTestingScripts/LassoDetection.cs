@@ -28,6 +28,9 @@ public class LassoDetection : MonoBehaviour
     public ParticleSystem hitParticles;
     bool triggerParticlesOnce = true;
     bool detectCollOnce = true;
+    Vector3 otherExtents;
+    //[SerializeField] float xVariaton;
+    //[SerializeField] float zVariation;
 
     void Update()
     {
@@ -68,7 +71,7 @@ public class LassoDetection : MonoBehaviour
                 lassoSounds.PlayOneShot(lassoGrabSound);
                 //AudioManager.main.Play(AudioManager.AudioSourceChannel.SFX, lassoedSound);
                 hitObject = true;
-                Vector3 otherExtents = other.bounds.extents;
+                otherExtents = other.bounds.extents;
                 if(transform.position.y>= (otherExtents.y) * 2){
                     
                     GetComponent<Rigidbody>().isKinematic = true;
@@ -153,15 +156,20 @@ public class LassoDetection : MonoBehaviour
                 playMissOnce = false;
             }
         }
+        if(onObject || recall){
+            this.GetComponent<Collider>().enabled = false;
+        }
         if(player.spinningLasso == null){
             RotateTowardsPlayer();
         }
         lassoAttachPoint = lassoController.lassoAttachPoint;
         if(onObject){
-            var xScale = otherObject.transform.localScale.x + .15f;
-            var zScale = otherObject.transform.localScale.z + .15f;
+            var xScale = otherObject.transform.localScale.x -0.25f;//+ xVariaton; //+ .15f;
+            var zScale = otherObject.transform.localScale.z -0.6f;//+ zVariation; //+ .15f;
             transform.localScale = new Vector3(xScale, transform.localScale.y, zScale);
-            transform.position = otherObject.transform.position;
+            Vector3 heldPos = new Vector3(otherObject.transform.position.x, otherObject.transform.position.y + otherExtents.y, otherObject.transform.position.z);
+            //transform.position = otherObject.transform.position;
+            transform.position = heldPos;
 
         }
     }
