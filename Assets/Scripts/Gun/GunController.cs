@@ -50,14 +50,10 @@ public class GunController : MonoBehaviour
     public bool fireOnMouseUp;
     public bool recoilInAir;
     public bool recoilOnGround;
+    [Header("Buggy WIP features")]
     public float recoilStrength;
     public float recoilAirFactor;
     public float recoilDuration;
-    public bool snapToBounceAngle;
-    public int snapBounceIncrement;
-    public bool damageNumbersOnBounce;
-    public bool showBounceAim;
-    public bool grabLiveBullets;
 
     [Header("Public but don't attach")]
     public Rigidbody rb;
@@ -68,6 +64,7 @@ public class GunController : MonoBehaviour
 
     //hidden vars
     [HideInInspector] public bool canShoot = true;
+    private bool onCooldown = false;
     private Vector3 aimAngle;
     private GameObject mostRecentBullet;
     private bool lunaMode;
@@ -132,7 +129,7 @@ public class GunController : MonoBehaviour
                 return;
             }
 
-            if (!canShoot) return;
+            if (onCooldown) return;
 
             if (fireOnMouseUp)
             {
@@ -147,14 +144,12 @@ public class GunController : MonoBehaviour
             }
         } else
         {
-            if (aimingToShoot)
+            if (fireOnMouseUp && aimingToShoot)
             {
+                if (lunaMode) return;
+                //firing on release
                 FireGun();
                 aimingToShoot = false;
-            }
-
-            if (fireOnMouseUp)
-            {
                 aimController.HideLine();
                 aimController.ShowCursor();
             }
@@ -204,9 +199,9 @@ public class GunController : MonoBehaviour
     private IEnumerator FreezePlayerRoutine()
     {
         thirdPersonController.ChangeSpeedByFactor(reducedSpeedFactor);
-        canShoot = false;
+        onCooldown = true;
         yield return new WaitForSeconds(fireTime);
-        canShoot = true;
+        onCooldown = false;
         thirdPersonController.ChangeSpeedByFactor(1/reducedSpeedFactor);
     }
 

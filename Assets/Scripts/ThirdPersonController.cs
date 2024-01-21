@@ -16,6 +16,9 @@ namespace StarterAssets
 #endif
     public class ThirdPersonController : MonoBehaviour
     {
+        //singleon
+        public static ThirdPersonController Main;
+
         public CharacterMovement iaControls;
         private InputAction sprint;
         private InputAction jump;
@@ -140,7 +143,10 @@ namespace StarterAssets
         }
 
         private void Start()
-        {            
+        {
+            //singleton behavior
+            Main = this;
+
             _hasAnimator = TryGetComponent(out _animator);
             _controller = GetComponent<CharacterController>();
             _input = GetComponent<StarterAssetsInputs>();
@@ -269,7 +275,7 @@ namespace StarterAssets
             // move the player
             Vector3 moveVector = targetDirection.normalized * (_speed * Time.deltaTime) +
                              new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime;
-            Debug.Log("Move vector: " + moveVector + "\nMotion vector: " + extraMotion);
+            //Debug.Log("Move vector: " + moveVector + "\nMotion vector: " + extraMotion);
             _controller.Move(moveVector + extraMotion);
 
             // update animator if using character
