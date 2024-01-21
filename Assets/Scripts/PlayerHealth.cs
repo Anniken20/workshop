@@ -19,7 +19,7 @@ public class PlayerHealth : MonoBehaviour
         
     }
 
-    void UpdateHealthUI()
+    public void UpdateHealthUI()
     {
     if (healthBarImage != null)
         {
@@ -49,11 +49,5 @@ public class PlayerHealth : MonoBehaviour
         currentHealth = maxHealth;
         UpdateHealthUI();
         GetComponent<PlayerRespawn>().Die();
-    }
-
-    public void Heal(int amount)
-    {
-    currentHealth = Mathf.Min(currentHealth + amount, maxHealth);
-    UpdateHealthUI();
     }
 }

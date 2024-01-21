@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TeleportController : MonoBehaviour
 {
-public GameObject toPoint;
+    public GameObject toPoint;
     public float walkDistance = 1.0f; // Adjust this distance as needed
     public float forwardDistance = 2.0f; // Edit this value in the Inspector
     public Axis forwardAxis = Axis.Z; // Choose the forward axis in the Inspector
@@ -47,9 +48,7 @@ public GameObject toPoint;
         // Wait for a short initial delay
         yield return new WaitForSeconds(initialDelay);
 
-        // Play a walk animation here if you have one
-        // For example, if you have an "isWalking" boolean parameter in your animator, you can set it to true to play a walk animation
-        // animator.SetBool("isWalking", true);
+        //play walk animation
 
         // Calculate the number of steps based on the walk duration
         int numSteps = Mathf.FloorToInt(walkDuration / Time.fixedDeltaTime);
@@ -119,8 +118,7 @@ public GameObject toPoint;
         // Re-enable character control
         characterController.enabled = true;
 
-        // Set the "isWalking" parameter back to false to stop the walk animation
-        // animator.SetBool("isWalking", false);
+        //set walking animation back to false
 
         isTransitioning = false;
     }
