@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+
 public class PlayerHealth : MonoBehaviour
 {
     public int maxHealth = 100;
@@ -48,5 +49,11 @@ public class PlayerHealth : MonoBehaviour
         currentHealth = maxHealth;
         UpdateHealthUI();
         GetComponent<PlayerRespawn>().Die();
+    }
+
+    public void Heal(int amount)
+    {
+    currentHealth = Mathf.Min(currentHealth + amount, maxHealth);
+    UpdateHealthUI();
     }
 }
