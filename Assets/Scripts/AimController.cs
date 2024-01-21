@@ -26,6 +26,13 @@ public class AimController : MonoBehaviour
         " (Only if drawReticleWhenNoCollision is enabled)")]
     public float reticleDistFromPlayer = 5f;
 
+    [Header("Bonus Options")]
+    public bool snapAngle;
+    [Range(0f, 1f)]
+    public float snapIncrements;
+    public bool showBounceAim;
+    public float bounceAimDist;
+
     [Header("IK Setup")]
     private Animator animator;
     public bool activeIK;
@@ -74,8 +81,9 @@ public class AimController : MonoBehaviour
         aimCursor.transform.position = Input.mousePosition;
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
+        //Debug.Log("Aim angle: " + angle);
         MoveCursor();
         UpdateAim();
         if (fireOnMouseUp)
@@ -111,6 +119,7 @@ public class AimController : MonoBehaviour
         {
             angle = lookPoint.position - shootPoint.position;
             angle = angle.normalized;
+            SnapAngle();
             return;
         }
 
@@ -121,6 +130,7 @@ public class AimController : MonoBehaviour
         lookPoint.position = goodPoint;
         angle = goodPoint - shootPoint.position;
         angle = angle.normalized;
+        SnapAngle();
 
         //adding intensity by scaling the angle with the mouse cursor's distance from center of screen
         //taking absolute value so it doesn't flip the angle
@@ -130,7 +140,6 @@ public class AimController : MonoBehaviour
         alpha.y /= Screen.height;
         float intensity = Mathf.Abs(Vector3.Magnitude(alpha)) * 10f;
         angleWithIntensity = angle * intensity;
-            
         
         //debug tools
         pointA = ray.origin;
@@ -189,6 +198,7 @@ public class AimController : MonoBehaviour
         if (Physics.Raycast(shootPoint.position, angle, out hitData, 200f, LayerManager.main.shootableLayers))
         {
             aimLine.SetPosition(1, hitData.point);
+            ShowBulletFuture(hitData.point, Vector3.Reflect(angle, hitData.normal));
         }
         //otherwise set position 1 far away in that direction
         else
@@ -228,6 +238,34 @@ public class AimController : MonoBehaviour
     public Vector3 GetAimAngleWithIntensity()
     {
         return angleWithIntensity;
+    }
+
+    //for drawing the line to preview a bounce
+    public void ShowBulletFuture(Vector3 point, Vector3 angle)
+    {
+        if (!showBounceAim) return;
+        aimLine.positionCount = 3;
+        RaycastHit hitData;
+        if (Physics.Raycast(point, angle, out hitData, bounceAimDist, LayerManager.main.shootableLayers))
+        {
+            aimLine.SetPosition(2, hitData.point);
+        }
+        //otherwise set position 2 far away in that direction
+        else
+        {
+            aimLine.SetPosition(2, angle * 500f);
+        }
+    }
+
+    public void SnapAngle()
+    {
+        if (snapAngle)
+        {
+            float x = Mathf.Round(angle.x / snapIncrements) * snapIncrements;
+            float y = Mathf.Round(angle.y / snapIncrements) * snapIncrements;
+            float z = Mathf.Round(angle.z / snapIncrements) * snapIncrements;
+            angle = new Vector3(x, y, z);
+        }
     }
     
     private void OnEnable(){

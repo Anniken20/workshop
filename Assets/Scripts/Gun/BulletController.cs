@@ -6,6 +6,7 @@ using DG.Tweening;
 using StarterAssets;
 using UnityEngine.InputSystem;
 using System.Threading;
+using TMPro;
 
 public class BulletController : MonoBehaviour
 {
@@ -41,6 +42,23 @@ public class BulletController : MonoBehaviour
     public float baseDmg = 50f;
     public float bounceDmgMultiplier = 1f;
     public float maxDmg = Mathf.Infinity;
+
+    [Header("Snapping Options")]
+    public bool snapToBounceAngles;
+    [Range(0f, 1f)]
+    public float snapBounceIncrements;
+
+    [Header("Bounce Damage Text Options")]
+    public bool showDmgOnBounce;
+    public TMP_Text dmgText;
+    public float textPopHeight;
+    public float textPopDuration;
+    [Header("Higher damage => right-most color")]
+    public Gradient textColGradient;
+    [Header("At the lowest value, displays the left-most color")]
+    public Vector2 textDmgToGradient;
+    private Tween textMoveTween;
+    private Tween textColorTween;
 
     [Header("Luna Stats")]
     public GameObject luna;
@@ -153,7 +171,8 @@ public class BulletController : MonoBehaviour
                 }
             }
 
-            
+            IShootable shootable = hitData.collider.gameObject.GetComponent<IShootable>();
+            if(shootable != null) shootable.OnShot(this);
 
             //try to apply damage if it's a damage-able object
             TryToApplyDamage(hitData.collider.gameObject);
@@ -189,6 +208,7 @@ public class BulletController : MonoBehaviour
 
         //reflect over the normal of the collision
         direction = Vector3.Reflect(direction, hitData.normal);
+        SnapBounceAngle();
 
         //rotate to point in right direction
         gameObject.transform.LookAt(gameObject.transform.position + (direction * 10));
@@ -202,6 +222,9 @@ public class BulletController : MonoBehaviour
 
         //play sound
         gunAudioController.PlayRicochet("CUTE", currBounces - 1);
+
+        //show dmg numbers
+        ShowBounceDmgText();
     }
 
     private void TryToApplyDamage(GameObject obj)
@@ -386,8 +409,6 @@ public class BulletController : MonoBehaviour
             DOTween.To(() => mainCamera.m_Lens.OrthographicSize,
                 x => mainCamera.m_Lens.OrthographicSize = x,
                 formerCamOrthoSize, camZoomTime).SetEase(Ease.OutCubic);
-            
-            //mainCamera.m_Lens.OrthographicSize = formerCamOrthoSize;
         }
         camFollowingBullet = false;
     }
@@ -452,6 +473,41 @@ public class BulletController : MonoBehaviour
     public bool HasBouncesRemaining()
     {
         return currBounces < maxBounces;
+    }
+
+    public void SnapBounceAngle()
+    {
+        if (snapToBounceAngles)
+        {
+            float x = Mathf.Round(direction.x / snapBounceIncrements) * snapBounceIncrements;
+            float y = Mathf.Round(direction.y / snapBounceIncrements) * snapBounceIncrements;
+            float z = Mathf.Round(direction.z / snapBounceIncrements) * snapBounceIncrements;
+            direction = new Vector3(x, y, z);
+        }
+    }
+
+    public void ShowBounceDmgText()
+    {
+        //kill previous tweens
+        if(textMoveTween != null) textMoveTween.Kill();
+        if (textColorTween != null) textColorTween.Kill();
+
+        //set position and rotation at bullet's bounce point
+        dmgText.transform.SetParent(null);
+        dmgText.transform.rotation = Quaternion.identity;
+        dmgText.transform.position = transform.position;
+
+        //update text and tween text to pop up + fade out
+        dmgText.text = "" + currDmg;
+        textMoveTween = dmgText.transform.DOMove(dmgText.transform.position + new Vector3(0f, textPopDuration), 
+            textPopDuration).SetEase(Ease.OutCubic);
+
+        //set color based off gradient
+        // --- turning dmg number to a value 0 -> based off of the textDmgToGradient bounds ---
+        dmgText.color = textColGradient.Evaluate(
+            Mathf.Clamp((currDmg - textDmgToGradient.x) / textDmgToGradient.y, 0f, 1f));
+        textColorTween = dmgText.DOColor(new Color(dmgText.color.r, dmgText.color.g, dmgText.color.b), textPopDuration).SetEase(Ease.InCubic);
+
     }
 
     private void Awake(){
