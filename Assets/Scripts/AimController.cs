@@ -199,7 +199,7 @@ public class AimController : MonoBehaviour
         {
             aimLine.SetPosition(1, hitData.point);
             //ShowBulletFuture(hitData.point, Vector3.Reflect(angle, hitData.normal));
-            ShowBulletFuture(hitData.point, angle);
+            ShowBulletFuture(hitData.point, Vector3.Reflect(angle, hitData.normal));
         }
         //otherwise set position 1 far away in that direction
         else
@@ -255,7 +255,7 @@ public class AimController : MonoBehaviour
         //otherwise set position 2 floating
         else
         {
-            aimLine.SetPosition(2, bounceAngle.normalized * bounceAimDist);
+            aimLine.SetPosition(2, point + (bounceAngle.normalized * bounceAimDist));
         }
     }
 

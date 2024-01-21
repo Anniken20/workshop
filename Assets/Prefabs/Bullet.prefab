@@ -125,8 +125,9 @@ Transform:
   - {fileID: 3017207941574419881}
   - {fileID: 312144954256033148}
   - {fileID: 1370338889590758827}
-  - {fileID: 1418819677401917671}
   - {fileID: 7411229626286483728}
+  - {fileID: 1418819677401917671}
+  - {fileID: 3318798136135488865}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -166,6 +167,7 @@ MonoBehaviour:
   maxDmg: Infinity
   snapToBounceAngles: 1
   snapBounceIncrements: 0.092
+  earlyRetrieve: 1
   showDmgOnBounce: 1
   dmgText: {fileID: 5994653774117280263}
   textPopHeight: 1
@@ -215,6 +217,7 @@ MonoBehaviour:
   shakeIntensity: 5
   shakeDuration: 0.1
   sparksSystem: {fileID: 7527420906136657022}
+  ricochetSparks: {fileID: 6181420038049391096}
 --- !u!96 &414907241059058888
 TrailRenderer:
   serializedVersion: 3
@@ -577,6 +580,7 @@ GameObject:
   - component: {fileID: 7411229626286483728}
   - component: {fileID: 2407566754014365140}
   - component: {fileID: 5994653774117280263}
+  - component: {fileID: 1781712284686804809}
   m_Layer: 12
   m_Name: DmgText
   m_TagString: Untagged
@@ -738,6 +742,18 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: 2407566754014365140}
   m_maskType: 0
+--- !u!114 &1781712284686804809
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7871587765536397066}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b41fd772f081b6429ce55b972e370a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8900897757509625591
 GameObject:
   m_ObjectHideFlags: 0
@@ -1110,7 +1126,7 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 5317291275372495472}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &8548607832233055974
+--- !u!1001 &5412434152302193504
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -1136,7 +1152,7 @@ PrefabInstance:
     - target: {fileID: 5659957893628429432, guid: 9ad3ef372f2821047bd5c6381f220eae,
         type: 3}
       propertyPath: m_Name
-      value: Hitspark ParticleSystem
+      value: Ricochet Particles
       objectReference: {fileID: 0}
     - target: {fileID: 7282999534542634497, guid: 9ad3ef372f2821047bd5c6381f220eae,
         type: 3}
@@ -1146,17 +1162,17 @@ PrefabInstance:
     - target: {fileID: 7282999534542634497, guid: 9ad3ef372f2821047bd5c6381f220eae,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.38128
+      value: 0.6
       objectReference: {fileID: 0}
     - target: {fileID: 7282999534542634497, guid: 9ad3ef372f2821047bd5c6381f220eae,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.38128
+      value: 0.6
       objectReference: {fileID: 0}
     - target: {fileID: 7282999534542634497, guid: 9ad3ef372f2821047bd5c6381f220eae,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.38128
+      value: 0.6
       objectReference: {fileID: 0}
     - target: {fileID: 7282999534542634497, guid: 9ad3ef372f2821047bd5c6381f220eae,
         type: 3}
@@ -1207,6 +1223,131 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7282999534542634497, guid: 9ad3ef372f2821047bd5c6381f220eae,
+        type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 9ad3ef372f2821047bd5c6381f220eae, type: 3}
+--- !u!4 &3318798136135488865 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7282999534542634497, guid: 9ad3ef372f2821047bd5c6381f220eae,
+    type: 3}
+  m_PrefabInstance: {fileID: 5412434152302193504}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &6181420038049391096 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 2221405916270447256, guid: 9ad3ef372f2821047bd5c6381f220eae,
+    type: 3}
+  m_PrefabInstance: {fileID: 5412434152302193504}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &8548607832233055974
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 3778441595813947085}
+    m_Modifications:
+    - target: {fileID: 5087302150024626754, guid: 9ad3ef372f2821047bd5c6381f220eae,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.41664
+      objectReference: {fileID: 0}
+    - target: {fileID: 5087302150024626754, guid: 9ad3ef372f2821047bd5c6381f220eae,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.41664
+      objectReference: {fileID: 0}
+    - target: {fileID: 5087302150024626754, guid: 9ad3ef372f2821047bd5c6381f220eae,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.41664
+      objectReference: {fileID: 0}
+    - target: {fileID: 5659957893628429432, guid: 9ad3ef372f2821047bd5c6381f220eae,
+        type: 3}
+      propertyPath: m_Name
+      value: Hitspark ParticleSystem
+      objectReference: {fileID: 0}
+    - target: {fileID: 7282999534542634497, guid: 9ad3ef372f2821047bd5c6381f220eae,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 69
+      objectReference: {fileID: 0}
+    - target: {fileID: 7282999534542634497, guid: 9ad3ef372f2821047bd5c6381f220eae,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7282999534542634497, guid: 9ad3ef372f2821047bd5c6381f220eae,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7282999534542634497, guid: 9ad3ef372f2821047bd5c6381f220eae,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7282999534542634497, guid: 9ad3ef372f2821047bd5c6381f220eae,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7282999534542634497, guid: 9ad3ef372f2821047bd5c6381f220eae,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7282999534542634497, guid: 9ad3ef372f2821047bd5c6381f220eae,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.0578
+      objectReference: {fileID: 0}
+    - target: {fileID: 7282999534542634497, guid: 9ad3ef372f2821047bd5c6381f220eae,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7282999534542634497, guid: 9ad3ef372f2821047bd5c6381f220eae,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7282999534542634497, guid: 9ad3ef372f2821047bd5c6381f220eae,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7282999534542634497, guid: 9ad3ef372f2821047bd5c6381f220eae,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7282999534542634497, guid: 9ad3ef372f2821047bd5c6381f220eae,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7282999534542634497, guid: 9ad3ef372f2821047bd5c6381f220eae,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7282999534542634497, guid: 9ad3ef372f2821047bd5c6381f220eae,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7282999534542634497, guid: 9ad3ef372f2821047bd5c6381f220eae,
+        type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

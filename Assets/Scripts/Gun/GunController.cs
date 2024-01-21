@@ -146,6 +146,7 @@ public class GunController : MonoBehaviour
         {
             if (fireOnMouseUp && aimingToShoot)
             {
+                if (lunaMode) return;
                 //firing on release
                 FireGun();
                 aimingToShoot = false;
