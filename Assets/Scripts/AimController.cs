@@ -198,7 +198,8 @@ public class AimController : MonoBehaviour
         if (Physics.Raycast(shootPoint.position, angle, out hitData, 200f, LayerManager.main.shootableLayers))
         {
             aimLine.SetPosition(1, hitData.point);
-            ShowBulletFuture(hitData.point, Vector3.Reflect(angle, hitData.normal));
+            //ShowBulletFuture(hitData.point, Vector3.Reflect(angle, hitData.normal));
+            ShowBulletFuture(hitData.point, angle);
         }
         //otherwise set position 1 far away in that direction
         else
@@ -241,19 +242,20 @@ public class AimController : MonoBehaviour
     }
 
     //for drawing the line to preview a bounce
-    public void ShowBulletFuture(Vector3 point, Vector3 angle)
+    public void ShowBulletFuture(Vector3 point, Vector3 bounceAngle)
     {
         if (!showBounceAim) return;
         aimLine.positionCount = 3;
+        bounceAngle = SnapAngle(bounceAngle);
         RaycastHit hitData;
-        if (Physics.Raycast(point, angle, out hitData, bounceAimDist, LayerManager.main.shootableLayers))
+        if (Physics.Raycast(point, bounceAngle, out hitData, bounceAimDist, LayerManager.main.shootableLayers))
         {
             aimLine.SetPosition(2, hitData.point);
         }
-        //otherwise set position 2 far away in that direction
+        //otherwise set position 2 floating
         else
         {
-            aimLine.SetPosition(2, angle * 500f);
+            aimLine.SetPosition(2, bounceAngle.normalized * bounceAimDist);
         }
     }
 
@@ -266,6 +268,14 @@ public class AimController : MonoBehaviour
             float z = Mathf.Round(angle.z / snapIncrements) * snapIncrements;
             angle = new Vector3(x, y, z);
         }
+    }
+
+    private Vector3 SnapAngle(Vector3 givenAngle)
+    {
+        float x = Mathf.Round(givenAngle.x / snapIncrements) * snapIncrements;
+        float y = Mathf.Round(givenAngle.y / snapIncrements) * snapIncrements;
+        float z = Mathf.Round(givenAngle.z / snapIncrements) * snapIncrements;
+        return new Vector3(x, y, z);
     }
     
     private void OnEnable(){
