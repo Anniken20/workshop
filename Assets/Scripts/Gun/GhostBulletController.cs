@@ -19,6 +19,7 @@ public class GhostBulletController : MonoBehaviour
     public float retrievalSpeed;
     public float retrievalAcceleration;
 
+
     [Header("Audio")]
     public AudioClip[] spawnSounds;
     public AudioClip[] retrieveSounds;
