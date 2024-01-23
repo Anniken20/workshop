@@ -23,11 +23,11 @@ public class GhostController : MonoBehaviour
     public AudioClip exitAudio;
     private Vector3 originalPosition;
     //public ParticleSystem smokeParticleSystem; // 
-
     public Image abilityDurationBar;
     //can add the smoke to her hands if we want to, might need tweaking and editing but easy fix
     //The timer for the countdown need to be the same as the ability and match the material switch or it will bug out
     
+    public GameObject popUpImage;
  
     //Once per frame
     void Update()
@@ -43,17 +43,35 @@ public class GhostController : MonoBehaviour
 
             // Update UI bar based on remaining duration
             abilityDurationBar.fillAmount = Mathf.Clamp01(countdownTimer / abilityDuration);
+            
+             // Enable pop-up image when ability is active
+            if (!popUpImage.activeSelf)
+            {
+                popUpImage.SetActive(true);
+            }
 
             if (countdownTimer <= 0)
             {
                 DisableAbility();
                 GetComponent<MaterialSwitch>().ToggleMaterial();
+
+                // Disable pop-up image when ability is not active
+                if (popUpImage.activeSelf)
+                {
+                    popUpImage.SetActive(false);
+                }
             }
         }
         else if (abilityDurationBar.fillAmount < 1.0f)
         {
             // Only recharge the ability bar when the ability is not active and the fill amount is not at maximum
             RechargeAbilityBar();
+
+            // Disable pop-up image when ability is not active
+            if (popUpImage.activeSelf)
+            {
+                popUpImage.SetActive(false);
+            }
         }
     }
 
@@ -75,12 +93,24 @@ public class GhostController : MonoBehaviour
             GetComponent<BoxCollider> ().isTrigger = true;
             inGhost = true;
             originalPosition = player.position;
+
+            // Disable pop-up image when ability is not active
+            if (popUpImage.activeSelf)
+            {
+                popUpImage.SetActive(true);
+            }
         }
         if (abilityEnabled == false)
         {
             //smokeParticleSystem.Stop();
             GetComponent<BoxCollider> ().isTrigger = false;
             inGhost = false;
+
+            // Disable pop-up image when ability is not active
+            if (popUpImage.activeSelf)
+            {
+                popUpImage.SetActive(false);
+            }
 
             // Teleport the player to the valid position
         if(playerInBox){
