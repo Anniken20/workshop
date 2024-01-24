@@ -1,4 +1,4 @@
-using System.Collections;
+/*using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
@@ -59,4 +59,4 @@ public class FullScreenTestController : MonoBehaviour
         _fullScreenPhasing.SetActive(false);
     }
     
-}
+}*/
