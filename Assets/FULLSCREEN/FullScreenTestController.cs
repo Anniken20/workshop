@@ -24,7 +24,7 @@ public class FullScreenTestController : MonoBehaviour
 
     private void Update()
     {
-        if (Keyboard.current.lKey.wasPressedThisFrame)
+        if (Keyboard.current.tKey.wasPressedThisFrame)
         {
             StartCoroutine(Phasing());
         }
