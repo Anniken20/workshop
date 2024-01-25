@@ -5,8 +5,11 @@ using System.Linq;
 
 public class DataManager : MonoBehaviour
 {
+    [Header("File saving info")]
+    [SerializeField] private string fileName;
     private GameData gameData;
     private List<IDataPersistence> dataPersistenceObjects;
+    private SaveDataHandler saveHandler;
     public static DataManager instance { get; private set; }
 
     private void Awake(){
@@ -20,6 +23,7 @@ public class DataManager : MonoBehaviour
         this.gameData = new GameData();
     }
     public void LoadGame(){
+        this.gameData = saveHandler.Load();
         if(this.gameData == null){
             NewGame();
         }
@@ -31,13 +35,19 @@ public class DataManager : MonoBehaviour
         foreach(IDataPersistence dataPersistenceObj in dataPersistenceObjects){
             dataPersistenceObj.SaveData(ref gameData);
         }
+        saveHandler.Save(gameData);
     }
     private void Start(){
+        this.saveHandler = new SaveDataHandler(Application.persistentDataPath, fileName);
         this.dataPersistenceObjects = FindAllDataPersistenceObjects();
+        LoadGame();
     }
     private List<IDataPersistence> FindAllDataPersistenceObjects(){
         IEnumerable<IDataPersistence> dataPersistenceObjects = FindObjectsOfType<MonoBehaviour>().OfType<IDataPersistence>();
 
         return new List<IDataPersistence>(dataPersistenceObjects);
+    }
+    private void OnApplicationQuit(){
+        SaveGame();
     }
 }
