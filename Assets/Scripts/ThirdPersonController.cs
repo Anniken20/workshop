@@ -16,6 +16,9 @@ namespace StarterAssets
 #endif
     public class ThirdPersonController : MonoBehaviour
     {
+        //singleon
+        public static ThirdPersonController Main;
+
         public CharacterMovement iaControls;
         private InputAction sprint;
         private InputAction jump;
@@ -34,6 +37,7 @@ namespace StarterAssets
 
         [Tooltip("Acceleration and deceleration")]
         public float SpeedChangeRate = 10.0f;
+        public float AirborneSpeedChangeRate;
 
         public AudioClip LandingAudioClip;
         public AudioClip[] FootstepAudioClips;
@@ -140,7 +144,10 @@ namespace StarterAssets
         }
 
         private void Start()
-        {            
+        {
+            //singleton behavior
+            Main = this;
+
             _hasAnimator = TryGetComponent(out _animator);
             _controller = GetComponent<CharacterController>();
             _input = GetComponent<StarterAssetsInputs>();
@@ -220,10 +227,13 @@ namespace StarterAssets
             if (currentHorizontalSpeed < targetSpeed - speedOffset ||
                 currentHorizontalSpeed > targetSpeed + speedOffset)
             {
+                float accelRate = SpeedChangeRate;
+                if (!Grounded) accelRate = AirborneSpeedChangeRate;
+
                 // creates curved result rather than a linear one giving a more organic speed change
                 // note T in Lerp is clamped, so we don't need to clamp our speed
                 _speed = Mathf.Lerp(currentHorizontalSpeed, targetSpeed * inputMagnitude,
-                    Time.deltaTime * SpeedChangeRate);
+                    Time.deltaTime * accelRate);
 
                 // round speed to 3 decimal places
                 _speed = Mathf.Round(_speed * 1000f) / 1000f;
@@ -269,7 +279,7 @@ namespace StarterAssets
             // move the player
             Vector3 moveVector = targetDirection.normalized * (_speed * Time.deltaTime) +
                              new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime;
-            Debug.Log("Move vector: " + moveVector + "\nMotion vector: " + extraMotion);
+            //Debug.Log("Move vector: " + moveVector + "\nMotion vector: " + extraMotion);
             _controller.Move(moveVector + extraMotion);
 
             // update animator if using character
