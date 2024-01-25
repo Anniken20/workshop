@@ -14,6 +14,9 @@ public class TeleportController : MonoBehaviour
     public float moveAfterTeleportDuration = 2.0f; // Duration to move after teleporting
     public float initialDelay = 0.1f; // Adjust this delay to reduce the stutter
 
+    public CanvasGroup fadeCanvasGroup;
+    public float fadeDuration = 1.0f;
+
     public enum Axis
     {
         X,
@@ -34,12 +37,36 @@ public class TeleportController : MonoBehaviour
         }
     }
 
+    private IEnumerator FadeToBlack()
+    {
+        float elapsedTime = 0f;
+        while (elapsedTime < fadeDuration)
+        {
+            elapsedTime += Time.deltaTime;
+            fadeCanvasGroup.alpha = Mathf.Clamp01(elapsedTime / fadeDuration);
+            yield return null;
+        }
+    }
+
+     private IEnumerator FadeFromBlack()
+    {
+        float elapsedTime = 0f;
+        while (elapsedTime < fadeDuration)
+        {
+            elapsedTime += Time.deltaTime;
+            fadeCanvasGroup.alpha = 1 - Mathf.Clamp01(elapsedTime / fadeDuration);
+            yield return null;
+        }
+    }
+
     IEnumerator TransitionThroughTeleporter(GameObject player)
     {
         isTransitioning = true;
 
         // Disable character control
         characterController.enabled = false;
+
+        StartCoroutine(FadeToBlack());
 
         // Calculate the intermediate position at the center of the teleporter on X/Z axis
         Vector3 teleporterPosition = transform.position;
@@ -119,6 +146,8 @@ public class TeleportController : MonoBehaviour
         characterController.enabled = true;
 
         //set walking animation back to false
+
+        yield return StartCoroutine(FadeFromBlack());
 
         isTransitioning = false;
     }
