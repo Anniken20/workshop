@@ -49,14 +49,14 @@ public class GhostController : MonoBehaviour
                     if (countdownTimer <= 0)
                     {
                         DisableAbility();
-                        GetComponent<MaterialSwitch>().ToggleMaterial();
+                        GetComponent<MaterialSwitch>().SwitchMaterial();
                     }
                 }
     }
 
     void ToggleAbility()
     {
-        GetComponent<MaterialSwitch>().ToggleMaterial();
+        GetComponent<MaterialSwitch>().SwitchMaterial();
         abilityEnabled = !abilityEnabled;
         
         if (abilityEnabled)
