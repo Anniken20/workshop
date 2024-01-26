@@ -146,7 +146,7 @@ public class BulletController : MonoBehaviour
         //if hits object, ricochet
         //scale with speed because higher speed means more likely to clip through walls
         //but on low speed the jump to the wall is noticeable
-        if (Physics.Raycast(position, direction, out hitData, speed * 0.1f))
+        if (Physics.SphereCast(position, 0.05f, direction, out hitData, speed * 0.05f))
         {
             //phase through it if it's a pass-through layer
             if (LayerManager.main.IsPassThroughLayer(hitData.collider.gameObject))

@@ -18,6 +18,7 @@ public class GhostBulletController : MonoBehaviour
     public float retrievalCooldown;
     public float retrievalSpeed;
     public float retrievalAcceleration;
+    public float retrieveDistance;
 
 
     [Header("Audio")]
@@ -65,7 +66,7 @@ public class GhostBulletController : MonoBehaviour
 
     private bool ReachedPlayer()
     {
-        return Vector3.Distance(transform.position, _player.transform.position + new Vector3(0f, 1f)) < 0.5f;
+        return Vector3.Distance(transform.position, _player.transform.position + new Vector3(0f, 1f)) < retrieveDistance;
     }
 
     private void Despawn()
