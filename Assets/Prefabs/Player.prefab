@@ -1570,7 +1570,7 @@ PrefabInstance:
     - target: {fileID: 8944336655422409503, guid: f6d148d888ffbf54b9afe9936dfaec1f,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.18301739
+      value: 0.18301737
       objectReference: {fileID: 0}
     - target: {fileID: 8944336655422409503, guid: f6d148d888ffbf54b9afe9936dfaec1f,
         type: 3}
@@ -2437,7 +2437,7 @@ PrefabInstance:
     - target: {fileID: 1991870300955139427, guid: 81c96b43c51986f4792c0fe00e8022ca,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.4390493
+      value: 0.4390348
       objectReference: {fileID: 0}
     - target: {fileID: 1991870300955139427, guid: 81c96b43c51986f4792c0fe00e8022ca,
         type: 3}
@@ -2447,7 +2447,7 @@ PrefabInstance:
     - target: {fileID: 1991870300955139427, guid: 81c96b43c51986f4792c0fe00e8022ca,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.8992677
+      value: -0.89926755
       objectReference: {fileID: 0}
     - target: {fileID: 1991870300955139427, guid: 81c96b43c51986f4792c0fe00e8022ca,
         type: 3}
@@ -2688,7 +2688,7 @@ PrefabInstance:
     - target: {fileID: 2463233119158337830, guid: 1c676c9643d676545a559d229d0c9ba4,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.18301739
+      value: 0.18301737
       objectReference: {fileID: 0}
     - target: {fileID: 2463233119158337830, guid: 1c676c9643d676545a559d229d0c9ba4,
         type: 3}
@@ -2860,6 +2860,11 @@ PrefabInstance:
         type: 3}
       propertyPath: SprintSpeed
       value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4416926081852918490, guid: 64dce48905ffd9b4293e595fa6941544,
+        type: 3}
+      propertyPath: GroundFriction
+      value: 29.6
       objectReference: {fileID: 0}
     - target: {fileID: 4416926081852918490, guid: 64dce48905ffd9b4293e595fa6941544,
         type: 3}
@@ -3082,11 +3087,10 @@ MonoBehaviour:
   lunaWindowTime: 2
   maxGhostAmmo: 6
   fireOnMouseUp: 1
-  recoilInAir: 0
-  recoilOnGround: 0
-  recoilStrength: 0.5
-  recoilAirFactor: 5
-  recoilDuration: 1
+  recoilInAir: 1
+  recoilOnGround: 1
+  recoilStrength: 5
+  recoilAirFactor: 1
   rb: {fileID: 0}
   characterController: {fileID: 0}
   canShoot: 1
@@ -3352,6 +3356,12 @@ MonoBehaviour:
   currentHealth: 0
   healthBarImage: {fileID: 0}
   deathScreenManager: {fileID: 0}
+  _damageDisplayTime: 5
+  _damageFadeOutTime: 0.5
+  _fullScreenDamage: {fileID: 0}
+  _material: {fileID: 0}
+  _voronoIntensityStat: 2.5
+  _vignetteIntensityStat: 1.25
 --- !u!114 &334835789609942239
 MonoBehaviour:
   m_ObjectHideFlags: 0
