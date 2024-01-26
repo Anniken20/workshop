@@ -2,31 +2,40 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using DG.Tweening;
 
 public class CoinCollector : MonoBehaviour
 {
     public static CoinCollector Instance;
 
     public TextMeshProUGUI coinsText;
+    private RectTransform coinsRectTransform;
     private static int coinsCollected = 0; 
-    private static bool isUIVisible = false;
+    private Vector2 uiOffScreenPosition; // Position when the UI is off-screen
+    private Vector2 uiOnScreenPosition; // Position when the UI is on-screen
 
     private void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
+            DontDestroyOnLoad(gameObject);
         }
         else if (Instance != this)
         {
             Destroy(gameObject);
         }
+        
+        coinsRectTransform = coinsText.GetComponent<RectTransform>();
+        uiOffScreenPosition = new Vector2(500, coinsRectTransform.anchoredPosition.y); // Adjust this value
+        uiOnScreenPosition = new Vector2(-35, coinsRectTransform.anchoredPosition.y);    // Adjust this value
+        DOTween.Init();
     }
 
     private void Start()
     {
         UpdateCoinsText();
-        HideCoinsUI();
+        HideCoinsUIInstant();
     }
 
     public void CollectCoin()
@@ -47,11 +56,7 @@ public class CoinCollector : MonoBehaviour
 
     private void ShowCoinsUI()
     {
-        if (coinsText != null)
-        {
-            coinsText.gameObject.SetActive(true);
-            isUIVisible = true;
-        }
+      coinsRectTransform.DOAnchorPos(uiOnScreenPosition, 0.5f); 
     }
 
     private IEnumerator HideCoinsUIAfterDelay(float delay)
@@ -62,11 +67,12 @@ public class CoinCollector : MonoBehaviour
 
     private void HideCoinsUI()
     {
-        if (coinsText != null && isUIVisible)
-        {
-            coinsText.gameObject.SetActive(false);
-            isUIVisible = false;
-        }
+        coinsRectTransform.DOAnchorPos(uiOffScreenPosition, 0.5f);
+    }
+
+    private void HideCoinsUIInstant()
+    {
+        coinsRectTransform.anchoredPosition = uiOffScreenPosition; // Instantly place UI off-screen
     }
 }
 
