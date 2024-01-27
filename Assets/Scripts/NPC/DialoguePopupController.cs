@@ -29,7 +29,7 @@ public class DialoguePopupController : MonoBehaviour, IInteractable
     public bool clickToContinue;
     [Tooltip("Useful for keeping the player locked even after dialogue.")]
     public bool dontUnlock;
-    public bool hidePopupAfterwards;
+    public bool fixHudAftewards;
 
     [Header("Dialogue")]
     public UnityEvent onFinishedChatting;
@@ -113,9 +113,9 @@ public class DialoguePopupController : MonoBehaviour, IInteractable
         if (clickToContinue) StopCoroutine(nameof(InputRoutine));
         inDialogue = false;
         onFinishedChatting.Invoke();
-        HUDScaler.ScaleTo(1f);
+        if(fixHudAftewards) HUDScaler.ScaleTo(1f);
         StopCoroutine(inputRoutine);
-        if (hidePopupAfterwards) DialogueManager.Main.GetComponent<Scale>().ScaleTo(1f);
+        //if (hidePopupAfterwards) DialogueManager.Main.GetComponent<Scale>().ScaleTo(1f);
     }
 
     private void DisplayDialoguePiece(int i)
