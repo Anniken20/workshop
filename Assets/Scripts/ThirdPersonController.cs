@@ -43,6 +43,12 @@ namespace StarterAssets
         public AudioClip[] FootstepAudioClips;
         [Range(0, 1)] public float FootstepAudioVolume = 0.5f;
 
+        [Tooltip("Higher values means the player slows down more quickly from extra forces")]
+        [Range(1f, 100f)]
+        private float GroundFriction = 30f;
+        [Range(1f, 100f)]
+        private float AirFriction = 15f;
+
         [Space(10)]
         [Tooltip("The height the player can jump")]
         public float JumpHeight = 1.2f;
@@ -172,6 +178,7 @@ namespace StarterAssets
             JumpAndGravity();
             GroundedCheck();
             Move();
+            DecelerateForces();
 
         }
 
@@ -280,7 +287,8 @@ namespace StarterAssets
             Vector3 moveVector = targetDirection.normalized * (_speed * Time.deltaTime) +
                              new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime;
             //Debug.Log("Move vector: " + moveVector + "\nMotion vector: " + extraMotion);
-            _controller.Move(moveVector + extraMotion);
+            _controller.Move(moveVector + (extraMotion * Time.deltaTime));
+            //_controller.Move(new Vector3(-1 * Time.deltaTime, 0f));
 
             // update animator if using character
             if (_hasAnimator)
@@ -479,6 +487,29 @@ namespace StarterAssets
         public void SetMotion(Vector3 motion)
         {
             extraMotion = motion;
+        }
+
+        public void Push(Vector3 force)
+        {
+            extraMotion += force;
+        }
+
+        //called every frame
+        public void DecelerateForces()
+        {
+            //Debug.Log("Extra motion: " + extraMotion);
+            if(extraMotion.magnitude > 0.1f)
+            {
+                if (Grounded)
+                    extraMotion -= (Time.deltaTime * GroundFriction) * extraMotion;
+                else
+                    extraMotion -= Time.deltaTime * AirFriction * extraMotion;
+            } else
+            {
+                //snap off
+                extraMotion = new Vector3 (0, 0, 0);
+            }
+            
         }
 
     }

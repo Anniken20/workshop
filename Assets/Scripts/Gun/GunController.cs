@@ -53,7 +53,6 @@ public class GunController : MonoBehaviour
     [Header("Buggy WIP features")]
     public float recoilStrength;
     public float recoilAirFactor;
-    public float recoilDuration;
 
     [Header("Public but don't attach")]
     public Rigidbody rb;
@@ -289,28 +288,15 @@ public class GunController : MonoBehaviour
     {
         if (recoilOnGround)
         {
-            StartCoroutine(RecoilRoutine(-(transform.forward.normalized) * recoilStrength));
+            thirdPersonController.Push(-aimAngle * recoilStrength);
         }
     }
     private void AirRecoil()
     {
         if (recoilInAir)
         {
-            StartCoroutine(RecoilRoutine(-(transform.forward.normalized) * (recoilStrength * recoilAirFactor)));
+            thirdPersonController.Push(recoilAirFactor * recoilStrength * -aimAngle);
         }
-    }
-
-    private IEnumerator RecoilRoutine(Vector3 force)
-    {
-        float duration = recoilDuration;
-        while (duration > 0f)
-        {
-            thirdPersonController.SetMotion((duration / recoilDuration) * Time.deltaTime * force);
-            duration -= Time.deltaTime;
-            //wait a frame before resuming loop
-            yield return null;
-        }
-        thirdPersonController.SetMotion(new Vector3(0, 0, 0));
     }
 
     private void Awake(){
