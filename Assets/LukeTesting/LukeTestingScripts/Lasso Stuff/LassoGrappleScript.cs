@@ -126,6 +126,7 @@ public class LassoGrappleScript : MonoBehaviour, IGrappleable
             StartCoroutine(ReleaseDelay());
                 GetComponent<CharacterController>().enabled = false;
                 GetComponent<ThirdPersonController>().enabled = false;
+                //GetComponent<Rigidbody>().isKinematic = false;
                 GetComponent<Rigidbody>().velocity = Vector3.zero;
                 gPoint = grapplePoint.transform.position;
                 if(GetComponent<SpringJoint>() == null){
@@ -232,6 +233,7 @@ public class LassoGrappleScript : MonoBehaviour, IGrappleable
         GetComponent<ThirdPersonController>().enabled = true;
         GetComponent<CharacterController>().enabled = true;
         GetComponent<Rigidbody>().velocity = Vector3.zero;
+        //GetComponent<Rigidbody>().isKinematic = true;
     }
 
 
