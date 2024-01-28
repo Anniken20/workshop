@@ -243,17 +243,15 @@ public class LassoController : MonoBehaviour
             lassoActive = true;  
             spinning = true;
             cancelAim = false;
-            player.GetComponent<LineRenderer>().enabled = !player.GetComponent<LineRenderer>().enabled;
         }
     }
     private void OnLassoRelease(InputAction.CallbackContext context){
         lassoActive = false;
-        if(holdingItem == false && internalCooldown <= 0 && cancelAim == false && GetComponent<LassoGrappleScript>().canLasso == true){
+        lineRend.enabled = false;
+        if (holdingItem == false && internalCooldown <= 0 && cancelAim == false && GetComponent<LassoGrappleScript>().canLasso == true){
             LaunchLasso();
             internalCooldown = lassoCooldown;
-            lineRend.enabled = false;
             cancelAim = false;
-            player.GetComponent<LineRenderer>().enabled = !player.GetComponent<LineRenderer>().enabled;
         }
         if(spinningLasso != null){
             foreach (Transform child in lassoSpinLocation.transform){
