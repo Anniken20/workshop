@@ -49,6 +49,10 @@ public class AimController : MonoBehaviour
     [HideInInspector] public float sensitivity = 5f;
     [HideInInspector] public bool fireOnMouseUp;
 
+    [Header("Debug")]
+    public bool drawAimcast;
+    public GameObject shootTowardsBox;
+
     //debug
     private Vector3 pointA;
     private Vector3 pointB;
@@ -118,7 +122,7 @@ public class AimController : MonoBehaviour
         if (PauseMenu.paused || !canAim || inLuna)
         {
             angle = lookPoint.position - shootPoint.position;
-            angle = angle.normalized;
+            //angle = angle.normalized;
             SnapAngle();
             return;
         }
@@ -127,9 +131,17 @@ public class AimController : MonoBehaviour
         RaycastHit hit;
         Physics.Raycast(ray, out hit, Mathf.Infinity, aimLayer);
         Vector3 goodPoint = new Vector3(hit.point.x, shootPoint.position.y, hit.point.z);
+
+
+        //Vector3 camPoint = cam.ViewportToWorldPoint(aimCursor.transform.position);
+        //Vector3 goodPoint = new Vector3(camPoint.x, shootPoint.position.y, camPoint.z);
         lookPoint.position = goodPoint;
-        angle = goodPoint - shootPoint.position;
-        angle = angle.normalized;
+        if(shootTowardsBox != null) shootTowardsBox.transform.position = goodPoint;
+
+        //multiplying by 1000 then normalizing so that the angle isn't too small and therefore reduced to 0. 
+        angle = (goodPoint - shootPoint.position);
+        angle = Vector3.ClampMagnitude(angle, 10f);
+        //angle = angle.normalized;
         SnapAngle();
 
         //adding intensity by scaling the angle with the mouse cursor's distance from center of screen
@@ -142,8 +154,8 @@ public class AimController : MonoBehaviour
         angleWithIntensity = angle * intensity;
         
         //debug tools
-        pointA = ray.origin;
-        pointB = goodPoint;
+        //pointA = ray.origin;
+        //pointB = goodPoint;
 
         //toggle aim draw
         if (aim.triggered)
@@ -154,11 +166,11 @@ public class AimController : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        
-        //Gizmos.DrawLine(pointA, pointB);
-        //RaycastHit h;
-        //Physics.Raycast(pointB, Vector3.down, out h, LayerManager.main.shootableLayers);
-        //Gizmos.DrawLine(pointB, h.point);
+        if (!drawAimcast) return;
+        Gizmos.DrawLine(pointA, pointB);
+        RaycastHit h;
+        Physics.Raycast(pointB, Vector3.down, out h, aimLayer);
+        Gizmos.DrawLine(pointB, h.point);
     }
 
     public void ShowCursor()
