@@ -24,7 +24,7 @@ public class Horse : Enemy
         pacingState = gameObject.AddComponent<EnemyPacingState>();
         pacingState.Initialize(this, stateMachine);
 
-        stateMachine.Initialize(chargeState);
+        stateMachine.Initialize(idleState);
     }
 
     public void Charge(){

@@ -51,6 +51,7 @@ public class Enemy : MonoBehaviour
 
     [Header("Charge Variables")]
     public float chargeSpeed = 5.0f; // Speed at which the enemy charges
+    public float maxChargeDist;
 
     [Header("Evade Variables")]
     public float evadeDistance = 5.0f; // Distance at which the enemy starts evading
