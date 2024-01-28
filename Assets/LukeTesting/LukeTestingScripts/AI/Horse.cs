@@ -8,6 +8,9 @@ public class Horse : Enemy
     [HideInInspector] public EnemyPacingState pacingState;
     [HideInInspector] public EnemyStunnedState stunnedState;
     [HideInInspector] public HorseChargeState chargeState;
+    [HideInInspector] public bool isCharging;
+    //[HideInInspector] public int chargeDamage;
+
 
     private void Awake(){
         base.MyAwake();
@@ -28,12 +31,16 @@ public class Horse : Enemy
     }
 
     public void Charge(){
+        this.GetComponent<Rigidbody>().velocity = Vector3.zero;
+        isCharging = true;
         stateMachine.ChangeState(chargeState);
     }
     public void StopCharge(){
+        isCharging = false;
         stateMachine.ChangeState(pacingState);
     }
     public void Stunned(){
+        //Debug.Log("Petah the horse is stunned");
         stateMachine.ChangeState(stunnedState);
     }
     public void ExitStuned(){
