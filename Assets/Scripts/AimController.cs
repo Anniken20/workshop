@@ -49,6 +49,9 @@ public class AimController : MonoBehaviour
     [HideInInspector] public float sensitivity = 5f;
     [HideInInspector] public bool fireOnMouseUp;
 
+    [Header("Debug")]
+    public bool drawAimcast;
+
     //debug
     private Vector3 pointA;
     private Vector3 pointB;
@@ -128,7 +131,7 @@ public class AimController : MonoBehaviour
         Physics.Raycast(ray, out hit, Mathf.Infinity, aimLayer);
         Vector3 goodPoint = new Vector3(hit.point.x, shootPoint.position.y, hit.point.z);
         lookPoint.position = goodPoint;
-        angle = goodPoint - shootPoint.position;
+        angle = (goodPoint - shootPoint.position) * 1000f;
         angle = angle.normalized;
         SnapAngle();
 
@@ -154,11 +157,11 @@ public class AimController : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        
-        //Gizmos.DrawLine(pointA, pointB);
-        //RaycastHit h;
-        //Physics.Raycast(pointB, Vector3.down, out h, LayerManager.main.shootableLayers);
-        //Gizmos.DrawLine(pointB, h.point);
+        if (!drawAimcast) return;
+        Gizmos.DrawLine(pointA, pointB);
+        RaycastHit h;
+        Physics.Raycast(pointB, Vector3.down, out h, aimLayer);
+        Gizmos.DrawLine(pointB, h.point);
     }
 
     public void ShowCursor()
