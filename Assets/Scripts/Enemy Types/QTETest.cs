@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
+using UnityEngine.InputSystem;
 
 public class QTETest : MonoBehaviour
 {
@@ -17,6 +18,9 @@ public class QTETest : MonoBehaviour
 
     // Reference to the CameraController script
     public CameraController cameraController;
+
+    public CharacterMovement iaControls;
+    private InputAction shoot;
 
     void Start()
     {
@@ -76,7 +80,7 @@ public class QTETest : MonoBehaviour
 
     void CheckInput()
     {
-        if (Input.anyKeyDown)
+        if (shoot.triggered)
         {
             if ((QTEGen == 1 && Input.GetButtonDown("U")) ||
                 (QTEGen == 2 && Input.GetButtonDown("P")) ||
@@ -117,5 +121,20 @@ public class QTETest : MonoBehaviour
         yield return new WaitForSeconds(2f);
         PopupText.text = "";
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    private void Awake()
+    {
+        iaControls = new CharacterMovement();
+    }
+    private void OnEnable()
+    {
+        shoot = iaControls.CharacterControls.Shoot;
+
+        shoot.Enable();
+    }
+    private void OnDisable()
+    {
+        shoot.Disable();
     }
 }
