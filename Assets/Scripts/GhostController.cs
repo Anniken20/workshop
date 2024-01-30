@@ -74,7 +74,7 @@ public class GhostController : MonoBehaviour
     void EnableAbility()
     {
        // smokeParticleSystem.Play();
-        GetComponent<BoxCollider> ().isTrigger = true;
+        GetComponent<Collider> ().isTrigger = true;
         inGhost = true;
         originalPosition = player.position;
     }
@@ -82,7 +82,7 @@ public class GhostController : MonoBehaviour
     void DisableAbility()
     {
         //smokeParticleSystem.Stop();
-        GetComponent<BoxCollider> ().isTrigger = false;
+        GetComponent<Collider> ().isTrigger = false;
         inGhost = false;
         
         // Teleport the player to the valid position

@@ -19,18 +19,7 @@ public class CameraController : MonoBehaviour
     public CinemachineVirtualCamera mainCam;
     public CinemachineVirtualCamera shoulderCam;
 
-    public float switchViewDuration;
-
     private bool isIsometricView = false;
-
-    private void Update()
-    {
-        // Button = switch
-        if (Input.GetKeyDown(KeyCode.C))
-        {
-            SwitchCameraView();
-        }
-    }
 
     public void SwitchCameraView()
     {
@@ -41,18 +30,12 @@ public class CameraController : MonoBehaviour
         // Cinemachine brain will automatically "blend" to the highest priority camera.
         if (isIsometricView)
         {
-            // Set transition time of Cinemachine camera blend
-            camBrain.m_DefaultBlend.m_Time = switchViewDuration;
-
             // Change priorities
             mainCam.Priority = 0;
             shoulderCam.Priority = 1;
         }
         else
         {
-            // Set transition time of Cinemachine camera blend
-            camBrain.m_DefaultBlend.m_Time = switchViewDuration;
-
             // Change priorities
             mainCam.Priority = 1;
             shoulderCam.Priority = 0;
