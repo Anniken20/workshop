@@ -363,7 +363,7 @@ public partial class @CharacterMovement: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""9ddd1d4c-1065-447c-ad36-959a047349cf"",
-                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""path"": ""<Gamepad>/buttonWest"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -517,7 +517,7 @@ public partial class @CharacterMovement: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""5edfd9cb-17e0-4901-aa94-a9141c97b933"",
-                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""path"": ""<Gamepad>/buttonEast"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",

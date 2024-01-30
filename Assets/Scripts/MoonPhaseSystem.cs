@@ -15,7 +15,6 @@ public class MoonPhaseSystem : MonoBehaviour
     public Image moonImage; 
     public TMP_Text phaseText;
     public TMP_Text enemyText;
-    public ThirdPersonController player;
     public Enemy enemy;
     public GameObject enemyCam;
     public Scale HUD;
@@ -52,26 +51,7 @@ public class MoonPhaseSystem : MonoBehaviour
     public void StartShowdown()
     {
         //may eventually cause enemy to transition to their running state or something
-        player._inDialogue = false;
+        ThirdPersonController.Main._inDialogue = false;
         enemyCam.GetComponent<CameraBlender>().DeactivateCamera();
     }
-
-    /*
-    private void Update()
-    {
-        // When it's a full moon, trigger the boss event?
-        if (IsFullMoon())
-        {
-            OnFullMoon?.Invoke();
-        }
-    }
-
-    private bool IsFullMoon()
-    {
-        // when is it full moon???
-        // You might need data for moon phases or use a time-based approach we can do seconds or minute based?
-        // Return true if it's a full moon, otherwise return false
-        return false; 
-    }
-    */
 }

@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
 using DG.Tweening;
+using UnityEngine.EventSystems;
 
 public class DeathScreenManager : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class DeathScreenManager : MonoBehaviour
     public static DeathScreenManager main;
     private PlayerRespawn respawner;
     public AudioClip drawTextSound;
+    [SerializeField] GameObject startingButton;
 
     private void Awake()
     {
@@ -26,7 +28,11 @@ public class DeathScreenManager : MonoBehaviour
 
     public void ShowDeathScreen()
     {
+        EventSystem.current.SetSelectedGameObject(startingButton);
         deathScreen.SetActive(true);
+
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
 
         StartCoroutine(ShowDeathScreenRoutine());
 
@@ -53,11 +59,11 @@ public class DeathScreenManager : MonoBehaviour
 
     public void HideDeathScreen()
     {
+        PauseMenu.main.UnPauseNoUI();
         deathScreen.SetActive(false);
 
         //this method handles the global time scale and pause boolean
         //so that things like shooting arent allowed
-        PauseMenu.main.UnPauseNoUI();
     }
 
     public void RestartFromCheckpoint()

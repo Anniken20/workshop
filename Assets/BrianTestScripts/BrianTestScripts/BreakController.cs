@@ -5,6 +5,10 @@ using UnityEngine;
 public class BreakController : MonoBehaviour
 {
     public GameObject[] fragments; // An array to store the smaller fragments in the Inspector
+    public GameObject coinPrefab;
+    public int minCoins = 1;
+    public int maxCoins = 5;
+    public float coinForce = 5f;
     public float explosionForce = 10f;
     public float explosionRadius = 5f;
     public float disableRigidbodyDelay = 30f; // Time before disabling rigidbodies
@@ -118,6 +122,12 @@ public class BreakController : MonoBehaviour
             }
             PlayBreakSound();
 
+            int coinsToSpawn = Random.Range(minCoins, maxCoins + 1);
+            for (int i = 0; i < coinsToSpawn; i++)
+            {
+                SpawnCoin();
+            }
+
             // Destroy the original object
             Destroy(gameObject);
             
@@ -126,6 +136,30 @@ public class BreakController : MonoBehaviour
         {
             Debug.LogError("Fragments not assigned in the Inspector.");
         }
+    }
+
+    private void SpawnCoin()
+    {
+        if (coinPrefab != null)
+    {
+        // Adjust the spawn position to be above the ground
+        Vector3 spawnOffset = Random.insideUnitSphere * 3f;
+        spawnOffset.y = Mathf.Abs(spawnOffset.y); // Ensure the y offset is always positive
+        Vector3 spawnPosition = transform.position + spawnOffset;
+
+        GameObject coin = Instantiate(coinPrefab, spawnPosition, Quaternion.identity);
+        Rigidbody coinRb = coin.GetComponent<Rigidbody>();
+        if (coinRb != null)
+        {
+            // Apply a force in a random direction
+            Vector3 forceDirection = Random.onUnitSphere;
+            coinRb.AddForce(forceDirection * coinForce, ForceMode.Impulse);
+        }
+    }
+    else
+    {
+        Debug.LogError("Coin prefab not set.");
+    }
     }
 
     private void PlayBreakSound()

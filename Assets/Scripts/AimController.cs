@@ -26,6 +26,13 @@ public class AimController : MonoBehaviour
         " (Only if drawReticleWhenNoCollision is enabled)")]
     public float reticleDistFromPlayer = 5f;
 
+    [Header("Bonus Options")]
+    public bool snapAngle;
+    [Range(0f, 1f)]
+    public float snapIncrements;
+    public bool showBounceAim;
+    public float bounceAimDist;
+
     [Header("IK Setup")]
     private Animator animator;
     public bool activeIK;
@@ -40,6 +47,11 @@ public class AimController : MonoBehaviour
     private Vector3 angleWithIntensity;
     private bool showingAimLine = false;
     [HideInInspector] public float sensitivity = 5f;
+    [HideInInspector] public bool fireOnMouseUp;
+
+    [Header("Debug")]
+    public bool drawAimcast;
+    public GameObject shootTowardsBox;
 
     //debug
     private Vector3 pointA;
@@ -75,15 +87,17 @@ public class AimController : MonoBehaviour
 
     private void Update()
     {
-        
-    }
-
-    private void FixedUpdate()
-    {
+        //Debug.Log("Aim angle: " + angle);
         MoveCursor();
         UpdateAim();
-        DrawAimReticle();
-        DrawLine();
+        if (fireOnMouseUp)
+        {
+
+        } else
+        {
+            DrawAimReticle();
+            DrawLine();
+        }
     }
 
     private void MoveCursor()
@@ -108,7 +122,8 @@ public class AimController : MonoBehaviour
         if (PauseMenu.paused || !canAim || inLuna)
         {
             angle = lookPoint.position - shootPoint.position;
-            angle = angle.normalized;
+            //angle = angle.normalized;
+            SnapAngle();
             return;
         }
 
@@ -116,9 +131,18 @@ public class AimController : MonoBehaviour
         RaycastHit hit;
         Physics.Raycast(ray, out hit, Mathf.Infinity, aimLayer);
         Vector3 goodPoint = new Vector3(hit.point.x, shootPoint.position.y, hit.point.z);
+
+
+        //Vector3 camPoint = cam.ViewportToWorldPoint(aimCursor.transform.position);
+        //Vector3 goodPoint = new Vector3(camPoint.x, shootPoint.position.y, camPoint.z);
         lookPoint.position = goodPoint;
-        angle = goodPoint - shootPoint.position;
-        angle = angle.normalized;
+        if(shootTowardsBox != null) shootTowardsBox.transform.position = goodPoint;
+
+        //multiplying by 1000 then normalizing so that the angle isn't too small and therefore reduced to 0. 
+        angle = (goodPoint - shootPoint.position);
+        angle = Vector3.ClampMagnitude(angle, 10f);
+        //angle = angle.normalized;
+        SnapAngle();
 
         //adding intensity by scaling the angle with the mouse cursor's distance from center of screen
         //taking absolute value so it doesn't flip the angle
@@ -128,11 +152,10 @@ public class AimController : MonoBehaviour
         alpha.y /= Screen.height;
         float intensity = Mathf.Abs(Vector3.Magnitude(alpha)) * 10f;
         angleWithIntensity = angle * intensity;
-            
         
         //debug tools
-        pointA = ray.origin;
-        pointB = goodPoint;
+        //pointA = ray.origin;
+        //pointB = goodPoint;
 
         //toggle aim draw
         if (aim.triggered)
@@ -143,22 +166,37 @@ public class AimController : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        
-        //Gizmos.DrawLine(pointA, pointB);
-        //RaycastHit h;
-        //Physics.Raycast(pointB, Vector3.down, out h, LayerManager.main.shootableLayers);
-        //Gizmos.DrawLine(pointB, h.point);
+        if (!drawAimcast) return;
+        Gizmos.DrawLine(pointA, pointB);
+        RaycastHit h;
+        Physics.Raycast(pointB, Vector3.down, out h, aimLayer);
+        Gizmos.DrawLine(pointB, h.point);
     }
 
-
-    private void DrawLine()
+    public void ShowCursor()
     {
+        aimCursor.SetActive(true);
+    }
+    public void HideCursor()
+    {
+        aimCursor.SetActive(false);
+    }
+
+    public void HideLine()
+    {
+        aimLine.positionCount = 0;
+    }
+
+    public void DrawLine()
+    {
+     /*   
         if (!showingAimLine)
         {
             aimLine.positionCount = 0;
             return;
         }
-
+     */
+        
         if (PauseMenu.paused) return;
 
         //add 2 positions to line renderer so a line is drawn
@@ -172,6 +210,8 @@ public class AimController : MonoBehaviour
         if (Physics.Raycast(shootPoint.position, angle, out hitData, 200f, LayerManager.main.shootableLayers))
         {
             aimLine.SetPosition(1, hitData.point);
+            //ShowBulletFuture(hitData.point, Vector3.Reflect(angle, hitData.normal));
+            ShowBulletFuture(hitData.point, Vector3.Reflect(angle, hitData.normal));
         }
         //otherwise set position 1 far away in that direction
         else
@@ -180,7 +220,7 @@ public class AimController : MonoBehaviour
         }
     }
 
-    private void DrawAimReticle()
+    public void DrawAimReticle()
     {
         if (!useAimReticle) return;
         if (PauseMenu.paused) return;
@@ -211,6 +251,43 @@ public class AimController : MonoBehaviour
     public Vector3 GetAimAngleWithIntensity()
     {
         return angleWithIntensity;
+    }
+
+    //for drawing the line to preview a bounce
+    public void ShowBulletFuture(Vector3 point, Vector3 bounceAngle)
+    {
+        if (!showBounceAim) return;
+        aimLine.positionCount = 3;
+        bounceAngle = SnapAngle(bounceAngle);
+        RaycastHit hitData;
+        if (Physics.Raycast(point, bounceAngle, out hitData, bounceAimDist, LayerManager.main.shootableLayers))
+        {
+            aimLine.SetPosition(2, hitData.point);
+        }
+        //otherwise set position 2 floating
+        else
+        {
+            aimLine.SetPosition(2, point + (bounceAngle.normalized * bounceAimDist));
+        }
+    }
+
+    public void SnapAngle()
+    {
+        if (snapAngle)
+        {
+            float x = Mathf.Round(angle.x / snapIncrements) * snapIncrements;
+            float y = Mathf.Round(angle.y / snapIncrements) * snapIncrements;
+            float z = Mathf.Round(angle.z / snapIncrements) * snapIncrements;
+            angle = new Vector3(x, y, z);
+        }
+    }
+
+    private Vector3 SnapAngle(Vector3 givenAngle)
+    {
+        float x = Mathf.Round(givenAngle.x / snapIncrements) * snapIncrements;
+        float y = Mathf.Round(givenAngle.y / snapIncrements) * snapIncrements;
+        float z = Mathf.Round(givenAngle.z / snapIncrements) * snapIncrements;
+        return new Vector3(x, y, z);
     }
     
     private void OnEnable(){
