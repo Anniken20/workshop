@@ -24,6 +24,8 @@ public class MaterialSwitch : MonoBehaviour
     private bool canSwitch = true;
 
     private bool baseShaderActive = true;
+    
+    //please be pushed im begging
 
     private void Start()
     {
