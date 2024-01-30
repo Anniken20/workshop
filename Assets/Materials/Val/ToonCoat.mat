@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: ToonCoat
-  m_Shader: {fileID: -6465566751694194690, guid: ee940a1e784e66746a93f4920629ee28,
+  m_Shader: {fileID: -6465566751694194690, guid: 30d2647f28aced6418305e5a02a1300d,
     type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -28,8 +28,16 @@ Material:
         m_Texture: {fileID: 2800000, guid: 93af50895d47db341aafbe5bda427b02, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _Normal:
+        m_Texture: {fileID: 2800000, guid: 3ab403744bafa054fb7250b2466fd1c8, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _ShadowTexture2D:
         m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Texture:
+        m_Texture: {fileID: 2800000, guid: 93af50895d47db341aafbe5bda427b02, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -46,16 +54,23 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _Brightness: 2
     - _QueueControl: 0
     - _QueueOffset: -50
+    - _RimLightPower: 100
     - _ShadowStep: 0.77
     - _ShadowTexture: 0
     - _TilingTest: 0
+    - _Toon_Ramp_Offset: 0.5
+    - _Toon_Ramp_Smoothness: 0.05
     m_Colors:
     - _MainColor: {r: 1, g: 1, b: 1, a: 1}
+    - _RimLightColor: {r: 0.5803922, g: 0.85882354, b: 0.8392157, a: 0}
     - _ShadowColor: {r: 0.5754717, g: 0.3742561, b: 0.25733355, a: 0}
     - _ShadowPatternColor: {r: 1, g: 0.6836302, b: 0.37169808, a: 0}
     - _ShadowTextureTiling: {r: 0, g: 0, b: 0, a: 0}
+    - _Tiling: {r: 1, g: 1, b: 0, a: 0}
+    - _Toon_Ramp_Tinting: {r: 0.5, g: 0.27849174, b: 0.21415094, a: 0}
     - _Vector2: {r: 10, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &4282297526288217160

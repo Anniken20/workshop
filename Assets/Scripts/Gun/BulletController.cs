@@ -6,6 +6,7 @@ using DG.Tweening;
 using StarterAssets;
 using UnityEngine.InputSystem;
 using System.Threading;
+using TMPro;
 
 public class BulletController : MonoBehaviour
 {
@@ -42,6 +43,27 @@ public class BulletController : MonoBehaviour
     public float bounceDmgMultiplier = 1f;
     public float maxDmg = Mathf.Infinity;
 
+    [Header("Snapping Options")]
+    public bool snapToBounceAngles;
+    [Range(0f, 1f)]
+    public float snapBounceIncrements;
+
+    [Header("Retrieval Options")]
+    [Tooltip("When the bullet collides with the player, it is instantly retrieved")]
+    public bool earlyRetrieve;
+
+    [Header("Bounce Damage Text Options")]
+    public bool showDmgOnBounce;
+    public TMP_Text dmgText;
+    public float textPopHeight;
+    public float textPopDuration;
+    [Header("Higher damage => right-most color")]
+    public Gradient textColGradient;
+    [Header("At the lowest value, displays the left-most color")]
+    public Vector2 textDmgToGradient;
+    private Tween textMoveTween;
+    private Tween textColorTween;
+
     [Header("Luna Stats")]
     public GameObject luna;
     public CinemachineVirtualCamera lunaCam;
@@ -67,6 +89,7 @@ public class BulletController : MonoBehaviour
 
     [Header("Bullet VFX")]
     public ParticleSystem sparksSystem;
+    public ParticleSystem ricochetSparks;
 
 
     public void Fire(Transform source, Vector3 dir)
@@ -123,10 +146,25 @@ public class BulletController : MonoBehaviour
         //if hits object, ricochet
         //scale with speed because higher speed means more likely to clip through walls
         //but on low speed the jump to the wall is noticeable
-        if (Physics.Raycast(position, direction, out hitData, speed * 0.05f))
+        if (Physics.SphereCast(position, 0.05f, direction, out hitData, speed * 0.05f))
         {
             //phase through it if it's a pass-through layer
             if (LayerManager.main.IsPassThroughLayer(hitData.collider.gameObject))
+            {
+                return;
+            }
+
+            //phase through it if it's a ghost object
+            if (TryGetComponent<GhostController>(out GhostController ghostCon))
+            {
+                if (ghostCon.inGhost)
+                {
+                    return;
+                }
+            }
+
+            //ignore player if early retrieve is off
+            if(!earlyRetrieve && hitData.collider.gameObject.CompareTag("Player"))
             {
                 return;
             }
@@ -153,7 +191,8 @@ public class BulletController : MonoBehaviour
                 }
             }
 
-            
+            IShootable shootable = hitData.collider.gameObject.GetComponent<IShootable>();
+            if(shootable != null) shootable.OnShot(this);
 
             //try to apply damage if it's a damage-able object
             TryToApplyDamage(hitData.collider.gameObject);
@@ -169,15 +208,6 @@ public class BulletController : MonoBehaviour
                 return;
             }
 
-            //phase through it if it's a ghost object
-            if (TryGetComponent<GhostController>(out GhostController ghostCon))
-            {
-                if (ghostCon.inGhost)
-                {
-                    return;
-                }
-            }
-
             Bounce(hitData);
         }
     }
@@ -189,6 +219,7 @@ public class BulletController : MonoBehaviour
 
         //reflect over the normal of the collision
         direction = Vector3.Reflect(direction, hitData.normal);
+        SnapBounceAngle();
 
         //rotate to point in right direction
         gameObject.transform.LookAt(gameObject.transform.position + (direction * 10));
@@ -200,8 +231,14 @@ public class BulletController : MonoBehaviour
         currDmg *= bounceDmgMultiplier;
         currDmg = Mathf.Clamp(currDmg, 0, maxDmg);
 
-        //play sound
+        //play sound and vfx
         gunAudioController.PlayRicochet("CUTE", currBounces - 1);
+        ricochetSparks.Play();
+        //detach particle system so it doesn't follow bullet --- disabled because this breaks on second bounce ---
+        //ricochetSparks.transform.parent = null;
+
+        //show dmg numbers
+        ShowBounceDmgText();
     }
 
     private void TryToApplyDamage(GameObject obj)
@@ -258,6 +295,7 @@ public class BulletController : MonoBehaviour
         if (!lunaPOVCam)
         {
             mainCamera.Follow = redirectLookPoint;
+            mainCamera.LookAt = redirectLookPoint;
             formerCamOrthoSize = mainCamera.m_Lens.OrthographicSize;
 
             //tween camera ortho size to zoom in
@@ -382,12 +420,11 @@ public class BulletController : MonoBehaviour
         else
         {
             //reset main cam to look at player
-            mainCamera.Follow = playerCamRoot.transform;
+            mainCamera.Follow = player.transform;
+            mainCamera.LookAt = player.transform;
             DOTween.To(() => mainCamera.m_Lens.OrthographicSize,
                 x => mainCamera.m_Lens.OrthographicSize = x,
                 formerCamOrthoSize, camZoomTime).SetEase(Ease.OutCubic);
-            
-            //mainCamera.m_Lens.OrthographicSize = formerCamOrthoSize;
         }
         camFollowingBullet = false;
     }
@@ -445,6 +482,9 @@ public class BulletController : MonoBehaviour
         ghost.transform.position = gameObject.transform.position;
         ghost.GetComponent<GhostBulletController>().Spawn(player);
 
+        //destroy numbers pop up - using buffer time so it doesn't disappear instantly
+        dmgText.gameObject.GetComponent<DestroyAfterTime>().DestroyAfter(1f);
+
         //destroy this object
         Destroy(gameObject);
     }
@@ -452,6 +492,41 @@ public class BulletController : MonoBehaviour
     public bool HasBouncesRemaining()
     {
         return currBounces < maxBounces;
+    }
+
+    public void SnapBounceAngle()
+    {
+        if (snapToBounceAngles)
+        {
+            float x = Mathf.Round(direction.x / snapBounceIncrements) * snapBounceIncrements;
+            float y = Mathf.Round(direction.y / snapBounceIncrements) * snapBounceIncrements;
+            float z = Mathf.Round(direction.z / snapBounceIncrements) * snapBounceIncrements;
+            direction = new Vector3(x, y, z);
+        }
+    }
+
+    public void ShowBounceDmgText()
+    {
+        //kill previous tweens
+        if(textMoveTween != null) textMoveTween.Kill();
+        if (textColorTween != null) textColorTween.Kill();
+
+        //set position and rotation at bullet's bounce point
+        dmgText.transform.SetParent(null);
+        dmgText.transform.rotation = Quaternion.identity;
+        dmgText.transform.position = transform.position;
+
+        //update text and tween text to pop up + fade out
+        dmgText.text = "" + currDmg;
+        textMoveTween = dmgText.transform.DOMove(dmgText.transform.position + new Vector3(0f, textPopDuration), 
+            textPopDuration).SetEase(Ease.OutCubic);
+
+        //set color based off gradient
+        // --- turning dmg number to a value 0 -> based off of the textDmgToGradient bounds ---
+        dmgText.color = textColGradient.Evaluate(
+            Mathf.Clamp((currDmg - textDmgToGradient.x) / textDmgToGradient.y, 0f, 1f));
+        textColorTween = dmgText.DOColor(new Color(dmgText.color.r, dmgText.color.g, dmgText.color.b, 0f), textPopDuration).SetEase(Ease.InCubic);
+
     }
 
     private void Awake(){

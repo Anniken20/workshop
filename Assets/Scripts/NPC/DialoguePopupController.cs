@@ -22,12 +22,6 @@ public struct DialogueFrame
 
 public class DialoguePopupController : MonoBehaviour, IInteractable
 {
-    [Header("References")]
-    public GameObject dialoguePanel;
-    public Image characterPortrait;
-    public TMP_Text characterNameText;
-    public TMP_Text characterText;
-    public ThirdPersonController player;
 
     [Header("Settings")]
     public bool onlyOnce;
@@ -35,9 +29,9 @@ public class DialoguePopupController : MonoBehaviour, IInteractable
     public bool clickToContinue;
     [Tooltip("Useful for keeping the player locked even after dialogue.")]
     public bool dontUnlock;
+    public bool fixHudAftewards;
 
     [Header("Dialogue")]
-    public string characterName;
     public UnityEvent onFinishedChatting;
     public DialogueFrame[] dialogues;
 
@@ -50,6 +44,13 @@ public class DialoguePopupController : MonoBehaviour, IInteractable
     private Scale HUDScaler;
     private bool writing = false;
 
+    //to lock the player out of being stuck inside the dialogue by retriggering it immediately
+    private bool canSpeak = true;
+    private readonly float lockoutTime = 1f;
+
+    private Coroutine inputRoutine;
+
+
     private void Start()
     {
         HUDScaler = GameObject.FindGameObjectWithTag("HUD").GetComponentInChildren<Scale>();
@@ -57,6 +58,7 @@ public class DialoguePopupController : MonoBehaviour, IInteractable
 
     public void Interacted()
     {
+        if (!canSpeak) return;
         if (inDialogue)
         {
             GoNext();
@@ -67,7 +69,7 @@ public class DialoguePopupController : MonoBehaviour, IInteractable
                 BeginSpeaking();
                 inDialogue = true;
                 spokenTo = true;
-                if (clickToContinue) StartCoroutine(InputRoutine());
+                if (clickToContinue) inputRoutine = StartCoroutine(InputRoutine());
             }   
         }
     }
@@ -92,11 +94,11 @@ public class DialoguePopupController : MonoBehaviour, IInteractable
     public void BeginSpeaking()
     {
         dialogueIndex = 0;
-        dialoguePanel.SetActive(true);
-        player._inDialogue = true;
-        dialoguePanel.transform.localScale = new Vector3(0f, 0f);
-        dialoguePanel.transform.DOScale(new Vector3(1, 1), 1f).SetEase(Ease.OutExpo);
-        //characterNameText.text = characterName;
+        DialogueManager.Main.gameObject.SetActive(true);
+        ThirdPersonController.Main._inDialogue = true;
+        DialogueManager.Main.transform.localScale = new Vector3(0f, 0f);
+        DialogueManager.Main.transform.DOScale(new Vector3(1, 1), 1f).SetEase(Ease.OutExpo);
+        DialogueManager.Main.dialogueBackdrop.enabled = true;
         DisplayDialoguePiece(dialogueIndex);
 
         //GameObject[] objs = GameObject.FindGameObjectsWithTag("UI");
@@ -106,31 +108,34 @@ public class DialoguePopupController : MonoBehaviour, IInteractable
     
     public void StopSpeaking()
     { 
-        if(!dontUnlock) player._inDialogue = false;
-        dialoguePanel.SetActive(false);
+        if(!dontUnlock) ThirdPersonController.Main._inDialogue = false;
+        DialogueManager.Main.gameObject.SetActive(false);
         if (clickToContinue) StopCoroutine(nameof(InputRoutine));
         inDialogue = false;
         onFinishedChatting.Invoke();
+        if(fixHudAftewards) HUDScaler.ScaleTo(1f);
+        StopCoroutine(inputRoutine);
+        //if (hidePopupAfterwards) DialogueManager.Main.GetComponent<Scale>().ScaleTo(1f);
     }
 
     private void DisplayDialoguePiece(int i)
     {
         dialogues[i].onWriteEvent.Invoke();
-        characterNameText.text = dialogues[i].name;
-        characterPortrait.sprite = dialogues[i].portrait;
+        DialogueManager.Main.characterNameText.text = dialogues[i].name;
+        DialogueManager.Main.characterPortrait.sprite = dialogues[i].portrait;
         if (writeRoutine != null) StopCoroutine(writeRoutine);
         writeRoutine = StartCoroutine(WriteRoutine(dialogues[i].message, dialogues[i].writeWaitTime));
     }
 
     private IEnumerator WriteRoutine(string msg, float waitTime)
     {
-        characterText.text = "";
+        DialogueManager.Main.characterText.text = "";
         int i = 0;
         writing = true;
         while(i < msg.Length)
         {
             yield return new WaitForSeconds(waitTime);
-            characterText.text += msg[i];
+            DialogueManager.Main.characterText.text += msg[i];
             i++;
         }
         writing = false;
@@ -153,8 +158,15 @@ public class DialoguePopupController : MonoBehaviour, IInteractable
     private void FinishLine()
     {
         if (writeRoutine != null) StopCoroutine(writeRoutine);
-        characterText.text = dialogues[dialogueIndex].message;
+        DialogueManager.Main.characterText.text = dialogues[dialogueIndex].message;
         writing = false;
+    }
+
+    private IEnumerator LockoutRoutine()
+    {
+        canSpeak = false;
+        yield return new WaitForSeconds(lockoutTime);
+        canSpeak = true;
     }
 
     private void Awake()
