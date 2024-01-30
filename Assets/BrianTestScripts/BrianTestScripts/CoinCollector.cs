@@ -27,8 +27,8 @@ public class CoinCollector : MonoBehaviour
         }
         
         coinsRectTransform = coinsText.GetComponent<RectTransform>();
-        uiOffScreenPosition = new Vector2(500, coinsRectTransform.anchoredPosition.y); // Adjust this value
-        uiOnScreenPosition = new Vector2(-35, coinsRectTransform.anchoredPosition.y);    // Adjust this value
+        uiOffScreenPosition = new Vector2(coinsRectTransform.anchoredPosition.x, 50); // Adjust this value
+        uiOnScreenPosition = new Vector2(coinsRectTransform.anchoredPosition.x, -24);    // Adjust this value
         DOTween.Init();
     }
 
