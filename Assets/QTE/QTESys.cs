@@ -1,4 +1,4 @@
-using System.Collections;
+/*using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -63,7 +63,7 @@ public class QTESys : MonoBehaviour
             Debug.LogError("Enemy health component or method not set!");
         }
         */
-        float healthPercentage = ((Enemy)enemyScripts[currentEnemyIndex]).currentHealth / ((Enemy)enemyScripts[currentEnemyIndex]).maxHealth;
+    /*    float healthPercentage = ((Enemy)enemyScripts[currentEnemyIndex]).currentHealth / ((Enemy)enemyScripts[currentEnemyIndex]).maxHealth;
 
         if (healthPercentage <= 66f && healthPercentage > 33f)
         {
@@ -175,4 +175,4 @@ public class QTESys : MonoBehaviour
         PopupText.text = "";
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
-}
+}*/
