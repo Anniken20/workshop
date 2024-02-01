@@ -140,7 +140,7 @@ public class AimController : MonoBehaviour
 
         //multiplying by 1000 then normalizing so that the angle isn't too small and therefore reduced to 0. 
         angle = (goodPoint - shootPoint.position);
-        angle = Vector3.ClampMagnitude(angle, 10f);
+        angle = Vector3.ClampMagnitude(angle * 1000f, 10f);
         //angle = angle.normalized;
         SnapAngle();
 

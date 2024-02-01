@@ -45,9 +45,9 @@ namespace StarterAssets
 
         [Tooltip("Higher values means the player slows down more quickly from extra forces")]
         [Range(1f, 100f)]
-        private float GroundFriction = 30f;
+        private float GroundFriction = 5f;
         [Range(1f, 100f)]
-        private float AirFriction = 15f;
+        private float AirFriction = 3f;
 
         [Space(10)]
         [Tooltip("The height the player can jump")]
@@ -177,8 +177,8 @@ namespace StarterAssets
             _movementLocked = IsMovementLocked();
             JumpAndGravity();
             GroundedCheck();
-            Move();
             DecelerateForces();
+            Move();
 
         }
 
@@ -497,13 +497,33 @@ namespace StarterAssets
         //called every frame
         public void DecelerateForces()
         {
-            //Debug.Log("Extra motion: " + extraMotion);
+            if(extraMotion != Vector3.zero) Debug.Log("Extra motion: " + extraMotion);
             if(extraMotion.magnitude > 0.1f)
             {
                 if (Grounded)
+                {
                     extraMotion -= (Time.deltaTime * GroundFriction) * extraMotion;
+                    //extraMotion /= 1 + (GroundFriction * Time.deltaTime);
+
+                    /*
+                    extraMotion.x = extraMotion.x / (1 + (GroundFriction * Time.deltaTime));
+                    extraMotion.y = extraMotion.y / (1 + (GroundFriction * Time.deltaTime));
+                    extraMotion.z = extraMotion.z / (1 + (GroundFriction * Time.deltaTime));
+                    */
+
+                }
                 else
+                {
                     extraMotion -= Time.deltaTime * AirFriction * extraMotion;
+                    //extraMotion /= 1 + (AirFriction * Time.deltaTime);
+
+                    /*
+                    extraMotion.x = extraMotion.x / (1 + (AirFriction * Time.deltaTime));
+                    extraMotion.y = extraMotion.y / (1 + (AirFriction * Time.deltaTime));
+                    extraMotion.z = extraMotion.z / (1 + (AirFriction * Time.deltaTime));
+                    */
+                }
+                    
             } else
             {
                 //snap off
