@@ -5,9 +5,20 @@ using UnityEngine.AI;
 using DG.Tweening;
 using UnityEngine.Events;
 
-public class Enemy : MonoBehaviour
-
+[System.Serializable]
+public struct StateKVP
 {
+    public string key;
+    public StateData state;
+}
+
+public class Enemy : MonoBehaviour
+{
+    [Header("Additional State Data")]
+    [Tooltip("Attach as needed")]
+    public StateKVP[] stateDatas;
+    public Dictionary<string, StateData> stateDataDict;
+
     [Header("Global")]
     public float maxHealth = 100f;
     public float currentHealth;
@@ -71,6 +82,7 @@ public class Enemy : MonoBehaviour
     {
         nav = GetComponent<NavMeshAgent>();
         stateMachine = new EnemyStateMachine();
+        LoadUpDictionary();
     }
     
     private void Start()
@@ -130,5 +142,19 @@ public class Enemy : MonoBehaviour
             Die();
         }
 
+    }
+
+    public StateData FindData(string name)
+    {
+        stateDataDict.TryGetValue(name, out var data);
+        if (data == null) Debug.LogWarning("Custom Enemy Null Data! The state data for " + name + " was not found in the Enemy's dictionary");
+        return data;
+    }
+
+    private void LoadUpDictionary()
+    {
+        stateDataDict = new();
+        foreach (var dataPiece in stateDatas)
+            stateDataDict.Add(dataPiece.key, dataPiece.state);
     }
 }
