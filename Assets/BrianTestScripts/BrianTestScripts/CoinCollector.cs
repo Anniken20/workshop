@@ -25,6 +25,11 @@ public class CoinCollector : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        if(coinsText == null) {
+    Debug.LogWarning("CoinCollector: CoinsText is not assigned.");
+    return;
+        }
         
         coinsRectTransform = coinsText.GetComponent<RectTransform>();
         uiOffScreenPosition = new Vector2(coinsRectTransform.anchoredPosition.x, 50); // Adjust this value

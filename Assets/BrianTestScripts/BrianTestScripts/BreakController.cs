@@ -164,8 +164,8 @@ public class BreakController : MonoBehaviour
 private Vector3 GetValidSpawnPosition()
 {
     int attempts = 20; // Increase the number of attempts
-    float spawnRadius = 0.5f; // Reduce the radius for checking clear space
-    float spawnDistance = 5f; // Distance from the object center to attempt spawning
+    float spawnRadius = 0.4f; // Reduce the radius for checking clear space
+    float spawnDistance = 3f; // Distance from the object center to attempt spawning
 
     for (int i = 0; i < attempts; i++)
     {
