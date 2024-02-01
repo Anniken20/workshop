@@ -66,6 +66,9 @@ public class Enemy : MonoBehaviour
 
     protected NavMeshAgent nav;
 
+    public delegate void DamageDelegate();
+    public DamageDelegate damageDelegate;
+
     protected void MyAwake()
     {
         nav = GetComponent<NavMeshAgent>();
@@ -123,6 +126,7 @@ public class Enemy : MonoBehaviour
     public void TakeDamage(int delta)
     {
         currentHealth -= delta;
+        damageDelegate?.Invoke();
         if(currentHealth < 0)
         {
             Die();
