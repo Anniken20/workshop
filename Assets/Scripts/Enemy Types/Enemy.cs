@@ -62,12 +62,6 @@ public class Enemy : MonoBehaviour
     public UnityEvent onDeath;
     public bool standWhileDead;
 
-    [Header("Loot")]
-    public GameObject coinPrefab; // Reference to the coin prefab
-    public int minCoins = 1; // Minimum number of coins to drop
-    public int maxCoins = 5; // Maximum number of coins to drop
-    public float coinDropRadius = 1.5f; // Radius within which coins will scatter
-
     protected NavMeshAgent nav;
 
     public delegate void DamageDelegate();
@@ -102,17 +96,7 @@ public class Enemy : MonoBehaviour
 
     public void Die()
     {
-       StartCoroutine(DeathRoutine());
-
-        // Spawn coins
-        int coinsToDrop = Random.Range(minCoins, maxCoins + 1);
-        for (int i = 0; i < coinsToDrop; i++)
-        {
-        Vector3 spawnPosition = transform.position + Random.insideUnitSphere * coinDropRadius;
-        spawnPosition.y = transform.position.y; // Keep coins spawning at the enemy's feet level
-        Instantiate(coinPrefab, spawnPosition, Quaternion.identity);
-        }
-
+        StartCoroutine(DeathRoutine());
         itemPortrait.SetActive(false);
     }
 
