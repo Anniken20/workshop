@@ -8,8 +8,8 @@ public class GhostController : MonoBehaviour
 {
     [Header("Ghost Controller")]
     private InputAction phase;
-    public Transform box;
-    public float teleportDistance = 1f;
+    //public Transform box;
+    //public float teleportDistance = 1f;
 
     [HideInInspector] public bool inGhost = false;
     private bool abilityEnabled = false;
@@ -17,8 +17,8 @@ public class GhostController : MonoBehaviour
     private float cooldownDuration = 5.0f; // Cooldown time for the ability in seconds
     private float toggleCooldown = 0.5f; // Cooldown time between toggles in seconds
     private float countdownTimer;
-    private bool playerInBox;
-    private Vector3 originalPosition;
+    //private bool playerInBox;
+    //private Vector3 originalPosition;
 
     public Image abilityDurationBar;
 
@@ -53,7 +53,13 @@ public class GhostController : MonoBehaviour
         iaControls = new CharacterMovement();
         iaControls.CharacterControls.Enable();
         phase = iaControls.CharacterControls.Phase;
+
+        // Ensure audioSource is assigned
         audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
+        }
     }
 
     void Update()
@@ -78,9 +84,16 @@ public class GhostController : MonoBehaviour
             if (countdownTimer <= 0)
             {
                 DisableAbility();
-                SwitchMaterial();
                 StartCoroutine(AbilityCooldown());
             }
+
+            // Switch material when ability is active
+            SwitchMaterial();
+        }
+        else
+        {
+            // Switch material when ability is inactive
+            SwitchMaterial();
         }
 
         // FullScreenTest Controller functionality
@@ -95,7 +108,6 @@ public class GhostController : MonoBehaviour
             _fullScreenPhasing.SetActive(false);
         }
     }
-
     void ToggleAbility()
     {
         isToggleCooldownActive = true;
@@ -111,9 +123,11 @@ public class GhostController : MonoBehaviour
             // Play enter audio clip (if not played already)
             if (enterAudioClip != null && !hasPlayedEnterAudio)
             {
-                audioSource.PlayOneShot(enterAudioClip);
+                PlayAudio(enterAudioClip);
                 hasPlayedEnterAudio = true;
             }
+            
+            SwitchMaterial(); // Call SwitchMaterial when ability is enabled
         }
         else
         {
@@ -123,8 +137,17 @@ public class GhostController : MonoBehaviour
             // Play exit audio clip
             if (exitAudioClip != null)
             {
-                audioSource.PlayOneShot(exitAudioClip);
+                PlayAudio(exitAudioClip);
             }
+            
+            SwitchMaterial(); // Call SwitchMaterial when ability is disabled
+        }
+    }
+    void PlayAudio(AudioClip clip)
+    {
+        if (audioSource != null && clip != null)
+        {
+            audioSource.PlayOneShot(clip);
         }
     }
 
@@ -133,7 +156,7 @@ public class GhostController : MonoBehaviour
         // Ghost Controller functionality
         GetComponent<Collider>().isTrigger = true;
         inGhost = true;
-        originalPosition = transform.position;
+        //originalPosition = transform.position;
 
         // FullScreenTest Controller functionality
         _fullScreenPhasing.SetActive(true);
@@ -153,14 +176,14 @@ public class GhostController : MonoBehaviour
         GetComponent<Collider>().isTrigger = false;
         inGhost = false;
 
-        if (playerInBox)
+        /*if (playerInBox)
         {
             var characterController = GetComponent<CharacterController>();
             characterController.enabled = false;
             transform.position = originalPosition;
             characterController.enabled = true;
             playerInBox = false;
-        }
+        }*/
 
         abilityEnabled = false;
 
@@ -197,7 +220,7 @@ public class GhostController : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            playerInBox = true;
+            //playerInBox = true;
         }
     }
 
@@ -205,7 +228,7 @@ public class GhostController : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            playerInBox = false;
+            //playerInBox = false;
         }
     }
 
