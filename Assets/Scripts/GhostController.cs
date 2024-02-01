@@ -8,8 +8,8 @@ public class GhostController : MonoBehaviour
 {
     [Header("Ghost Controller")]
     private InputAction phase;
-    public Transform box;
-    public float teleportDistance = 1f;
+    // public Transform box;
+    //  public float teleportDistance = 1f;
 
     [HideInInspector] public bool inGhost = false;
     private bool abilityEnabled = false;
@@ -17,8 +17,8 @@ public class GhostController : MonoBehaviour
     private float cooldownDuration = 5.0f; // Cooldown time for the ability in seconds
     private float toggleCooldown = 0.5f; // Cooldown time between toggles in seconds
     private float countdownTimer;
-    private bool playerInBox;
-    private Vector3 originalPosition;
+    //private bool playerInBox;
+    //private Vector3 originalPosition;
 
     public Image abilityDurationBar;
 
@@ -133,7 +133,7 @@ public class GhostController : MonoBehaviour
         // Ghost Controller functionality
         GetComponent<Collider>().isTrigger = true;
         inGhost = true;
-        originalPosition = transform.position;
+        //originalPosition = transform.position;
 
         // FullScreenTest Controller functionality
         _fullScreenPhasing.SetActive(true);
@@ -153,6 +153,7 @@ public class GhostController : MonoBehaviour
         GetComponent<Collider>().isTrigger = false;
         inGhost = false;
 
+        /*
         if (playerInBox)
         {
             var characterController = GetComponent<CharacterController>();
@@ -161,7 +162,7 @@ public class GhostController : MonoBehaviour
             characterController.enabled = true;
             playerInBox = false;
         }
-
+        */
         abilityEnabled = false;
 
         // FullScreenTest Controller functionality
@@ -197,7 +198,7 @@ public class GhostController : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            playerInBox = true;
+            //playerInBox = true;
         }
     }
 
@@ -205,7 +206,7 @@ public class GhostController : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            playerInBox = false;
+            //playerInBox = false;
         }
     }
 
