@@ -170,6 +170,15 @@ public partial class @CharacterMovement: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""QTE"",
+                    ""type"": ""Button"",
+                    ""id"": ""ceb11060-b7ba-48cc-a436-3288bb29caf9"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -579,6 +588,39 @@ public partial class @CharacterMovement: IInputActionCollection2, IDisposable
                     ""action"": ""RecenterAim"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""536d4233-654a-448f-b112-b33a6d31fa12"",
+                    ""path"": ""<Keyboard>/p"",
+                    ""interactions"": ""Press"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""QTE"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5dfddde4-b0a7-47ff-be1a-aa64a3ae7c7b"",
+                    ""path"": ""<Keyboard>/l"",
+                    ""interactions"": ""Press"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""QTE"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7d6c0d0d-5d1a-492b-8754-10db931f9c89"",
+                    ""path"": ""<Keyboard>/u"",
+                    ""interactions"": ""Press"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""QTE"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -603,6 +645,7 @@ public partial class @CharacterMovement: IInputActionCollection2, IDisposable
         m_CharacterControls_Interact = m_CharacterControls.FindAction("Interact", throwIfNotFound: true);
         m_CharacterControls_Pause = m_CharacterControls.FindAction("Pause", throwIfNotFound: true);
         m_CharacterControls_RecenterAim = m_CharacterControls.FindAction("RecenterAim", throwIfNotFound: true);
+        m_CharacterControls_QTE = m_CharacterControls.FindAction("QTE", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -680,6 +723,7 @@ public partial class @CharacterMovement: IInputActionCollection2, IDisposable
     private readonly InputAction m_CharacterControls_Interact;
     private readonly InputAction m_CharacterControls_Pause;
     private readonly InputAction m_CharacterControls_RecenterAim;
+    private readonly InputAction m_CharacterControls_QTE;
     public struct CharacterControlsActions
     {
         private @CharacterMovement m_Wrapper;
@@ -700,6 +744,7 @@ public partial class @CharacterMovement: IInputActionCollection2, IDisposable
         public InputAction @Interact => m_Wrapper.m_CharacterControls_Interact;
         public InputAction @Pause => m_Wrapper.m_CharacterControls_Pause;
         public InputAction @RecenterAim => m_Wrapper.m_CharacterControls_RecenterAim;
+        public InputAction @QTE => m_Wrapper.m_CharacterControls_QTE;
         public InputActionMap Get() { return m_Wrapper.m_CharacterControls; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -757,6 +802,9 @@ public partial class @CharacterMovement: IInputActionCollection2, IDisposable
             @RecenterAim.started += instance.OnRecenterAim;
             @RecenterAim.performed += instance.OnRecenterAim;
             @RecenterAim.canceled += instance.OnRecenterAim;
+            @QTE.started += instance.OnQTE;
+            @QTE.performed += instance.OnQTE;
+            @QTE.canceled += instance.OnQTE;
         }
 
         private void UnregisterCallbacks(ICharacterControlsActions instance)
@@ -809,6 +857,9 @@ public partial class @CharacterMovement: IInputActionCollection2, IDisposable
             @RecenterAim.started -= instance.OnRecenterAim;
             @RecenterAim.performed -= instance.OnRecenterAim;
             @RecenterAim.canceled -= instance.OnRecenterAim;
+            @QTE.started -= instance.OnQTE;
+            @QTE.performed -= instance.OnQTE;
+            @QTE.canceled -= instance.OnQTE;
         }
 
         public void RemoveCallbacks(ICharacterControlsActions instance)
@@ -844,5 +895,6 @@ public partial class @CharacterMovement: IInputActionCollection2, IDisposable
         void OnInteract(InputAction.CallbackContext context);
         void OnPause(InputAction.CallbackContext context);
         void OnRecenterAim(InputAction.CallbackContext context);
+        void OnQTE(InputAction.CallbackContext context);
     }
 }
