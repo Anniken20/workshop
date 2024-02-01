@@ -288,14 +288,20 @@ public class GunController : MonoBehaviour
     {
         if (recoilOnGround)
         {
-            thirdPersonController.Push(-aimAngle * recoilStrength);
+            //Debug.Log("pushed: " + (-aimAngle * recoilStrength));
+            //thirdPersonController.Push(-aimAngle * recoilStrength);
+
+            thirdPersonController.Push(-transform.forward * recoilStrength);
         }
     }
     private void AirRecoil()
     {
         if (recoilInAir)
         {
-            thirdPersonController.Push(recoilAirFactor * recoilStrength * -aimAngle);
+            //Debug.Log("pushed: " + (recoilAirFactor * recoilStrength * -aimAngle));
+            //thirdPersonController.Push(recoilAirFactor * recoilStrength * -aimAngle);
+
+            thirdPersonController.Push(recoilAirFactor * recoilStrength * -transform.forward);
         }
     }
 
