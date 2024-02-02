@@ -6,40 +6,53 @@ using UnityEngine.AI;
 public class HorseChargeState : EnemyState
 {
     private Transform player; // Reference to the player's transform
-    public float maxChargeDist;
-    private Transform startPos;
+    public float maxChargeDist = 15; //Max distance the horse will charge to
     public float chargeSpeed = 5.0f; // Speed at which the enemy charges
+    private Vector3 targetPos;
+    private bool readyingCharge;
+    private bool activelyCharging;
 
     public HorseChargeState(Enemy enemy, EnemyStateMachine enemyStateMachine) : base(enemy, enemyStateMachine)
     {
-        player = GameObject.FindGameObjectWithTag("Player").transform; 
+
     }
 
     public override void EnterState()
     {
+        readyingCharge = true;
+        player = GameObject.FindGameObjectWithTag("Player").transform; 
+        //this.transform.LookAt(player);
+        //this.transform.LookAt(player);
         base.EnterState();
-        Debug.Log("Started horse charging");
-        nav.speed = chargeSpeed;
-        nav.SetDestination(player.position);
-        startPos = this.transform;
+        nav.speed = 100;
+        StartCoroutine(ReadyingCharge());
+
+        
     }
 
     public override void FrameUpdate()
     {
         base.FrameUpdate();
+    }
 
-        // Continue charging toward the player
-        //nav.SetDestination(player.position);
-        float distance = Vector3.Distance(startPos.position, transform.position);
-        if(distance >= maxChargeDist){
-            ExitState();
+    public override void PhysicsUpdate(){
+        base.PhysicsUpdate();
+        if(readyingCharge){
+            this.transform.LookAt(player);
         }
     }
 
     public override void ExitState()
-    {
+    {  
         base.ExitState();
-        Debug.Log("Stopped charging");
         nav.speed = enemy.DefaultMovementSpeed; // Reset the speed to the default value
+        this.GetComponent<Rigidbody>().velocity = Vector3.zero;
+        activelyCharging = false;
+    }
+
+    private IEnumerator ReadyingCharge(){
+        yield return new WaitForSeconds(1f);
+        readyingCharge = false;
+        nav.SetDestination(transform.position + this.transform.forward * 15);
     }
 }
