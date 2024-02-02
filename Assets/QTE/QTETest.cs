@@ -51,7 +51,7 @@ public class QTETest : MonoBehaviour
 
         float healthPercentage = 100 * enemyScript.currentHealth / enemyScript.maxHealth;
 
-        if (healthPercentage <= 64f && healthPercentage > 33f)
+        if (healthPercentage <= 66f && healthPercentage > 33f)
         {
             StartQTE("[U]");
             Debug.Log("START QTE");
@@ -145,39 +145,41 @@ public class QTETest : MonoBehaviour
         }
         */
     }
-    
     private IEnumerator InputRoutine(KeyCode shootKey)
     {
         float timeProgressed = 0f;
-        //this while loop is like a temporary update loop
+
+        // Pause the game
+        Time.timeScale = 0;
+
         while (timeProgressed < timeToShoot)
         {
-            //track how long we have been in the shooting window
-            timeProgressed += Time.deltaTime;
+            // track how long we have been in the shooting window
+            timeProgressed += Time.unscaledDeltaTime;
 
-            //if a key is pressed
+            // if a key is pressed
             if (Input.anyKeyDown)
             {
-                //and the key down is the correct input
+                // and the key down is the correct input
                 if (Input.GetKeyDown(shootKey))
                 {
                     StartCoroutine(Correct());
 
-                    //leave this coroutine
+                    // leave this coroutine
                     yield break;
                 }
-                //is not the correct input
+                // is not the correct input
                 else
                 {
                     StartCoroutine(Failed());
 
-                    //leave this coroutine
+                    // leave this coroutine
                     yield break;
                 }
             }
 
-            //wait a frame before resuming the while loop
-            //nifty trick for coroutines
+            // wait a frame before resuming the while loop
+            // nifty trick for coroutines
             yield return null;
         }
 
@@ -233,18 +235,23 @@ public class QTETest : MonoBehaviour
     IEnumerator Correct()
     {
         ShowPopupText("Correct!");
-        //WaitingForKey = 2; // QTE is complete
+
+        // Resume the game
+        Time.timeScale = 1;
+
         yield return new WaitForSeconds(2f);
         PopupText.text = "";
         CameraController camController = Camera.main.GetComponent<CameraController>();
         if (camController != null) camController.SwitchCameraView(true);
         inDuel = true;
-        //ResetInputProcessing(); // Reset input processing after coroutine completion
     }
-
     IEnumerator Failed()
     {
         ShowPopupText("Failed!");
+
+        // Resume the game
+        Time.timeScale = 1;
+
         yield return new WaitForSeconds(2f);
         PopupText.text = "";
         CameraController camController = Camera.main.GetComponent<CameraController>();
