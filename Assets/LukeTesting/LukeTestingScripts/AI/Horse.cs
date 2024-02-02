@@ -6,10 +6,20 @@ public class Horse : Enemy
 {
     [HideInInspector] public EnemyIdleState idleState;
     [HideInInspector] public EnemyPacingState pacingState;
-    [HideInInspector] public EnemyStunnedState stunnedState;
+    [HideInInspector] public HorseStunnedState stunnedState;
     [HideInInspector] public HorseChargeState chargeState;
+    [HideInInspector] public bool isCharging;
+
+    //public GameObject stunnedText;
+    //public GameObject chargingText;
+
+    //private Enemy e;
+
 
     private void Awake(){
+
+        //e = GetComponentInParent<Enemy>();
+
         base.MyAwake();
 
         idleState = gameObject.AddComponent<EnemyIdleState>();
@@ -18,22 +28,26 @@ public class Horse : Enemy
         chargeState = gameObject.AddComponent<HorseChargeState>();
         chargeState.Initialize(this, stateMachine);
 
-        stunnedState = gameObject.AddComponent<EnemyStunnedState>();
+        stunnedState = gameObject.AddComponent<HorseStunnedState>();
         stunnedState.Initialize(this, stateMachine);
 
         pacingState = gameObject.AddComponent<EnemyPacingState>();
         pacingState.Initialize(this, stateMachine);
 
-        stateMachine.Initialize(chargeState);
+        stateMachine.Initialize(idleState);
     }
 
     public void Charge(){
+        this.GetComponent<Rigidbody>().velocity = Vector3.zero;
+        isCharging = true;
         stateMachine.ChangeState(chargeState);
     }
     public void StopCharge(){
+        isCharging = false;
         stateMachine.ChangeState(pacingState);
     }
     public void Stunned(){
+        //Debug.Log("Petah the horse is stunned");
         stateMachine.ChangeState(stunnedState);
     }
     public void ExitStuned(){

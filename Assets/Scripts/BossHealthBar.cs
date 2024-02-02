@@ -9,7 +9,8 @@ public class BossHealthBar : MonoBehaviour
     enum Boss{
         Sheriff,
         Santana,
-        Diana
+        Diana,
+        Horse
     }
     [SerializeField] Boss boss = new Boss();
 
@@ -37,6 +38,13 @@ public class BossHealthBar : MonoBehaviour
             float healthPercentage = (currentHealth / maxHealth);
             healthSlider.value = healthPercentage;
             
+        }
+        else if(boss.ToString() == "Horse"){
+            var Horse = this.GetComponent<Horse>();
+            float maxHealth = Horse.maxHealth;
+            var currentHealth = Horse.currentHealth;
+            float healthPercentage = (currentHealth / maxHealth);
+            healthSlider.value = healthPercentage;
         }
     }
 }

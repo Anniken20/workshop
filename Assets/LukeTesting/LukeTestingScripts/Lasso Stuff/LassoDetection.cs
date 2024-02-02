@@ -29,6 +29,8 @@ public class LassoDetection : MonoBehaviour
     bool triggerParticlesOnce = true;
     bool detectCollOnce = true;
     Vector3 otherExtents;
+    [HideInInspector] public float lassoGravity;
+    Rigidbody rb;
     //[SerializeField] float xVariaton;
     //[SerializeField] float zVariation;
 
@@ -55,6 +57,7 @@ public class LassoDetection : MonoBehaviour
         pickupScript = FindObjectOfType<LassoPickupScript>();
 
         lassoAttachPoint = lassoController.lassoAttachPoint;
+        rb = GetComponent<Rigidbody>();
 
     }
     private void OnTriggerEnter(Collider other){
@@ -172,6 +175,9 @@ public class LassoDetection : MonoBehaviour
             transform.position = heldPos;
 
         }
+
+        //Controls the speed that the lasso falls
+        rb.AddForce(Physics.gravity * lassoGravity, ForceMode.Acceleration);
     }
 
     private void RotateTowardsPlayer(){
