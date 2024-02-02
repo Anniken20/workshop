@@ -318,9 +318,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c202ac8e7912034ca51970d84eba49b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 3893294199639930361}
-  box: {fileID: 279927231}
-  teleportDistance: 1
 --- !u!23 &279927229
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -398,11 +395,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77a483b7605651d4db61f2fcc56e5d08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  material1: {fileID: 5629084884208175553, guid: fce3bf5a5b603db45ab0048fb6ab44df,
-    type: 3}
-  material2: {fileID: 2100000, guid: 945ea9f2e3ca9594c971974a3e694845, type: 2}
   switchInterval: 5
-  switchKey: 116
   switchDelay: 5
 --- !u!1 &542508511
 GameObject:
@@ -498,8 +491,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b80b3eb37856d154190fd079728fd95c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isometricCamera: {fileID: 8944336656349189699}
-  thirdPersonCamera: {fileID: 800719329}
+  camBrain: {fileID: 0}
+  mainCam: {fileID: 0}
+  shoulderCam: {fileID: 0}
 --- !u!4 &639036449
 Transform:
   m_ObjectHideFlags: 0
@@ -1299,9 +1293,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c202ac8e7912034ca51970d84eba49b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 3893294199639930361}
-  box: {fileID: 1657579160}
-  teleportDistance: 1
 --- !u!114 &1657579162
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1314,11 +1305,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77a483b7605651d4db61f2fcc56e5d08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  material1: {fileID: 5629084884208175553, guid: 426a2785f8a940049aac2c246661cf09,
-    type: 3}
-  material2: {fileID: 2100000, guid: 945ea9f2e3ca9594c971974a3e694845, type: 2}
   switchInterval: 5
-  switchKey: 116
   switchDelay: 5
 --- !u!1 &1764214107
 GameObject:
@@ -1414,6 +1401,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b540dbfb8276654a827c0ae67f7fc4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  backgroundImage: {fileID: 0}
+  moonImage: {fileID: 0}
+  phaseText: {fileID: 0}
+  enemyText: {fileID: 0}
+  enemy: {fileID: 0}
+  enemyCam: {fileID: 0}
+  HUD: {fileID: 0}
 --- !u!4 &1944141317
 Transform:
   m_ObjectHideFlags: 0
@@ -1460,7 +1454,7 @@ PrefabInstance:
     - target: {fileID: 597308369130767402, guid: 2f7f3dde7ae722a4aafffe20691ad702,
         type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 597308369130767402, guid: 2f7f3dde7ae722a4aafffe20691ad702,
         type: 3}
@@ -2826,7 +2820,7 @@ Transform:
   - {fileID: 8944336656349189700}
   - {fileID: 800719330}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &3964097222371235843
 Transform:
@@ -3038,10 +3032,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26e54e5a728a9234ab24fcf1460ed8a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  targetSpeed: 0
   MoveSpeed: 2
   SprintSpeed: 5.335
   RotationSmoothTime: 0.12
   SpeedChangeRate: 10
+  AirborneSpeedChangeRate: 0
   LandingAudioClip: {fileID: 8300000, guid: ff697d3070687ce4583faa0561a145a2, type: 3}
   FootstepAudioClips:
   - {fileID: 8300000, guid: 72f526a6a9890f643a88e85a61c86c8a, type: 3}
@@ -3065,11 +3061,13 @@ MonoBehaviour:
   GroundLayers:
     serializedVersion: 2
     m_Bits: 1
-  CinemachineCameraTarget: {fileID: 8338988565591873048}
-  TopClamp: 70
-  BottomClamp: -30
-  CameraAngleOverride: 0
-  LockCameraPosition: 0
+  _lunaLocked: 0
+  _paused: 0
+  _stunned: 0
+  _canMove: 1
+  _inDialogue: 0
+  _manipulatingLasso: 0
+  _inCinematic: 0
   pickupUnderPlayer: {fileID: 0}
 --- !u!143 &4416926083347132233
 CharacterController:
@@ -4281,11 +4279,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77a483b7605651d4db61f2fcc56e5d08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  material1: {fileID: 5629084884208175553, guid: fce3bf5a5b603db45ab0048fb6ab44df,
-    type: 3}
-  material2: {fileID: 2100000, guid: 945ea9f2e3ca9594c971974a3e694845, type: 2}
   switchInterval: 5
-  switchKey: 116
   switchDelay: 5
 --- !u!4 &8322255485271233297
 Transform:
