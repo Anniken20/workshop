@@ -19,12 +19,12 @@ public class HorseChargeState : EnemyState
 
     public override void EnterState()
     {
+        readyingCharge = true;
         player = GameObject.FindGameObjectWithTag("Player").transform; 
         //this.transform.LookAt(player);
-        readyingCharge = true;
-        this.transform.LookAt(player);
+        //this.transform.LookAt(player);
         base.EnterState();
-        nav.speed = 45;
+        nav.speed = 100;
         StartCoroutine(ReadyingCharge());
 
         
@@ -37,7 +37,7 @@ public class HorseChargeState : EnemyState
 
     public override void PhysicsUpdate(){
         base.PhysicsUpdate();
-        if(readyingCharge && !activelyCharging){
+        if(readyingCharge){
             this.transform.LookAt(player);
         }
     }
@@ -51,7 +51,7 @@ public class HorseChargeState : EnemyState
     }
 
     private IEnumerator ReadyingCharge(){
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1f);
         readyingCharge = false;
         nav.SetDestination(transform.position + this.transform.forward * 15);
     }

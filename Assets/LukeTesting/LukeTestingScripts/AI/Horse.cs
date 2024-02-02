@@ -6,13 +6,20 @@ public class Horse : Enemy
 {
     [HideInInspector] public EnemyIdleState idleState;
     [HideInInspector] public EnemyPacingState pacingState;
-    [HideInInspector] public EnemyStunnedState stunnedState;
+    [HideInInspector] public HorseStunnedState stunnedState;
     [HideInInspector] public HorseChargeState chargeState;
     [HideInInspector] public bool isCharging;
-    //[HideInInspector] public int chargeDamage;
+
+    //public GameObject stunnedText;
+    //public GameObject chargingText;
+
+    //private Enemy e;
 
 
     private void Awake(){
+
+        //e = GetComponentInParent<Enemy>();
+
         base.MyAwake();
 
         idleState = gameObject.AddComponent<EnemyIdleState>();
@@ -21,7 +28,7 @@ public class Horse : Enemy
         chargeState = gameObject.AddComponent<HorseChargeState>();
         chargeState.Initialize(this, stateMachine);
 
-        stunnedState = gameObject.AddComponent<EnemyStunnedState>();
+        stunnedState = gameObject.AddComponent<HorseStunnedState>();
         stunnedState.Initialize(this, stateMachine);
 
         pacingState = gameObject.AddComponent<EnemyPacingState>();

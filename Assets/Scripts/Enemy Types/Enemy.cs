@@ -60,6 +60,9 @@ public class Enemy : MonoBehaviour
 
     public float DefaultMovementSpeed;
 
+    [Header("Stunned Variables")]
+    public GameObject lassoTarget;
+
     [Header("Death")]
     public UnityEvent onDeath;
     public bool standWhileDead;

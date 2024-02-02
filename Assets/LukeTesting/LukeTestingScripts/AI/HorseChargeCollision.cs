@@ -16,7 +16,7 @@ public class HorseChargeCollision : MonoBehaviour
                 
             }
             else{
-                //h.Stunned();
+                h.Stunned();
             }
         }
     }
