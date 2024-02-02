@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using StarterAssets;
+using Cinemachine;
 
 public class TeleportController : MonoBehaviour
 {
@@ -65,6 +67,12 @@ public class TeleportController : MonoBehaviour
 
         // Disable character control
         characterController.enabled = false;
+        ThirdPersonController.Main.LockPlayerForDuration(walkDuration + initialDelay);
+        Transform camFollowTransform = CinemachineCore.Instance.GetActiveBrain(0).ActiveVirtualCamera.Follow;
+        Vector3 camOffset = CinemachineCore.Instance.GetActiveBrain(0).ActiveVirtualCamera.VirtualCameraGameObject.transform.localPosition;
+        Quaternion camRotation = CinemachineCore.Instance.GetActiveBrain(0).ActiveVirtualCamera.VirtualCameraGameObject.transform.rotation;
+        CinemachineCore.Instance.GetActiveBrain(0).ActiveVirtualCamera.Follow = gameObject.transform;
+        CinemachineCore.Instance.GetActiveBrain(0).ActiveVirtualCamera.LookAt = gameObject.transform;
 
         StartCoroutine(FadeToBlack());
 
@@ -127,6 +135,10 @@ public class TeleportController : MonoBehaviour
 
         // Teleport the player to the final destination
         player.transform.position = teleportDestination;
+        CinemachineCore.Instance.GetActiveBrain(0).ActiveVirtualCamera.VirtualCameraGameObject.transform.SetPositionAndRotation(
+            ThirdPersonController.Main.transform.position + camOffset, camRotation);
+        CinemachineCore.Instance.GetActiveBrain(0).ActiveVirtualCamera.Follow = camFollowTransform;
+        CinemachineCore.Instance.GetActiveBrain(0).ActiveVirtualCamera.LookAt = camFollowTransform;
 
         // Move the player for an additional distance after teleporting
         Vector3 moveAfterTeleportDestination = player.transform.position + player.transform.forward * moveAfterTeleportDistance;
