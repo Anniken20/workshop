@@ -5,9 +5,20 @@ using UnityEngine.AI;
 using DG.Tweening;
 using UnityEngine.Events;
 
-public class Enemy : MonoBehaviour
-
+[System.Serializable]
+public struct StateKVP
 {
+    public string key;
+    public StateData state;
+}
+
+public class Enemy : MonoBehaviour
+{
+    [Header("Additional State Data")]
+    [Tooltip("Attach as needed")]
+    public StateKVP[] stateDatas;
+    public Dictionary<string, StateData> stateDataDict;
+
     [Header("Global")]
     public float maxHealth = 100f;
     public float currentHealth;
@@ -62,12 +73,22 @@ public class Enemy : MonoBehaviour
     public UnityEvent onDeath;
     public bool standWhileDead;
 
+    [Header("Loot")]
+    public GameObject coinPrefab; // Reference to the coin prefab
+    public int minCoins = 1; // Minimum number of coins to drop
+    public int maxCoins = 5; // Maximum number of coins to drop
+    public float coinDropRadius = 1.5f; // Radius within which coins will scatter
+
     protected NavMeshAgent nav;
+
+    public delegate void DamageDelegate();
+    public DamageDelegate damageDelegate;
 
     protected void MyAwake()
     {
         nav = GetComponent<NavMeshAgent>();
         stateMachine = new EnemyStateMachine();
+        LoadUpDictionary();
     }
     
     private void Start()
@@ -93,7 +114,17 @@ public class Enemy : MonoBehaviour
 
     public void Die()
     {
-        StartCoroutine(DeathRoutine());
+       StartCoroutine(DeathRoutine());
+
+        // Spawn coins
+        int coinsToDrop = Random.Range(minCoins, maxCoins + 1);
+        for (int i = 0; i < coinsToDrop; i++)
+        {
+        Vector3 spawnPosition = transform.position + Random.insideUnitSphere * coinDropRadius;
+        spawnPosition.y = transform.position.y; // Keep coins spawning at the enemy's feet level
+        Instantiate(coinPrefab, spawnPosition, Quaternion.identity);
+        }
+
         itemPortrait.SetActive(false);
     }
 
@@ -121,10 +152,25 @@ public class Enemy : MonoBehaviour
     public void TakeDamage(int delta)
     {
         currentHealth -= delta;
+        damageDelegate?.Invoke();
         if(currentHealth < 0)
         {
             Die();
         }
 
+    }
+
+    public StateData FindData(string name)
+    {
+        stateDataDict.TryGetValue(name, out var data);
+        if (data == null) Debug.LogWarning("Custom Enemy Null Data! The state data for " + name + " was not found in the Enemy's dictionary");
+        return data;
+    }
+
+    private void LoadUpDictionary()
+    {
+        stateDataDict = new();
+        foreach (var dataPiece in stateDatas)
+            stateDataDict.Add(dataPiece.key, dataPiece.state);
     }
 }

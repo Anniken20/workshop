@@ -1,4 +1,4 @@
-using System.Collections;
+/*using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -40,6 +40,7 @@ public class QTESys : MonoBehaviour
 
     void CheckEnemyHealth()
     {
+        /*
         if (getCurrentHealthPercentageMethod != null)
         {
             float healthPercentage = (float)getCurrentHealthPercentageMethod.Invoke(enemyScripts[currentEnemyIndex], null);
@@ -60,6 +61,22 @@ public class QTESys : MonoBehaviour
         else
         {
             Debug.LogError("Enemy health component or method not set!");
+        }
+        */
+    /*    float healthPercentage = ((Enemy)enemyScripts[currentEnemyIndex]).currentHealth / ((Enemy)enemyScripts[currentEnemyIndex]).maxHealth;
+
+        if (healthPercentage <= 66f && healthPercentage > 33f)
+        {
+            StartQTE("[U]");
+        }
+        else if (healthPercentage <= 33f && healthPercentage > 0f)
+        {
+            StartQTE("[P]");
+        }
+        else if (healthPercentage <= 0f)
+        {
+            StartQTE("[L]");
+
         }
     }
 
@@ -158,4 +175,4 @@ public class QTESys : MonoBehaviour
         PopupText.text = "";
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
-}
+}*/

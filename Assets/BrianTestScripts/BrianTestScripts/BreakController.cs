@@ -139,28 +139,52 @@ public class BreakController : MonoBehaviour
     }
 
     private void SpawnCoin()
+{
+    if (coinPrefab != null)
     {
-        if (coinPrefab != null)
-    {
-        // Adjust the spawn position to be above the ground
-        Vector3 spawnOffset = Random.insideUnitSphere * 3f;
-        spawnOffset.y = Mathf.Abs(spawnOffset.y); // Ensure the y offset is always positive
-        Vector3 spawnPosition = transform.position + spawnOffset;
-
-        GameObject coin = Instantiate(coinPrefab, spawnPosition, Quaternion.identity);
-        Rigidbody coinRb = coin.GetComponent<Rigidbody>();
-        if (coinRb != null)
+        Vector3 spawnPosition = GetValidSpawnPosition();
+        if (spawnPosition != Vector3.zero) // Check if a valid position was found
         {
-            // Apply a force in a random direction
-            Vector3 forceDirection = Random.onUnitSphere;
-            coinRb.AddForce(forceDirection * coinForce, ForceMode.Impulse);
+            GameObject coin = Instantiate(coinPrefab, spawnPosition, Quaternion.identity);
+            Rigidbody coinRb = coin.GetComponent<Rigidbody>();
+            if (coinRb != null)
+            {
+                // Apply a force in a random direction
+                Vector3 forceDirection = Random.onUnitSphere;
+                coinRb.AddForce(forceDirection * coinForce, ForceMode.Impulse);
+            }
         }
     }
     else
     {
         Debug.LogError("Coin prefab not set.");
     }
+}
+
+private Vector3 GetValidSpawnPosition()
+{
+    int attempts = 20; // Increase the number of attempts
+    float spawnRadius = 0.4f; // Reduce the radius for checking clear space
+    float spawnDistance = 3f; // Distance from the object center to attempt spawning
+
+    for (int i = 0; i < attempts; i++)
+    {
+        Vector3 randomDirection = Random.onUnitSphere;
+        Vector3 spawnOffset = randomDirection * spawnDistance;
+        spawnOffset.y = Mathf.Abs(spawnOffset.y); // Ensure the y offset is positive
+        Vector3 spawnPosition = transform.position + spawnOffset;
+
+        // Check if the position is clear of other colliders
+        if (!Physics.CheckSphere(spawnPosition, spawnRadius))
+        {
+            Debug.Log("Valid spawn position found: " + spawnPosition); // Add a debug statement
+            return spawnPosition;
+        }
     }
+
+    Debug.LogWarning("No valid spawn position found, using fallback."); // Fallback warning
+    return transform.position; // Fallback to the object's position
+}
 
     private void PlayBreakSound()
     {

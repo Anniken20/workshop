@@ -1,123 +1,265 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
+
 public class GhostController : MonoBehaviour
-{   
-    public CharacterMovement iaControls;
+{
+    [Header("Ghost Controller")]
     private InputAction phase;
-    public Transform player; // Reference to the player's Transform
-    public Transform box; // Reference to the box's Transform
-    public float teleportDistance = 1f;
+    //public Transform box;
+    //public float teleportDistance = 1f;
 
     [HideInInspector] public bool inGhost = false;
     private bool abilityEnabled = false;
     private float abilityDuration = 5.0f;
-    private float countdownTimer = 5.0f;
-    private bool playerInBox;
-    private Vector3 originalPosition;
-    //public ParticleSystem smokeParticleSystem; // 
+    private float cooldownDuration = 5.0f; // Cooldown time for the ability in seconds
+    private float toggleCooldown = 0.5f; // Cooldown time between toggles in seconds
+    private float countdownTimer;
+    //private bool playerInBox;
+    //private Vector3 originalPosition;
 
     public Image abilityDurationBar;
-    //can add the smoke to her hands if we want to, might need tweaking and editing but easy fix
-    //The timer for the countdown need to be the same as the ability and match the material switch or it will bug out
-    
- 
-    //Once per frame
-    void Update()
-    {  
 
-        if (phase.triggered)
+    [Header("FullScreenTest Controller")]
+    [SerializeField] private float _phasingDisplayTime = 5.0f;
+    [SerializeField] private float _phasingFadeOutTime = 0.5f;
+    [SerializeField] private ScriptableRendererFeature _fullScreenPhasing;
+    [SerializeField] private Material _material;
+    [SerializeField] private float _voronoIntensityStat = 2.5f;
+    [SerializeField] private float _vignetteIntensityStat = 1.25f;
+
+    private int _voronoIntensity = Shader.PropertyToID("_VoronoIntensity");
+    private int _vignetteIntensity = Shader.PropertyToID("_VignetteIntensity");
+
+    private float maxBarValue = 1.0f; // Maximum value for the ability bar
+    private float barRegenerationRate = 0.2f; // Rate at which the ability bar regenerates per second
+    private bool isCooldownActive = false; // Flag to check if the ability is in cooldown
+    private bool isToggleCooldownActive = false; // Flag to check if toggle cooldown is active
+
+    private CharacterMovement iaControls;
+
+    [Header("Audio")]
+    public AudioClip enterAudioClip;
+    public AudioClip duringAudioClip;
+    public AudioClip exitAudioClip;
+    public AudioSource audioSource;
+
+    private bool hasPlayedEnterAudio = false;
+
+    void Start()
+    {
+        iaControls = new CharacterMovement();
+        iaControls.CharacterControls.Enable();
+        phase = iaControls.CharacterControls.Phase;
+
+        // Ensure audioSource is assigned
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
         {
-            ToggleAbility();
-
-            if (abilityEnabled)
-            {
-                abilityDurationBar.fillAmount = 1.0f; //Sets fill amount to 100% initially
-            }
+            audioSource = gameObject.AddComponent<AudioSource>();
         }
-        
-            if (abilityEnabled)
-                {
-                    countdownTimer -= Time.deltaTime;
-
-                    // Update UI bar based on remaining duration
-                    abilityDurationBar.fillAmount = countdownTimer / abilityDuration;
-
-
-                    if (countdownTimer <= 0)
-                    {
-                        DisableAbility();
-                        GetComponent<MaterialSwitch>().SwitchMaterial();
-                    }
-                }
     }
 
+    void Update()
+    {
+        // Regenerate ability bar over time
+        if (!abilityEnabled && !isCooldownActive && abilityDurationBar.fillAmount < maxBarValue)
+        {
+            abilityDurationBar.fillAmount += barRegenerationRate * Time.deltaTime;
+        }
+
+        // Ghost Controller functionality
+        if (phase.triggered && !isCooldownActive && !isToggleCooldownActive)
+        {
+            ToggleAbility();
+        }
+
+        if (abilityEnabled)
+        {
+            countdownTimer -= Time.deltaTime;
+            abilityDurationBar.fillAmount = countdownTimer / abilityDuration;
+
+            if (countdownTimer <= 0)
+            {
+                DisableAbility();
+                StartCoroutine(AbilityCooldown());
+            }
+
+            // Switch material when ability is active
+            SwitchMaterial();
+        }
+        else
+        {
+            // Switch material when ability is inactive
+            SwitchMaterial();
+        }
+
+        // FullScreenTest Controller functionality
+        if (abilityEnabled)
+        {
+            _fullScreenPhasing.SetActive(true);
+            _material.SetFloat(_voronoIntensity, _voronoIntensityStat);
+            _material.SetFloat(_vignetteIntensity, _vignetteIntensityStat);
+        }
+        else
+        {
+            _fullScreenPhasing.SetActive(false);
+        }
+    }
     void ToggleAbility()
     {
-        GetComponent<MaterialSwitch>().SwitchMaterial();
+        isToggleCooldownActive = true;
+        StartCoroutine(ToggleCooldown());
+
         abilityEnabled = !abilityEnabled;
-        
+
         if (abilityEnabled)
         {
             countdownTimer = abilityDuration;
-
             EnableAbility();
+            
+            // Play enter audio clip (if not played already)
+            if (enterAudioClip != null && !hasPlayedEnterAudio)
+            {
+                PlayAudio(enterAudioClip);
+                hasPlayedEnterAudio = true;
+            }
+            
+            SwitchMaterial(); // Call SwitchMaterial when ability is enabled
         }
         else
         {
             DisableAbility();
+            hasPlayedEnterAudio = false; // Reset the flag when exiting
+            
+            // Play exit audio clip
+            if (exitAudioClip != null)
+            {
+                PlayAudio(exitAudioClip);
+            }
+            
+            SwitchMaterial(); // Call SwitchMaterial when ability is disabled
+        }
+    }
+    void PlayAudio(AudioClip clip)
+    {
+        if (audioSource != null && clip != null)
+        {
+            audioSource.PlayOneShot(clip);
         }
     }
 
     void EnableAbility()
     {
-       // smokeParticleSystem.Play();
-        GetComponent<BoxCollider> ().isTrigger = true;
+        // Ghost Controller functionality
+        GetComponent<Collider>().isTrigger = true;
         inGhost = true;
-        originalPosition = player.position;
+        //originalPosition = transform.position;
+
+        // FullScreenTest Controller functionality
+        _fullScreenPhasing.SetActive(true);
+        _material.SetFloat(_voronoIntensity, _voronoIntensityStat);
+        _material.SetFloat(_vignetteIntensity, _vignetteIntensityStat);
+
+        // Play during audio clip
+        if (duringAudioClip != null)
+        {
+            audioSource.PlayOneShot(duringAudioClip);
+        }
     }
 
     void DisableAbility()
     {
-        //smokeParticleSystem.Stop();
-        GetComponent<BoxCollider> ().isTrigger = false;
+        // Ghost Controller functionality
+        GetComponent<Collider>().isTrigger = false;
         inGhost = false;
-        
-        // Teleport the player to the valid position
-        if(playerInBox){
-            player.gameObject.GetComponent<CharacterController>().enabled = false;
-            player.position = originalPosition;
-            player.gameObject.GetComponent<CharacterController>().enabled = true;
+
+        /*if (playerInBox)
+        {
+            var characterController = GetComponent<CharacterController>();
+            characterController.enabled = false;
+            transform.position = originalPosition;
+            characterController.enabled = true;
             playerInBox = false;
-        }
+        }*/
+
         abilityEnabled = false;
 
-        abilityDurationBar.fillAmount = 1f;
-
+        // FullScreenTest Controller functionality
+        _fullScreenPhasing.SetActive(false);
     }
 
-    void OnTriggerEnter(Collider other){
-        if(other.gameObject.CompareTag("Player")){
-            playerInBox = true;
+    IEnumerator Phasing()
+    {
+        _fullScreenPhasing.SetActive(true);
+        _material.SetFloat(_voronoIntensity, _voronoIntensityStat);
+        _material.SetFloat(_vignetteIntensity, _vignetteIntensityStat);
+
+        yield return new WaitForSeconds(_phasingDisplayTime);
+
+        float elapsedTime = 0f;
+        while (elapsedTime < _phasingFadeOutTime)
+        {
+            elapsedTime += Time.deltaTime;
+
+            float lerpedVoronoi = Mathf.Lerp(_voronoIntensityStat, 0f, (elapsedTime / _phasingFadeOutTime));
+            float lerpedVignette = Mathf.Lerp(_vignetteIntensityStat, 0f, (elapsedTime / _phasingFadeOutTime));
+
+            _material.SetFloat(_voronoIntensity, lerpedVoronoi);
+            _material.SetFloat(_vignetteIntensity, lerpedVignette);
+
+            yield return null;
+        }
+
+        _fullScreenPhasing.SetActive(false);
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Player"))
+        {
+            //playerInBox = true;
         }
     }
 
-    void OnTriggerExit(Collider other){
-        if(other.gameObject.CompareTag("Player")){
-            playerInBox = false;
+    void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.CompareTag("Player"))
+        {
+            //playerInBox = false;
         }
     }
-    private void Awake(){
-        iaControls = new CharacterMovement();
-    }
-    private void OnEnable(){
-        phase = iaControls.CharacterControls.Phase;
 
-        phase.Enable();
+    public void SwitchMaterial()
+    {
+        Renderer[] allMats = GetComponentsInChildren<Renderer>();
+
+        foreach (Renderer mat in allMats)
+        {
+            if (mat.material.shader != null)
+            {
+                mat.material.shader = abilityEnabled ? Shader.Find("Shader Graphs/Ghost Shader") : Shader.Find("Shader Graphs/LIT TOON");
+            }
+        }
     }
-    private void OnDisable(){
-        phase.Disable();
+
+    IEnumerator AbilityCooldown()
+    {
+        isCooldownActive = true;
+        yield return new WaitForSeconds(cooldownDuration);
+        isCooldownActive = false;
+    }
+
+    IEnumerator ToggleCooldown()
+    {
+        yield return new WaitForSeconds(toggleCooldown);
+        isToggleCooldownActive = false;
+    }
+
+    private void OnDisable()
+    {
+        iaControls.CharacterControls.Disable();
     }
 }

@@ -11,7 +11,7 @@ using Cinemachine;
  * Anniken Bergo
  * Caden Henderson
  * 10/8/23
- * Changed to fit QTESys 1/27/24
+ * Changed to fit QTETest 1/27/24
  */
 public class CameraController : MonoBehaviour
 {
@@ -19,43 +19,24 @@ public class CameraController : MonoBehaviour
     public CinemachineVirtualCamera mainCam;
     public CinemachineVirtualCamera shoulderCam;
 
-    public float switchViewDuration;
-
     private bool isIsometricView = false;
 
-    private void Update()
+    public void SwitchCameraView(bool switchToIsometric)
     {
-        // Button = switch
-        if (Input.GetKeyDown(KeyCode.C))
-        {
-            SwitchCameraView();
-        }
-    }
-
-    public void SwitchCameraView()
-    {
-        // Flip isometric bool
-        isIsometricView = !isIsometricView;
-
         // Change Cinemachine virtual cam priorities.
         // Cinemachine brain will automatically "blend" to the highest priority camera.
-        if (isIsometricView)
+        if (switchToIsometric)
         {
-            // Set transition time of Cinemachine camera blend
-            camBrain.m_DefaultBlend.m_Time = switchViewDuration;
-
-            // Change priorities
-            mainCam.Priority = 0;
-            shoulderCam.Priority = 1;
+            // Switch to isometric view
+            mainCam.Priority = 15;
+            shoulderCam.Priority = 11;
         }
         else
         {
-            // Set transition time of Cinemachine camera blend
-            camBrain.m_DefaultBlend.m_Time = switchViewDuration;
-
-            // Change priorities
-            mainCam.Priority = 1;
-            shoulderCam.Priority = 0;
+            // Switch to non-isometric view
+            mainCam.Priority = 11;
+            shoulderCam.Priority = 15;
         }
+        //isIsometricView = !switchToIsometric;
     }
 }
