@@ -25,15 +25,10 @@ public class CoinCollector : MonoBehaviour
         {
             Destroy(gameObject);
         }
-
-        if(coinsText == null) {
-    Debug.LogWarning("CoinCollector: CoinsText is not assigned.");
-    return;
-        }
         
         coinsRectTransform = coinsText.GetComponent<RectTransform>();
-        uiOffScreenPosition = new Vector2(coinsRectTransform.anchoredPosition.x, 50); // Adjust this value
-        uiOnScreenPosition = new Vector2(coinsRectTransform.anchoredPosition.x, -24);    // Adjust this value
+        uiOffScreenPosition = new Vector2(500, coinsRectTransform.anchoredPosition.y); // Adjust this value
+        uiOnScreenPosition = new Vector2(50, coinsRectTransform.anchoredPosition.y);    // Adjust this value
         DOTween.Init();
     }
 
@@ -55,7 +50,7 @@ public class CoinCollector : MonoBehaviour
     {
         if (coinsText != null)
         {
-            coinsText.text = "Coins: " + coinsCollected;
+            coinsText.text = "" + coinsCollected;
         }
     }
 
