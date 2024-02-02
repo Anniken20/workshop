@@ -532,6 +532,11 @@ namespace StarterAssets
             
         }
 
+        public Vector3 CorePosition()
+        {
+            return transform.position + new Vector3(0, 1.5f, 0);
+        }
+
     }
     
 
