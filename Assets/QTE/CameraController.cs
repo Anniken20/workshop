@@ -37,6 +37,6 @@ public class CameraController : MonoBehaviour
             mainCam.Priority = 11;
             shoulderCam.Priority = 15;
         }
-        isIsometricView = !switchToIsometric;
+        //isIsometricView = !switchToIsometric;
     }
 }

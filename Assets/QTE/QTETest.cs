@@ -4,10 +4,13 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
 using UnityEngine.InputSystem;
+using TMPro;
+using Cinemachine;
 
 public class QTETest : MonoBehaviour
 {
-    public Text PopupText; // Reference to the pop-up text element
+    public TMP_Text PopupText; // Reference to the pop-up text element
+    public float timeToShoot;
 
     [SerializeField]
     private Enemy enemyScript;
@@ -16,16 +19,23 @@ public class QTETest : MonoBehaviour
     private int WaitingForKey;
     private int QTEGen;
     private bool hasProcessedInput = false;
+    private bool inDuel;
 
     // Reference to the CameraController script
     public CameraController cameraController;
+
+    //Reference to specifically the shoulder cam
+    public CinemachineVirtualCamera shoulderCamera;
 
    // public CharacterMovement iaControls;
    // private InputAction shoot;
 
     void Start()
     {
-        if (enemyScript != null) { 
+        if (enemyScript != null) {
+
+            //subscribe to the enemy's death delegate so it only checks when the enemy takes damage.
+            enemyScript.damageDelegate += CheckEnemyHealth;
         }
         else
         {
@@ -33,17 +43,15 @@ public class QTETest : MonoBehaviour
         }
     }
 
-    void Update()
-    {
-        CheckEnemyHealth();
-        Debug.Log("CHECK ENEMY HEALTH");
-    }
 
-    void CheckEnemyHealth()
+    public void CheckEnemyHealth()
     {
+        //kick out if in a duel already. no need to check and enter more duels
+        if (inDuel) return;
+
         float healthPercentage = 100 * enemyScript.currentHealth / enemyScript.maxHealth;
 
-        if (healthPercentage <= 64f && healthPercentage > 33f)
+        if (healthPercentage <= 66f && healthPercentage > 33f)
         {
             StartQTE("[U]");
             Debug.Log("START QTE");
@@ -61,6 +69,40 @@ public class QTETest : MonoBehaviour
     }
     void StartQTE(string key)
     {
+        inDuel = true;
+
+        //Camera.main is a built in singleton for Unity. Singletons are cool look them up. 
+        //you can access it from any script without needing to attach a reference.
+        //attaching a reference works great too and is good practice. 
+        //this is just a good strategy to avoid having to attach references for everything. 
+        CameraController camController = Camera.main.GetComponent<CameraController>();
+
+        //the parameter should be FALSE in order to switch to the shoulder cam
+        if (camController != null) cameraController.SwitchCameraView(false);
+
+        //then set the shoulder cam to focus on the enemy
+        shoulderCamera.LookAt = enemyScript.transform;
+
+        //generate one of the random 3 attacks
+        QTEGen = Random.Range(0, 3);
+        Debug.Log("QTEGen is " + QTEGen);
+
+
+        if(QTEGen == 0)
+        {
+            ShowPopupText("PRESS U");
+            StartCoroutine(InputRoutine(KeyCode.U));
+        } else if(QTEGen == 1)
+        {
+            ShowPopupText("PRESS O");
+            StartCoroutine(InputRoutine(KeyCode.O));
+        } else
+        {
+            ShowPopupText("PRESS L");
+            StartCoroutine(InputRoutine(KeyCode.L));
+        }
+
+        /*
         if (WaitingForKey == 0)
         {
             // Initial state: Nothing is activated
@@ -101,7 +143,50 @@ public class QTETest : MonoBehaviour
             // Player failed in QTE and died
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
+        */
     }
+    private IEnumerator InputRoutine(KeyCode shootKey)
+    {
+        float timeProgressed = 0f;
+
+        // Pause the game
+        Time.timeScale = 0;
+
+        while (timeProgressed < timeToShoot)
+        {
+            // track how long we have been in the shooting window
+            timeProgressed += Time.unscaledDeltaTime;
+
+            // if a key is pressed
+            if (Input.anyKeyDown)
+            {
+                // and the key down is the correct input
+                if (Input.GetKeyDown(shootKey))
+                {
+                    StartCoroutine(Correct());
+
+                    // leave this coroutine
+                    yield break;
+                }
+                // is not the correct input
+                else
+                {
+                    StartCoroutine(Failed());
+
+                    // leave this coroutine
+                    yield break;
+                }
+            }
+
+            // wait a frame before resuming the while loop
+            // nifty trick for coroutines
+            yield return null;
+        }
+
+        Debug.Log("Took too long!");
+        StartCoroutine(Failed());
+    }
+
     void CheckInput()
     {
         if (WaitingForKey == 1)
@@ -136,8 +221,8 @@ public class QTETest : MonoBehaviour
 
     void ShowPopupText(string message)
     {
-        StartCoroutine(HidePopupText());
         PopupText.text = message;
+        StartCoroutine(HidePopupText());
     }
 
     IEnumerator HidePopupText()
@@ -150,19 +235,30 @@ public class QTETest : MonoBehaviour
     IEnumerator Correct()
     {
         ShowPopupText("Correct!");
-        WaitingForKey = 2; // QTE is complete
+
+        // Resume the game
+        Time.timeScale = 1;
+
         yield return new WaitForSeconds(2f);
         PopupText.text = "";
-        ResetInputProcessing(); // Reset input processing after coroutine completion
+        CameraController camController = Camera.main.GetComponent<CameraController>();
+        if (camController != null) camController.SwitchCameraView(true);
+        inDuel = true;
     }
-
     IEnumerator Failed()
     {
         ShowPopupText("Failed!");
+
+        // Resume the game
+        Time.timeScale = 1;
+
         yield return new WaitForSeconds(2f);
         PopupText.text = "";
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-        ResetInputProcessing(); // Reset input processing after coroutine completion
+        CameraController camController = Camera.main.GetComponent<CameraController>();
+        if(camController != null) camController.SwitchCameraView(true);
+        inDuel = false;
+        //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        //ResetInputProcessing(); // Reset input processing after coroutine completion
     }
 
     /*private void Awake()
