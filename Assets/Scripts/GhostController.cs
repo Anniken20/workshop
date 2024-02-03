@@ -240,7 +240,7 @@ public class GhostController : MonoBehaviour
         {
             if (mat.material.shader != null)
             {
-                mat.material.shader = abilityEnabled ? Shader.Find("Shader Graphs/Ghost Shader") : Shader.Find("Shader Graphs/LIT TOON");
+                mat.material.shader = abilityEnabled ? Shader.Find("Shader Graphs/GhostUnlitAttempt") : Shader.Find("Shader Graphs/LIT TOON");
             }
         }
     }
