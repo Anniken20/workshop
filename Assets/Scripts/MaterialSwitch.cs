@@ -24,8 +24,11 @@ public class MaterialSwitch : MonoBehaviour
     private bool canSwitch = true;
 
     private bool baseShaderActive = true;
-    
+    private Collider objectCollider;
     //please be pushed im begging
+
+    // Ghosty val script
+    private GhostController ghostController;
 
     private void Start()
     {
@@ -33,38 +36,32 @@ public class MaterialSwitch : MonoBehaviour
        // rend.material = material1; // Initialize with Material1
         shaderGhost = Shader.Find("Shader Graphs/Ghost Shader");
         shaderOG = Shader.Find("Shader Graphs/LIT TOON");
+        objectCollider = GetComponent<Collider>();
 
+        // Find the ghosty script to the player
+        ghostController = GetComponent<GhostController>();
+        if(ghostController == null)
+        {
+            Debug.LogError("You fucking forgot the script on the player loser");
+        }
     }
-
-    
     private void Update()
     {
-        if (phase.triggered)
+        if(ghostController != null)
         {
-            if (canSwitch)
+            if(ghostController.IsAbilityEnabled)
             {
-                SwitchMaterial();
-                StartCoroutine(SwitchCooldown());
+                SwitchMaterial(shaderGhost);
+                objectCollider.isTrigger = true;
+            }
+            else
+            {
+                SwitchMaterial(shaderOG);
+                objectCollider.isTrigger = false;
             }
         }
     }
-    
-
-   /* public void ToggleShader()
-    {
-        if (baseShaderActive)
-        {
-           // baseMatActive = false;
-            rend.material = material2;
-        } 
-        else
-        {
-            // baseMatActive = true;
-            rend.material = material1;
-        }
-    }*/
-
-    public void SwitchMaterial()
+    private void SwitchMaterial(Shader shader)
     {
        Renderer[] allMats = rend.GetComponentsInChildren<Renderer>();
        
@@ -72,12 +69,11 @@ public class MaterialSwitch : MonoBehaviour
        {
         if (mat.material.shader != null)
         {
-            mat.material.shader = shaderGhost; // change to ghostShader
+            mat.material.shader = shader; 
         }
        }
     }
-
-    private IEnumerator SwitchCooldown()
+    /*private IEnumerator SwitchCooldown()
     {
         Renderer[] allMats = rend.GetComponentsInChildren<Renderer>();
         canSwitch = false;
@@ -88,17 +84,38 @@ public class MaterialSwitch : MonoBehaviour
             mat.material.shader = shaderOG; // change back
        }
         canSwitch = true;
-    }
+        objectCollider.isTrigger = false; // Resetting the fucking trigger
+    }*/
 
-    private void Awake(){
+    private void Awake()
+    {
         iaControls = new CharacterMovement();
     }
-    private void OnEnable(){
-        phase = iaControls.CharacterControls.Phase;
-
-        phase.Enable();
+    private void OnEnable()
+    {
+        if (ghostController != null)
+        {
+            ghostController.OnAbilityToggled += HandleAbilityToggled;
+        }
     }
-    private void OnDisable(){
-        phase.Disable();
+    private void OnDisable()
+    {
+        if (ghostController != null)
+        {
+            ghostController.OnAbilityToggled -= HandleAbilityToggled;
+        }
+    }
+        private void HandleAbilityToggled(bool isAbilityEnabled)
+    {
+        if (isAbilityEnabled)
+        {
+            SwitchMaterial(shaderGhost);
+            objectCollider.isTrigger = true;
+        }
+        else
+        {
+            SwitchMaterial(shaderOG);
+            objectCollider.isTrigger = false;
+        }
     }
 }
