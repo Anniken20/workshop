@@ -330,7 +330,7 @@ Transform:
   - {fileID: 3450771416653017878}
   - {fileID: 309538765188749432}
   m_Father: {fileID: 0}
-  m_RootOrder: 30
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!33 &1599285459690495131
 MeshFilter:
@@ -434,7 +434,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &309538765188749432
 Transform:
@@ -536,6 +536,10 @@ MonoBehaviour:
   - {fileID: 6182182531477160161, guid: c14eb551b8c1b214797fb53324aad8ca, type: 3}
   - {fileID: 5553458091686091203, guid: 5021827bdd63c1b478ea696ed78266fd, type: 3}
   - {fileID: 8492381572980775927, guid: ae52b829aed0bce4a97b05e9831ee943, type: 3}
+  coinPrefab: {fileID: 0}
+  minCoins: 1
+  maxCoins: 5
+  coinForce: 5
   explosionForce: 10
   explosionRadius: 5
   disableRigidbodyDelay: 30
