@@ -6,6 +6,7 @@ using Random = UnityEngine.Random;
 using UnityEngine.InputSystem;
 using TMPro;
 using Cinemachine;
+using StarterAssets;
 
 public class QTETest : MonoBehaviour
 {
@@ -29,6 +30,13 @@ public class QTETest : MonoBehaviour
 
    // public CharacterMovement iaControls;
    // private InputAction shoot;
+   public enum EnemyDuelType
+    {
+        Sheriff,
+        Santana,
+        Diana
+    };
+    public EnemyDuelType enemyDuelType;
 
     void Start()
     {
@@ -42,8 +50,6 @@ public class QTETest : MonoBehaviour
             Debug.Log("No enemy scripts set!");
         }
     }
-
-
     public void CheckEnemyHealth()
     {
         //kick out if in a duel already. no need to check and enter more duels
@@ -71,6 +77,8 @@ public class QTETest : MonoBehaviour
     {
         inDuel = true;
 
+        //ThirdPersonController.Main.LockPlayerForDuration(2f);
+
         //Camera.main is a built in singleton for Unity. Singletons are cool look them up. 
         //you can access it from any script without needing to attach a reference.
         //attaching a reference works great too and is good practice. 
@@ -86,71 +94,44 @@ public class QTETest : MonoBehaviour
         //generate one of the random 3 attacks
         QTEGen = Random.Range(0, 3);
         Debug.Log("QTEGen is " + QTEGen);
-
-
+        
+        //hacky garbage to "downcast" to our enemy types that indeed do have an idle state
+        //ex: idle state belongs to Sheriff, not Enemy
+        switch (enemyDuelType)
+        {
+            case EnemyDuelType.Sheriff:
+                enemyScript.stateMachine.ChangeState(((Sheriff)enemyScript).idleState);
+                break;
+            case EnemyDuelType.Santana:
+                enemyScript.stateMachine.ChangeState(((Santana)enemyScript).idleState);
+                break;
+            case EnemyDuelType.Diana:
+                enemyScript.stateMachine.ChangeState(((Diana)enemyScript).idleState);
+                break;
+        }
         if(QTEGen == 0)
         {
+            ThirdPersonController.Main.LockPlayerForDuration(2f);
             ShowPopupText("PRESS U");
             StartCoroutine(InputRoutine(KeyCode.U));
         } else if(QTEGen == 1)
         {
+            ThirdPersonController.Main.LockPlayerForDuration(2f);
             ShowPopupText("PRESS O");
             StartCoroutine(InputRoutine(KeyCode.O));
         } else
         {
+            ThirdPersonController.Main.LockPlayerForDuration(2f);
             ShowPopupText("PRESS L");
             StartCoroutine(InputRoutine(KeyCode.L));
         }
-
-        /*
-        if (WaitingForKey == 0)
-        {
-            // Initial state: Nothing is activated
-            QTEGen = Random.Range(1, 3);
-
-            // Reset the input processing flag when QTE starts
-            ResetInputProcessing();
-
-            // Change camera view when QTE starts
-            if (cameraController != null)
-            {
-                cameraController.SwitchCameraView(true);
-            }
-
-            ShowPopupText("Press " + key);
-            WaitingForKey = 1; // Move to the QTE activation state
-        }
-        else if (WaitingForKey == 1)
-        {
-            // QTE activated, waiting for player input
-            CheckInput();
-        }
-        else if (WaitingForKey == 2)
-        {
-            // Player succeeded in QTE
-            // Switch back to main camera only if QTE state is still 2 (QTE is not overridden by another QTE)
-            if (WaitingForKey == 2 && cameraController != null)
-            {
-                cameraController.SwitchCameraView(false); // Switch back to isometric view
-            }
-
-            // Reset QTE state and input processing flag
-            WaitingForKey = 0;
-            ResetInputProcessing();
-        }
-        else if (WaitingForKey == 3)
-        {
-            // Player failed in QTE and died
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-        }
-        */
     }
     private IEnumerator InputRoutine(KeyCode shootKey)
     {
         float timeProgressed = 0f;
 
         // Pause the game
-        Time.timeScale = 0;
+       // Time.timeScale = 0;
 
         while (timeProgressed < timeToShoot)
         {
@@ -260,19 +241,4 @@ public class QTETest : MonoBehaviour
         //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         //ResetInputProcessing(); // Reset input processing after coroutine completion
     }
-
-    /*private void Awake()
-    {
-        iaControls = new CharacterMovement();
-    }
-    private void OnEnable()
-    {
-        shoot = iaControls.CharacterControls.Shoot;
-
-        shoot.Enable();
-    }
-    private void OnDisable()
-    {
-        shoot.Disable();
-    }*/
 }

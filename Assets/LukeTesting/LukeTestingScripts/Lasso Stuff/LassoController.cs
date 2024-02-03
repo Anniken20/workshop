@@ -15,7 +15,7 @@ public class LassoController : MonoBehaviour
     private Vector3 aimAngle;
     private Vector3 startPos;
     private Vector3 lineStart;
-    private bool lassoActive;
+    [HideInInspector] public bool lassoActive;
     [SerializeField] public Transform lassoAttachPoint;
 
     [HideInInspector] public bool toggleShooting;
@@ -27,7 +27,9 @@ public class LassoController : MonoBehaviour
     private int linePoints = 25;
     [SerializeField] [Range(0.01f, 0.25f)] private float tBetween = 0.1f;
     [SerializeField] GameObject lassoObject;
-    [SerializeField] [Range(1f, 15f)] private float lassoLaunchStrength;
+    [SerializeField] [Range(-1f, 15f)] private float lassoLaunchStrength;
+    [SerializeField] private float lassoLaunchSpeed;
+    [SerializeField] private float lassoFallSpeed;
     [Range(0.5f, 5f)] public float lassoCooldown;
     public float internalCooldown;
     [HideInInspector] public bool startLassoCooldown = true;
@@ -176,7 +178,8 @@ public class LassoController : MonoBehaviour
         Destroy(spinningLasso);
         projectile = Instantiate(lassoObject, lassoSpinLocation.transform.position, launchPoint.rotation);
         projectile.transform.Rotate(0f, aimAngle.y, 0f);
-        projectile.GetComponent<Rigidbody>().AddForce(aimAngle * lassoLaunchStrength, ForceMode.Impulse);
+        projectile.GetComponent<Rigidbody>().AddForce((aimAngle * lassoLaunchStrength) * lassoLaunchSpeed, ForceMode.Impulse);
+        projectile.GetComponent<LassoDetection>().lassoGravity = lassoFallSpeed;
         drawToLasso = true;
 
     }
