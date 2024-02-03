@@ -62,12 +62,17 @@ public class Enemy : MonoBehaviour
 
     [Header("Charge Variables")]
     public float chargeSpeed = 5.0f; // Speed at which the enemy charges
+    public float maxChargeDist;
+    public int chargeDamage;
 
     [Header("Evade Variables")]
     public float evadeDistance = 5.0f; // Distance at which the enemy starts evading
     public float evadeSpeed = 5.0f; // Speed at which the enemy evades
 
     public float DefaultMovementSpeed;
+
+    [Header("Stunned Variables")]
+    public GameObject lassoTarget;
 
     [Header("Death")]
     public UnityEvent onDeath;
