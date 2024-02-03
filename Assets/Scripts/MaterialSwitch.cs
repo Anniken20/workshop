@@ -19,7 +19,7 @@ public class MaterialSwitch : MonoBehaviour
         rend = GetComponentInChildren<Renderer>();
         coll = GetComponent<Collider>(); // Assuming the object has a collider
 
-        shaderGhost = Shader.Find("Shader Graphs/Ghost Shader");
+        shaderGhost = Shader.Find("Shader Graphs/GhostUnlitAttempt");
         shaderOG = Shader.Find("Shader Graphs/LIT TOON");
     }
 
