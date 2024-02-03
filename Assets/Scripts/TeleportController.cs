@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using StarterAssets;
+using Cinemachine;
 
 public class TeleportController : MonoBehaviour
 {
@@ -65,6 +67,7 @@ public class TeleportController : MonoBehaviour
 
         // Disable character control
         characterController.enabled = false;
+        ThirdPersonController.Main.LockPlayerForDuration(6*walkDuration + initialDelay);
 
         StartCoroutine(FadeToBlack());
 
