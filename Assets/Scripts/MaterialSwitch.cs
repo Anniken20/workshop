@@ -31,7 +31,7 @@ public class MaterialSwitch : MonoBehaviour
     {
         rend = GetComponentInChildren<Renderer>();
        // rend.material = material1; // Initialize with Material1
-        shaderGhost = Shader.Find("Shader Graphs/Ghost Shader");
+        shaderGhost = Shader.Find("Shader Graphs/GhostUnlitAttempt");
         shaderOG = Shader.Find("Shader Graphs/LIT TOON");
 
     }
