@@ -15,6 +15,7 @@ public class RotateOverTime : MonoBehaviour
 
 
     [SerializeField] private bool randomStart = true;
+    [SerializeField] private bool dontRotate;
 
     [Tooltip("Roughly degrees per second; 360 means ~1 rps")]
     [SerializeField] private float rotationSpeed;
@@ -29,16 +30,22 @@ public class RotateOverTime : MonoBehaviour
         if (randomStart) randomOffset = Random.Range(0f, 1f);
     }
 
-    void Update()
+    private void Update()
     {
+        if (dontRotate) return;
         transform.localEulerAngles += new Vector3(
             xAxis ? Time.deltaTime * rotationSpeed : 0f, 
             yAxis ? Time.deltaTime * rotationSpeed : 0f, 
             zAxis ? Time.deltaTime * rotationSpeed : 0f);
     }
 
-    public void StopHovering()
+    public void StopRotating()
     {
-        Destroy(this);
+        dontRotate = true;
+    }
+
+    public void StartRotating()
+    {
+        dontRotate = false;
     }
 }
