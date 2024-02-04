@@ -118,15 +118,16 @@ public class LassoGrappleScript : MonoBehaviour, IGrappleable
     private void AutoGrapple(){
         StopAllCoroutines();
         rb.constraints = RigidbodyConstraints.None;
+        rb.constraints = RigidbodyConstraints.FreezeRotation;
         detectCol = false;
         var distanceBoost = Vector3.Distance(transform.position, grapplePoint.transform.position);
         GetComponent<Rigidbody>().AddForce((Vector3.up * boostSpeed) * distanceBoost, ForceMode.VelocityChange);
         if(grapple && gPoint != null){
             grappling = true;
             StartCoroutine(ReleaseDelay());
-                GetComponent<CharacterController>().enabled = false;
+                //GetComponent<CharacterController>().enabled = false;
                 GetComponent<ThirdPersonController>().enabled = false;
-                //GetComponent<Rigidbody>().isKinematic = false;
+                GetComponent<Rigidbody>().isKinematic = false;
                 GetComponent<Rigidbody>().velocity = Vector3.zero;
                 gPoint = grapplePoint.transform.position;
                 if(GetComponent<SpringJoint>() == null){
@@ -200,9 +201,9 @@ public class LassoGrappleScript : MonoBehaviour, IGrappleable
             EndGrapple();
         }
         if(grapplePoint != null){
-            if(Vector3.Distance(gameObject.transform.position, grapplePoint.transform.position) > cancelDistance && grapple){;
+            /*if(Vector3.Distance(gameObject.transform.position, grapplePoint.transform.position) > cancelDistance && grapple){;
                 EndGrapple();
-            }
+            }*/
         }
         
 
@@ -231,9 +232,9 @@ public class LassoGrappleScript : MonoBehaviour, IGrappleable
 
     private void EnableChar(){
         GetComponent<ThirdPersonController>().enabled = true;
-        GetComponent<CharacterController>().enabled = true;
-        GetComponent<Rigidbody>().velocity = Vector3.zero;
-        //GetComponent<Rigidbody>().isKinematic = true;
+        //GetComponent<CharacterController>().enabled = true;
+        //GetComponent<Rigidbody>().velocity = Vector3.zero;
+        GetComponent<Rigidbody>().isKinematic = true;
     }
 
 
