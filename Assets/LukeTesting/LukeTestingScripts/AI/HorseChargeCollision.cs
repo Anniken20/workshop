@@ -15,8 +15,9 @@ public class HorseChargeCollision : MonoBehaviour
                 LaunchPlayer(other);
                 
             }
-            else{
+            else if(other.gameObject.tag != "Lasso" && other.gameObject.tag != "Floor"){
                 h.Stunned();
+                Debug.Log("Hit: " +other.gameObject.name);
             }
         }
     }
