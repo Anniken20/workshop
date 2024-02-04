@@ -46,6 +46,12 @@ public class GhostController : MonoBehaviour
     public AudioClip exitAudioClip;
     public AudioSource audioSource;
 
+    [Header("Post Processing")]
+    public bool usePostProcessingFX;
+    public float bloom;
+    public float chromaticAberrations;
+    public float vignette;
+
     private bool hasPlayedEnterAudio = false;
 
     void Start()
@@ -64,6 +70,7 @@ public class GhostController : MonoBehaviour
 
     void Update()
     {
+
         // Regenerate ability bar over time
         if (!abilityEnabled && !isCooldownActive && abilityDurationBar.fillAmount < maxBarValue)
         {
@@ -73,6 +80,12 @@ public class GhostController : MonoBehaviour
         // Ghost Controller functionality
         if (phase.triggered && !isCooldownActive && !isToggleCooldownActive)
         {
+            if (usePostProcessingFX)
+            {
+                PostProcess.Main._mBloomIntensity.Impulse(bloom);
+                PostProcess.Main._mChromaticAberration.Impulse(chromaticAberrations);
+                PostProcess.Main._mMVignette.Impulse(vignette);
+            }
             ToggleAbility();
         }
 
@@ -142,6 +155,7 @@ public class GhostController : MonoBehaviour
             
             SwitchMaterial(); // Call SwitchMaterial when ability is disabled
         }
+
     }
     void PlayAudio(AudioClip clip)
     {
@@ -154,7 +168,7 @@ public class GhostController : MonoBehaviour
     void EnableAbility()
     {
         // Ghost Controller functionality
-        GetComponent<Collider>().isTrigger = true;
+        //GetComponent<Collider>().isTrigger = true;
         inGhost = true;
         //originalPosition = transform.position;
 
@@ -216,33 +230,19 @@ public class GhostController : MonoBehaviour
         _fullScreenPhasing.SetActive(false);
     }
 
-    void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.CompareTag("Player"))
-        {
-            //playerInBox = true;
-        }
-    }
-
-    void OnTriggerExit(Collider other)
-    {
-        if (other.gameObject.CompareTag("Player"))
-        {
-            //playerInBox = false;
-        }
-    }
-
     public void SwitchMaterial()
     {
+        /*
         Renderer[] allMats = GetComponentsInChildren<Renderer>();
 
         foreach (Renderer mat in allMats)
         {
             if (mat.material.shader != null)
             {
-                mat.material.shader = abilityEnabled ? Shader.Find("Shader Graphs/Ghost Shader") : Shader.Find("Shader Graphs/LIT TOON");
+                mat.material.shader = abilityEnabled ? Shader.Find("Shader Graphs/GhostUnlitAttempt") : Shader.Find("Shader Graphs/LIT TOON");
             }
         }
+        */
     }
 
     IEnumerator AbilityCooldown()

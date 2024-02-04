@@ -1,104 +1,108 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-//NO MORE BUGS WOOO
-//All numbers can be edited but too different can make it cause issues in ghost controller too
-//BE AWARE
-
 public class MaterialSwitch : MonoBehaviour
-
 {
     public CharacterMovement iaControls;
     private InputAction phase;
-    //public Material material1;
-    //public Material ;
     private Shader shaderOG;
     private Shader shaderGhost;
-    public float switchInterval = 5f; // Time interval for material switching in seconds
-    //public KeyCode switchKey = KeyCode.T; // Key to initiate material switching
-    public float switchDelay = 5f; // Delay in seconds before switching is allowed again
-
+    public float switchInterval = 5f;
     private Renderer rend;
+    private Collider coll;
     private bool canSwitch = true;
-
-    private bool baseShaderActive = true;
-    
-    //please be pushed im begging
 
     private void Start()
     {
         rend = GetComponentInChildren<Renderer>();
-       // rend.material = material1; // Initialize with Material1
+        coll = GetComponent<Collider>();
+
         shaderGhost = Shader.Find("Shader Graphs/GhostUnlitAttempt");
         shaderOG = Shader.Find("Shader Graphs/LIT TOON");
-
     }
 
-    
     private void Update()
     {
         if (phase.triggered)
         {
-            if (canSwitch)
+            if (canSwitch && IsObjectVisible())
             {
                 SwitchMaterial();
                 StartCoroutine(SwitchCooldown());
             }
         }
     }
-    
 
-   /* public void ToggleShader()
+    private bool IsObjectVisible()
     {
-        if (baseShaderActive)
+        if (rend == null)
+            return false;
+
+        Plane[] planes = GeometryUtility.CalculateFrustumPlanes(Camera.main);
+
+        if (!GeometryUtility.TestPlanesAABB(planes, rend.bounds))
         {
-           // baseMatActive = false;
-            rend.material = material2;
-        } 
-        else
-        {
-            // baseMatActive = true;
-            rend.material = material1;
+            // Get in loser we are going phasing
+            return false;
         }
-    }*/
+        return true;
+    }
 
     public void SwitchMaterial()
     {
-       Renderer[] allMats = rend.GetComponentsInChildren<Renderer>();
-       
-       foreach (Renderer mat in allMats)
-       {
-        if (mat.material.shader != null)
+        Renderer[] allMats = rend.GetComponentsInChildren<Renderer>();
+
+        foreach (Renderer mat in allMats)
         {
-            mat.material.shader = shaderGhost; // change to ghostShader
+            if (mat.material.shader != null)
+            {
+                mat.material.shader = shaderGhost;
+            }
         }
-       }
+
+        if (coll != null)
+        {
+            coll.isTrigger = true;
+            // Enable the BulletPassThrough layer during the phase
+            gameObject.layer = LayerMask.NameToLayer("BulletPassThrough");
+        }
     }
 
     private IEnumerator SwitchCooldown()
     {
-        Renderer[] allMats = rend.GetComponentsInChildren<Renderer>();
         canSwitch = false;
         yield return new WaitForSeconds(switchInterval);
-        
+
+        if (coll != null)
+        {
+            coll.isTrigger = false;
+            // Disable the BulletPassThrough layer after the cooldown
+            gameObject.layer = LayerMask.NameToLayer("Default");
+        }
+
+        Renderer[] allMats = rend.GetComponentsInChildren<Renderer>();
         foreach (Renderer mat in allMats)
-       {
-            mat.material.shader = shaderOG; // change back
-       }
+        {
+            mat.material.shader = shaderOG;
+        }
+
         canSwitch = true;
     }
 
-    private void Awake(){
+    private void Awake()
+    {
         iaControls = new CharacterMovement();
     }
-    private void OnEnable(){
-        phase = iaControls.CharacterControls.Phase;
 
+    private void OnEnable()
+    {
+        phase = iaControls.CharacterControls.Phase;
         phase.Enable();
     }
-    private void OnDisable(){
+
+    private void OnDisable()
+    {
         phase.Disable();
     }
 }

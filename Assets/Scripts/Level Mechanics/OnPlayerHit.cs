@@ -7,8 +7,6 @@ public class OnPlayerHit : MonoBehaviour
 {
     public void OnCollisionEnter(Collision other)
     {
-
-        Debug.Log("hit: " + other.gameObject.name);
         if (other.gameObject.CompareTag("Player"))
         {
             HitEffect(other);
