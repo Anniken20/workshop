@@ -19,7 +19,11 @@ public class TooCloseTrigger : MonoBehaviour
         {
             Debug.Log("bye");
             s.runaway();
-            d.stateMachine.ChangeState(d.evadeState);
+            if(d != null)
+            {
+                d.stateMachine.ChangeState(d.evadeState);
+            }
+            
         }
         
     }
