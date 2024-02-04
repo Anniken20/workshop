@@ -8,13 +8,14 @@ public class Horse : Enemy
     [HideInInspector] public EnemyPacingState pacingState;
     [HideInInspector] public HorseStunnedState stunnedState;
     [HideInInspector] public HorseChargeState chargeState;
+    [HideInInspector] public HorseFreezeState freezeState;
     [HideInInspector] public bool isCharging;
 
     //public GameObject stunnedText;
     //public GameObject chargingText;
 
     //private Enemy e;
-
+    [HideInInspector] public bool isStunned;
 
     private void Awake(){
 
@@ -34,6 +35,9 @@ public class Horse : Enemy
         pacingState = gameObject.AddComponent<EnemyPacingState>();
         pacingState.Initialize(this, stateMachine);
 
+        freezeState = gameObject.AddComponent<HorseFreezeState>();
+        freezeState.Initialize(this, stateMachine);
+
         stateMachine.Initialize(idleState);
     }
 
@@ -47,10 +51,12 @@ public class Horse : Enemy
         stateMachine.ChangeState(pacingState);
     }
     public void Stunned(){
+        isStunned = true;
         //Debug.Log("Petah the horse is stunned");
         stateMachine.ChangeState(stunnedState);
     }
     public void ExitStuned(){
+        isStunned = false;
         stateMachine.ChangeState(pacingState);
     }
     public void Idle(){
@@ -63,6 +69,12 @@ public class Horse : Enemy
         stateMachine.ChangeState(pacingState);
     }
     public void StopPacing(){
+        stateMachine.ChangeState(idleState);
+    }
+    public void Freeze(){
+        stateMachine.ChangeState(freezeState);
+    }
+    public void StopFreeze(){
         stateMachine.ChangeState(idleState);
     }
 }

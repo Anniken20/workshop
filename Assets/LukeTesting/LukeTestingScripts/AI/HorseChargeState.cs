@@ -11,6 +11,8 @@ public class HorseChargeState : EnemyState
     private Vector3 targetPos;
     private bool readyingCharge;
     private bool activelyCharging;
+    private Vector3 destination;
+    private bool canLook = true;
 
     public HorseChargeState(Enemy enemy, EnemyStateMachine enemyStateMachine) : base(enemy, enemyStateMachine)
     {
@@ -19,12 +21,14 @@ public class HorseChargeState : EnemyState
 
     public override void EnterState()
     {
+        canLook = true;
         readyingCharge = true;
         player = GameObject.FindGameObjectWithTag("Player").transform; 
         //this.transform.LookAt(player);
         //this.transform.LookAt(player);
         base.EnterState();
-        nav.speed = 100;
+        nav.speed = 50;
+        nav.acceleration = 20;
         StartCoroutine(ReadyingCharge());
 
         
@@ -37,9 +41,19 @@ public class HorseChargeState : EnemyState
 
     public override void PhysicsUpdate(){
         base.PhysicsUpdate();
-        if(readyingCharge){
+        if(readyingCharge && canLook){
             this.transform.LookAt(player);
         }
+        //Debug.Log("Currently current pos: " +this.transform.position +" Destination pos: " +destination);
+        /*if(this.transform.position == nav.destination){
+            Debug.Log("Destination Reached");
+        }*/
+
+        //if(nav.velocity == Vector3.zero){
+            /*var chargeTrigger = GetComponentInParent<HorseChargeTrigger>();
+            chargeTrigger.canTrigger = true;*/
+        //}
+
     }
 
     public override void ExitState()
@@ -52,7 +66,15 @@ public class HorseChargeState : EnemyState
 
     private IEnumerator ReadyingCharge(){
         yield return new WaitForSeconds(1f);
+        canLook = false;
         readyingCharge = false;
-        nav.SetDestination(transform.position + this.transform.forward * 15);
+        destination = (transform.position + this.transform.forward * 15);
+        nav.SetDestination(destination);
+        StartCoroutine(LookDelay());
+        
+    }
+    private IEnumerator LookDelay(){
+        yield return new WaitForSeconds(1f);
+        canLook = true;
     }
 }
