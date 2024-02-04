@@ -7,6 +7,10 @@ using Cinemachine;
 
 public class TeleportController : MonoBehaviour
 {
+    [Header("For 2-ways")]
+    public TeleportController otherLink;
+    public bool active;
+    [Header("General setup")]
     public GameObject toPoint;
     public float walkDistance = 1.0f; // Adjust this distance as needed
     public float forwardDistance = 2.0f; // Edit this value in the Inspector
@@ -16,8 +20,11 @@ public class TeleportController : MonoBehaviour
     public float moveAfterTeleportDuration = 2.0f; // Duration to move after teleporting
     public float initialDelay = 0.1f; // Adjust this delay to reduce the stutter
 
+    [Header("Fade")]
     public CanvasGroup fadeCanvasGroup;
     public float fadeDuration = 1.0f;
+
+    private float activateLink2Time;
 
     public enum Axis
     {
@@ -32,6 +39,7 @@ public class TeleportController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (!active) return;
         if (other.gameObject.CompareTag("Player") && !isTransitioning)
         {
             characterController = other.gameObject.GetComponent<CharacterController>();
@@ -64,10 +72,11 @@ public class TeleportController : MonoBehaviour
     IEnumerator TransitionThroughTeleporter(GameObject player)
     {
         isTransitioning = true;
+        Camera.main.GetComponent<CameraController>().SwitchToTeleportMode();
 
         // Disable character control
         characterController.enabled = false;
-        ThirdPersonController.Main.LockPlayerForDuration(6*walkDuration + initialDelay);
+        ThirdPersonController.Main._inCinematic = true;
 
         StartCoroutine(FadeToBlack());
 
@@ -147,11 +156,20 @@ public class TeleportController : MonoBehaviour
 
         // Re-enable character control
         characterController.enabled = true;
+        ThirdPersonController.Main._inCinematic = false;
+        Camera.main.GetComponent<CameraController>().SwitchToTeleportMode(false);
 
         //set walking animation back to false
 
         yield return StartCoroutine(FadeFromBlack());
 
         isTransitioning = false;
+
+        yield return new WaitForSeconds(activateLink2Time);
+        if (otherLink != null)
+        {
+            otherLink.active = true;
+            active = false;
+        }
     }
 }
