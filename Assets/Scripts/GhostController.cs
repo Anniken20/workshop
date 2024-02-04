@@ -232,6 +232,7 @@ public class GhostController : MonoBehaviour
 
     public void SwitchMaterial()
     {
+        /*
         Renderer[] allMats = GetComponentsInChildren<Renderer>();
 
         foreach (Renderer mat in allMats)
@@ -241,6 +242,7 @@ public class GhostController : MonoBehaviour
                 mat.material.shader = abilityEnabled ? Shader.Find("Shader Graphs/GhostUnlitAttempt") : Shader.Find("Shader Graphs/LIT TOON");
             }
         }
+        */
     }
 
     IEnumerator AbilityCooldown()
