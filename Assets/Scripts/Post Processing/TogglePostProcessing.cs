@@ -20,13 +20,6 @@ public class TogglePostProcessing : MonoBehaviour
         if (startOff) TogglePP();
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            TogglePP();
-        }
-    }
     public void TogglePP()
     {
         //turn off components so they don't look for changes
