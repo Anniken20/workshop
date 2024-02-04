@@ -19,7 +19,26 @@ public class CameraController : MonoBehaviour
     public CinemachineVirtualCamera mainCam;
     public CinemachineVirtualCamera shoulderCam;
 
-    private bool isIsometricView = false;
+    private float aimDZWidth;
+    private float aimDZHeight;
+
+    private float bodyYDamping;
+
+    private void Start()
+    {
+        //save scene settings
+        CinemachineComponentBase componentBase = mainCam.GetCinemachineComponent(CinemachineCore.Stage.Aim);
+        if(componentBase is CinemachineComposer composer)
+        {
+            aimDZWidth = composer.m_DeadZoneWidth;
+            aimDZHeight = composer.m_DeadZoneHeight;
+        }
+
+        CinemachineComponentBase componentBaseB = mainCam.GetCinemachineComponent(CinemachineCore.Stage.Body);
+        if(componentBaseB is CinemachineTransposer transposer){
+            bodyYDamping = transposer.m_YDamping;
+        }
+    }
 
     public void SwitchCameraView(bool switchToIsometric)
     {
@@ -38,5 +57,37 @@ public class CameraController : MonoBehaviour
             shoulderCam.Priority = 15;
         }
         //isIsometricView = !switchToIsometric;
+    }
+
+    public void SwitchToTeleportMode(bool yes = true)
+    {
+        CinemachineComponentBase componentBase = mainCam.GetCinemachineComponent(CinemachineCore.Stage.Aim);
+
+        if (componentBase is CinemachineComposer composer)
+        {
+            if (yes)
+            {
+                composer.m_DeadZoneHeight = 0;
+                composer.m_DeadZoneWidth = 0;
+                
+                CinemachineComponentBase componentBaseB = mainCam.GetCinemachineComponent(CinemachineCore.Stage.Body);
+                if (componentBaseB is CinemachineTransposer transposer)
+                {
+                    transposer.m_YDamping = 0;
+                }
+            }
+            else
+            {
+                //hard-coded
+                composer.m_DeadZoneHeight = aimDZWidth;
+                composer.m_DeadZoneWidth = aimDZHeight;
+
+                CinemachineComponentBase componentBaseB = mainCam.GetCinemachineComponent(CinemachineCore.Stage.Body);
+                if (componentBaseB is CinemachineTransposer transposer)
+                {
+                    transposer.m_YDamping = bodyYDamping;
+                }
+            }
+        }
     }
 }
