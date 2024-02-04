@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -17,7 +16,7 @@ public class MaterialSwitch : MonoBehaviour
     private void Start()
     {
         rend = GetComponentInChildren<Renderer>();
-        coll = GetComponent<Collider>(); // Assuming the object has a collider
+        coll = GetComponent<Collider>();
 
         shaderGhost = Shader.Find("Shader Graphs/GhostUnlitAttempt");
         shaderOG = Shader.Find("Shader Graphs/LIT TOON");
@@ -27,12 +26,27 @@ public class MaterialSwitch : MonoBehaviour
     {
         if (phase.triggered)
         {
-            if (canSwitch)
+            if (canSwitch && IsObjectVisible())
             {
                 SwitchMaterial();
                 StartCoroutine(SwitchCooldown());
             }
         }
+    }
+
+    private bool IsObjectVisible()
+    {
+        if (rend == null)
+            return false;
+
+        Plane[] planes = GeometryUtility.CalculateFrustumPlanes(Camera.main);
+
+        if (!GeometryUtility.TestPlanesAABB(planes, rend.bounds))
+        {
+            // Get in loser we are going phasing
+            return false;
+        }
+        return true;
     }
 
     public void SwitchMaterial()
@@ -47,10 +61,11 @@ public class MaterialSwitch : MonoBehaviour
             }
         }
 
-        // Disable collider's interaction with other objects when switching to ghost shader
         if (coll != null)
         {
             coll.isTrigger = true;
+            // Enable the BulletPassThrough layer during the phase
+            gameObject.layer = LayerMask.NameToLayer("BulletPassThrough");
         }
     }
 
@@ -59,10 +74,11 @@ public class MaterialSwitch : MonoBehaviour
         canSwitch = false;
         yield return new WaitForSeconds(switchInterval);
 
-        // Enable collider's interaction with other objects when switching back to original shader
         if (coll != null)
         {
             coll.isTrigger = false;
+            // Disable the BulletPassThrough layer after the cooldown
+            gameObject.layer = LayerMask.NameToLayer("Default");
         }
 
         Renderer[] allMats = rend.GetComponentsInChildren<Renderer>();
