@@ -6,7 +6,10 @@ public class HorseChargeTrigger : MonoBehaviour
 {
     private Horse h;
     private HorseStunnedState sState;
-    private bool canTrigger;
+    [HideInInspector] public bool canTrigger = true;
+    [SerializeField] private GameObject stunnedText;
+    //private NavMeshAgent horseNav;
+    [HideInInspector] bool horseStunned;
 
     void Start(){
         h = GetComponentInParent<Horse>();
@@ -14,14 +17,40 @@ public class HorseChargeTrigger : MonoBehaviour
     }
     void OnTriggerEnter(Collider other){
         if (other.gameObject.CompareTag("Player") && canTrigger && sState.isStunned == false){
+            //h.Freeze();
             h.Charge();
             canTrigger = false;
+            StopCoroutine(TriggerDelay());
         }
+
     }
     void OnTriggerExit(Collider other){
         if(other.gameObject.CompareTag("Player")){
             //h.StopCharge();
-            canTrigger = true;
+            //canTrigger = true;
+            StartCoroutine(TriggerDelay());
         }
+    }
+    private void Update(){
+        horseStunned = h.isStunned;
+    }
+    private void FixedUpdate(){
+        /*var rb = this.GetComponentInParent<Rigidbody>();
+        if(rb.velocity == Vector3.zero && !canTrigger){
+            Debug.Log("Trigger charging: " +rb.velocity);
+            h.Charge();
+        }*/
+        //Debug.Log(canTrigger);
+        
+        if(horseStunned == true){
+            stunnedText.SetActive(true);
+        }
+        else{
+            stunnedText.SetActive(false);
+        }
+    }
+    private IEnumerator TriggerDelay(){
+        yield return new WaitForSeconds(5.5f);
+        canTrigger = true;
     }
 }

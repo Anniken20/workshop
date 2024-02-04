@@ -24,6 +24,7 @@ public class HorseStunnedState : EnemyState
         lassoTarget = h.lassoTarget;
         nav.isStopped = true;
         lassoTarget.GetComponent<BoxCollider>().enabled = true;
+        nav.SetDestination(this.transform.position);
     }
 
     public override void PhysicsUpdate(){
@@ -41,6 +42,8 @@ public class HorseStunnedState : EnemyState
         isStunned = false;
         nav.isStopped = false;
         lassoTarget.GetComponent<BoxCollider>().enabled = false;
+        nav.SetDestination(this.transform.position);
+        this.GetComponent<Rigidbody>().velocity = Vector3.zero;
     }
 
 }
