@@ -117,7 +117,7 @@ public class LassoGrappleScript : MonoBehaviour, IGrappleable
 
     private void AutoGrapple(){
         StopAllCoroutines();
-        Debug.Log("starting");
+        rb.constraints = RigidbodyConstraints.None;
         detectCol = false;
         var distanceBoost = Vector3.Distance(transform.position, grapplePoint.transform.position);
         GetComponent<Rigidbody>().AddForce((Vector3.up * boostSpeed) * distanceBoost, ForceMode.VelocityChange);
@@ -161,7 +161,7 @@ public class LassoGrappleScript : MonoBehaviour, IGrappleable
             }
             grappling = false;
             lassoCon.endThrow = true;
-            Debug.Log("Ending");
+            rb.constraints = RigidbodyConstraints.FreezeAll;
             grapple = false;
             if(gJoint != null){
                 Destroy(gJoint);
