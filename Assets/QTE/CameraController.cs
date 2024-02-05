@@ -78,7 +78,6 @@ public class CameraController : MonoBehaviour
             }
             else
             {
-                //hard-coded
                 composer.m_DeadZoneHeight = aimDZWidth;
                 composer.m_DeadZoneWidth = aimDZHeight;
 
