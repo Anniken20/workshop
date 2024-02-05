@@ -172,7 +172,7 @@ public class TeleportController : MonoBehaviour
         }
 
         //arbitrary value but makes sure that the camera is back to the normal angle before it switches over
-        yield return new WaitForSeconds(6f);
+        yield return new WaitForSeconds(8f);
         Camera.main.GetComponent<CameraController>().SwitchToTeleportMode(false);
     }
 }
