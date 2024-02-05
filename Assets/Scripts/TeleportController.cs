@@ -157,7 +157,6 @@ public class TeleportController : MonoBehaviour
         // Re-enable character control
         characterController.enabled = true;
         ThirdPersonController.Main._inCinematic = false;
-        Camera.main.GetComponent<CameraController>().SwitchToTeleportMode(false);
 
         //set walking animation back to false
 
@@ -171,5 +170,9 @@ public class TeleportController : MonoBehaviour
             otherLink.active = true;
             active = false;
         }
+
+        //arbitrary value but makes sure that the camera is back to the normal angle before it switches over
+        yield return new WaitForSeconds(6f);
+        Camera.main.GetComponent<CameraController>().SwitchToTeleportMode(false);
     }
 }

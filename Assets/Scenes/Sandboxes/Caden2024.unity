@@ -3402,6 +3402,11 @@ PrefabInstance:
       propertyPath: mainCam
       value: 
       objectReference: {fileID: 645638950}
+    - target: {fileID: 819145771077943787, guid: 6cebc20f4d85d6a4f93b8b119157a33c,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1062157068917065844, guid: 6cebc20f4d85d6a4f93b8b119157a33c,
         type: 3}
       propertyPath: maxGhostAmmo
@@ -3409,18 +3414,28 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1074644705224788271, guid: 6cebc20f4d85d6a4f93b8b119157a33c,
         type: 3}
+      propertyPath: m_XDamping
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1074644705224788271, guid: 6cebc20f4d85d6a4f93b8b119157a33c,
+        type: 3}
       propertyPath: m_YDamping
-      value: 0
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1074644705224788271, guid: 6cebc20f4d85d6a4f93b8b119157a33c,
+        type: 3}
+      propertyPath: m_ZDamping
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 1293735030403837799, guid: 6cebc20f4d85d6a4f93b8b119157a33c,
         type: 3}
       propertyPath: m_DeadZoneWidth
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 1293735030403837799, guid: 6cebc20f4d85d6a4f93b8b119157a33c,
         type: 3}
       propertyPath: m_DeadZoneHeight
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 1771420192133926187, guid: 6cebc20f4d85d6a4f93b8b119157a33c,
         type: 3}
@@ -3430,7 +3445,7 @@ PrefabInstance:
     - target: {fileID: 3403904910980620515, guid: 6cebc20f4d85d6a4f93b8b119157a33c,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.43910372
+      value: 0.43871552
       objectReference: {fileID: 0}
     - target: {fileID: 3403904910980620515, guid: 6cebc20f4d85d6a4f93b8b119157a33c,
         type: 3}
@@ -3440,7 +3455,7 @@ PrefabInstance:
     - target: {fileID: 3403904910980620515, guid: 6cebc20f4d85d6a4f93b8b119157a33c,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.8992675
+      value: -0.8992677
       objectReference: {fileID: 0}
     - target: {fileID: 4498764567053371774, guid: 6cebc20f4d85d6a4f93b8b119157a33c,
         type: 3}
@@ -3565,12 +3580,12 @@ PrefabInstance:
     - target: {fileID: 7888642324954607405, guid: 6cebc20f4d85d6a4f93b8b119157a33c,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.76631993
+      value: 0.76632
       objectReference: {fileID: 0}
     - target: {fileID: 7888642324954607405, guid: 6cebc20f4d85d6a4f93b8b119157a33c,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.20533998
+      value: 0.20534003
       objectReference: {fileID: 0}
     - target: {fileID: 7888642324954607405, guid: 6cebc20f4d85d6a4f93b8b119157a33c,
         type: 3}
@@ -3580,7 +3595,7 @@ PrefabInstance:
     - target: {fileID: 7888642324954607405, guid: 6cebc20f4d85d6a4f93b8b119157a33c,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.15756251
+      value: 0.15756254
       objectReference: {fileID: 0}
     - target: {fileID: 8764098702666554360, guid: 6cebc20f4d85d6a4f93b8b119157a33c,
         type: 3}
@@ -3610,12 +3625,12 @@ PrefabInstance:
     - target: {fileID: 8764098702666554367, guid: 6cebc20f4d85d6a4f93b8b119157a33c,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.76631993
+      value: 0.76632
       objectReference: {fileID: 0}
     - target: {fileID: 8764098702666554367, guid: 6cebc20f4d85d6a4f93b8b119157a33c,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.20533998
+      value: 0.20534003
       objectReference: {fileID: 0}
     - target: {fileID: 8764098702666554367, guid: 6cebc20f4d85d6a4f93b8b119157a33c,
         type: 3}
@@ -3625,7 +3640,7 @@ PrefabInstance:
     - target: {fileID: 8764098702666554367, guid: 6cebc20f4d85d6a4f93b8b119157a33c,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.15756251
+      value: 0.15756254
       objectReference: {fileID: 0}
     - target: {fileID: 9142747722827427783, guid: 6cebc20f4d85d6a4f93b8b119157a33c,
         type: 3}
@@ -3668,7 +3683,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 1357352162}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b80b3eb37856d154190fd079728fd95c, type: 3}
   m_Name: 
