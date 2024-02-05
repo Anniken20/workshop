@@ -9,23 +9,30 @@ public class KnockbackZone : OnPlayerHit
     public float knockbackCooldown = 2f; // Cooldown in seconds
     private float lastKnockbackTime = -Mathf.Infinity;
 
-    public override void HitEffect(Collision col)
+    public Vector3 pushDirection = new Vector3(0, 0, 1);
+
+    private void OnCollisionEnter(Collision col)
+    {
+        // Call the HitEffect function when a collision occurs
+        HitEffect(col);
+    }
+
+    public void HitEffect(Collision col)
     {
         if (Time.time - lastKnockbackTime < knockbackCooldown) return; // Cooldown not elapsed
-
-        base.HitEffect(col);
 
         if (col.gameObject.CompareTag("Player"))
         {
             ThirdPersonController controller = col.gameObject.GetComponent<ThirdPersonController>();
             if (controller != null)
             {
-                Vector3 direction = col.transform.position - transform.position;
-                direction.y = 0; // Keep the force horizontal
-                controller.Push(direction.normalized * knockbackStrength);
+                // Use the predefined pushDirection instead of calculating it from the collision
+                Vector3 direction = pushDirection.normalized;
+                controller.Push(direction * knockbackStrength);
 
                 lastKnockbackTime = Time.time; // Update last knockback time
             }
         }
     }
 }
+
