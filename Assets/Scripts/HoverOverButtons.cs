@@ -3,33 +3,32 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class HoverOverButtons : MonoBehaviour , IPointerEnterHandler , IPointerExitHandler
+public class HoverOverButtons : MonoBehaviour , IPointerEnterHandler , IPointerExitHandler, IPointerClickHandler
 {
     public GameObject hoverPanel; 
 
-    public void Start ()
+    public void OnPointerEnter(PointerEventData eventData)
     {
+        ScaleUp();
     }
 
-   public void OnPointerEnter(PointerEventData eventData)
-   {
-
-    hoverPanel.transform.localScale *= 1.2f;
-
-    //hoverPanel.SetActive(true);
-
-// throw new System.NotImplementedException();
-
-   }
-
     public void OnPointerExit(PointerEventData eventData)
-   {
+    {
+        ScaleDown();
+    }
 
-   hoverPanel.transform.localScale /= 1.2f;
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        ScaleDown();
+    }
 
-   // hoverPanel.SetActive(false);
-// throw new System.NotImplementedException();
+    public void ScaleUp()
+    {
+        hoverPanel.transform.localScale *= 1.2f;
+    }
 
-   }
-
+    public void ScaleDown()
+    {
+        hoverPanel.transform.localScale /= 1.2f;
+    }
 }
