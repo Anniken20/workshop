@@ -5,7 +5,7 @@ using StarterAssets;
 
 public class CageTrap : MonoBehaviour
 {
-     public GameObject player; 
+    public GameObject player; 
     public GameObject cage; 
     public float trapDuration = 5.0f; // Time in seconds the player is trapped
 
@@ -13,46 +13,34 @@ public class CageTrap : MonoBehaviour
 
     void Start()
     {
-        // Optionally, start with the cage disabled
-        cage.SetActive(false);
-
-        // Get the ThirdPersonController component from the player
+        cage.SetActive(true);
         if (player != null)
         {
             playerController = player.GetComponent<ThirdPersonController>();
         }
     }
 
-    void Update()
+    // Public method to start the trap, callable by UnityEvent
+    public void ActivateTrap()
     {
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            StartCoroutine(TrapPlayer());
-        }
+        StartCoroutine(TrapPlayer());
     }
 
     IEnumerator TrapPlayer()
     {
-        // Disable player movement
         if (playerController != null)
         {
             playerController.enabled = false;
         }
-
-        // Activate the cage
         cage.SetActive(true);
-        // Position the cage around the player
         cage.transform.position = player.transform.position;
 
         yield return new WaitForSeconds(trapDuration);
 
-        // Re-enable player movement
         if (playerController != null)
         {
             playerController.enabled = true;
         }
-
-        // Deactivate the cage
         cage.SetActive(false);
     }
 }
