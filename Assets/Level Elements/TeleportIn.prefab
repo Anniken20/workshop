@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7970625011734295247}
   - component: {fileID: 1045742571259962358}
   - component: {fileID: 6146670315048997721}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: TeleportIn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -33,7 +33,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 43
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &2460232649337153797
 MeshFilter:
@@ -118,6 +118,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 785b619edaaab45438bdd7a8451b5cf3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  otherLink: {fileID: 0}
+  active: 0
   toPoint: {fileID: 0}
   walkDistance: 1
   forwardDistance: 2
