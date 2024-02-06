@@ -56,17 +56,17 @@ public class LassoWrangle : MonoBehaviour, ILassoable
             if(lasso.triggered ){
                 currentAmount += barIncrement;
             }
-            currentAmount -= barDepleteRate;
+            /*currentAmount -= barDepleteRate;
             wrangleBar.fillAmount = currentAmount / barCapacity;
             if(currentAmount >= barCapacity){
                 WinMiniGame();
-            }
+            }*/
             
         }
     }
     private void FixedUpdate(){
         if(wrangling){
-            currentAmount -= barDepleteRate;
+            currentAmount -= barDepleteRate * Time.deltaTime;
             wrangleBar.fillAmount = currentAmount / barCapacity;
             if(currentAmount >= barCapacity){
                 WinMiniGame();
