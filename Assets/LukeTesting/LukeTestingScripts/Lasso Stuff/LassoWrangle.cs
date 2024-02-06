@@ -64,6 +64,15 @@ public class LassoWrangle : MonoBehaviour, ILassoable
             
         }
     }
+    private void FixedUpdate(){
+        if(wrangling){
+            currentAmount -= barDepleteRate;
+            wrangleBar.fillAmount = currentAmount / barCapacity;
+            if(currentAmount >= barCapacity){
+                WinMiniGame();
+            }
+        }
+    }
 
     public virtual void WinMiniGame(){
         StartCoroutine(EnableDelay());        
