@@ -121,14 +121,16 @@ public class LassoGrappleScript : MonoBehaviour, IGrappleable
         rb.constraints = RigidbodyConstraints.FreezeRotation;
         detectCol = false;
         var distanceBoost = Vector3.Distance(transform.position, grapplePoint.transform.position);
-        GetComponent<Rigidbody>().AddForce((Vector3.up * boostSpeed) * distanceBoost, ForceMode.VelocityChange);
+        //GetComponent<Rigidbody>().AddForce((Vector3.up * boostSpeed) * distanceBoost, ForceMode.VelocityChange);
         if(grapple && gPoint != null){
             grappling = true;
+            
             StartCoroutine(ReleaseDelay());
                 //GetComponent<CharacterController>().enabled = false;
                 GetComponent<ThirdPersonController>().enabled = false;
                 GetComponent<Rigidbody>().isKinematic = false;
                 GetComponent<Rigidbody>().velocity = Vector3.zero;
+                //rb.AddForce(Physics.gravity, ForceMode.Acceleration);
                 gPoint = grapplePoint.transform.position;
                 if(GetComponent<SpringJoint>() == null){
                     gJoint = gameObject.AddComponent<SpringJoint>();
