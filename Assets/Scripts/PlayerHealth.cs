@@ -10,6 +10,7 @@ public class PlayerHealth : MonoBehaviour
 {
     public int maxHealth = 100;
     public int currentHealth;
+    public AudioClip hurt;
 
     public Image healthBarImage; 
     public DeathScreenManager deathScreenManager;
@@ -62,6 +63,7 @@ public class PlayerHealth : MonoBehaviour
         }
         else
         {
+            AudioManager.main.Play(AudioManager.AudioSourceChannel.SFX, hurt);
             StartCoroutine(Damage());
         }
     }

@@ -14,7 +14,7 @@ public class DeathScreenManager : MonoBehaviour
     public AudioClip drawTextSound;
     [SerializeField] GameObject startingButton;
 
-    private void Awake()
+    private void Start()
     {
         //Singleton behavior
         if (main != null)
