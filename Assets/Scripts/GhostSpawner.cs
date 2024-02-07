@@ -9,8 +9,11 @@ public class GhostSpawner : MonoBehaviour
     public int maxEnemies = 5; // Maximum number of enemies to spawn
     public float spawnRadius = 1f; // Radius around spawner where enemies can spawn
 
-    private int numEnemiesSpawned; //How many spawned total to set max
-    private int numEnemiesAlive; //In case we want max enemies alive spawn
+    public Transform spawnPoint; // Reference to the spawn point GameObject
+    public float spawnHeight = 1f; // Height at which the ghosts will spawn
+
+    private int numEnemiesSpawned; // How many spawned total to set max
+    private int numEnemiesAlive; // In case we want max enemies alive spawn
     private bool playerInsideTrigger; // Flag to track if the player is inside the trigger zone
     private Coroutine spawnCoroutine; // Reference to the spawning coroutine
 
@@ -38,7 +41,8 @@ public class GhostSpawner : MonoBehaviour
         {
             if (numEnemiesAlive < maxEnemies)
             {
-                Vector3 spawnPosition = transform.position + Random.insideUnitSphere * spawnRadius;
+                // Randomize X and Z coordinates within spawn radius, keep Y-coordinate constant
+                Vector3 spawnPosition = spawnPoint.position + new Vector3(Random.Range(-spawnRadius, spawnRadius), spawnHeight, Random.Range(-spawnRadius, spawnRadius));
                 Instantiate(ghostPrefab, spawnPosition, Quaternion.identity);
                 numEnemiesSpawned++;
                 numEnemiesAlive++;
