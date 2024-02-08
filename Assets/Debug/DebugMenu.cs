@@ -1,96 +1,89 @@
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 
 public class DebugMenu : MonoBehaviour
 {
-    private GunController gunController;
-    private PlayerHealth healthScript;
-    private InventoryManager inventoryManager;
+    // Variables to track debug statuses
+    private bool godModeEnabled = false;
+    private bool infiniteBulletsEnabled = false;
+    private bool noClippingEnabled = false;
+    private bool allItemsEnabled = false;
+    private bool skipCutscenesEnabled = false;
 
-    public Button toggleUnlimitedAmmoButton;
-    public Button toggleGodModeButton;
-    public Button giveAllItemsButton;
-    public Button toggleNoclipButton;
-    public Button skipCutsceneButton;
-
-    public GameObject menuPanel;
-
-    private bool menuEnabled = false;
-    private bool isNoclipEnabled = false;
+    // Reference to the debug menu UI panel
+    public GameObject debugMenu;
 
     private void Start()
     {
-        gunController = GetComponent<GunController>();
-        healthScript = GetComponent<PlayerHealth>();
-        inventoryManager = InventoryManager.Instance;
-
-        // Add listeners to the buttons
-        toggleUnlimitedAmmoButton.onClick.AddListener(ToggleUnlimitedAmmo);
-        toggleGodModeButton.onClick.AddListener(ToggleGodMode);
-        giveAllItemsButton.onClick.AddListener(GiveAllItems);
-        toggleNoclipButton.onClick.AddListener(ToggleNoclip);
-        skipCutsceneButton.onClick.AddListener(SkipCutscene);
-
-        HideMenu();
+        // Hide the debug menu initially
+        debugMenu.SetActive(false);
     }
 
     private void Update()
     {
-        // Toggle menu when BackQuote key is pressed
+        // Toggle debug menu visibility when the ` key is pressed
         if (Input.GetKeyDown(KeyCode.BackQuote))
         {
-            ToggleMenu();
+            ToggleCheatMenu();
         }
     }
 
-    private void ToggleUnlimitedAmmo()
+    // Toggle debug menu visibility
+    private void ToggleCheatMenu()
     {
-        // Toggle unlimited ammo
-        gunController.ToggleUnlimitedAmmo();
-        HideMenu();
+        // Toggle the active state of the debug menu
+        debugMenu.SetActive(!debugMenu.activeSelf);
+
+        // If the debug menu is now active, lock the cursor
+        if (debugMenu.activeSelf)
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
     }
 
-    private void ToggleGodMode()
+    // Toggle God Mode
+    public void ToggleGodMode()
     {
-        // Toggle god mode
-        healthScript.ToggleGodMode();
-        HideMenu();
+        godModeEnabled = !godModeEnabled;
+        // Implement God Mode activation logic here
+        Debug.Log("God Mode " + (godModeEnabled ? "Enabled" : "Disabled"));
     }
 
-    private void GiveAllItems()
+    // Toggle Infinite Bullets
+    public void ToggleInfiniteBullets()
     {
-        // Give all items
-        inventoryManager.GiveAllItems();
-        HideMenu();
+        infiniteBulletsEnabled = !infiniteBulletsEnabled;
+        // Implement infinite bullets activation logic here
+        Debug.Log("Infinite Bullets " + (infiniteBulletsEnabled ? "Enabled" : "Disabled"));
     }
 
-    private void ToggleNoclip()
+    // Toggle No Clipping
+    public void ToggleNoClipping()
     {
-        // Toggle noclip mode
-        isNoclipEnabled = !isNoclipEnabled;
-        GetComponent<Collider>().enabled = !isNoclipEnabled;
-        Time.timeScale = isNoclipEnabled ? 0f : 1f;
-        HideMenu();
+        noClippingEnabled = !noClippingEnabled;
+        // Implement no clipping activation logic here
+        Debug.Log("No Clipping " + (noClippingEnabled ? "Enabled" : "Disabled"));
     }
 
-    private void SkipCutscene()
+    // Give All Items
+    public void GiveAllItems()
     {
-        // Skip current cutscene
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        allItemsEnabled = true;
+        // Implement logic to give all items here
+        Debug.Log("All Items Given");
     }
 
-    private void ToggleMenu()
+    // Skip Cutscenes
+    public void SkipCutscenes()
     {
-        // Toggle visibility of the menu
-        menuEnabled = !menuEnabled;
-        menuPanel.SetActive(menuEnabled);
-    }
-
-    private void HideMenu()
-    {
-        // Hide the menu
-        menuEnabled = false;
-        menuPanel.SetActive(false);
+        skipCutscenesEnabled = true;
+        // Implement logic to skip cutscenes here
+        Debug.Log("Cutscenes Skipped");
     }
 }
