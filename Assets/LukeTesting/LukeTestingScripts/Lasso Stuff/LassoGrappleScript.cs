@@ -47,9 +47,6 @@ public class LassoGrappleScript : MonoBehaviour, IGrappleable
     [HideInInspector] public bool triggerGrapOnce;
     public bool autoRelease = false;
     
-
-
-
     public void Grappled(bool active, GameObject hitObject){
         canLasso = false;
         grappling = true;
@@ -63,6 +60,8 @@ public class LassoGrappleScript : MonoBehaviour, IGrappleable
         lassoCon = this.GetComponent<LassoController>();
         rb = GetComponent<Rigidbody>();
         lineRend.enabled = false;
+        iaControls.CharacterControls.Lasso.started += StartGrapple;
+        iaControls.CharacterControls.Lasso.canceled += EndGrapplePressed;
     }
     private void Awake(){
         iaControls = new CharacterMovement();
@@ -103,7 +102,8 @@ public class LassoGrappleScript : MonoBehaviour, IGrappleable
 
         if(grapplePoint != null){
             if(autoRelease == true){
-                if(this.transform.position.y - grapplePoint.transform.position.y >= -2.8){
+                if(this.transform.position.y - grapplePoint.transform.position.y <= -2.8){
+                    Debug.Log("GRAPPLE ENDED 106");
                     EndGrapple();
                 }
             }
@@ -112,13 +112,13 @@ public class LassoGrappleScript : MonoBehaviour, IGrappleable
     }
 
     private void StartGrapple(InputAction.CallbackContext context){
-        EndGrapple();
+        //Debug.Log("GRAPPLE ENDED 115");
+        //EndGrapple();
     }
 
     private void AutoGrapple(){
         StopAllCoroutines();
         rb.constraints = RigidbodyConstraints.None;
-        rb.constraints = RigidbodyConstraints.FreezeRotation;
         detectCol = false;
         var distanceBoost = Vector3.Distance(transform.position, grapplePoint.transform.position);
         //GetComponent<Rigidbody>().AddForce((Vector3.up * boostSpeed) * distanceBoost, ForceMode.VelocityChange);
@@ -126,29 +126,29 @@ public class LassoGrappleScript : MonoBehaviour, IGrappleable
             grappling = true;
             
             StartCoroutine(ReleaseDelay());
-                //GetComponent<CharacterController>().enabled = false;
-                GetComponent<ThirdPersonController>().enabled = false;
-                GetComponent<Rigidbody>().isKinematic = false;
-                GetComponent<Rigidbody>().velocity = Vector3.zero;
-                //rb.AddForce(Physics.gravity, ForceMode.Acceleration);
-                gPoint = grapplePoint.transform.position;
-                if(GetComponent<SpringJoint>() == null){
-                    gJoint = gameObject.AddComponent<SpringJoint>();
-                }
-                if(gJoint != null){
-                    gJoint.autoConfigureConnectedAnchor = false;
-                    gJoint.connectedAnchor = gPoint;
+            GetComponent<CharacterController>().enabled = false;
+            GetComponent<ThirdPersonController>().enabled = false;
+            rb.velocity = Vector3.zero;
+            rb.AddForce(Physics.gravity, ForceMode.Acceleration);
+            gPoint = grapplePoint.transform.position;
+            if(GetComponent<SpringJoint>() == null){
+                Debug.Log("Added spring joint to " + gameObject.name);
+                gJoint = gameObject.AddComponent<SpringJoint>();
+            }
+            if(gJoint != null){
+                gJoint.autoConfigureConnectedAnchor = false;
+                gJoint.connectedAnchor = gPoint;
 
-                    float dist = Vector3.Distance(gameObject.transform.position, gPoint);
-                    gJoint.maxDistance = dist * maxDist;
-                    gJoint.minDistance = dist * minDist;
+                float dist = Vector3.Distance(gameObject.transform.position, gPoint);
+                gJoint.maxDistance = dist * maxDist;
+                gJoint.minDistance = dist * minDist;
 
-                    gJoint.spring = sPower;
-                    gJoint.damper = dPower;
-                    gJoint.massScale = mScale;
+                gJoint.spring = sPower;
+                gJoint.damper = dPower;
+                gJoint.massScale = mScale;
 
                     
-                }
+            }
         }
     }
 
@@ -164,7 +164,7 @@ public class LassoGrappleScript : MonoBehaviour, IGrappleable
             }
             grappling = false;
             lassoCon.endThrow = true;
-            rb.constraints = RigidbodyConstraints.FreezeAll;
+            //rb.constraints = RigidbodyConstraints.FreezeAll;
             grapple = false;
             if(gJoint != null){
                 Destroy(gJoint);
@@ -190,16 +190,18 @@ public class LassoGrappleScript : MonoBehaviour, IGrappleable
     }
 
     private void Update(){
-        lassoObject = GetComponent<LassoController>().projectile;
-        lassoConnectPoint = GetComponent<LassoController>().connectPoint;
-        if(grapple){
+        lassoObject = lassoCon.projectile;
+        lassoConnectPoint = lassoCon.connectPoint;
+        //moved to start
+        /*if(grapple){
             iaControls.CharacterControls.Lasso.started += StartGrapple;
             iaControls.CharacterControls.Lasso.canceled += EndGrapplePressed;
-        }
+        }*/
         if(grapple || grappling){
             canLasso = false;
         }
         if(cancel.triggered){
+            Debug.Log("GRAPPLE ENDED 200");
             EndGrapple();
         }
         if(grapplePoint != null){
@@ -207,9 +209,6 @@ public class LassoGrappleScript : MonoBehaviour, IGrappleable
                 EndGrapple();
             }*/
         }
-        
-
-
 
     }
 
@@ -236,7 +235,6 @@ public class LassoGrappleScript : MonoBehaviour, IGrappleable
         GetComponent<ThirdPersonController>().enabled = true;
         //GetComponent<CharacterController>().enabled = true;
         //GetComponent<Rigidbody>().velocity = Vector3.zero;
-        GetComponent<Rigidbody>().isKinematic = true;
     }
 
 

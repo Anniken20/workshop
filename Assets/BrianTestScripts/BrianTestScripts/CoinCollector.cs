@@ -14,6 +14,8 @@ public class CoinCollector : MonoBehaviour
     private Vector2 uiOffScreenPosition; // Position when the UI is off-screen
     private Vector2 uiOnScreenPosition; // Position when the UI is on-screen
 
+    private Coroutine moveHUDRoutine;
+
     private void Awake()
     {
         if (Instance == null)
@@ -43,7 +45,10 @@ public class CoinCollector : MonoBehaviour
         coinsCollected++;
         UpdateCoinsText();
         ShowCoinsUI();
-        StartCoroutine(HideCoinsUIAfterDelay(5f));;
+
+        //kill the previous move routine to reset the time remaining until moving back
+        if (moveHUDRoutine != null) StopCoroutine(moveHUDRoutine);
+        moveHUDRoutine = StartCoroutine(HideCoinsUIAfterDelay(5f));;
     }
 
     private void UpdateCoinsText()

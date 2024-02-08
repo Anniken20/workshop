@@ -72,10 +72,13 @@ public class GhostController : MonoBehaviour
     {
 
         // Regenerate ability bar over time
-        if (!abilityEnabled && !isCooldownActive && abilityDurationBar.fillAmount < maxBarValue)
-        {
-            abilityDurationBar.fillAmount += barRegenerationRate * Time.deltaTime;
+        if(abilityDurationBar != null) {
+            if (!abilityEnabled && !isCooldownActive && abilityDurationBar.fillAmount < maxBarValue)
+            {
+                abilityDurationBar.fillAmount += barRegenerationRate * Time.deltaTime;
+            }
         }
+        
 
         // Ghost Controller functionality
         if (phase.triggered && !isCooldownActive && !isToggleCooldownActive)
