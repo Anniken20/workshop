@@ -47,7 +47,7 @@ public class QTETest : MonoBehaviour
         }
         else
         {
-            Debug.Log("No enemy scripts set!");
+            //Debug.Log("No enemy scripts set!");
         }
     }
     public void CheckEnemyHealth()
@@ -60,17 +60,17 @@ public class QTETest : MonoBehaviour
         if (healthPercentage <= 66f && healthPercentage > 33f)
         {
             StartQTE("[U]");
-            Debug.Log("START QTE");
+            //Debug.Log("START QTE");
         }
         else if (healthPercentage <= 33f && healthPercentage > 0f)
         {
             StartQTE("[O]");
-            Debug.Log("START QTE");
+            //Debug.Log("START QTE");
         }
         else if (healthPercentage <= 0f)
         {
             StartQTE("[L]");
-            Debug.Log("START QTE");
+            //Debug.Log("START QTE");
         }
     }
     void StartQTE(string key)
@@ -93,7 +93,7 @@ public class QTETest : MonoBehaviour
 
         //generate one of the random 3 attacks
         QTEGen = Random.Range(0, 3);
-        Debug.Log("QTEGen is " + QTEGen);
+        //Debug.Log("QTEGen is " + QTEGen);
         
         //hacky garbage to "downcast" to our enemy types that indeed do have an idle state
         //ex: idle state belongs to Sheriff, not Enemy
@@ -164,7 +164,7 @@ public class QTETest : MonoBehaviour
             yield return null;
         }
 
-        Debug.Log("Took too long!");
+        //Debug.Log("Took too long!");
         StartCoroutine(Failed());
     }
 
@@ -175,23 +175,23 @@ public class QTETest : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.U) && QTEGen == 1)
             {
                 StartCoroutine(Correct());
-                Debug.Log("Correct");
+               // Debug.Log("Correct");
             }
             else if (Input.GetKeyDown(KeyCode.O) && QTEGen == 2)
             {
                 StartCoroutine(Correct());
-                Debug.Log("Correct");
+               // Debug.Log("Correct");
             }
             else if (Input.GetKeyDown(KeyCode.L) && QTEGen == 3)
             {
                 StartCoroutine(Correct());
-                Debug.Log("Correct");
+              //  Debug.Log("Correct");
             }
             else if (!hasProcessedInput)
             {
                 hasProcessedInput = true;
                 StartCoroutine(Failed());
-                Debug.Log("Fail");
+              //  Debug.Log("Fail");
             }
         }
     }
