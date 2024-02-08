@@ -59,17 +59,17 @@ public class QTETest : MonoBehaviour
 
         if (healthPercentage <= 66f && healthPercentage > 33f)
         {
-            StartQTE("[U]");
+            StartQTE("[E]");
             Debug.Log("START QTE");
         }
         else if (healthPercentage <= 33f && healthPercentage > 0f)
         {
-            StartQTE("[O]");
+            StartQTE("[R]");
             Debug.Log("START QTE");
         }
         else if (healthPercentage <= 0f)
         {
-            StartQTE("[L]");
+            StartQTE("[T]");
             Debug.Log("START QTE");
         }
     }
@@ -112,17 +112,17 @@ public class QTETest : MonoBehaviour
         if(QTEGen == 0)
         {
             ThirdPersonController.Main.LockPlayerForDuration(2f);
-            ShowPopupText("PRESS U");
+            ShowPopupText("PRESS E");
             StartCoroutine(InputRoutine(KeyCode.U));
         } else if(QTEGen == 1)
         {
             ThirdPersonController.Main.LockPlayerForDuration(2f);
-            ShowPopupText("PRESS O");
+            ShowPopupText("PRESS R");
             StartCoroutine(InputRoutine(KeyCode.O));
         } else
         {
             ThirdPersonController.Main.LockPlayerForDuration(2f);
-            ShowPopupText("PRESS L");
+            ShowPopupText("PRESS T");
             StartCoroutine(InputRoutine(KeyCode.L));
         }
     }
