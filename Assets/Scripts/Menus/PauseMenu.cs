@@ -115,7 +115,7 @@ public class PauseMenu : MonoBehaviour
         SceneManager.LoadScene(mainMenuScene);
 
         //temporary fix
-        //Application.Quit();
+        Application.Quit();
     }
 
     //when not in-game but looking at settings

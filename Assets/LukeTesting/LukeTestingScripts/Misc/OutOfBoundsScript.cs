@@ -21,7 +21,7 @@ public class OutOfBoundsScript : MonoBehaviour
     private void FixedUpdate(){
         if(returnOnDrop){
             if(droppedObj.GetComponent<LassoPickupScript>().lassoActive == false){
-                Debug.Log("Dropped and returning");
+                //Debug.Log("Dropped and returning");
                 droppedObj.GetComponent<LassoPickupScript>().DropObject();
                 var otherPos = objPos[droppedObj];
                 droppedObj.transform.position = otherPos;
@@ -30,7 +30,7 @@ public class OutOfBoundsScript : MonoBehaviour
         }
     }
     public void CheckObj(Collider other){
-        Debug.Log("Exiting");
+        //Debug.Log("Exiting");
         if(objPos.ContainsKey(other.gameObject)){
             if(other.gameObject.GetComponent<LassoPickupScript>().lassoedObject == other.gameObject && other.gameObject.GetComponent<LassoPickupScript>().lassoActive == true){
                 droppedObj = other.gameObject;

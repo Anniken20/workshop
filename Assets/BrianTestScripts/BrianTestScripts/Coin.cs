@@ -9,11 +9,13 @@ public class Coin : MonoBehaviour
 
     private float timeUntilHover = 1f;
     private bool hit;
+    public AudioClip pickUpCoin;
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
             CoinCollector.Instance.CollectCoin();
+            AudioManager.main.Play(AudioManager.AudioSourceChannel.SFX, pickUpCoin);
             Destroy(gameObject);
         }
     }
