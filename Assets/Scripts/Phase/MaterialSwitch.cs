@@ -20,6 +20,9 @@ public class MaterialSwitch : MonoBehaviour
 
         shaderGhost = Shader.Find("Shader Graphs/GhostUnlitAttempt");
         shaderOG = Shader.Find("Shader Graphs/LIT TOON");
+
+        Debug.Log("shaderGhost is " + shaderGhost);
+        Debug.Log("shaderOG is " + shaderOG);
     }
 
     private void Update()
