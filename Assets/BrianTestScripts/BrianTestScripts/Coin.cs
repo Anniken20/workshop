@@ -3,26 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
-public class Coin : MonoBehaviour
+public class Coin : Pickup
 {
     public float hoverHeight;
 
     private float timeUntilHover = 1f;
     private bool hit;
-    public AudioClip pickUpCoin;
-    private void OnTriggerEnter(Collider other)
+
+    protected override void PickupAction()
     {
-        if (other.CompareTag("Player"))
-        {
-            CoinCollector.Instance.CollectCoin();
-            AudioManager.main.Play(AudioManager.AudioSourceChannel.SFX, pickUpCoin);
-            Destroy(gameObject);
-        }
+        base.PickupAction();
+        CoinCollector.Instance.CollectCoin();
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if(!hit) StartCoroutine(HitGround());
+        if (!hit) StartCoroutine(HitGround());
     }
 
     private IEnumerator HitGround()
@@ -39,5 +35,4 @@ public class Coin : MonoBehaviour
         GetComponent<Hover>().StartHovering();
         GetComponent<RotateOverTime>().StartRotating();
     }
-
 }

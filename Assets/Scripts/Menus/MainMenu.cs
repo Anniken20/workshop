@@ -6,11 +6,17 @@ using UnityEngine.SceneManagement;
 public class MainMenu : MonoBehaviour
 {
     public GameObject settingsMenu;
+    public GameObject profilesMenu;
+    public GameObject controlsMenu;
 
     public void PlayButton()
     {
+        profilesMenu.SetActive(true);
+        settingsMenu.SetActive(false);
+        controlsMenu.SetActive(false);
+        gameObject.SetActive(false);
         //SceneManager.LoadScene("VSLevel");
-        SceneManager.LoadScene("IntroCutscene");
+        //SceneManager.LoadScene("IntroCutscene");
     }
 
     public void SettingsButton()
