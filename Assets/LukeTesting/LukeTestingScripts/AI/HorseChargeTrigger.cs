@@ -10,6 +10,10 @@ public class HorseChargeTrigger : MonoBehaviour
     [SerializeField] private GameObject stunnedText;
     //private NavMeshAgent horseNav;
     [HideInInspector] bool horseStunned;
+    public float stunnedDuration;
+    private bool startStunnedCountdown;
+    private float internalStunDuration;
+    private bool resetStunDuration;
 
     void Start(){
         h = GetComponentInParent<Horse>();
@@ -44,9 +48,25 @@ public class HorseChargeTrigger : MonoBehaviour
         
         if(horseStunned == true){
             stunnedText.SetActive(true);
+            startStunnedCountdown = true;
+            if(resetStunDuration){
+                internalStunDuration = stunnedDuration;
+                resetStunDuration = false;
+            }
         }
         else{
             stunnedText.SetActive(false);
+            startStunnedCountdown = false;
+            resetStunDuration = true;
+        }
+        if(startStunnedCountdown){
+            internalStunDuration -= Time.deltaTime;
+            if(internalStunDuration <= 0){
+                h.Charge();
+                horseStunned = false;
+                startStunnedCountdown = false;
+                h.isStunned = false;
+            }
         }
     }
     private IEnumerator TriggerDelay(){
