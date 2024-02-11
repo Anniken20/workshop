@@ -154,6 +154,7 @@ public class BulletController : MonoBehaviour
                 return;
             }
 
+            /*
             //phase through it if it's a ghost object
             if (TryGetComponent<GhostController>(out GhostController ghostCon))
             {
@@ -162,6 +163,7 @@ public class BulletController : MonoBehaviour
                     return;
                 }
             }
+            */
 
             //ignore player if early retrieve is off
             if(!earlyRetrieve && hitData.collider.gameObject.CompareTag("Player"))
