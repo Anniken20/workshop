@@ -3,6 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/* A script to manage the phase level and meter.
+ * Provides the public ChangePhaseBy(int amt) method for other classes to use. 
+ * 
+ * 
+ * Based off the original script by Amadin
+ * Refactored by Caden 2/10/2024
+ */
+
 public class PhaseLevel : MonoBehaviour
 {
     [Header("Reference")]
@@ -31,15 +39,18 @@ public class PhaseLevel : MonoBehaviour
         }
         currLevel = maxLevel;
         canPhase = true;
+        abilityDurationBar.fillAmount = currLevel / maxLevel;
     }
     public void ChangePhaseBy(float delta)
     {
         currLevel += delta;
+        currLevel = Mathf.Clamp(currLevel, 0, maxLevel);
         if (!AtFullMeter())
         {
             if(rechargeRoutine != null) StopCoroutine(rechargeRoutine);
             rechargeRoutine = StartCoroutine(RechargeRoutine());
         }
+        abilityDurationBar.fillAmount = currLevel / maxLevel;
     }
 
     public void StartUsingPhase()
@@ -75,13 +86,13 @@ public class PhaseLevel : MonoBehaviour
     {
         while (!AtFullMeter())
         {
-            Debug.Log("filling up meter");
             currLevel += rechargeRate * Time.deltaTime;
             UpdateMeter();
 
             //wait a frame before resuming loop
             yield return null;
         }
+        currLevel = Mathf.Clamp(currLevel, 0, maxLevel);
         canPhase = true;
     }
 
@@ -96,6 +107,7 @@ public class PhaseLevel : MonoBehaviour
             yield return null;
         }
         canPhase = false;
+        currLevel = Mathf.Clamp(currLevel, 0, maxLevel);
         _ghostController.ForceOutOfPhase();
     }
 

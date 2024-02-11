@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 /* For default objects that you can pass through when phasing
@@ -13,14 +11,17 @@ public class PhaseThroughObject : PhaseObject
     private int originalLayer;
     private Renderer myRenderer;
     private Shader shaderOG;
-    private Shader shaderGhost;
+    //private Color defaultColor;
     private new void Start()
     {
         base.Start();
         myRenderer = GetComponentInChildren<Renderer>();
         originalLayer = gameObject.layer;
-        shaderGhost = Shader.Find("Shader Graphs/GhostUnlitAttempt");
-        shaderOG = Shader.Find("Shader Graphs/LIT TOON");
+        shaderOG = myRenderer.material.shader;
+        /*if(myRenderer.material.color != null)
+        {
+            defaultColor = myRenderer.material.color;
+        }*/
     }
     protected override void OnEnter()
     {
@@ -35,7 +36,7 @@ public class PhaseThroughObject : PhaseObject
     }
 
     //I'm wary of using this function because there is potential to have this desync. 
-    //For example: What if the player phases and then walks on-screen?
+    //For example: What if the player phases and then walks away?
     private bool IsObjectVisible()
     {
         if (myRenderer == null)
@@ -59,7 +60,15 @@ public class PhaseThroughObject : PhaseObject
         {
             if (mat.material.shader != null)
             {
-                mat.material.shader = ghostMode ? shaderGhost : shaderOG;
+                if (ghostMode)
+                {
+                    mat.material.shader = GhostController.defaultGhostShader;
+                    mat.material.color = GhostController.defaultGhostColor;
+                } else
+                {
+                    mat.material.shader = shaderOG;
+                    //mat.material.color = defaultColor;
+                }
             }
         }
     }

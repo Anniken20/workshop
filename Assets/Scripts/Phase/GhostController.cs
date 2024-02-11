@@ -6,11 +6,12 @@ using StarterAssets;
 
 public class GhostController : MonoBehaviour
 {
+    [Header("Input")]
+    [Tooltip("Inputting within this frame of another phase input will be ignored. Prevents spamming.")]
+    public float minTimeBeforeSwitch;
+
     [Header("Phase Level")]
     public PhaseLevel phaseLevel;
-
-    [Header("Player Collider")]
-    public Collider playerCollider;
     
     [Header("FullScreenTest Controller")]
     [SerializeField] private float _phasingDisplayTime = 5.0f;
@@ -35,6 +36,9 @@ public class GhostController : MonoBehaviour
     private int _voronoIntensity;
     private int _vignetteIntensity;
 
+    [Header("Default Ghost Shader")]
+    public Shader theGhostShader;
+
     private CharacterMovement iaControls;
 
     //--Delegate events--
@@ -44,9 +48,19 @@ public class GhostController : MonoBehaviour
     public delegate void OnExitPhase();
     public static event OnExitPhase onExitPhase;
 
+
+    //more private fields
     private bool phaseOn;
     private InputAction phase;
     private Vector3 startPosition;
+
+    private bool inAnObject = false;
+    private bool canInput = true;
+
+
+    //statics (fields that belong to the class rather than the object)
+    public static Shader defaultGhostShader;
+    public static Color defaultGhostColor = new Color(0, 1f, 0.949019f);
 
     private void Awake()
     {
@@ -59,11 +73,15 @@ public class GhostController : MonoBehaviour
 
         _voronoIntensity = Shader.PropertyToID("_VoronoIntensity");
         _vignetteIntensity = Shader.PropertyToID("_VignetteIntensity");
+
+        defaultGhostShader = theGhostShader;
+        //Shader.Find("Shader Graphs/GhostUnlitAttempt");
     }
 
-    void Update()
+    private void Update()
     {
         //get input
+        if (!canInput) return;
         if (phase.triggered)
         {
             ToggleAbility();
@@ -74,14 +92,25 @@ public class GhostController : MonoBehaviour
         if (phaseOn)
         {
             TurnPhaseOff();
+            StartCoroutine(InputWaitRoutine());
         }
         else
         {
             if (phaseLevel.CanPhase())
+            {
                 TurnPhaseOn();
+                StartCoroutine(InputWaitRoutine());
+            }    
         }
-
     }
+
+    private IEnumerator InputWaitRoutine()
+    {
+        canInput = false;
+        yield return new WaitForSeconds(minTimeBeforeSwitch);
+        canInput = true;
+    }
+
     private void PlayAudio(AudioClip clip)
     {
         if (audioSource != null && clip != null)
@@ -90,6 +119,7 @@ public class GhostController : MonoBehaviour
         }
     }
 
+    /*
     IEnumerator Phasing()
     {
         _fullScreenPhasing.SetActive(true);
@@ -114,6 +144,7 @@ public class GhostController : MonoBehaviour
 
         _fullScreenPhasing.SetActive(false);
     }
+    */
 
     public void ForceOutOfPhase()
     {
@@ -160,6 +191,8 @@ public class GhostController : MonoBehaviour
 
             //a little freeze to prevent disorienting the player
             ThirdPersonController.Main.LockPlayerForDuration(0.2f);
+
+            inAnObject = false;
         }
 
         //delegate events
@@ -174,7 +207,25 @@ public class GhostController : MonoBehaviour
 
     private bool InsideAnObject()
     {
-        return true;
+        return inAnObject;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (!phaseOn) return;
+        if (other.gameObject.GetComponent<PhaseThroughObject>() != null)
+        {
+            inAnObject = true;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (!phaseOn) return;
+        if (other.gameObject.GetComponent<PhaseThroughObject>() != null)
+        {
+            inAnObject = false;
+        }
     }
 
     private void OnEnable()

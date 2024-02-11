@@ -288,7 +288,7 @@ namespace StarterAssets
                              new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime;
             //Debug.Log("Move vector: " + moveVector + "\nMotion vector: " + extraMotion);
             if(!_movementLocked)
-                _controller.Move(moveVector + (extraMotion * Time.deltaTime));
+                if(_controller.enabled) _controller.Move(moveVector + (extraMotion * Time.deltaTime));
 
             // update animator if using character
             if (_hasAnimator)
