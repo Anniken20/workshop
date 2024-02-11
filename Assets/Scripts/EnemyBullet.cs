@@ -108,6 +108,7 @@ public class EnemyBullet : MonoBehaviour
             }
 
             //phase through it if it's a ghost object
+            /*
             if (TryGetComponent<GhostController>(out GhostController ghostCon))
             {
                 if (ghostCon.inGhost)
@@ -115,6 +116,7 @@ public class EnemyBullet : MonoBehaviour
                     return;
                 }
             }
+            */
             Bounce(hitData);
         }
     }
