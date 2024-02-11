@@ -4,7 +4,7 @@ using UnityEngine;
 using TMPro;
 using DG.Tweening;
 
-public class CoinCollector : MonoBehaviour
+public class CoinCollector : MonoBehaviour, IDataPersistence
 {
     public static CoinCollector Instance;
 
@@ -73,6 +73,13 @@ public class CoinCollector : MonoBehaviour
     private void HideCoinsUIInstant()
     {
         coinsRectTransform.anchoredPosition = uiOffScreenPosition; // Instantly place UI off-screen
+    }
+
+    public void LoadData(GameData data){
+        coinsCollected = data.coins;
+    }
+    public void SaveData(ref GameData data){
+        data.coins = coinsCollected;
     }
 }
 
