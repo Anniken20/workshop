@@ -12,6 +12,7 @@ public class GhostEnemy : MonoBehaviour, IShootable
     public float floatingHeight = 1f; // Height above the player's position to float
 
     private GameObject player; // Who ghost attacks and deals damage to
+    private GameObject target; //where ghsot looks at and matches Y value with
     public int currentHealth; // Ghost health
     private bool canAttack = true; // Whether ghost can attack or not
 
@@ -22,8 +23,12 @@ public class GhostEnemy : MonoBehaviour, IShootable
 
     void Start()
     {
+        
         player = GameObject.FindGameObjectWithTag("Player");
+        //moved them to targeting Val's shoot point, since val's pivot is at her feet
+        target = GameObject.FindGameObjectWithTag("ShootPoint");
         currentHealth = maxHealth;
+        
     }
 
     void Update()
@@ -32,25 +37,34 @@ public class GhostEnemy : MonoBehaviour, IShootable
             return;
 
         // Calculate direction towards the player's position
-        Vector3 targetPosition = player.transform.position + Vector3.up * floatingHeight;
+        //set the Y to the shootpoint's Y, so it doesn't look at Val's feet, also negates need for float height by doing it automatically, and always being at shoot height
+        Vector3 targetPosition = new Vector3(player.transform.position.x, target.transform.position.y, player.transform.position.z);
         Vector3 direction = targetPosition - transform.position;
         direction.Normalize();
 
         // Move towards the player's absolute position
         transform.Translate(direction * movementSpeed * Time.deltaTime, Space.World);
 
+        // Ethan - look at target position
+        this.gameObject.transform.LookAt(target.transform);
+
         // Check if the player is within attack range and the enemy can attack
-        if (Vector3.Distance(transform.position, player.transform.position) < attackRange && canAttack)
-        {
-            // Attack the player
-            PlayerHealth playerHealth = player.GetComponent<PlayerHealth>();
-            if (playerHealth != null)
+        //Since it's a trigger now, just set it to ontriggerstay so it isnt checking every frame, kept the code in case haunted objs need it later
+
+        /*
+         * if (Vector3.Distance(transform.position, player.transform.position) < attackRange && canAttack)
             {
-                playerHealth.TakeDamage(damage);
-                canAttack = false;
-                Invoke("ResetAttackCooldown", attackCooldown);
+                // Attack the player
+                PlayerHealth playerHealth = player.GetComponent<PlayerHealth>();
+                if (playerHealth != null)
+                {
+                    playerHealth.TakeDamage(damage);
+                    canAttack = false;
+                    Invoke("ResetAttackCooldown", attackCooldown);
+                }
             }
-        }
+         */
+
     }
 
     public void TakeDamage(int damageAmount)
@@ -71,5 +85,24 @@ public class GhostEnemy : MonoBehaviour, IShootable
     void ResetAttackCooldown()
     {
         canAttack = true;
+    }
+
+    public void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject.CompareTag("Player"))
+        {
+            if (canAttack)
+            {
+                // Attack the player
+                PlayerHealth playerHealth = player.GetComponent<PlayerHealth>();
+                if (playerHealth != null)
+                {
+                    playerHealth.TakeDamage(damage);
+                    canAttack = false;
+                    Invoke("ResetAttackCooldown", attackCooldown);
+                }
+            }
+        }
+
     }
 }
