@@ -1,15 +1,17 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
-using UnityEngine.UI;
 using UnityEngine.InputSystem;
+using StarterAssets;
 
 public class GhostController : MonoBehaviour
 {
-    [Header("Ghost Controller")]
+    [Header("Phase Level")]
+    public PhaseLevel phaseLevel;
 
-    public Image abilityDurationBar;
-
+    [Header("Player Collider")]
+    public Collider playerCollider;
+    
     [Header("FullScreenTest Controller")]
     [SerializeField] private float _phasingDisplayTime = 5.0f;
     [SerializeField] private float _phasingFadeOutTime = 0.5f;
@@ -17,14 +19,6 @@ public class GhostController : MonoBehaviour
     [SerializeField] private Material _material;
     [SerializeField] private float _voronoIntensityStat = 2.5f;
     [SerializeField] private float _vignetteIntensityStat = 1.25f;
-
-    private int _voronoIntensity = Shader.PropertyToID("_VoronoIntensity");
-    private int _vignetteIntensity = Shader.PropertyToID("_VignetteIntensity");
-
-    private float maxBarValue = 1.0f; // Maximum value for the ability bar
-    public float barRegenerationRate = 0.2f; // Rate at which the ability bar regenerates per second
-
-    private CharacterMovement iaControls;
 
     [Header("Audio")]
     public AudioClip enterAudioClip;
@@ -38,6 +32,11 @@ public class GhostController : MonoBehaviour
     public float chromaticAberrations;
     public float vignette;
 
+    private int _voronoIntensity;
+    private int _vignetteIntensity;
+
+    private CharacterMovement iaControls;
+
     //--Delegate events--
     public delegate void OnEnterPhase();
     public static event OnEnterPhase onEnterPhase;
@@ -45,10 +44,9 @@ public class GhostController : MonoBehaviour
     public delegate void OnExitPhase();
     public static event OnExitPhase onExitPhase;
 
-    //if (abilityDurationBar != null) abilityDurationBar.fillAmount = countdownTimer / abilityDuration;
-
     private bool phaseOn;
     private InputAction phase;
+    private Vector3 startPosition;
 
     private void Awake()
     {
@@ -57,41 +55,34 @@ public class GhostController : MonoBehaviour
         phase = iaControls.CharacterControls.Phase;
 
         audioSource = GetComponent<AudioSource>();
+        phaseLevel._ghostController = this;
+
+        _voronoIntensity = Shader.PropertyToID("_VoronoIntensity");
+        _vignetteIntensity = Shader.PropertyToID("_VignetteIntensity");
     }
 
     void Update()
     {
-        // Regenerate ability bar over time
-        /*
-        if(abilityDurationBar != null) {
-            if (!abilityEnabled && !isCooldownActive && abilityDurationBar.fillAmount < maxBarValue)
-            {
-                abilityDurationBar.fillAmount += barRegenerationRate * Time.deltaTime;
-            }
-        }
-        */
-
         //get input
         if (phase.triggered)
         {
             ToggleAbility();
         }
     }
-    void ToggleAbility()
+    private void ToggleAbility()
     {
-        phaseOn = !phaseOn;
-
         if (phaseOn)
-        {
-            TurnPhaseOn();         
-        }
-        else
         {
             TurnPhaseOff();
         }
+        else
+        {
+            if (phaseLevel.CanPhase())
+                TurnPhaseOn();
+        }
 
     }
-    void PlayAudio(AudioClip clip)
+    private void PlayAudio(AudioClip clip)
     {
         if (audioSource != null && clip != null)
         {
@@ -124,8 +115,19 @@ public class GhostController : MonoBehaviour
         _fullScreenPhasing.SetActive(false);
     }
 
+    public void ForceOutOfPhase()
+    {
+        TurnPhaseOff();
+    }
+
     private void TurnPhaseOn()
     {
+        phaseOn = true;
+        phaseLevel.StartUsingPhase();
+
+        //store start position
+        startPosition = transform.position;
+
         //delegate events
         onEnterPhase?.Invoke();
 
@@ -148,6 +150,18 @@ public class GhostController : MonoBehaviour
 
     private void TurnPhaseOff()
     {
+        phaseOn = false;
+        phaseLevel.StopUsingPhase();
+
+        //if inside something, teleport to start position
+        if (InsideAnObject())
+        {
+            transform.position = startPosition;
+
+            //a little freeze to prevent disorienting the player
+            ThirdPersonController.Main.LockPlayerForDuration(0.2f);
+        }
+
         //delegate events
         onExitPhase?.Invoke();
 
@@ -156,6 +170,11 @@ public class GhostController : MonoBehaviour
 
         //full screen fx
         _fullScreenPhasing.SetActive(false);
+    }
+
+    private bool InsideAnObject()
+    {
+        return true;
     }
 
     private void OnEnable()
