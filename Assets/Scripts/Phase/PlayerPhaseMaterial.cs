@@ -33,7 +33,9 @@ public class PlayerPhaseMaterial : PhaseObject
             for (int j = 0; j < objectsToTurnGhostly[i]._skinnedMeshRenderer.materials.Length && j < materialDepth; ++j)
             {
                 objectsToTurnGhostly[i]._shaders[j] = objectsToTurnGhostly[i]._skinnedMeshRenderer.materials[j].shader;
-                objectsToTurnGhostly[i]._colors[j] = objectsToTurnGhostly[i]._skinnedMeshRenderer.materials[j].color;
+
+                if(objectsToTurnGhostly[i]._skinnedMeshRenderer.materials[j].HasColor("_Color"))
+                    objectsToTurnGhostly[i]._colors[j] = objectsToTurnGhostly[i]._skinnedMeshRenderer.materials[j].color;
             }
         }
     }
@@ -44,7 +46,9 @@ public class PlayerPhaseMaterial : PhaseObject
             for (int j = 0; j < objectsToTurnGhostly[i]._shaders.Length && j < materialDepth; ++j)
             {
                 objectsToTurnGhostly[i]._skinnedMeshRenderer.materials[j].shader = GhostController.defaultGhostShader;
-                objectsToTurnGhostly[i]._skinnedMeshRenderer.materials[j].color = GhostController.defaultGhostColor;
+
+                if (objectsToTurnGhostly[i]._skinnedMeshRenderer.materials[j].HasColor("_Color"))
+                    objectsToTurnGhostly[i]._skinnedMeshRenderer.materials[j].color = GhostController.defaultGhostColor;
             }
         }
     }
@@ -56,8 +60,9 @@ public class PlayerPhaseMaterial : PhaseObject
             for (int j = 0; j < objectsToTurnGhostly[i]._shaders.Length && j < materialDepth; ++j)
             {
                 objectsToTurnGhostly[i]._skinnedMeshRenderer.materials[j].shader = objectsToTurnGhostly[i]._shaders[j];
-                objectsToTurnGhostly[i]._skinnedMeshRenderer.materials[j].color = objectsToTurnGhostly[i]._colors[j];
 
+                if (objectsToTurnGhostly[i]._skinnedMeshRenderer.materials[j].HasColor("_Color"))
+                    objectsToTurnGhostly[i]._skinnedMeshRenderer.materials[j].color = objectsToTurnGhostly[i]._colors[j];
             }
         }
     }
