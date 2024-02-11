@@ -48,6 +48,15 @@ public class InventoryManager : MonoBehaviour
             }
         }
     }
+
+    // DEBUG
+    public void GiveAllItemsToPlayer()
+    {
+        foreach (AllItems item in System.Enum.GetValues(typeof(AllItems)))
+        {
+            AddItem(item);
+        }
+    }
     
     private IEnumerator HideUIAfterDelay(GameObject uiElement)
     {
