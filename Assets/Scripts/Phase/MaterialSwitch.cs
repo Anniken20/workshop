@@ -15,11 +15,15 @@ public class MaterialSwitch : MonoBehaviour
 
     private void Start()
     {
+        Debug.LogWarning("GMHN Warning: MaterialSwitch script is deprecated. It will remove itself from " +
+            gameObject.name + " on Start. \nUse the PhaseThroughObject script instead.");
+        Destroy(this);
+
         rend = GetComponentInChildren<Renderer>();
         coll = GetComponent<Collider>();
 
         shaderGhost = Shader.Find("Shader Graphs/GhostUnlitAttempt");
-        shaderOG = Shader.Find("Shader Graphs/LIT TOON");
+        shaderOG = Shader.Find("Shader Graphs/LIT TOON");    
     }
 
     private void Update()
