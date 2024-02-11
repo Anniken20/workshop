@@ -19,6 +19,7 @@ public struct SMRenderer
 public class PlayerPhaseMaterial : PhaseObject
 {
     public SMRenderer[] objectsToTurnGhostly;
+    public int materialDepth = 1;
 
     private new void Start()
     {
@@ -29,7 +30,7 @@ public class PlayerPhaseMaterial : PhaseObject
         {
             objectsToTurnGhostly[i]._shaders = new Shader[objectsToTurnGhostly[i]._skinnedMeshRenderer.materials.Length];
             objectsToTurnGhostly[i]._colors = new Color[objectsToTurnGhostly[i]._skinnedMeshRenderer.materials.Length];
-            for (int j = 0; j < objectsToTurnGhostly[i]._skinnedMeshRenderer.materials.Length; ++j)
+            for (int j = 0; j < objectsToTurnGhostly[i]._skinnedMeshRenderer.materials.Length && j < materialDepth; ++j)
             {
                 objectsToTurnGhostly[i]._shaders[j] = objectsToTurnGhostly[i]._skinnedMeshRenderer.materials[j].shader;
                 objectsToTurnGhostly[i]._colors[j] = objectsToTurnGhostly[i]._skinnedMeshRenderer.materials[j].color;
@@ -40,7 +41,7 @@ public class PlayerPhaseMaterial : PhaseObject
     {
         for (int i = 0; i < objectsToTurnGhostly.Length; ++i)
         {
-            for (int j = 0; j < objectsToTurnGhostly[i]._shaders.Length; ++j)
+            for (int j = 0; j < objectsToTurnGhostly[i]._shaders.Length && j < materialDepth; ++j)
             {
                 objectsToTurnGhostly[i]._skinnedMeshRenderer.materials[j].shader = GhostController.defaultGhostShader;
                 objectsToTurnGhostly[i]._skinnedMeshRenderer.materials[j].color = GhostController.defaultGhostColor;
@@ -52,7 +53,7 @@ public class PlayerPhaseMaterial : PhaseObject
     {
         for (int i = 0; i < objectsToTurnGhostly.Length; ++i)
         {
-            for (int j = 0; j < objectsToTurnGhostly[i]._shaders.Length; ++j)
+            for (int j = 0; j < objectsToTurnGhostly[i]._shaders.Length && j < materialDepth; ++j)
             {
                 objectsToTurnGhostly[i]._skinnedMeshRenderer.materials[j].shader = objectsToTurnGhostly[i]._shaders[j];
                 objectsToTurnGhostly[i]._skinnedMeshRenderer.materials[j].color = objectsToTurnGhostly[i]._colors[j];
