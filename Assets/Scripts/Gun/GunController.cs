@@ -71,7 +71,8 @@ public class GunController : MonoBehaviour
     private ThirdPersonController thirdPersonController;
     private int ghostAmmo;
     private BulletHUD bulletHUD;
-
+    // DEBUG
+    private bool isInfiniteBulletsEnabled = false;
     private void Start()
     {
         animator = GetComponent<Animator>();
@@ -154,10 +155,23 @@ public class GunController : MonoBehaviour
             }
         }
     }
+    // Debug
+    // Enable Infinite Bullets
+    public void EnableInfiniteBullets()
+    {
+        isInfiniteBulletsEnabled = true;
+    }
+
+    // Disable Infinite Bullets
+    public void DisableInfiniteBullets()
+    {
+        isInfiniteBulletsEnabled = false;
+    }
+    // End debug
 
     private void FireGun()
     {
-        if (!HasAmmo())
+        if (!HasAmmo() && !isInfiniteBulletsEnabled) 
         {
             Misfire();
             return;
@@ -273,7 +287,7 @@ public class GunController : MonoBehaviour
 
     private bool HasAmmo()
     {
-        return ghostAmmo > 0;
+        return ghostAmmo > 0 || isInfiniteBulletsEnabled;
     }
 
     private void Recoil()

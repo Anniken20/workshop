@@ -15,6 +15,10 @@ public class PlayerHealth : MonoBehaviour
     public Image healthBarImage; 
     public DeathScreenManager deathScreenManager;
 
+    // Debug menu
+    public bool godModeEnabled = false;
+
+
     [Header("Time Stats")]
     [SerializeField] private float _damageDisplayTime = 5.0f;
     [SerializeField] private float _damageFadeOutTime = 0.5f;
@@ -45,24 +49,29 @@ public class PlayerHealth : MonoBehaviour
         }
     }
 
-
     public void TakeDamage(int damage)
     {
-        if (currentHealth <= 0)
-        {
+        // Check if god mode is enabled, if so, exit early
+        if (godModeEnabled)
             return;
-        }
 
+        // Check if the player is already dead
+        if (currentHealth <= 0)
+            return;
+
+        // Reduce player's health
         currentHealth -= damage;
         UpdateHealthUI();
         Debug.Log("Player health: " + currentHealth);
 
+        // Check if the player has died
         if (currentHealth <= 0)
         {
             Die();
         }
         else
         {
+            // Play damage effects and sounds
             AudioManager.main.Play(AudioManager.AudioSourceChannel.SFX, hurt);
             StartCoroutine(Damage());
         }
@@ -91,6 +100,13 @@ public class PlayerHealth : MonoBehaviour
         }
 
         _fullScreenDamage.SetActive(false);
+    }
+
+    // DEBUG TOGGLE
+    public void ToggleGodMode()
+    {
+        godModeEnabled = !godModeEnabled;
+        Debug.Log("God Mode " + (godModeEnabled ? "Enabled" : "Disabled"));
     }
 
     public void Die()

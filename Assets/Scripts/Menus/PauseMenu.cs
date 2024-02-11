@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 public class PauseMenu : MonoBehaviour
 {
     public GameObject PausePanel;
     public GameObject settingsPanel;
+    public GameObject controlsPanel;
     public GameObject mainMenu;
     public GameObject HUD;
 
@@ -23,6 +25,7 @@ public class PauseMenu : MonoBehaviour
     private const string mainMenuScene = "MainMenu";
 
     private InputAction pause;
+    private InputAction cotnrols;
     public CharacterMovement iaControls;
 
     //singleton
@@ -101,6 +104,7 @@ public class PauseMenu : MonoBehaviour
     {
         settingsPanel.SetActive(true);
         PausePanel.SetActive(false);
+        controlsPanel.SetActive(false);
     }
 
     public void QuitGame()
@@ -116,6 +120,18 @@ public class PauseMenu : MonoBehaviour
 
         //temporary fix
         Application.Quit();
+    }
+
+    public void ShowControls()
+    {
+        controlsPanel.SetActive(true);
+        settingsPanel.SetActive(false);
+    }
+
+    public void CloseControls()
+    {
+        controlsPanel.SetActive(false);
+        settingsPanel.SetActive(true);
     }
 
     //when not in-game but looking at settings
