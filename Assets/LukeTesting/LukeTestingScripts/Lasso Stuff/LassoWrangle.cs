@@ -75,10 +75,14 @@ public class LassoWrangle : MonoBehaviour, ILassoable
     }
 
     public virtual void WinMiniGame(){
-        StartCoroutine(EnableDelay());        
+        StartCoroutine(EnableDelay());
+        player.canLasso = true;
+        controller._manipulatingLasso = false;
     }
     public virtual void LoseMiniGame(){
-        StartCoroutine(EnableDelay());        
+        StartCoroutine(EnableDelay());
+        player.canLasso = true;
+        controller._manipulatingLasso = false;
     }
 
     /*private void WinMiniGame(){
