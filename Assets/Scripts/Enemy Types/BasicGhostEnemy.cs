@@ -16,6 +16,9 @@ public class GhostEnemy : MonoBehaviour, IShootable
     public int currentHealth; // Ghost health
     private bool canAttack = true; // Whether ghost can attack or not
 
+    public AggroScript aggroScript; // ref to aggro script 
+    private float lookAtOffset = 1.4f;
+
     public void OnShot(BulletController bullet)
     {
         TakeDamage((int)bullet.currDmg);
@@ -23,22 +26,22 @@ public class GhostEnemy : MonoBehaviour, IShootable
 
     void Start()
     {
-        
-        player = GameObject.FindGameObjectWithTag("Player");
+        aggroScript = GetComponentInChildren<AggroScript>();
+        //player = GameObject.FindGameObjectWithTag("Player");
         //moved them to targeting Val's shoot point, since val's pivot is at her feet
-        target = GameObject.FindGameObjectWithTag("ShootPoint");
+        //target = GameObject.FindGameObjectWithTag("ShootPoint");
         currentHealth = maxHealth;
         
     }
 
     void Update()
     {
-        if (player == null) // If the player is not found, do nothing
+        if (aggroScript.target == null) // If the player is not found, do nothing
             return;
 
         // Calculate direction towards the player's position
         //set the Y to the shootpoint's Y, so it doesn't look at Val's feet, also negates need for float height by doing it automatically, and always being at shoot height
-        Vector3 targetPosition = new Vector3(player.transform.position.x, target.transform.position.y, player.transform.position.z);
+        Vector3 targetPosition = new Vector3(aggroScript.target.transform.position.x, aggroScript.target.transform.position.y + lookAtOffset, aggroScript.target.transform.position.z);
         Vector3 direction = targetPosition - transform.position;
         direction.Normalize();
 
@@ -46,7 +49,7 @@ public class GhostEnemy : MonoBehaviour, IShootable
         transform.Translate(direction * movementSpeed * Time.deltaTime, Space.World);
 
         // Ethan - look at target position
-        this.gameObject.transform.LookAt(target.transform);
+        this.gameObject.transform.LookAt(targetPosition);
 
         // Check if the player is within attack range and the enemy can attack
         //Since it's a trigger now, just set it to ontriggerstay so it isnt checking every frame, kept the code in case haunted objs need it later
@@ -94,7 +97,7 @@ public class GhostEnemy : MonoBehaviour, IShootable
             if (canAttack)
             {
                 // Attack the player
-                PlayerHealth playerHealth = player.GetComponent<PlayerHealth>();
+                PlayerHealth playerHealth = aggroScript.target.GetComponent<PlayerHealth>();
                 if (playerHealth != null)
                 {
                     playerHealth.TakeDamage(damage);
