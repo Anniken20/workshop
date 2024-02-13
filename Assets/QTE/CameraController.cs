@@ -61,6 +61,7 @@ public class CameraController : MonoBehaviour
 
     public void SwitchToTeleportMode(bool yes = true)
     {
+        /*
         CinemachineComponentBase componentBase = mainCam.GetCinemachineComponent(CinemachineCore.Stage.Aim);
 
         if (componentBase is CinemachineComposer composer)
@@ -88,5 +89,6 @@ public class CameraController : MonoBehaviour
                 }
             }
         }
+        */
     }
 }
