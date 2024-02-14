@@ -19,6 +19,8 @@ public class CameraController : MonoBehaviour
     public CinemachineVirtualCamera mainCam;
     public CinemachineVirtualCamera shoulderCam;
 
+    private Vector3 cameraOffset;
+
     private float aimDZWidth;
     private float aimDZHeight;
 
@@ -38,6 +40,8 @@ public class CameraController : MonoBehaviour
         if(componentBaseB is CinemachineTransposer transposer){
             bodyYDamping = transposer.m_YDamping;
         }
+
+        cameraOffset = mainCam.transform.position - transform.position;
     }
 
     public void SwitchCameraView(bool switchToIsometric)
@@ -57,6 +61,11 @@ public class CameraController : MonoBehaviour
             shoulderCam.Priority = 15;
         }
         //isIsometricView = !switchToIsometric;
+    }
+
+    public void RecomposeCamera()
+    {
+        mainCam.transform.position = transform.position + cameraOffset;
     }
 
     public void SwitchToTeleportMode(bool yes = true)

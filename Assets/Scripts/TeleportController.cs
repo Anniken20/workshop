@@ -72,7 +72,6 @@ public class TeleportController : MonoBehaviour
     IEnumerator TransitionThroughTeleporter(GameObject player)
     {
         isTransitioning = true;
-        Camera.main.GetComponent<CameraController>().SwitchToTeleportMode();
 
         // Disable character control
         characterController.enabled = false;
@@ -139,6 +138,7 @@ public class TeleportController : MonoBehaviour
 
         // Teleport the player to the final destination
         player.transform.position = teleportDestination;
+        Camera.main.GetComponent<CameraController>().RecomposeCamera();
 
         // Move the player for an additional distance after teleporting
         Vector3 moveAfterTeleportDestination = player.transform.position + player.transform.forward * moveAfterTeleportDistance;
@@ -173,6 +173,5 @@ public class TeleportController : MonoBehaviour
 
         //arbitrary value but makes sure that the camera is back to the normal angle before it switches over
         yield return new WaitForSeconds(8f);
-        Camera.main.GetComponent<CameraController>().SwitchToTeleportMode(false);
     }
 }
