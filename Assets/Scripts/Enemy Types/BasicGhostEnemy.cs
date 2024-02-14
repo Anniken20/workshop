@@ -24,9 +24,13 @@ public class GhostEnemy : MonoBehaviour, IShootable
         TakeDamage((int)bullet.currDmg);
     }
 
-    void Start()
+    void Awake()
     {
         aggroScript = GetComponentInChildren<AggroScript>();
+    }
+    void Start()
+    {
+        //aggroScript = GetComponentInChildren<AggroScript>();
         //player = GameObject.FindGameObjectWithTag("Player");
         //moved them to targeting Val's shoot point, since val's pivot is at her feet
         //target = GameObject.FindGameObjectWithTag("ShootPoint");
@@ -36,6 +40,7 @@ public class GhostEnemy : MonoBehaviour, IShootable
 
     void Update()
     {
+
         if (aggroScript.target == null) // If the player is not found, do nothing
             return;
 
