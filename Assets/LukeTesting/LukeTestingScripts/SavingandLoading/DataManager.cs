@@ -6,7 +6,7 @@ using System.Linq;
 public class DataManager : MonoBehaviour
 {
     [Header("File saving info")]
-    [SerializeField] private string fileName;
+    [SerializeField] public string fileName;
     private GameData gameData;
     private List<IDataPersistence> dataPersistenceObjects;
     private SaveDataHandler saveHandler;
@@ -38,7 +38,7 @@ public class DataManager : MonoBehaviour
         saveHandler.Save(gameData);
     }
     private void Start(){
-        this.saveHandler = new SaveDataHandler(Application.persistentDataPath, fileName);
+        this.saveHandler = new SaveDataHandler(Application.persistentDataPath, fileName+PlayerPrefs.GetInt("SelectedProfileIndex"));
         this.dataPersistenceObjects = FindAllDataPersistenceObjects();
         LoadGame();
     }
