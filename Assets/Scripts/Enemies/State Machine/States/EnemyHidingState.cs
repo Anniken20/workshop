@@ -17,7 +17,7 @@ public class EnemyHidingState : EnemyState
     {
         base.EnterState();
         player = GameObject.FindGameObjectWithTag("Player").transform;
-        hidingData = (HidingData)enemy.FindData("hidingData");
+        hidingData = (HidingData)enemy.FindData("HidingData");
         Debug.Log("Started hiding");
         nav.speed = hidingData.hidingSpeed;
         CalculateHidingSpot();

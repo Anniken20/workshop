@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "HidingData/ShootData")]
+[CreateAssetMenu(menuName = "EnemyData/HidingData")]
 public class HidingData : StateData
 {
     public float hidingSpeed;

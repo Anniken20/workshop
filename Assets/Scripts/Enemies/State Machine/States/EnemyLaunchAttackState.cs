@@ -6,6 +6,7 @@ using UnityEngine.AI;
 public class EnemyLaunchAttackState : EnemyState
 {
     private bool hasLaunched; // Flag to track if the enemy has performed a launch attack
+    private LaunchData launchData;
 
     public EnemyLaunchAttackState(Enemy enemy, EnemyStateMachine enemyStateMachine) : base(enemy, enemyStateMachine)
     {
@@ -14,6 +15,7 @@ public class EnemyLaunchAttackState : EnemyState
     public override void EnterState()
     {
         base.EnterState();
+        launchData = (LaunchData)enemy.FindData("LaunchData");
         Debug.Log("Started launch attack");
         hasLaunched = false;
         LaunchAttack();
@@ -30,11 +32,11 @@ public class EnemyLaunchAttackState : EnemyState
         if (!hasLaunched)
         {
             // Create and launch the projectile
-            GameObject projectile = Instantiate(enemy.launchProjectilePrefab, enemy.launchPoint.position, Quaternion.identity);
+            GameObject projectile = Instantiate(launchData.launchProjectilePrefab, enemy.firePoint.position, Quaternion.identity);
             Rigidbody projectileRigidbody = projectile.GetComponent<Rigidbody>();
 
             // Apply force to the projectile to launch it
-            projectileRigidbody.AddForce(enemy.launchPoint.forward * enemy.launchForce, ForceMode.Impulse);
+            projectileRigidbody.AddForce(enemy.firePoint.forward * launchData.launchForce, ForceMode.Impulse);
 
             hasLaunched = true;
         }

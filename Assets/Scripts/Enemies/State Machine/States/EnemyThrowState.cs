@@ -14,7 +14,7 @@ public class EnemyThrowState : EnemyState
     public override void EnterState()
     {
         base.EnterState();
-        throwData = (ThrowData)enemy.FindData("throwData");
+        throwData = (ThrowData)enemy.FindData("ThrowData");
         Debug.Log("Started throw attack");
         throwRoutine = StartCoroutine(ThrowRoutine());
     }

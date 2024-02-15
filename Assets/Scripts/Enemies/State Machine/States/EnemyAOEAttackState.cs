@@ -16,6 +16,7 @@ public class EnemyAOEAttackState : EnemyState
     {
         base.EnterState();
         Debug.Log("Started AOE attack");
+        aoeAttackData = (AOEAttackData)enemy.FindData("AOEAttackData");
 
         //arbitrary 1 second buffer
         nextAttackTime = Time.time + 1f;
@@ -43,7 +44,7 @@ public class EnemyAOEAttackState : EnemyState
     private void PerformAOEAttack()
     {
         // Create the AOE attack effect
-        GameObject aoeAttackEffect = Instantiate(enemy.aoeAttackPrefab, enemy.aoeAttackPoint.position, Quaternion.identity);
+        GameObject aoeAttackEffect = Instantiate(aoeAttackData.aoeAttackPrefab, enemy.firePoint.position, Quaternion.identity);
         Destroy(aoeAttackEffect, 2f);
 
         /*
@@ -66,7 +67,7 @@ public class EnemyAOEAttackState : EnemyState
         */
 
         // Set the cooldown for the next AOE attack
-        nextAttackTime = Time.time + enemy.attackCooldown;
+        nextAttackTime = Time.time + aoeAttackData.attackCooldown;
     }
 
 

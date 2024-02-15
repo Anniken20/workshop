@@ -8,6 +8,7 @@ public class EnemyMeleeAttackState : EnemyState
     private Transform player; // Reference to the player's transform
     private float nextAttackTime; // Time for the next melee attack
 
+    public MeleeAttackData meleeAttackData;
     public EnemyMeleeAttackState(Enemy enemy, EnemyStateMachine enemyStateMachine) : base(enemy, enemyStateMachine)
     { 
     }
@@ -16,6 +17,7 @@ public class EnemyMeleeAttackState : EnemyState
     {
         base.EnterState();
         player = GameObject.FindGameObjectWithTag("Player").transform;
+        meleeAttackData = (MeleeAttackData)enemy.FindData("MeleeAttackData");
         Debug.Log("Started melee attack");
         nextAttackTime = Time.time;
     }
@@ -48,7 +50,7 @@ public class EnemyMeleeAttackState : EnemyState
     private bool IsPlayerInRange()
     {
         // Check if the player is within the attack range
-        return Vector3.Distance(transform.position, player.position) <= enemy.attackRange;
+        return Vector3.Distance(transform.position, player.position) <= meleeAttackData.attackRange;
     }
 
     private void MeleeAttack()
@@ -56,11 +58,11 @@ public class EnemyMeleeAttackState : EnemyState
         PlayerHealth playerHealth = player.GetComponent<PlayerHealth>();
         if (playerHealth != null)
         {
-            playerHealth.TakeDamage(enemy.attackDamage);
+            playerHealth.TakeDamage(meleeAttackData.attackDamage);
         }
 
         // Set the cooldown for the next melee attack
-        nextAttackTime = Time.time + enemy.attackCooldown;
+        nextAttackTime = Time.time + meleeAttackData.attackCooldown;
     }
 
     private void FacePlayer()

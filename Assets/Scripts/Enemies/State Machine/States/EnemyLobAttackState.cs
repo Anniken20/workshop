@@ -8,6 +8,7 @@ public class EnemyLobAttackState : EnemyState
     private bool hasAttacked; // Flag to track if the enemy has performed a lob attack
     //private float timeBetweenAttacks = 1f;
     //private float timer;
+    private LobData lobData;
 
     public EnemyLobAttackState(Enemy enemy, EnemyStateMachine enemyStateMachine) : base(enemy, enemyStateMachine)
     {
@@ -17,6 +18,7 @@ public class EnemyLobAttackState : EnemyState
     {
         base.EnterState();
         Debug.Log("Started lob attack");
+        lobData = (LobData)enemy.FindData("LobData");
         //timer -= Time.deltaTime;
         //if(timer < 0f)
         //{
@@ -39,15 +41,15 @@ public class EnemyLobAttackState : EnemyState
         if (!hasAttacked)
         {
             // Create and lob the projectile
-            GameObject projectile = Instantiate(enemy.lobProjectilePrefab, enemy.launchPoint.position, Quaternion.identity);
+            GameObject projectile = Instantiate(lobData.lobProjectilePrefab, enemy.firePoint.position, Quaternion.identity);
             Rigidbody projectileRigidbody = projectile.GetComponent<Rigidbody>();
             Destroy(projectile, 10f);
 
             // Calculate the direction to the lob target
-            Vector3 direction = (enemy.lobTarget.position - transform.position).normalized;
+            Vector3 direction = (enemy.firePoint.position - transform.position).normalized;
 
             // Apply force to the projectile to make it land at the lob target
-            projectileRigidbody.velocity = direction * enemy.lobSpeed;
+            projectileRigidbody.velocity = direction * lobData.lobSpeed;
 
             hasAttacked = true;
         }

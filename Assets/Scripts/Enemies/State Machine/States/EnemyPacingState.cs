@@ -22,7 +22,7 @@ public class EnemyPacingState : EnemyState
 
     public override void EnterState()
     {
-        pacingData = (PacingData)enemy.FindData("pacingData");
+        pacingData = (PacingData)enemy.FindData("PacingData");
         StartPace();
         animator = GetComponent<Animator>();
     }

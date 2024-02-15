@@ -16,7 +16,7 @@ public class EnemyShootState : EnemyState
     public override void EnterState()
     {
         base.EnterState();
-        shootData = (ShootData)enemy.FindData("shootData");
+        shootData = (ShootData)enemy.FindData("ShootData");
         player = GameObject.FindGameObjectWithTag("Player").transform;
         nextFireTime = Time.time;
     }

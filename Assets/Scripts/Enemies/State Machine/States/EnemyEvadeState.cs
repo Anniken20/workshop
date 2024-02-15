@@ -15,7 +15,7 @@ public class EnemyEvadeState : EnemyState
     public override void EnterState()
     {
         base.EnterState();
-        evadeData = (EvadeData)enemy.FindData("evadeData");
+        evadeData = (EvadeData)enemy.FindData("EvadeData");
         Debug.Log("Started evading");
         nav.speed = evadeData.evadeSpeed;
         CalculateEvadePosition();
