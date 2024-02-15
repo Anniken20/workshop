@@ -34,8 +34,8 @@ public class EnemyThrowState : EnemyState
             yield return new WaitForSeconds(throwData.windupTime);
 
             // create and throw the projectile at target
-            Vector3 direction = (ThirdPersonController.Main.CorePosition() - enemy.launchPoint.position).normalized;
-            GameObject projectile = Instantiate(throwData.throwThing, enemy.launchPoint.position, Quaternion.identity);
+            Vector3 direction = (ThirdPersonController.Main.CorePosition() - enemy.firePoint.position).normalized;
+            GameObject projectile = Instantiate(throwData.throwThing, enemy.firePoint.position, Quaternion.identity);
             Projectile proj = projectile.GetComponent<Projectile>();
             if (proj != null) proj.Project(direction, throwData.throwAirSpeed);
 

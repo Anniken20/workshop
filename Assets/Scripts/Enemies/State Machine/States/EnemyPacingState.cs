@@ -7,6 +7,7 @@ public class EnemyPacingState : EnemyState
 {
     private float currentTimer;
     private Animator animator;
+    private PacingData pacingData;
 
     //constructor
     public EnemyPacingState(Enemy enemy, EnemyStateMachine enemyStateMachine): base(enemy, enemyStateMachine)
@@ -21,15 +22,15 @@ public class EnemyPacingState : EnemyState
 
     public override void EnterState()
     {
+        pacingData = (PacingData)enemy.FindData("pacingData");
         StartPace();
         animator = GetComponent<Animator>();
-        Debug.Log(gameObject.name + " started pacing");
     }
 
     //start a random timer between 2 values
     private void StartPace()
     {
-        currentTimer = Random.Range(enemy.frequencyBounds.x, enemy.frequencyBounds.y);
+        currentTimer = Random.Range(pacingData.frequencyBounds.x, pacingData.frequencyBounds.y);
     }
 
     public override void ExitState()
@@ -47,7 +48,7 @@ public class EnemyPacingState : EnemyState
         if(currentTimer < 0)
         {
             //set new random point to go to
-            nav.SetDestination(enemy.gameObject.transform.position + (Random.insideUnitSphere * (enemy).randomPointRadius));
+            nav.SetDestination(enemy.gameObject.transform.position + (Random.insideUnitSphere * pacingData.randomPointRadius));
 
             //set new timer to go to another point
             StartPace();

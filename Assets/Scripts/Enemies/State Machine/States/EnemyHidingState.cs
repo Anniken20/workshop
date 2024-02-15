@@ -6,6 +6,7 @@ using UnityEngine.AI;
 public class EnemyHidingState : EnemyState
 {
     private Transform player; // Reference to the player's transform
+    private HidingData hidingData;
 
     public EnemyHidingState(Enemy enemy, EnemyStateMachine enemyStateMachine) : base(enemy, enemyStateMachine)
     {
@@ -16,8 +17,9 @@ public class EnemyHidingState : EnemyState
     {
         base.EnterState();
         player = GameObject.FindGameObjectWithTag("Player").transform;
+        hidingData = (HidingData)enemy.FindData("hidingData");
         Debug.Log("Started hiding");
-        nav.speed = enemy.hidingSpeed;
+        nav.speed = hidingData.hidingSpeed;
         CalculateHidingSpot();
     }
 
@@ -33,14 +35,14 @@ public class EnemyHidingState : EnemyState
     {
         base.ExitState();
         Debug.Log("Stopped hiding");
-        nav.speed = enemy.DefaultMovementSpeed; // Reset the speed to the default value
+        nav.speed = enemy.defaultMovementSpeed; // Reset the speed to the default value
     }
 
     private void CalculateHidingSpot()
     {
         // Calculate a position away from the player by the hidingDistance
         Debug.Log("player: " + player);
-        Vector3 hidingSpot = transform.position + (transform.position - player.position).normalized * enemy.hidingDistance;
+        Vector3 hidingSpot = transform.position + (transform.position - player.position).normalized * hidingData.hidingDistance;
         nav.SetDestination(hidingSpot);
     }
 }

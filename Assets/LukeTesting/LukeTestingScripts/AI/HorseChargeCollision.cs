@@ -5,6 +5,7 @@ using UnityEngine;
 public class HorseChargeCollision : MonoBehaviour
 {
     private Horse h;
+    public ChargeData chargeData;
 
     void Start(){
         h = GetComponentInParent<Horse>();
@@ -25,8 +26,8 @@ public class HorseChargeCollision : MonoBehaviour
         PlayerHealth playerHealth = other.GetComponent<PlayerHealth>();
         if (playerHealth != null)
         {
-            playerHealth.TakeDamage(h.chargeDamage);
-            Debug.Log("Damaging player for: " +h.chargeDamage);
+            playerHealth.TakeDamage(chargeData.chargeDamage);
+            Debug.Log("Damaging player for: " + chargeData.chargeDamage);
 
             
         }

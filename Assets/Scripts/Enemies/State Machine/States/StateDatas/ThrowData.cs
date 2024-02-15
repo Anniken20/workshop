@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "ThrowData")]
+[CreateAssetMenu(menuName = "EnemyData/ThrowData")]
 public class ThrowData : StateData
 {
     public float windupTime;

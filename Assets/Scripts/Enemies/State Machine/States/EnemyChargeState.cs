@@ -33,6 +33,6 @@ public class EnemyChargeState : EnemyState
     {
         base.ExitState();
         Debug.Log("Stopped charging");
-        nav.speed = enemy.DefaultMovementSpeed; // Reset the speed to the default value
+        nav.speed = enemy.defaultMovementSpeed; // Reset the speed to the default value
     }
 }

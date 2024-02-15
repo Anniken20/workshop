@@ -59,7 +59,7 @@ public class HorseChargeState : EnemyState
     public override void ExitState()
     {  
         base.ExitState();
-        nav.speed = enemy.DefaultMovementSpeed; // Reset the speed to the default value
+        nav.speed = enemy.defaultMovementSpeed; // Reset the speed to the default value
         this.GetComponent<Rigidbody>().velocity = Vector3.zero;
         activelyCharging = false;
     }

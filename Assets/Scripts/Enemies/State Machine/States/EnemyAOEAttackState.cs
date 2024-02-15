@@ -6,6 +6,7 @@ using UnityEngine.AI;
 public class EnemyAOEAttackState : EnemyState
 {
     private float nextAttackTime; // Time for the next AOE attack
+    public AOEAttackData aoeAttackData;
 
     public EnemyAOEAttackState(Enemy enemy, EnemyStateMachine enemyStateMachine) : base(enemy, enemyStateMachine)
     {
