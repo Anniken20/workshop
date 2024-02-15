@@ -77,7 +77,8 @@ public class LassoPickupScript : MonoBehaviour, ILassoable
         internalThrowWindow = throwWindow;
         rb = GetComponent<Rigidbody>();
         objectCollider = GetComponent<Collider>();
-        player = ThirdPersonController.Main.GetComponent<LassoController>();
+        //player = ThirdPersonController.Main.GetComponent<LassoController>();
+        player = FindObjectOfType<LassoController>();
         //lassoCooldown = player.lassoCooldown;
         gunCon = player.GetComponent<GunController>();
         aimController = player.GetComponent<AimController>();
@@ -88,7 +89,7 @@ public class LassoPickupScript : MonoBehaviour, ILassoable
 
     private void Update(){
 
-        inCombatAimingPos = player.lassoCombatAiming.transform;
+        //inCombatAimingPos = player.lassoCombatAiming.transform;
 
             if(Input.GetAxis("Mouse ScrollWheel") != 0){
                 mWheelDistance = Input.GetAxis("Mouse ScrollWheel");
@@ -99,8 +100,9 @@ public class LassoPickupScript : MonoBehaviour, ILassoable
 
         iaControls.CharacterControls.Pull.performed += OnPullStart;
         iaControls.CharacterControls.Pull.canceled += OnPullEnd;
-
-        lassoObject = player.projectile;
+        if(player.projectile != null){
+            lassoObject = player.GetComponent<LassoController>().projectile;
+        }
         //Debug.Log(internalThrowWindow);
         inCombat = player.inCombat;
         if(inCombat && internalThrowWindow > 0 && lasso.triggered && lassoedObject != null){
