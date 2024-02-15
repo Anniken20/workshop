@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 649904484043811217}
   - component: {fileID: 7596957639389238392}
   - component: {fileID: 5561833807381859458}
-  m_Layer: 11
+  m_Layer: 12
   m_Name: Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -118,6 +118,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a75c78c166495c144ba0a344ce4b58d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  target: {fileID: 0}
 --- !u!1 &3104299516950262754
 GameObject:
   m_ObjectHideFlags: 0
@@ -225,6 +226,7 @@ MonoBehaviour:
   attackCooldown: 2
   floatingHeight: 1
   currentHealth: 0
+  aggroScript: {fileID: 0}
 --- !u!136 &3236768445005279599
 CapsuleCollider:
   m_ObjectHideFlags: 0
