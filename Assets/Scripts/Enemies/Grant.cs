@@ -7,7 +7,6 @@ using UnityEngine.Events;
 
 public class Grant : Enemy
 {
-    [HideInInspector] public EnemyIdleState idleState;
     [HideInInspector] public EnemyPacingState pacingState;
     [HideInInspector] public EnemyThrowState throwState;
 

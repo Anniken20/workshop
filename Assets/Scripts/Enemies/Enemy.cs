@@ -12,7 +12,7 @@ public struct StateKVP
     public StateData state;
 }
 
-public class Enemy : MonoBehaviour
+public abstract class Enemy : MonoBehaviour
 {
     [Header("Additional State Data")]
     [Tooltip("Attach as needed")]
@@ -26,6 +26,7 @@ public class Enemy : MonoBehaviour
     public Transform firePoint; // The position where the projectiles are spawned
     public float defaultMovementSpeed;
     [HideInInspector] public EnemyStateMachine stateMachine;
+    [HideInInspector] public EnemyIdleState idleState;
 
     [Header("Stunned Variables")]
     public GameObject lassoTarget;
@@ -49,6 +50,7 @@ public class Enemy : MonoBehaviour
     {
         nav = GetComponent<NavMeshAgent>();
         stateMachine = new EnemyStateMachine();
+        idleState.Initialize(this, stateMachine);
         LoadUpDictionary();
     }
     
@@ -81,9 +83,9 @@ public class Enemy : MonoBehaviour
         int coinsToDrop = Random.Range(minCoins, maxCoins + 1);
         for (int i = 0; i < coinsToDrop; i++)
         {
-        Vector3 spawnPosition = transform.position + Random.insideUnitSphere * coinDropRadius;
-        spawnPosition.y = transform.position.y; // Keep coins spawning at the enemy's feet level
-        Instantiate(coinPrefab, spawnPosition, Quaternion.identity);
+            Vector3 spawnPosition = transform.position + Random.insideUnitSphere * coinDropRadius;
+            spawnPosition.y = transform.position.y; // Keep coins spawning at the enemy's feet level
+            Instantiate(coinPrefab, spawnPosition, Quaternion.identity);
         }
 
         itemPortrait.SetActive(false);
@@ -91,6 +93,8 @@ public class Enemy : MonoBehaviour
 
     private IEnumerator DeathRoutine()
     {
+        stateMachine.ChangeState(idleState);
+
         //turn off components so it stops moving
         GetComponent<Animator>().enabled = false;
         GetComponent<NavMeshAgent>().enabled = false;

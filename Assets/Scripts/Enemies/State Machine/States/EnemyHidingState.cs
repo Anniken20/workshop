@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using StarterAssets;
 
 public class EnemyHidingState : EnemyState
 {
@@ -16,7 +17,7 @@ public class EnemyHidingState : EnemyState
     public override void EnterState()
     {
         base.EnterState();
-        player = GameObject.FindGameObjectWithTag("Player").transform;
+        player = ThirdPersonController.Main.transform;
         hidingData = (HidingData)enemy.FindData("HidingData");
         Debug.Log("Started hiding");
         nav.speed = hidingData.hidingSpeed;
@@ -41,7 +42,6 @@ public class EnemyHidingState : EnemyState
     private void CalculateHidingSpot()
     {
         // Calculate a position away from the player by the hidingDistance
-        Debug.Log("player: " + player);
         Vector3 hidingSpot = transform.position + (transform.position - player.position).normalized * hidingData.hidingDistance;
         nav.SetDestination(hidingSpot);
     }

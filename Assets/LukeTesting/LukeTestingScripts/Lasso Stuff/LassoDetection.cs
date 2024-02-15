@@ -61,7 +61,7 @@ public class LassoDetection : MonoBehaviour
 
     }
     private void OnTriggerEnter(Collider other){
-        if(detectCollOnce){
+        if(detectCollOnce = true){
             var objLayer = other.gameObject.layer;
             string layerName = LayerMask.LayerToName(objLayer);
 

@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Sheriff : Enemy
 {
-    [HideInInspector] public EnemyIdleState idleState;
     [HideInInspector] public EnemyPacingState pacingState;
     [HideInInspector] public EnemyShootState shootState;
     [HideInInspector] public EnemyHidingState hidingState;

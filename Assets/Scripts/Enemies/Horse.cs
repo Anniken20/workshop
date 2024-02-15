@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Horse : Enemy
 {
-    [HideInInspector] public EnemyIdleState idleState;
     [HideInInspector] public EnemyPacingState pacingState;
     [HideInInspector] public HorseStunnedState stunnedState;
     [HideInInspector] public HorseChargeState chargeState;
@@ -14,12 +13,9 @@ public class Horse : Enemy
     //public GameObject stunnedText;
     //public GameObject chargingText;
 
-    //private Enemy e;
     [HideInInspector] public bool isStunned;
 
     private void Awake(){
-
-        //e = GetComponentInParent<Enemy>();
 
         base.MyAwake();
 
