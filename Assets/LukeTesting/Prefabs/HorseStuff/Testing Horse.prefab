@@ -300,6 +300,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92b25b24c688dfe41b29378753df675d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  chargeData: {fileID: 0}
 --- !u!1 &3595276887323709109
 GameObject:
   m_ObjectHideFlags: 0
@@ -342,7 +343,7 @@ Transform:
   - {fileID: 5175913324343091492}
   - {fileID: 100769313130472008}
   m_Father: {fileID: 0}
-  m_RootOrder: 161
+  m_RootOrder: 45
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &7446928115029945861
 MeshFilter:
@@ -429,37 +430,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8eb37626a19342b4fa287f650843fca0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stateDatas: []
+  stateDatas:
+  - key: ChargeData
+    state: {fileID: 11400000, guid: 400e907d91135b742831838d8faee1f1, type: 2}
+  - key: PacingData
+    state: {fileID: 11400000, guid: 80d665f0cfd1e6045a1a285acb457cc8, type: 2}
   maxHealth: 100
   currentHealth: 0
   itemPortrait: {fileID: 0}
-  aoeAttackPrefab: {fileID: 0}
-  aoeAttackPoint: {fileID: 0}
-  aoeRadius: 5
-  attackCooldown: 5
-  projectilePrefab: {fileID: 0}
   firePoint: {fileID: 0}
-  projectileSpeed: 10
-  fireRate: 1
-  frequencyBounds: {x: 2, y: 6}
-  randomPointRadius: 5
-  hidingDistance: 10
-  hidingSpeed: 5
-  launchProjectilePrefab: {fileID: 0}
-  launchPoint: {fileID: 0}
-  launchForce: 10
-  lobProjectilePrefab: {fileID: 0}
-  lobTarget: {fileID: 0}
-  lobSpeed: 10
-  attackRange: 2
-  attackDamage: 10
-  attackMeleeCooldown: 1
-  chargeSpeed: 5
-  maxChargeDist: 10
-  chargeDamage: 25
-  evadeDistance: 5
-  evadeSpeed: 5
-  DefaultMovementSpeed: 0
+  defaultMovementSpeed: 0
   lassoTarget: {fileID: 1168800841497991228}
   onDeath:
     m_PersistentCalls:
@@ -473,6 +453,7 @@ MonoBehaviour:
   pacingState: {fileID: 0}
   stunnedState: {fileID: 0}
   chargeState: {fileID: 0}
+  freezeState: {fileID: 0}
   isCharging: 0
   isStunned: 0
 --- !u!54 &4563730539831291940

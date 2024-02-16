@@ -13,35 +13,20 @@ using Cinemachine;
  * 10/8/23
  * Changed to fit QTETest 1/27/24
  */
+
 public class CameraController : MonoBehaviour
 {
+    public GameObject playerObject;
     public CinemachineBrain camBrain;
     public CinemachineVirtualCamera mainCam;
     public CinemachineVirtualCamera shoulderCam;
 
+    public Vector3 baseCameraOffset;
     private Vector3 cameraOffset;
-
-    private float aimDZWidth;
-    private float aimDZHeight;
-
-    private float bodyYDamping;
 
     private void Start()
     {
-        //save scene settings
-        CinemachineComponentBase componentBase = mainCam.GetCinemachineComponent(CinemachineCore.Stage.Aim);
-        if(componentBase is CinemachineComposer composer)
-        {
-            aimDZWidth = composer.m_DeadZoneWidth;
-            aimDZHeight = composer.m_DeadZoneHeight;
-        }
-
-        CinemachineComponentBase componentBaseB = mainCam.GetCinemachineComponent(CinemachineCore.Stage.Body);
-        if(componentBaseB is CinemachineTransposer transposer){
-            bodyYDamping = transposer.m_YDamping;
-        }
-
-        cameraOffset = mainCam.transform.position - transform.position;
+        cameraOffset = mainCam.transform.position - playerObject.transform.position;
     }
 
     public void SwitchCameraView(bool switchToIsometric)
@@ -65,39 +50,30 @@ public class CameraController : MonoBehaviour
 
     public void RecomposeCamera()
     {
-        mainCam.transform.position = transform.position + cameraOffset;
+        //Debug.Log("Camera recomposed by offset: " + cameraOffset);
+        
+        StartCoroutine(ForceResetRoutine());
+    }
+
+    public void ResetCamera()
+    {
+        mainCam.transform.position = playerObject.transform.position + baseCameraOffset;
+    }
+
+    private IEnumerator ForceResetRoutine()
+    {
+        float duration = 2f;
+        float endTime = Time.time + duration;
+        while (true)
+        {
+            mainCam.transform.position = playerObject.transform.position + cameraOffset;
+            if (Time.time > endTime) yield break;
+            yield return null;
+        }
     }
 
     public void SwitchToTeleportMode(bool yes = true)
     {
-        /*
-        CinemachineComponentBase componentBase = mainCam.GetCinemachineComponent(CinemachineCore.Stage.Aim);
-
-        if (componentBase is CinemachineComposer composer)
-        {
-            if (yes)
-            {
-                composer.m_DeadZoneHeight = 0;
-                composer.m_DeadZoneWidth = 0;
-                
-                CinemachineComponentBase componentBaseB = mainCam.GetCinemachineComponent(CinemachineCore.Stage.Body);
-                if (componentBaseB is CinemachineTransposer transposer)
-                {
-                    transposer.m_YDamping = 0;
-                }
-            }
-            else
-            {
-                composer.m_DeadZoneHeight = aimDZWidth;
-                composer.m_DeadZoneWidth = aimDZHeight;
-
-                CinemachineComponentBase componentBaseB = mainCam.GetCinemachineComponent(CinemachineCore.Stage.Body);
-                if (componentBaseB is CinemachineTransposer transposer)
-                {
-                    transposer.m_YDamping = bodyYDamping;
-                }
-            }
-        }
-        */
+        
     }
 }
