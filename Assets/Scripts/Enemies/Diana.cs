@@ -8,7 +8,6 @@ public class Diana : Enemy
     [HideInInspector] public EnemyPacingState pacingState;
     [HideInInspector] public EnemyShootState shootState;
     [HideInInspector] public EnemyEvadeState evadeState;
-    [HideInInspector] public EnemyIdleState idleState;
 
     [Header("Diana specific")]
     public Animator animator;
