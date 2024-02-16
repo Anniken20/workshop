@@ -9,7 +9,6 @@ public class GhostEnemy : MonoBehaviour, IShootable
     public int damage = 1; // Damage inflicted to the player when in attack range
     public int maxHealth = 50; // Maximum health of the ghost
     public float attackCooldown = 2f; // Cooldown time between attacks
-    public float floatingHeight = 1f; // Height above the player's position to float
 
     private GameObject player; // Who ghost attacks and deals damage to
     private GameObject target; //where ghsot looks at and matches Y value with
@@ -17,7 +16,7 @@ public class GhostEnemy : MonoBehaviour, IShootable
     private bool canAttack = true; // Whether ghost can attack or not
 
     public AggroScript aggroScript; // ref to aggro script 
-    private float lookAtOffset = 1.4f;
+    public float lookAtOffset = 1.4f;
 
     public void OnShot(BulletController bullet)
     {
@@ -30,10 +29,6 @@ public class GhostEnemy : MonoBehaviour, IShootable
     }
     void Start()
     {
-        //aggroScript = GetComponentInChildren<AggroScript>();
-        //player = GameObject.FindGameObjectWithTag("Player");
-        //moved them to targeting Val's shoot point, since val's pivot is at her feet
-        //target = GameObject.FindGameObjectWithTag("ShootPoint");
         currentHealth = maxHealth;
         
     }
