@@ -15,7 +15,7 @@ public class TooFarIShoot : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            Debug.Log("pew");
+            //Debug.Log("pew");
             s.startshooting();
         }
         
