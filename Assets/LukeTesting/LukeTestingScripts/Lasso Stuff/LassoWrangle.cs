@@ -30,7 +30,7 @@ public class LassoWrangle : MonoBehaviour, ILassoable
         controller = ThirdPersonController.Main;
         currentAmount = 0f;
         wrangleBar.fillAmount = 0;
-        currentAmount = Mathf.Clamp(currentAmount, 0, barCapacity);
+        currentAmount = Mathf.Clamp(currentAmount, 0, barCapacity + 10);
         lossRoutine = StartCoroutine(LoseTimer()); 
         StartMiniGame();
 
