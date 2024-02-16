@@ -50,7 +50,7 @@ public abstract class Enemy : MonoBehaviour
     {
         nav = GetComponent<NavMeshAgent>();
         stateMachine = new EnemyStateMachine();
-        idleState.Initialize(this, stateMachine);
+        //idleState.Initialize(this, stateMachine);
         LoadUpDictionary();
     }
     

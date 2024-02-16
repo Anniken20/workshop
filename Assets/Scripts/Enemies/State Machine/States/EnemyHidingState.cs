@@ -19,7 +19,7 @@ public class EnemyHidingState : EnemyState
         base.EnterState();
         player = ThirdPersonController.Main.transform;
         hidingData = (HidingData)enemy.FindData("HidingData");
-        Debug.Log("Started hiding");
+        //Debug.Log("Started hiding");
         nav.speed = hidingData.hidingSpeed;
         CalculateHidingSpot();
     }
@@ -35,7 +35,7 @@ public class EnemyHidingState : EnemyState
     public override void ExitState()
     {
         base.ExitState();
-        Debug.Log("Stopped hiding");
+        //Debug.Log("Stopped hiding");
         nav.speed = enemy.defaultMovementSpeed; // Reset the speed to the default value
     }
 
