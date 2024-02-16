@@ -4,7 +4,7 @@ using UnityEngine;
 using TMPro;
 using DG.Tweening;
 
-public class CoinCollector : MonoBehaviour
+public class CoinCollector : MonoBehaviour, IDataPersistence
 {
     public static CoinCollector Instance;
 
@@ -13,6 +13,8 @@ public class CoinCollector : MonoBehaviour
     private static int coinsCollected = 0; 
     private Vector2 uiOffScreenPosition; // Position when the UI is off-screen
     private Vector2 uiOnScreenPosition; // Position when the UI is on-screen
+
+    private Coroutine moveHUDRoutine;
 
     private void Awake()
     {
@@ -43,7 +45,10 @@ public class CoinCollector : MonoBehaviour
         coinsCollected++;
         UpdateCoinsText();
         ShowCoinsUI();
-        StartCoroutine(HideCoinsUIAfterDelay(5f));;
+
+        //kill the previous move routine to reset the time remaining until moving back
+        if (moveHUDRoutine != null) StopCoroutine(moveHUDRoutine);
+        moveHUDRoutine = StartCoroutine(HideCoinsUIAfterDelay(5f));;
     }
 
     private void UpdateCoinsText()
@@ -73,6 +78,13 @@ public class CoinCollector : MonoBehaviour
     private void HideCoinsUIInstant()
     {
         coinsRectTransform.anchoredPosition = uiOffScreenPosition; // Instantly place UI off-screen
+    }
+
+    public void LoadData(GameData data){
+        coinsCollected = data.coins;
+    }
+    public void SaveData(ref GameData data){
+        data.coins = coinsCollected;
     }
 }
 
