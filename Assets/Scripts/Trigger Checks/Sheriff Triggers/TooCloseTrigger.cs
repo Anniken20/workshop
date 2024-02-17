@@ -17,7 +17,6 @@ public class TooCloseTrigger : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            Debug.Log("bye");
             s.runaway();
             if(d != null)
             {
