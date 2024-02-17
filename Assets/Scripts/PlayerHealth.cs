@@ -62,7 +62,7 @@ public class PlayerHealth : MonoBehaviour
         // Reduce player's health
         currentHealth -= damage;
         UpdateHealthUI();
-        Debug.Log("Player health: " + currentHealth);
+        //Debug.Log("Player health: " + currentHealth);
 
         // Check if the player has died
         if (currentHealth <= 0)
