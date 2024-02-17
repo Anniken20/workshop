@@ -224,6 +224,7 @@ GameObject:
   - component: {fileID: 128964519415033468}
   - component: {fileID: 4896671319014759359}
   - component: {fileID: 8664746877978128317}
+  - component: {fileID: 8615960420870743318}
   m_Layer: 5
   m_Name: NoteSelectionPrefab
   m_TagString: Untagged
@@ -251,7 +252,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.000030517578, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 23}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &128964519415033468
@@ -336,6 +337,20 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &8615960420870743318
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6889911945283150339}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e44b255d69efb43efb07ef310150b357, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bgImage: {fileID: 4896671319014759359}
+  label: {fileID: 4903988246962703630}
 --- !u!1 &8428803193752797849
 GameObject:
   m_ObjectHideFlags: 0
