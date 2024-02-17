@@ -76,6 +76,16 @@ public class NotesSystem : MonoBehaviour
     private Sprite defaultPageTexture = null;
     private bool usingNotesSystem;
 
+    public GameObject HUD;
+
+    public delegate void OnPause();
+    public static event OnPause onPause;
+
+    public delegate void OnResume();
+    public static event OnResume onResume;
+
+    [HideInInspector] public static bool paused;
+
     private void OnEnable()
     {
         A_Display += DisplayNote;
@@ -112,9 +122,7 @@ public class NotesSystem : MonoBehaviour
 
     public void Open()
     {
-        Time.timeScale = 0f;
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.None;
+        SwitchGameControls(false);
 
         UpdateList();
         UpdateCanvasGroup(true, UI.ListCanvasGroup);
@@ -122,17 +130,39 @@ public class NotesSystem : MonoBehaviour
 
     public void Close(bool playSFX)
     {
-        Time.timeScale = 1f;
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
-
         CloseNote(playSFX);
         UpdateCanvasGroup(false, UI.ListCanvasGroup);
+    }
+
+    private void SwitchGameControls(bool state)
+    {
+        switch (state)
+        {
+            case true:
+                paused = false;
+                Time.timeScale = 1f;
+                HUD.SetActive(true);
+                Cursor.visible = false;
+                Cursor.lockState = CursorLockMode.Locked;
+                onResume?.Invoke();
+                break;
+            case false:
+                paused = true;
+                Time.timeScale = 0f;
+                HUD.SetActive(false);
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
+                onPause?.Invoke();
+                break;
+        }
+
     }
 
     private void DisplayNote(Note note)
     {
         if (note == null) { return; }
+
+        SwitchGameControls(false);
 
         PlaySound(openNoteSFX);
 
@@ -148,7 +178,6 @@ public class NotesSystem : MonoBehaviour
 
         if(activeNote.Pages[page].Type != PageType.Texture)
         { readSubscript = false; } else { if(readSubscript) { UpdateSubscript(); } }
-
 
 
         switch (activeNote.Pages[page].Type)
@@ -267,6 +296,10 @@ public class NotesSystem : MonoBehaviour
         activeNote = null;
         currentPage = 0;
         readSubscript = false;
+        if (!usingNotesSystem)
+        {
+            SwitchGameControls(true);
+        }
     }
 
     private void UpdateCanvasGroup(bool state, CanvasGroup canvasGroup)

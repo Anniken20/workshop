@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum PageType { Text, Texture }
 
-[CreateAssetMenu(fileName = "New Note", menuName = "Notes System/new Note")]
+[CreateAssetMenu(fileName = "New Page", menuName = "Notes System/new Page")]
 public class Page : ScriptableObject
 {
     [SerializeField] PageType type = PageType.Text;
