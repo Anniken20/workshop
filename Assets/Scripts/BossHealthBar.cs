@@ -14,5 +14,6 @@ public class BossHealthBar : MonoBehaviour
         float currentHealth = enemy.currentHealth;
         float healthPercentage = (currentHealth / maxHealth);
         healthSlider.value = healthPercentage;
+        healthSlider.gameObject.transform.LookAt(Camera.main.transform);
     }
 }

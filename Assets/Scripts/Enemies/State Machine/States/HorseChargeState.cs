@@ -24,8 +24,6 @@ public class HorseChargeState : EnemyState
         canLook = true;
         readyingCharge = true;
         player = GameObject.FindGameObjectWithTag("Player").transform; 
-        //this.transform.LookAt(player);
-        //this.transform.LookAt(player);
         base.EnterState();
         nav.speed = 50;
         nav.acceleration = 20;
@@ -44,15 +42,6 @@ public class HorseChargeState : EnemyState
         if(readyingCharge && canLook){
             this.transform.LookAt(player);
         }
-        //Debug.Log("Currently current pos: " +this.transform.position +" Destination pos: " +destination);
-        /*if(this.transform.position == nav.destination){
-            Debug.Log("Destination Reached");
-        }*/
-
-        //if(nav.velocity == Vector3.zero){
-            /*var chargeTrigger = GetComponentInParent<HorseChargeTrigger>();
-            chargeTrigger.canTrigger = true;*/
-        //}
 
     }
 
