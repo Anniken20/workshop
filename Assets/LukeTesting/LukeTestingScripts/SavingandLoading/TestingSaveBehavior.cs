@@ -7,6 +7,8 @@ public class TestingSaveBehavior : MonoBehaviour, IDataPersistence
 {
     public TextMeshPro text;
     public int testNum;
+    public TextMeshPro saveProfile;
+    private bool canTrigger;
     public void LoadData(GameData data){
         this.testNum = data.testingSave;
     }
@@ -16,13 +18,22 @@ public class TestingSaveBehavior : MonoBehaviour, IDataPersistence
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Player")
+        if (other.gameObject.tag == "Player" && canTrigger)
         {
             testNum += 1;
-            this.GetComponent<Collider>().enabled = false;
+            //this.GetComponent<Collider>().enabled = false;
+            canTrigger = false;
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if(other.gameObject.tag == "Player")
+        {
+            canTrigger = true;
         }
     }
     public void Update(){
         text.text = testNum.ToString();
+        saveProfile.text = "Save Profile: " + PlayerPrefs.GetInt("SelectedProfileIndex").ToString();
     }
 }
