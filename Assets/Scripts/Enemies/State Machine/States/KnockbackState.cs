@@ -37,6 +37,7 @@ public class KnockbackState : EnemyState
     {
         nav.updateRotation = true;
         StopAllCoroutines();
+        knockbackObj?.SetActive(false);
         base.ExitState();
     }
 
@@ -52,8 +53,17 @@ public class KnockbackState : EnemyState
         FacePlayer();
         knockbackObj.SetActive(true);
         knockbackObj.transform.position = player.transform.position;
-        knockbackObj.GetComponent<KnockbackZone>().pushDirection = 
+        KnockbackZone kbz = knockbackObj.GetComponent<KnockbackZone>();
+        kbz.pushDirection = 
             knockbackData.destinationPosition - player.transform.position;
+        kbz.knockbackStrength = knockbackData.knockbackPower;
+        StartCoroutine(TurnoffKnockbackZoneRoutine());
+    }
+
+    private IEnumerator TurnoffKnockbackZoneRoutine()
+    {
+        yield return new WaitForSeconds(0.5f);
+        knockbackObj.SetActive(false);
     }
 
     private void FacePlayer()
