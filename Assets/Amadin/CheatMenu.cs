@@ -84,7 +84,7 @@ public class CheatMenu : MonoBehaviour
 
 
     // Toggle No Clipping
-        public void ToggleNoClipping()
+        /*public void ToggleNoClipping()
     {
         noClippingEnabled = !noClippingEnabled;
         
@@ -126,7 +126,7 @@ public class CheatMenu : MonoBehaviour
         {
             Debug.LogError("Player GameObject not found!");
         }
-    }
+    }*/
 
     // Give All Items
     public void GiveAllItems()
