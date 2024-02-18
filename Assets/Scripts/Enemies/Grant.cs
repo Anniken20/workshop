@@ -52,11 +52,13 @@ public class Grant : Enemy
 
     public void KnockawayPlayer()
     {
+        Debug.Log("start knockbacking");
         stateMachine.ChangeState(knockbackState);
     }
 
     public void ResumeThrowing()
     {
+        Debug.Log("resume throwing");
         stateMachine.ChangeState(throwState);
     }
 

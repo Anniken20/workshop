@@ -8,4 +8,5 @@ public class KnockbackData : StateData
     public float windupTime;
     public Vector3 destinationPosition;
     public GameObject knockbackPrefab;
+    public float knockbackPower;
 }
