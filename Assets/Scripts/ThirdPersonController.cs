@@ -497,7 +497,7 @@ namespace StarterAssets
         //called every frame
         public void DecelerateForces()
         {
-            if(extraMotion != Vector3.zero) Debug.Log("Extra motion: " + extraMotion);
+            if(extraMotion != Vector3.zero) //Debug.Log("Extra motion: " + extraMotion);
             if(extraMotion.magnitude > 0.1f)
             {
                 if (Grounded)
