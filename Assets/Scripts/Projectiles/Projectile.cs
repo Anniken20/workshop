@@ -30,7 +30,7 @@ public class Projectile : MonoBehaviour
         Break();
     }
 
-    public void Break()
+    public virtual void Break()
     {
         Destroy(gameObject);
     }
