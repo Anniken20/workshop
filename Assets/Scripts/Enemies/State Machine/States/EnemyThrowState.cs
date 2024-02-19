@@ -15,7 +15,6 @@ public class EnemyThrowState : EnemyState
     {
         base.EnterState();
         throwData = (ThrowData)enemy.FindData("ThrowData");
-        Debug.Log("Started throw attack");
         throwRoutine = StartCoroutine(ThrowRoutine());
     }
 
@@ -23,7 +22,6 @@ public class EnemyThrowState : EnemyState
     {
         base.ExitState();
         StopCoroutine(throwRoutine);
-        Debug.Log("Stopped throw attack");
     }
 
     private IEnumerator ThrowRoutine()

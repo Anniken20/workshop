@@ -9,6 +9,7 @@ public class Grant : Enemy
 {
     [HideInInspector] public EnemyPacingState pacingState;
     [HideInInspector] public EnemyThrowState throwState;
+    [HideInInspector] public KnockbackState knockbackState;
 
     public Animator animator;
 
@@ -25,8 +26,11 @@ public class Grant : Enemy
         throwState = gameObject.AddComponent<EnemyThrowState>();
         throwState.Initialize(this, stateMachine);
 
+        knockbackState = gameObject.AddComponent<KnockbackState>();
+        knockbackState.Initialize(this, stateMachine);
+
         //set default state
-        stateMachine.Initialize(throwState);
+        stateMachine.Initialize(idleState);
 
         animator = gameObject.GetComponent<Animator>();
     }
@@ -39,6 +43,23 @@ public class Grant : Enemy
     private void FixedUpdate()
     {
         stateMachine.CurrentEnemyState?.PhysicsUpdate();
+    }
+
+    public void BeginBattle()
+    {
+        stateMachine.ChangeState(throwState);
+    }
+
+    public void KnockawayPlayer()
+    {
+        Debug.Log("start knockbacking");
+        stateMachine.ChangeState(knockbackState);
+    }
+
+    public void ResumeThrowing()
+    {
+        Debug.Log("resume throwing");
+        stateMachine.ChangeState(throwState);
     }
 
 }
