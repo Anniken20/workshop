@@ -25,6 +25,7 @@ public abstract class Enemy : MonoBehaviour
     public GameObject  itemPortrait;
     public Transform firePoint; // The position where the projectiles are spawned
     public float defaultMovementSpeed;
+    public Animator animator;
     [HideInInspector] public EnemyStateMachine stateMachine;
     [HideInInspector] public EnemyIdleState idleState;
 
