@@ -19,6 +19,7 @@ public class EnemyShootState : EnemyState
         shootData = (ShootData)enemy.FindData("ShootData");
         player = GameObject.FindGameObjectWithTag("Player").transform;
         nextFireTime = Time.time;
+        if (enemy.animator != null) enemy.animator.SetBool("Shooting", true);
     }
 
     public override void FrameUpdate()
@@ -34,6 +35,7 @@ public class EnemyShootState : EnemyState
 
     public override void ExitState()
     {
+        if (enemy.animator != null) enemy.animator.SetBool("Shooting", false);
         base.ExitState();
     }
 

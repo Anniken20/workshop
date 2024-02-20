@@ -25,6 +25,7 @@ public class KnockbackState : EnemyState
             knockbackObj = Instantiate(knockbackData.knockbackPrefab);
             knockbackObj.SetActive(false);
         }
+        if (enemy.animator != null) enemy.animator.SetBool("Pushing", true);
         StartCoroutine(WindupRoutine());
     }
 
@@ -38,6 +39,7 @@ public class KnockbackState : EnemyState
         nav.updateRotation = true;
         StopAllCoroutines();
         knockbackObj?.SetActive(false);
+        if (enemy.animator != null) enemy.animator.SetBool("Pushing", false);
         base.ExitState();
     }
 

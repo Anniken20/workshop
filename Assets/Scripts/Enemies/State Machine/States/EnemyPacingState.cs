@@ -24,7 +24,7 @@ public class EnemyPacingState : EnemyState
     {
         pacingData = (PacingData)enemy.FindData("PacingData");
         StartPace();
-        animator = GetComponent<Animator>();
+        if(enemy.animator != null) enemy.animator.SetBool("Pacing", true);
     }
 
     //start a random timer between 2 values
@@ -35,6 +35,7 @@ public class EnemyPacingState : EnemyState
 
     public override void ExitState()
     {
+        if (enemy.animator != null) enemy.animator.SetBool("Pacing", false);
         base.ExitState();
     }
 
