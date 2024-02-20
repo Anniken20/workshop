@@ -16,12 +16,14 @@ public class EnemyThrowState : EnemyState
         base.EnterState();
         throwData = (ThrowData)enemy.FindData("ThrowData");
         throwRoutine = StartCoroutine(ThrowRoutine());
+        if (enemy.animator != null) enemy.animator.SetBool("Throwing", true);
     }
 
     public override void ExitState()
     {
-        base.ExitState();
+        if (enemy.animator != null) enemy.animator.SetBool("Throwing", false);
         StopCoroutine(throwRoutine);
+        base.ExitState();
     }
 
     private IEnumerator ThrowRoutine()

@@ -8,8 +8,6 @@ public class Sheriff : Enemy
     [HideInInspector] public EnemyShootState shootState;
     [HideInInspector] public EnemyHidingState hidingState;
 
-    public Animator animator;
-
     private void Awake()
     {
         base.MyAwake();

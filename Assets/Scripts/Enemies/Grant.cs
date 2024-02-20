@@ -11,8 +11,6 @@ public class Grant : Enemy
     [HideInInspector] public EnemyThrowState throwState;
     [HideInInspector] public KnockbackState knockbackState;
 
-    public Animator animator;
-
     private void Awake()
     {
         base.MyAwake();
@@ -31,8 +29,6 @@ public class Grant : Enemy
 
         //set default state
         stateMachine.Initialize(idleState);
-
-        animator = gameObject.GetComponent<Animator>();
     }
 
     private void Update()
@@ -52,13 +48,11 @@ public class Grant : Enemy
 
     public void KnockawayPlayer()
     {
-        Debug.Log("start knockbacking");
         stateMachine.ChangeState(knockbackState);
     }
 
     public void ResumeThrowing()
     {
-        Debug.Log("resume throwing");
         stateMachine.ChangeState(throwState);
     }
 
