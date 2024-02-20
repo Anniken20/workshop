@@ -27,7 +27,8 @@ public class GunController : MonoBehaviour
 
     private InputAction shoot;
     private InputAction redirect;
-    public GameObject bulletPrefab;
+    //public GameObject bulletPrefab;
+    public ObjectPool bulletPool;
     public AimController aimController;
     
     [Header("Additional Animations")]
@@ -188,24 +189,28 @@ public class GunController : MonoBehaviour
         //instantiate and fire bullet
         //pass in the information of the main cam, target, and player
         //so we know how to modify properly
-        GameObject bullet = Instantiate(bulletPrefab);
-        BulletController bulletController = bullet.GetComponent<BulletController>();
-        bulletController.mainCamera = playerFollowCam;
-        bulletController.playerCamRoot = playerCamRoot;
-        bulletController.player = gameObject;
-        bulletController.Fire(gameObject.transform, aimAngle);
+        //GameObject bullet = Instantiate(bulletPrefab);
+        GameObject bullet = bulletPool.PullFromPool();
+        if(bullet != null)
+        {
+            bullet.SetActive(true);
+            BulletController bulletController = bullet.GetComponent<BulletController>();
+            bulletController.mainCamera = playerFollowCam;
+            bulletController.playerCamRoot = playerCamRoot;
+            bulletController.player = gameObject;
+            bulletController.Fire(gameObject.transform, aimAngle);
 
-        //store this so we know which bullet to redirect
-        mostRecentBullet = bullet;
-        
-        //anim = GetComponent<Animator>();
-        //anim.SetBool("isShooting", false);
+            //store this so we know which bullet to redirect
+            mostRecentBullet = bullet;
 
-        //trigger animation trigger
-        //animator.SetTrigger("shootTrigger");
-        ghostAmmo--;
-        bulletHUD.SubtractBulletHUD();
+            //anim = GetComponent<Animator>();
+            //anim.SetBool("isShooting", false);
 
+            //trigger animation trigger
+            //animator.SetTrigger("shootTrigger");
+            ghostAmmo--;
+            bulletHUD.SubtractBulletHUD();
+        }
     }
 
     //slow down the player speed by some factor
