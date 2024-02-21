@@ -424,15 +424,8 @@ public class BulletController : MonoBehaviour
             //lunaTransform.parent = null;
             lunaTransform.DOScale(0f, 1f);
             //lunaTransform.DOLocalRotate(new Vector3(0, 0, 90), 1f, RotateMode.LocalAxisAdd);
-            StartCoroutine(TurnOffLuna(lunaAnimator));
-            //Destroy(lunaAnimator.gameObject, 1f);
+            Destroy(lunaAnimator.gameObject, 1f);
         }
-    }
-
-    private IEnumerator TurnOffLuna(Animator lunaAnimator)
-    {
-        yield return new WaitForSeconds(1f);
-        lunaAnimator.gameObject.SetActive(false);
     }
 
     //change from luna cam to normal cam after some period of time
@@ -513,11 +506,10 @@ public class BulletController : MonoBehaviour
         ghost.GetComponent<GhostBulletController>().Spawn(player);
 
         //destroy numbers pop up - using buffer time so it doesn't disappear instantly
-        dmgText.gameObject.GetComponent<DestroyAfterTime>().SetInactiveAfter(1f);
+        dmgText.gameObject.GetComponent<DestroyAfterTime>().DestroyAfter(1f);
 
-
-        //setting it inactive since we're using an object pool
-        gameObject.SetActive(false);
+        //destroy this object
+        Destroy(gameObject);
     }
 
     public bool HasBouncesRemaining()
