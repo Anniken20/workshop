@@ -28,6 +28,7 @@ public class BulletController : MonoBehaviour
     private GunAudioController gunAudioController;
     private bool camFollowingBullet;
     private bool hasBeenLunaRedirected;
+    private Tween camRootRedirectTween;
 
     //inspector fields --------------------------
     [Header("Stats")]
@@ -443,8 +444,17 @@ public class BulletController : MonoBehaviour
         else
         {
             //reset main cam to look at player
-            mainCamera.Follow = player.transform;
-            mainCamera.LookAt = player.transform;
+            mainCamera.Follow = playerCamRoot.transform;
+            mainCamera.LookAt = playerCamRoot.transform;
+
+            //ease look point back to player
+            
+            Vector3 localCamPos = playerCamRoot.transform.localPosition;
+            if (camRootRedirectTween != null) camRootRedirectTween.Kill();
+            playerCamRoot.transform.position = redirectLookPoint.transform.position;
+            camRootRedirectTween = playerCamRoot.transform.DOLocalMove(localCamPos, 1f).SetEase(Ease.InOutCubic);
+            
+
             DOTween.To(() => mainCamera.m_Lens.OrthographicSize,
                 x => mainCamera.m_Lens.OrthographicSize = x,
                 formerCamOrthoSize, camZoomTime).SetEase(Ease.OutCubic);
