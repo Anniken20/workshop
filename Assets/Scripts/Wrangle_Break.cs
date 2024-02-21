@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Wrangle_Break : LassoWrangle
 {
-    public DamageController dmgcontrol;
+    public BreakController breaker;
     public override void WinMiniGame()
     {
         StopCoroutine(lossRoutine);
@@ -16,7 +16,7 @@ public class Wrangle_Break : LassoWrangle
         lassoObject.GetComponent<LassoDetection>().recall = true;
         player.canLasso = true;
         controller._manipulatingLasso = false;
-        Invoke("ObjBroken", .2f);
+        Invoke("ObjBroken", .1f);
     }
 
     public override void LoseMiniGame()
@@ -31,6 +31,6 @@ public class Wrangle_Break : LassoWrangle
 
     private void ObjBroken()
     {
-        dmgcontrol.ApplyDamage(100, new Vector3(.1f, .1f, .1f));
+        breaker.BreakIntoPieces();
     }
 }
