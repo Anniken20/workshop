@@ -50,6 +50,11 @@ public class EthanDoors : MonoBehaviour
 
         if (BreakObjDoor && DoorOpenerObj == null)
         {
+            if(doorController == null)
+            {
+                Debug.LogWarning("Door controller is null on " + gameObject.name);
+                return;
+            }
             if (isDoorOpenSwitch && !doorController.isDoorOpen)
             {
                 doorController.isDoorOpen = !doorController.isDoorOpen;
