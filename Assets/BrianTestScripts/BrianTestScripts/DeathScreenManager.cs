@@ -17,13 +17,10 @@ public class DeathScreenManager : MonoBehaviour
     private void Start()
     {
         //Singleton behavior
-        if (main != null)
-            Destroy(gameObject);
-        else
-        {
-            DontDestroyOnLoad(gameObject);
-            main = this;
-        }
+        main = this;
+
+        //no scene persistence because it would break the dependencies from the player 
+        // (and the player does not persist between scenes)
     }
 
     public void ShowDeathScreen()
