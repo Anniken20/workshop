@@ -88,6 +88,7 @@ public class BulletController : MonoBehaviour
     public int sleepMS;
     public float shakeIntensity;
     public float shakeDuration;
+    public AudioSource meowAudio;
 
     [Header("Bullet VFX")]
     public ParticleSystem sparksSystem;
@@ -300,6 +301,8 @@ public class BulletController : MonoBehaviour
             lunaTransform.DOLocalMove(new Vector3(0, lunaTransform.localPosition.y, 0), 0.3f);
         }
 
+        if (meowAudio != null) meowAudio.Play();
+
         //lock movement
         player.GetComponent<ThirdPersonController>()._lunaLocked = true;
 
@@ -452,7 +455,7 @@ public class BulletController : MonoBehaviour
             Vector3 localCamPos = playerCamRoot.transform.localPosition;
             if (camRootRedirectTween != null) camRootRedirectTween.Kill();
             playerCamRoot.transform.position = redirectLookPoint.transform.position;
-            camRootRedirectTween = playerCamRoot.transform.DOLocalMove(localCamPos, 1f).SetEase(Ease.InOutCubic);
+            camRootRedirectTween = playerCamRoot.transform.DOLocalMove(localCamPos, 1f);
             
 
             DOTween.To(() => mainCamera.m_Lens.OrthographicSize,
