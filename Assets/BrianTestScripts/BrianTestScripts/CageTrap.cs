@@ -30,7 +30,7 @@ public class CageTrap : MonoBehaviour
     {
         if (playerController != null)
         {
-            playerController.ForceStartConversation();
+            playerController.LockInPlace();
         }
         cage.SetActive(true);
         cage.transform.position = player.transform.position;
@@ -39,7 +39,7 @@ public class CageTrap : MonoBehaviour
 
         if (playerController != null)
         {
-            playerController.ForceStopConversation();
+            playerController.FreeFromLockInPlace();
         }
 
         cage.SetActive(false);
