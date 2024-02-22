@@ -3,66 +3,74 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
+[RequireComponent(typeof(NavMeshAgent))]
 public class NPCController : MonoBehaviour
 {
-    public float patrolTime = 10f; // Time between new patrol points
-    public float lookRadius = 10f; // Detection radius for player
-    private float nextDestinationTime = 0f;
-    private Transform target; // Player's transform
+    public Transform playerTransform; // Assign the player's transform in the inspector
+    public float detectionRadius = 5f; // Radius within which the AI can detect the player
+    public float interactionDistance = 3f; // Distance within which the AI stops and faces the player
     private NavMeshAgent agent;
-    private Vector3 originalPosition;
+    private Vector3 wanderTarget = Vector3.zero;
 
-    
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
-        originalPosition = transform.position; // Remember start position for patrolling
-        target = GameObject.FindWithTag("Player").transform; // Find player by tag
-        StartCoroutine(UpdatePath()); // Start the path updating routine
+        StartCoroutine(UpdateDestinationRoutine());
     }
-
 
     void Update()
     {
-        float distance = Vector3.Distance(target.position, transform.position);
-
-        if (distance <= lookRadius)
-        {
-            FaceTarget(); // Turn to face player if within look radius
+        float distanceToPlayer = Vector3.Distance(transform.position, playerTransform.position);
+    
+    // Check if the player is within interaction distance
+    if (distanceToPlayer <= interactionDistance)
+    {
+        // Stop and face the player
+        if (!agent.isStopped) {
+            agent.isStopped = true;
+            agent.ResetPath(); // Clear current path to stop the movement
         }
+        FaceTarget(playerTransform.position);
+    }
+    else if(agent.isStopped) // Add condition to restart movement when the player is not within interaction distance
+    {
+        agent.isStopped = false;
+        // Optionally, immediately set a new destination when the player moves away
+        SetNewRandomDestination();
+    }
     }
 
-     void FaceTarget()
+    IEnumerator UpdateDestinationRoutine()
     {
-        Vector3 direction = (target.position - transform.position).normalized;
+    while (true)
+    {
+        if (!agent.isStopped)
+        {
+            SetNewRandomDestination();
+        }
+        yield return new WaitForSeconds(30); // Wait for 30 seconds before updating the destination again
+    }
+    }
+
+    void SetNewRandomDestination()
+    {
+    wanderTarget = RandomWanderTarget();
+    agent.SetDestination(wanderTarget);
+    }
+
+    Vector3 RandomWanderTarget()
+    {
+        Vector3 randomDirection = Random.insideUnitSphere * detectionRadius;
+        randomDirection += transform.position;
+        NavMeshHit navHit;
+        NavMesh.SamplePosition(randomDirection, out navHit, detectionRadius, -1);
+        return navHit.position;
+    }
+
+    void FaceTarget(Vector3 destination)
+    {
+        Vector3 direction = (destination - transform.position).normalized;
         Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
-    }
-
-    IEnumerator UpdatePath()
-    {
-        float refreshRate = 0.5f;
-
-        while (target != null)
-        {
-            if (Time.time >= nextDestinationTime)
-            {
-                Vector3 newDestination = originalPosition + Random.insideUnitSphere * patrolTime; // Random point within patrol radius
-                NavMeshHit hit;
-                if (NavMesh.SamplePosition(newDestination, out hit, patrolTime, NavMesh.AllAreas))
-                {
-                    agent.SetDestination(hit.position);
-                }
-                nextDestinationTime = Time.time + 30f; // Update only every 30 seconds
-            }
-            yield return new WaitForSeconds(refreshRate);
-        }
-    }
-
-    // Utilize this to draw the look radius in the editor
-    void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, lookRadius);
     }
 }
