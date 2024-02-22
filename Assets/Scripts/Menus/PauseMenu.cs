@@ -119,9 +119,6 @@ public class PauseMenu : MonoBehaviour
         onResume?.Invoke();
 
         SceneManager.LoadScene(mainMenuScene);
-
-        //temporary fix
-        Application.Quit();
     }
 
     public void ShowControls()
