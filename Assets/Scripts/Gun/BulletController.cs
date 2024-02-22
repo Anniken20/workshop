@@ -27,6 +27,8 @@ public class BulletController : MonoBehaviour
     private float formerCamOrthoSize;
     private GunAudioController gunAudioController;
     private bool camFollowingBullet;
+    private bool hasBeenLunaRedirected;
+    private Tween camRootRedirectTween;
 
     //inspector fields --------------------------
     [Header("Stats")]
@@ -86,6 +88,7 @@ public class BulletController : MonoBehaviour
     public int sleepMS;
     public float shakeIntensity;
     public float shakeDuration;
+    public AudioSource meowAudio;
 
     [Header("Bullet VFX")]
     public ParticleSystem sparksSystem;
@@ -98,6 +101,11 @@ public class BulletController : MonoBehaviour
         currDmg = baseDmg;
         direction = dir;
         gameObject.transform.LookAt(gameObject.transform.position + (dir * 10));
+        currBounces = 0;
+        inLunaMode = false;
+        hasBeenLunaRedirected = false;
+
+
         StartCoroutine(BulletMove(source));
         StartCoroutine(RedirectWindowRoutine());
         gunAudioController.PlayFire();
@@ -193,8 +201,13 @@ public class BulletController : MonoBehaviour
                 }
             }
 
+            /*
             IShootable shootable = hitData.collider.gameObject.GetComponent<IShootable>();
             if(shootable != null) shootable.OnShot(this);
+
+            ILunaShootable lShootable = hitData.collider.gameObject.GetComponent<ILunaShootable>();
+            if (lShootable != null) lShootable.OnLunaShot(this);
+            */
 
             //try to apply damage if it's a damage-able object
             TryToApplyDamage(hitData.collider.gameObject);
@@ -264,6 +277,15 @@ public class BulletController : MonoBehaviour
         foreach (IShootable s in shootables){
             s.OnShot(this);
         }
+
+        if (hasBeenLunaRedirected)
+        {
+            ILunaShootable[] lShootables = obj.GetComponents<ILunaShootable>();
+            foreach (ILunaShootable s in lShootables)
+            {
+                s.OnLunaShot(this);
+            }
+        }
     }
 
     public void EnterLunaMode()
@@ -278,6 +300,8 @@ public class BulletController : MonoBehaviour
             lunaTransform.localPosition += new Vector3(0, 0, -10);
             lunaTransform.DOLocalMove(new Vector3(0, lunaTransform.localPosition.y, 0), 0.3f);
         }
+
+        if (meowAudio != null) meowAudio.Play();
 
         //lock movement
         player.GetComponent<ThirdPersonController>()._lunaLocked = true;
@@ -333,6 +357,7 @@ public class BulletController : MonoBehaviour
     public void Redirect()
     {
         direction = gameObject.transform.forward;
+        hasBeenLunaRedirected = true;
         ExitLunaMode();
     }
 
@@ -422,8 +447,17 @@ public class BulletController : MonoBehaviour
         else
         {
             //reset main cam to look at player
-            mainCamera.Follow = player.transform;
-            mainCamera.LookAt = player.transform;
+            mainCamera.Follow = playerCamRoot.transform;
+            mainCamera.LookAt = playerCamRoot.transform;
+
+            //ease look point back to player
+            
+            Vector3 localCamPos = playerCamRoot.transform.localPosition;
+            if (camRootRedirectTween != null) camRootRedirectTween.Kill();
+            playerCamRoot.transform.position = redirectLookPoint.transform.position;
+            camRootRedirectTween = playerCamRoot.transform.DOLocalMove(localCamPos, 1f);
+            
+
             DOTween.To(() => mainCamera.m_Lens.OrthographicSize,
                 x => mainCamera.m_Lens.OrthographicSize = x,
                 formerCamOrthoSize, camZoomTime).SetEase(Ease.OutCubic);

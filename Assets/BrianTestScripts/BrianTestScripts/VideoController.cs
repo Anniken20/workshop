@@ -45,13 +45,13 @@ public class VideoController : MonoBehaviour
     void EndReached(VideoPlayer vp)
     {
         // Load the next scene when the video ends
-        SceneManager.LoadScene("Tutorial");
+        SceneManager.LoadScene(nextSceneName);
     }
 
     void SkipVideo()
     {
         // Load the next scene when skipping
-        SceneManager.LoadScene("Tutorial");
+        SceneManager.LoadScene(nextSceneName);
     }
 
     void OnDestroy()

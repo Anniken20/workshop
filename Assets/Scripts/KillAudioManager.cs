@@ -6,7 +6,7 @@ public class KillAudioManager : MonoBehaviour
 {
     void Start()
     {
-        Destroy(AudioManager.main.gameObject);
+        if(AudioManager.main.gameObject != null) Destroy(AudioManager.main.gameObject);
     }
 
 }

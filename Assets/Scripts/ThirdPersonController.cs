@@ -93,10 +93,11 @@ namespace StarterAssets
         [HideInInspector] public bool _lunaLocked;
         [HideInInspector] public bool _paused;
         [HideInInspector] public bool _stunned;
-        [HideInInspector] public bool _canMove = true;
+        [HideInInspector] public bool _canMove = true; //not to be edited
         [HideInInspector] public bool _inDialogue;
         [HideInInspector] public bool _manipulatingLasso;
         [HideInInspector] public bool _inCinematic;
+        private bool _lockedInPlace;
         private Vector3 extraMotion;
 
         // animation IDs
@@ -432,7 +433,7 @@ namespace StarterAssets
             return _paused 
                 || _lunaLocked || _stunned 
                 || _inDialogue || _manipulatingLasso 
-                || _inCinematic;
+                || _inCinematic || _lockedInPlace;
         }
 
         public void LockPlayerForDuration(float seconds)
@@ -455,6 +456,16 @@ namespace StarterAssets
         public void ForceStopConversation()
         {
             _inDialogue = false;
+        }
+
+        public void LockInPlace()
+        {
+            _lockedInPlace = true;
+        }
+
+        public void FreeFromLockInPlace()
+        {
+            _lockedInPlace = false;
         }
 
         private void OnEnable(){
@@ -497,7 +508,7 @@ namespace StarterAssets
         //called every frame
         public void DecelerateForces()
         {
-            if(extraMotion != Vector3.zero) Debug.Log("Extra motion: " + extraMotion);
+            if(extraMotion != Vector3.zero) //Debug.Log("Extra motion: " + extraMotion);
             if(extraMotion.magnitude > 0.1f)
             {
                 if (Grounded)

@@ -12,9 +12,8 @@ public class PhaseThroughObject : PhaseObject
     private Renderer myRenderer;
     private Shader shaderOG;
     //private Color defaultColor;
-    private new void Start()
+    private void Start()
     {
-        base.Start();
         myRenderer = GetComponentInChildren<Renderer>();
         originalLayer = gameObject.layer;
         shaderOG = myRenderer.material.shader;

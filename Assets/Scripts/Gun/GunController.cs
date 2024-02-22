@@ -192,6 +192,7 @@ public class GunController : MonoBehaviour
         BulletController bulletController = bullet.GetComponent<BulletController>();
         bulletController.mainCamera = playerFollowCam;
         bulletController.playerCamRoot = playerCamRoot;
+        
         bulletController.player = gameObject;
         bulletController.Fire(gameObject.transform, aimAngle);
 

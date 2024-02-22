@@ -30,7 +30,7 @@ public class CageTrap : MonoBehaviour
     {
         if (playerController != null)
         {
-            playerController.enabled = false;
+            playerController.LockInPlace();
         }
         cage.SetActive(true);
         cage.transform.position = player.transform.position;
@@ -39,8 +39,9 @@ public class CageTrap : MonoBehaviour
 
         if (playerController != null)
         {
-            playerController.enabled = true;
+            playerController.FreeFromLockInPlace();
         }
+
         cage.SetActive(false);
     }
 }

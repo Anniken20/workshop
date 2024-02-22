@@ -78,6 +78,7 @@ public class PauseMenu : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         Time.timeScale = 0;
+        onPause?.Invoke();
     }
 
     public void UnPauseNoUI()
@@ -86,6 +87,7 @@ public class PauseMenu : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         Time.timeScale = 1;
+        onResume?.Invoke();
     }
 
     public void LoadMenu()
@@ -117,9 +119,6 @@ public class PauseMenu : MonoBehaviour
         onResume?.Invoke();
 
         SceneManager.LoadScene(mainMenuScene);
-
-        //temporary fix
-        Application.Quit();
     }
 
     public void ShowControls()
