@@ -87,7 +87,7 @@ public class AimController : MonoBehaviour
 
     private void Update()
     {
-        //Debug.Log("Aim angle: " + angle);
+        if (PauseMenu.paused) return;
         MoveCursor();
         UpdateAim();
         if (fireOnMouseUp)
