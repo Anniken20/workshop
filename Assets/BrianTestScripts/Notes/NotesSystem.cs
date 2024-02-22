@@ -130,16 +130,20 @@ public class NotesSystem : MonoBehaviour
             }
         }
 
+        /*
         if (usingNotesSystem)
         {
-            if (shootNext.triggered)
+            if (shootNext.WasPressedThisFrame())
             {
+                Debug.Log("yep next");
                 Next();
-            } else if (lassoPrev.triggered)
+            } else if (lassoPrev.WasPressedThisFrame())
             {
+                Debug.Log("yep prev");
                 Previous();
             }
         }
+        */
     }
 
     public void Open()
