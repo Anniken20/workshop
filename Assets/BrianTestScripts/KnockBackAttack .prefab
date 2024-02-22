@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5902346640858872052}
   - component: {fileID: 5940976904748481864}
   - component: {fileID: 9156757036327493018}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: 'KnockBackAttack '
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -32,7 +32,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 18
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &5902346640858872052
 BoxCollider:
@@ -96,3 +96,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   knockbackStrength: 20
   knockbackCooldown: 0.1
+  pushDirection: {x: 0, y: 0, z: 1}
+  initialDelay: 1

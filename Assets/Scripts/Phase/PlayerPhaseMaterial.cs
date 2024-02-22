@@ -21,10 +21,8 @@ public class PlayerPhaseMaterial : PhaseObject
     public SMRenderer[] objectsToTurnGhostly;
     public int materialDepth = 1;
 
-    private new void Start()
+    private void Start()
     {
-        base.Start();
-
         //cache shaders
         for (int i = 0; i < objectsToTurnGhostly.Length; ++i)
         {

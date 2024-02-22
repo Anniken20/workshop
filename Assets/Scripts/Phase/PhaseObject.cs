@@ -4,10 +4,16 @@ using UnityEngine;
 
 public abstract class PhaseObject : MonoBehaviour
 {
-    protected void Start()
+    protected void OnEnable()
     {
         GhostController.onEnterPhase += OnEnter;
         GhostController.onExitPhase += OnExit;
+    }
+
+    protected void OnDisable()
+    {
+        GhostController.onEnterPhase -= OnEnter;
+        GhostController.onExitPhase -= OnExit;
     }
 
     protected abstract void OnEnter();

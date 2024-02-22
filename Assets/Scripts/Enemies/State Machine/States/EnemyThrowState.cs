@@ -15,15 +15,15 @@ public class EnemyThrowState : EnemyState
     {
         base.EnterState();
         throwData = (ThrowData)enemy.FindData("ThrowData");
-        Debug.Log("Started throw attack");
         throwRoutine = StartCoroutine(ThrowRoutine());
+        if (enemy.animator != null) enemy.animator.SetBool("Throwing", true);
     }
 
     public override void ExitState()
     {
-        base.ExitState();
+        if (enemy.animator != null) enemy.animator.SetBool("Throwing", false);
         StopCoroutine(throwRoutine);
-        Debug.Log("Stopped throw attack");
+        base.ExitState();
     }
 
     private IEnumerator ThrowRoutine()
