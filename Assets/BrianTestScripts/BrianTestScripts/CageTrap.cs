@@ -10,7 +10,6 @@ public class CageTrap : MonoBehaviour
     public float trapDuration = 5.0f; // Time in seconds the player is trapped
 
     private ThirdPersonController playerController;
-      private Animator playerAnimator;
 
     void Start()
     {
@@ -18,7 +17,6 @@ public class CageTrap : MonoBehaviour
         if (player != null)
         {
             playerController = player.GetComponent<ThirdPersonController>();
-            playerAnimator = player.GetComponent<Animator>();
         }
     }
 
@@ -26,14 +24,13 @@ public class CageTrap : MonoBehaviour
     public void ActivateTrap()
     {
         StartCoroutine(TrapPlayer());
-        playerAnimator.SetBool("IsGrounded", false);
     }
 
     IEnumerator TrapPlayer()
     {
         if (playerController != null)
         {
-            playerController.enabled = false;
+            playerController.ForceStartConversation();
         }
         cage.SetActive(true);
         cage.transform.position = player.transform.position;
@@ -42,7 +39,7 @@ public class CageTrap : MonoBehaviour
 
         if (playerController != null)
         {
-            playerController.enabled = true;
+            playerController.ForceStopConversation();
         }
 
         cage.SetActive(false);
