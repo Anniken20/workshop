@@ -4,6 +4,7 @@ using UnityEngine;
 using System;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 
 [Serializable()]
 public struct UIElements
@@ -78,27 +79,37 @@ public class NotesSystem : MonoBehaviour
 
     public GameObject HUD;
 
-    public delegate void OnPause();
-    public static event OnPause onPause;
-
-    public delegate void OnResume();
-    public static event OnResume onResume;
-
-    [HideInInspector] public static bool paused;
+    //input
+    public CharacterMovement iaControls;
+    private InputAction lassoPrev;
+    private InputAction shootNext;
 
     private void OnEnable()
     {
+        iaControls = new CharacterMovement();
         A_Display += DisplayNote;
+
+        shootNext = iaControls.CharacterControls.Shoot;
+        lassoPrev = iaControls.CharacterControls.Lasso;
+
+        shootNext.Enable();
+        lassoPrev.Enable();
     }
 
     private void OnDisable()
     {
         A_Display -= DisplayNote;
+
+        shootNext.Disable();
+        lassoPrev.Disable();
     }
 
     private void Start()
     {
-        Close(false);
+        //Close(false);
+        activeNote = null;
+        currentPage = 0;
+        readSubscript = false;
 
         defaultPageTexture = UI.Page.sprite;
     }
@@ -118,6 +129,21 @@ public class NotesSystem : MonoBehaviour
                     break;
             }
         }
+
+        /*
+        if (usingNotesSystem)
+        {
+            if (shootNext.WasPressedThisFrame())
+            {
+                Debug.Log("yep next");
+                Next();
+            } else if (lassoPrev.WasPressedThisFrame())
+            {
+                Debug.Log("yep prev");
+                Previous();
+            }
+        }
+        */
     }
 
     public void Open()
@@ -136,24 +162,14 @@ public class NotesSystem : MonoBehaviour
 
     private void SwitchGameControls(bool state)
     {
-        switch (state)
+        if (state)
         {
-            case true:
-                paused = false;
-                Time.timeScale = 1f;
-                HUD.SetActive(true);
-                Cursor.visible = false;
-                Cursor.lockState = CursorLockMode.Locked;
-                onResume?.Invoke();
-                break;
-            case false:
-                paused = true;
-                Time.timeScale = 0f;
-                HUD.SetActive(false);
-                Cursor.visible = true;
-                Cursor.lockState = CursorLockMode.None;
-                onPause?.Invoke();
-                break;
+            PauseMenu.main.UnPauseNoUI();
+            //PauseMenu.main.PauseNoUI();
+        } else
+        {
+            PauseMenu.main.PauseNoUI();
+            //PauseMenu.main.UnPauseNoUI();
         }
 
     }
