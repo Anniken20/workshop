@@ -5,7 +5,7 @@ using UnityEngine.AI;
 using DG.Tweening;
 using UnityEngine.Events;
 
-public class Enrique : Enemy, ICryable, IShootable
+public class Enrique : Enemy, ICryable
 {
     [HideInInspector] public CryState cryState;
     [HideInInspector] public RunToPointsState runToPointsState;
@@ -43,13 +43,15 @@ public class Enrique : Enemy, ICryable, IShootable
 
     public void StartCrying()
     {
-        stateMachine.ChangeState(idleState);
+        stateMachine.ChangeState(cryState);
     }
 
-    public void OnShot(BulletController bullet)
+    
+    public override void OnShot(BulletController bullet)
     {
-        if(stateMachine.CurrentEnemyState == cryState)
+        if (stateMachine.CurrentEnemyState is CryState)
         {
+            TakeDamage((int)bullet.currDmg);
             stateMachine.ChangeState(runToPointsState);
         }
     }

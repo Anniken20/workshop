@@ -14,15 +14,14 @@ public class RunToPointsState : EnemyState
     public override void EnterState()
     {
         base.EnterState();
+        nav.speed = enemy.defaultMovementSpeed;
         runToPointsData = (RunToPointsData)enemy.FindData("RunToPointsData");
         PickNextPoint();
         enemy.animator.SetBool("Running", true);
-        Debug.Log("entered run to point state");
     }
 
     public override void FrameUpdate()
     {
-        Debug.Log("target point: " + targetPoint);
         if (ReachedDestination()) {
             if (runToPointsData.cryAfterReachingDestination)
             {
@@ -40,13 +39,19 @@ public class RunToPointsState : EnemyState
 
     private void PickNextPoint()
     {
-        targetPoint = runToPointsData.points[Random.Range(0, runToPointsData.points.Length - 1)];
+        targetPoint = runToPointsData.points[Random.Range(0, runToPointsData.points.Length)];
+        //loop til u find a new point
+        while (ReachedDestination())
+        {
+            targetPoint = runToPointsData.points[Random.Range(0, runToPointsData.points.Length)];
+        }
+
         nav.SetDestination(targetPoint);
     }
 
     private bool ReachedDestination()
     {
-        if(Vector3.Distance(transform.position, targetPoint) < runToPointsData.distanceTolerance)
+        if(Vector3.Distance(transform.position, targetPoint) <= runToPointsData.distanceTolerance)
             return true;
         else return false;
     }
