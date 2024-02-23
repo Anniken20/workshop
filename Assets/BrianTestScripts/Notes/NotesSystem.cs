@@ -4,6 +4,7 @@ using UnityEngine;
 using System;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 
 [Serializable()]
 public struct UIElements
@@ -78,14 +79,29 @@ public class NotesSystem : MonoBehaviour
 
     public GameObject HUD;
 
+    //input
+    public CharacterMovement iaControls;
+    private InputAction lassoPrev;
+    private InputAction shootNext;
+
     private void OnEnable()
     {
+        iaControls = new CharacterMovement();
         A_Display += DisplayNote;
+
+        shootNext = iaControls.CharacterControls.Shoot;
+        lassoPrev = iaControls.CharacterControls.Lasso;
+
+        shootNext.Enable();
+        lassoPrev.Enable();
     }
 
     private void OnDisable()
     {
         A_Display -= DisplayNote;
+
+        shootNext.Disable();
+        lassoPrev.Disable();
     }
 
     private void Start()
@@ -113,6 +129,21 @@ public class NotesSystem : MonoBehaviour
                     break;
             }
         }
+
+        /*
+        if (usingNotesSystem)
+        {
+            if (shootNext.WasPressedThisFrame())
+            {
+                Debug.Log("yep next");
+                Next();
+            } else if (lassoPrev.WasPressedThisFrame())
+            {
+                Debug.Log("yep prev");
+                Previous();
+            }
+        }
+        */
     }
 
     public void Open()
