@@ -7,7 +7,7 @@ public class Daughter : Enemy
     [HideInInspector] DaughterWhackAMoleState wamState;
     private void Awake()
     {
-        base.Awake();
+        //base.Awake();
         wamState = gameObject.AddComponent<DaughterWhackAMoleState>();
         wamState.Initialize(this, stateMachine);
         idleState = gameObject.AddComponent<EnemyIdleState>();
