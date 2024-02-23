@@ -1,5 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
+using StarterAssets;
 
 public class CheatMenu : MonoBehaviour
 {
@@ -7,7 +9,6 @@ public class CheatMenu : MonoBehaviour
     private bool godModeEnabled = false;
     private bool infiniteBulletsEnabled = false;
     private bool noClippingEnabled = false;
-    private bool skipCutscenesEnabled = false;
     private bool allItemsEnabled;
 
     // References
@@ -15,11 +16,34 @@ public class CheatMenu : MonoBehaviour
     public PlayerHealth playerHealth;
     public InventoryManager inventoryManager;
     public GunController gunController;
+    public FreeCamController freeCamController;
+    public Transform playerTransform;
+
+    // Our Checkpoints and teleporters
+    public Transform[] checkpoints;
+    public Transform[] teleporters;
+
+    // Text for the teleports
+    public Text[] checkpointTexts;
+    public Text[] teleporterTexts;
 
     private void Start()
     {
         // Hide the debug menu initially
         debugMenu.SetActive(false);
+
+        // Assign teleportation functions to text UI elements
+        for (int i = 0; i < checkpointTexts.Length; i++)
+        {
+            int index = i; 
+            checkpointTexts[i].GetComponent<Button>().onClick.AddListener(() => TeleportToCheckpoint(index));
+        }
+
+        for (int i = 0; i < teleporterTexts.Length; i++)
+        {
+            int index = i; 
+            teleporterTexts[i].GetComponent<Button>().onClick.AddListener(() => TeleportToTeleporter(index));
+        }
     }
 
     private void Update()
@@ -84,49 +108,21 @@ public class CheatMenu : MonoBehaviour
 
 
     // Toggle No Clipping
-        /*public void ToggleNoClipping()
+    public void ToggleNoClipping()
     {
         noClippingEnabled = !noClippingEnabled;
-        
         if (noClippingEnabled)
         {
-            EnableNoClipping();
+            freeCamController.enabled = true;
+
         }
         else
         {
-            DisableNoClipping();
+            freeCamController.enabled = false;
         }
-        
+
         Debug.Log("No Clipping " + (noClippingEnabled ? "Enabled" : "Disabled"));
     }
-
-    private void EnableNoClipping()
-    {
-        GameObject player = GameObject.FindWithTag("Player");
-        if (player != null)
-        {
-            player.GetComponent<Rigidbody>().useGravity = false;
-            player.GetComponent<Collider>().isTrigger = true;
-        }
-        else
-        {
-            Debug.LogError("Player GameObject not found!");
-        }
-    }
-
-    private void DisableNoClipping()
-    {
-        GameObject player = GameObject.FindWithTag("Player");
-        if (player != null)
-        {
-            player.GetComponent<Rigidbody>().useGravity = true;
-            player.GetComponent<Collider>().isTrigger = false;
-        }
-        else
-        {
-            Debug.LogError("Player GameObject not found!");
-        }
-    }*/
 
     // Give All Items
     public void GiveAllItems()
@@ -134,5 +130,25 @@ public class CheatMenu : MonoBehaviour
         allItemsEnabled = true;
         inventoryManager.GiveAllItemsToPlayer();
         Debug.Log("All Items Given");
+    }
+
+    // Teleport to checkpoint by index
+    private void TeleportToCheckpoint(int index)
+    {
+        if (index >= 0 && index < checkpoints.Length)
+        {
+            playerTransform.position = checkpoints[index].position;
+            Debug.Log("Teleported to checkpoint " + index);
+        }
+    }
+
+    // Teleport to teleporter by index
+    private void TeleportToTeleporter(int index)
+    {
+        if (index >= 0 && index < teleporters.Length)
+        {
+            playerTransform.position = teleporters[index].position;
+            Debug.Log("Teleported to teleporter " + index);
+        }
     }
 }
