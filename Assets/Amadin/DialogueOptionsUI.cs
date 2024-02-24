@@ -21,6 +21,8 @@ public class DialogueOptionsMenu : MonoBehaviour
     public Toggle screenShakeToggle;
     private const string ScreenShakeKey = "ScreenShake";
 
+    private Dictionary<string, Color> colorNameToValue = new Dictionary<string, Color>();
+
     // List of colors for the dropdown options
     private readonly Color[] colorOptions = {
         Color.white,
@@ -43,6 +45,12 @@ public class DialogueOptionsMenu : MonoBehaviour
 
     private void Start()
     {
+        // Populate the dictionary with color names and values
+        InitializeColorDictionary();
+
+        // Populate the color dropdown with color options
+        PopulateColorDropdown();
+
         if (postProcess != null)
         {
             // Set initial toggle values based on post-process parameters
@@ -119,6 +127,18 @@ public class DialogueOptionsMenu : MonoBehaviour
         colorDropdown.onValueChanged.RemoveListener(OnColorDropdownChanged);
     }
 
+
+    private void InitializeColorDictionary()
+    {
+        colorNameToValue.Clear();
+        colorNameToValue.Add("White", Color.white);
+        colorNameToValue.Add("Red", Color.red);
+        colorNameToValue.Add("Green", Color.green);
+        colorNameToValue.Add("Blue", Color.blue);
+        colorNameToValue.Add("Yellow", Color.yellow);
+        colorNameToValue.Add("Purple", new Color(0.5f, 0, 0.5f));
+    }
+
     private void PopulateColorDropdown()
     {
         colorDropdown.ClearOptions();
@@ -126,17 +146,16 @@ public class DialogueOptionsMenu : MonoBehaviour
         // Create a list of dropdown options
         var options = new List<TMP_Dropdown.OptionData>();
 
-        // Add each color as a dropdown option
-        foreach (Color color in colorOptions)
+        // Add each color name as a dropdown option
+        foreach (string colorName in colorNameToValue.Keys)
         {
-            var option = new TMP_Dropdown.OptionData(color.ToString());
+            var option = new TMP_Dropdown.OptionData(colorName);
             options.Add(option);
         }
 
         // Add options to the dropdown
         colorDropdown.AddOptions(options);
     }
-
     private void OnScreenShakeToggleChanged(bool value)
     {
         if (screenShakeScript != null)
