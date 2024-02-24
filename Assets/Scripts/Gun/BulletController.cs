@@ -162,28 +162,10 @@ public class BulletController : MonoBehaviour
                 return;
             }
 
-            /*
-            //phase through it if it's a ghost object
-            if (TryGetComponent<GhostController>(out GhostController ghostCon))
-            {
-                if (ghostCon.inGhost)
-                {
-                    return;
-                }
-            }
-            */
-
             //ignore player if early retrieve is off
             if(!earlyRetrieve && hitData.collider.gameObject.CompareTag("Player"))
             {
                 return;
-            }
-
-            Enemy enemy = hitData.collider.gameObject.GetComponent<Enemy>();
-            if (enemy != null)
-            {
-                //Debug.Log("Enemy hit: " + enemy.name);
-                enemy.TakeDamage((int)currDmg);
             }
 
             //draw bullethole if bullethole layer
@@ -201,19 +183,14 @@ public class BulletController : MonoBehaviour
                 }
             }
 
-            /*
-            IShootable shootable = hitData.collider.gameObject.GetComponent<IShootable>();
-            if(shootable != null) shootable.OnShot(this);
-
-            ILunaShootable lShootable = hitData.collider.gameObject.GetComponent<ILunaShootable>();
-            if (lShootable != null) lShootable.OnLunaShot(this);
-            */
-
             //try to apply damage if it's a damage-able object
             TryToApplyDamage(hitData.collider.gameObject);
 
             //try to apply interaction if it's shootable
             TryToApplyShootable(hitData.collider.gameObject);
+
+
+            Bounce(hitData);
 
             //destroy bullet if object is non-ricochetable
             if (LayerManager.main.IsNoRicochetLayer(hitData.collider.gameObject)) {
@@ -222,8 +199,6 @@ public class BulletController : MonoBehaviour
                 DestroyBullet();
                 return;
             }
-
-            Bounce(hitData);
         }
     }
 
@@ -242,6 +217,9 @@ public class BulletController : MonoBehaviour
         //increment bounces
         currBounces++;
 
+        //show dmg numbers
+        ShowBounceDmgText();
+
         //multiply dmg
         currDmg *= bounceDmgMultiplier;
         currDmg = Mathf.Clamp(currDmg, 0, maxDmg);
@@ -252,8 +230,6 @@ public class BulletController : MonoBehaviour
         //detach particle system so it doesn't follow bullet --- disabled because this breaks on second bounce ---
         //ricochetSparks.transform.parent = null;
 
-        //show dmg numbers
-        ShowBounceDmgText();
     }
 
     private void TryToApplyDamage(GameObject obj)
@@ -272,7 +248,7 @@ public class BulletController : MonoBehaviour
         {
             shootableController.OnShot();
         }
-        
+
         IShootable[] shootables = obj.GetComponents<IShootable>();
         foreach (IShootable s in shootables){
             s.OnShot(this);
@@ -519,7 +495,8 @@ public class BulletController : MonoBehaviour
         ghost.GetComponent<GhostBulletController>().Spawn(player);
 
         //destroy numbers pop up - using buffer time so it doesn't disappear instantly
-        dmgText.gameObject.GetComponent<DestroyAfterTime>().DestroyAfter(1f);
+        dmgText.gameObject.GetComponent<DestroyAfterTime>().DestroyAfter(textPopDuration * 2f);
+        dmgText.transform.SetParent(null);
 
         //destroy this object
         Destroy(gameObject);

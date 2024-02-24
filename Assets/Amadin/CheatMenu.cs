@@ -1,5 +1,5 @@
 using UnityEngine;
-using UnityEngine.UI;
+using TMPro;
 
 public class CheatMenu : MonoBehaviour
 {
@@ -7,7 +7,6 @@ public class CheatMenu : MonoBehaviour
     private bool godModeEnabled = false;
     private bool infiniteBulletsEnabled = false;
     private bool noClippingEnabled = false;
-    private bool skipCutscenesEnabled = false;
     private bool allItemsEnabled;
 
     // References
@@ -15,11 +14,37 @@ public class CheatMenu : MonoBehaviour
     public PlayerHealth playerHealth;
     public InventoryManager inventoryManager;
     public GunController gunController;
+    public FreeCamController freeCamController;
+    public Transform playerTransform;
+
+    // Teleporters
+    public Transform[] teleporters;
+    public TMP_Dropdown teleportDropdown;
+
+    private CameraController cameraController; // Reference to the CameraController script
 
     private void Start()
     {
         // Hide the debug menu initially
         debugMenu.SetActive(false);
+
+        // Find and store a reference to the CameraController script
+        cameraController = FindObjectOfType<CameraController>();
+
+        // Set up teleport dropdown
+        if (teleportDropdown != null)
+        {
+            teleportDropdown.ClearOptions();
+
+            // Populate dropdown with teleporter names
+            foreach (Transform teleporter in teleporters)
+            {
+                teleportDropdown.options.Add(new TMP_Dropdown.OptionData(teleporter.gameObject.name));
+            }
+
+            // Add listener for dropdown value change
+            teleportDropdown.onValueChanged.AddListener(TeleportDropdownValueChanged);
+        }
     }
 
     private void Update()
@@ -67,7 +92,7 @@ public class CheatMenu : MonoBehaviour
     public void ToggleInfiniteBullets()
     {
         infiniteBulletsEnabled = !infiniteBulletsEnabled;
-        
+
         if (infiniteBulletsEnabled)
         {
             // Enable infinite bullets logic in GunController
@@ -78,55 +103,25 @@ public class CheatMenu : MonoBehaviour
             // Disable infinite bullets logic in GunController
             gunController.DisableInfiniteBullets();
         }
-        
+
         Debug.Log("Infinite Bullets " + (infiniteBulletsEnabled ? "Enabled" : "Disabled"));
     }
 
-
     // Toggle No Clipping
-        /*public void ToggleNoClipping()
+    public void ToggleNoClipping()
     {
         noClippingEnabled = !noClippingEnabled;
-        
         if (noClippingEnabled)
         {
-            EnableNoClipping();
+            freeCamController.enabled = true;
         }
         else
         {
-            DisableNoClipping();
+            freeCamController.enabled = false;
         }
-        
+
         Debug.Log("No Clipping " + (noClippingEnabled ? "Enabled" : "Disabled"));
     }
-
-    private void EnableNoClipping()
-    {
-        GameObject player = GameObject.FindWithTag("Player");
-        if (player != null)
-        {
-            player.GetComponent<Rigidbody>().useGravity = false;
-            player.GetComponent<Collider>().isTrigger = true;
-        }
-        else
-        {
-            Debug.LogError("Player GameObject not found!");
-        }
-    }
-
-    private void DisableNoClipping()
-    {
-        GameObject player = GameObject.FindWithTag("Player");
-        if (player != null)
-        {
-            player.GetComponent<Rigidbody>().useGravity = true;
-            player.GetComponent<Collider>().isTrigger = false;
-        }
-        else
-        {
-            Debug.LogError("Player GameObject not found!");
-        }
-    }*/
 
     // Give All Items
     public void GiveAllItems()
@@ -135,4 +130,29 @@ public class CheatMenu : MonoBehaviour
         inventoryManager.GiveAllItemsToPlayer();
         Debug.Log("All Items Given");
     }
+
+    // Teleport using dropdown selection
+    private void TeleportDropdownValueChanged(int index)
+    {
+        if (index >= 0 && index < teleporters.Length)
+        {
+            Transform teleporter = teleporters[index];
+            if (teleporter != null)
+            {
+                playerTransform.position = teleporter.position;
+                Debug.Log("Teleported using dropdown to: " + teleporter.gameObject.name);
+
+                // Reset camera after teleporting
+                if (cameraController != null)
+                {
+                    cameraController.ResetCamera();
+                }
+            }
+            else
+            {
+                Debug.LogWarning("Teleporter not found for dropdown index: " + index);
+            }
+        }
+    }
 }
+

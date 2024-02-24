@@ -11,6 +11,11 @@ using DG.Tweening;
  * 
  * Caden Henderson
  * 10/26/23
+ * 
+ * Anniken B S Bergo
+ * 02/22/24
+ * Changed the script to add Dialogue Data - scriptable object
+ * They should now be cohesive together
  */
 
 [System.Serializable]
@@ -39,19 +44,54 @@ public class DialogueController : MonoBehaviour
     [Tooltip("Attach the player if using spatial mixing on the Audio Source")]
     public GameObject sceneListener;
     public DialogueClip[] unpromptedDialogues;
-    
 
     private bool spatialMixing;
     private SubtitleDisplayController subtitleDisplayController;
+
+
+    [Header("Settings")]
+    public DialogueData dialogueData;
 
     private void Start()
     {
         spatialMixing = audioSource.spatialBlend > 0;
         subtitleDisplayController = subtitleText.GetComponent<SubtitleDisplayController>();
 
-        if (playUnprompted) 
+        if (playUnprompted)
             StartCoroutine(UnpromptedDialogueRoutine());
+
+        // Load text size, color, and subtitles setting from DialogueData
+        LoadSettingsFromDialogueData();
     }
+
+    private void LoadSettingsFromDialogueData()
+    {
+        // Load text size from DialogueData
+        SetTextSize(dialogueData.textSize);
+        // Load text color from DialogueData
+        SetTextColor(dialogueData.textColor);
+        // Load subtitles setting from DialogueData
+        ToggleSubtitles(dialogueData.subtitlesOn);
+    }
+
+    public void SetTextSize(int size)
+    {
+        dialogueData.textSize = size;
+        subtitleText.fontSize = size;
+    }
+
+    public void SetTextColor(Color color)
+    {
+        dialogueData.textColor = color;
+        subtitleText.color = color;
+    }
+
+    public void ToggleSubtitles(bool value)
+    {
+        dialogueData.subtitlesOn = value;
+        subtitleDisplayController.enabled = value;
+    }
+
 
     //default. can be called by unity events
     public void PlayDialogue()
