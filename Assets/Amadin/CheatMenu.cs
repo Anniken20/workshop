@@ -1,7 +1,5 @@
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.EventSystems;
-using StarterAssets;
+using TMPro;
 
 public class CheatMenu : MonoBehaviour
 {
@@ -19,30 +17,33 @@ public class CheatMenu : MonoBehaviour
     public FreeCamController freeCamController;
     public Transform playerTransform;
 
-    // Our Checkpoints and teleporters
-    public Transform[] checkpoints;
+    // Teleporters
     public Transform[] teleporters;
+    public TMP_Dropdown teleportDropdown;
 
-    // Text for the teleports
-    public Text[] checkpointTexts;
-    public Text[] teleporterTexts;
+    private CameraController cameraController; // Reference to the CameraController script
 
     private void Start()
     {
         // Hide the debug menu initially
         debugMenu.SetActive(false);
 
-        // Assign teleportation functions to text UI elements
-        for (int i = 0; i < checkpointTexts.Length; i++)
-        {
-            int index = i; 
-            checkpointTexts[i].GetComponent<Button>().onClick.AddListener(() => TeleportToCheckpoint(index));
-        }
+        // Find and store a reference to the CameraController script
+        cameraController = FindObjectOfType<CameraController>();
 
-        for (int i = 0; i < teleporterTexts.Length; i++)
+        // Set up teleport dropdown
+        if (teleportDropdown != null)
         {
-            int index = i; 
-            teleporterTexts[i].GetComponent<Button>().onClick.AddListener(() => TeleportToTeleporter(index));
+            teleportDropdown.ClearOptions();
+
+            // Populate dropdown with teleporter names
+            foreach (Transform teleporter in teleporters)
+            {
+                teleportDropdown.options.Add(new TMP_Dropdown.OptionData(teleporter.gameObject.name));
+            }
+
+            // Add listener for dropdown value change
+            teleportDropdown.onValueChanged.AddListener(TeleportDropdownValueChanged);
         }
     }
 
@@ -91,7 +92,7 @@ public class CheatMenu : MonoBehaviour
     public void ToggleInfiniteBullets()
     {
         infiniteBulletsEnabled = !infiniteBulletsEnabled;
-        
+
         if (infiniteBulletsEnabled)
         {
             // Enable infinite bullets logic in GunController
@@ -102,10 +103,9 @@ public class CheatMenu : MonoBehaviour
             // Disable infinite bullets logic in GunController
             gunController.DisableInfiniteBullets();
         }
-        
+
         Debug.Log("Infinite Bullets " + (infiniteBulletsEnabled ? "Enabled" : "Disabled"));
     }
-
 
     // Toggle No Clipping
     public void ToggleNoClipping()
@@ -114,7 +114,6 @@ public class CheatMenu : MonoBehaviour
         if (noClippingEnabled)
         {
             freeCamController.enabled = true;
-
         }
         else
         {
@@ -132,23 +131,28 @@ public class CheatMenu : MonoBehaviour
         Debug.Log("All Items Given");
     }
 
-    // Teleport to checkpoint by index
-    private void TeleportToCheckpoint(int index)
-    {
-        if (index >= 0 && index < checkpoints.Length)
-        {
-            playerTransform.position = checkpoints[index].position;
-            Debug.Log("Teleported to checkpoint " + index);
-        }
-    }
-
-    // Teleport to teleporter by index
-    private void TeleportToTeleporter(int index)
+    // Teleport using dropdown selection
+    private void TeleportDropdownValueChanged(int index)
     {
         if (index >= 0 && index < teleporters.Length)
         {
-            playerTransform.position = teleporters[index].position;
-            Debug.Log("Teleported to teleporter " + index);
+            Transform teleporter = teleporters[index];
+            if (teleporter != null)
+            {
+                playerTransform.position = teleporter.position;
+                Debug.Log("Teleported using dropdown to: " + teleporter.gameObject.name);
+
+                // Reset camera after teleporting
+                if (cameraController != null)
+                {
+                    cameraController.ResetCamera();
+                }
+            }
+            else
+            {
+                Debug.LogWarning("Teleporter not found for dropdown index: " + index);
+            }
         }
     }
 }
+
