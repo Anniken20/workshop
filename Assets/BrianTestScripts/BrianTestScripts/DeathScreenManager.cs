@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 using TMPro;
 using DG.Tweening;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class DeathScreenManager : MonoBehaviour
 {
@@ -13,6 +14,8 @@ public class DeathScreenManager : MonoBehaviour
     private PlayerRespawn respawner;
     public AudioClip drawTextSound;
     [SerializeField] GameObject startingButton;
+    public Image restartImage;
+    public Image quitImage;
 
     private void Start()
     {
@@ -52,6 +55,8 @@ public class DeathScreenManager : MonoBehaviour
             //couldn't get the color fade in to work
             //DOTween.To(()=> texts[i].color, x=> texts[i].color = x, new Color(1, 1, 1, 1), 1f);
         }
+        restartImage.raycastTarget = true;
+        quitImage.raycastTarget = true;
     }
 
     public void HideDeathScreen()
