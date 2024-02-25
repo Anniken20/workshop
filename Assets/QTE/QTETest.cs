@@ -111,17 +111,17 @@ public class QTETest : MonoBehaviour
         if (QTEGen == 0)
         {
             ThirdPersonController.Main.LockPlayerForDuration(timeToShoot);
-            ShowPopupText("SHOOT");
+            ShowPopupText("Left-Click!");
             StartCoroutine(InputRoutine(0));
         } else if(QTEGen == 1)
         {
             ThirdPersonController.Main.LockPlayerForDuration(timeToShoot);
-            ShowPopupText("LASSO");
+            ShowPopupText("Right-Click!");
             StartCoroutine(InputRoutine(1));
         } else
         {
             ThirdPersonController.Main.LockPlayerForDuration(timeToShoot);
-            ShowPopupText("PHASE");
+            ShowPopupText("T!");
             StartCoroutine(InputRoutine(2));
         }
     }
