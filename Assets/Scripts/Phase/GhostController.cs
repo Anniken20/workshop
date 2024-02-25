@@ -193,6 +193,8 @@ public class GhostController : MonoBehaviour
             ThirdPersonController.Main.LockPlayerForDuration(0.2f);
 
             inAnObject = false;
+
+            Camera.main.GetComponent<CameraController>().RecomposeCamera();
         }
 
         //delegate events

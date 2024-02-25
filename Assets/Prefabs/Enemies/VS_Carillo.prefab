@@ -167,12 +167,50 @@ PrefabInstance:
     - target: {fileID: 3053177923666120057, guid: 90394fbf05c2385429ccbd5e48ae42ae,
         type: 3}
       propertyPath: maxHealth
-      value: 100
+      value: 300
       objectReference: {fileID: 0}
     - target: {fileID: 3053177923666120057, guid: 90394fbf05c2385429ccbd5e48ae42ae,
         type: 3}
-      propertyPath: onDeath.m_PersistentCalls.m_Calls.Array.size
+      propertyPath: stateDatas.Array.size
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3053177923666120057, guid: 90394fbf05c2385429ccbd5e48ae42ae,
+        type: 3}
+      propertyPath: stateDatas.Array.data[0].key
+      value: PacingData
+      objectReference: {fileID: 0}
+    - target: {fileID: 3053177923666120057, guid: 90394fbf05c2385429ccbd5e48ae42ae,
+        type: 3}
+      propertyPath: stateDatas.Array.data[1].key
+      value: HidingData
+      objectReference: {fileID: 0}
+    - target: {fileID: 3053177923666120057, guid: 90394fbf05c2385429ccbd5e48ae42ae,
+        type: 3}
+      propertyPath: stateDatas.Array.data[2].key
+      value: ShootData
+      objectReference: {fileID: 0}
+    - target: {fileID: 3053177923666120057, guid: 90394fbf05c2385429ccbd5e48ae42ae,
+        type: 3}
+      propertyPath: stateDatas.Array.data[0].state
+      value: 
+      objectReference: {fileID: 11400000, guid: 8a970d3ca093d454681ff2b543f1b45d,
+        type: 2}
+    - target: {fileID: 3053177923666120057, guid: 90394fbf05c2385429ccbd5e48ae42ae,
+        type: 3}
+      propertyPath: stateDatas.Array.data[1].state
+      value: 
+      objectReference: {fileID: 11400000, guid: 9d8984f78aaef564fa3a4276b1b7fda6,
+        type: 2}
+    - target: {fileID: 3053177923666120057, guid: 90394fbf05c2385429ccbd5e48ae42ae,
+        type: 3}
+      propertyPath: stateDatas.Array.data[2].state
+      value: 
+      objectReference: {fileID: 11400000, guid: 45cd88ded033d2842b9f10a1e20cb67f,
+        type: 2}
+    - target: {fileID: 3053177923666120057, guid: 90394fbf05c2385429ccbd5e48ae42ae,
+        type: 3}
+      propertyPath: onDeath.m_PersistentCalls.m_Calls.Array.size
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3053177923666120057, guid: 90394fbf05c2385429ccbd5e48ae42ae,
         type: 3}
@@ -254,25 +292,30 @@ PrefabInstance:
       propertyPath: m_Radius
       value: 8
       objectReference: {fileID: 0}
+    - target: {fileID: 3516101503884426064, guid: 90394fbf05c2385429ccbd5e48ae42ae,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: b73ec83f318fa0e4ba5cfb4b44c39b38, type: 2}
     - target: {fileID: 6141804851346357541, guid: 90394fbf05c2385429ccbd5e48ae42ae,
         type: 3}
       propertyPath: m_RootOrder
-      value: 46
+      value: 47
       objectReference: {fileID: 0}
     - target: {fileID: 6141804851346357541, guid: 90394fbf05c2385429ccbd5e48ae42ae,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 64.48
+      value: -3.7630744
       objectReference: {fileID: 0}
     - target: {fileID: 6141804851346357541, guid: 90394fbf05c2385429ccbd5e48ae42ae,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 5.332
+      value: 1.2740436
       objectReference: {fileID: 0}
     - target: {fileID: 6141804851346357541, guid: 90394fbf05c2385429ccbd5e48ae42ae,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -90.18
+      value: 3.0327587
       objectReference: {fileID: 0}
     - target: {fileID: 6141804851346357541, guid: 90394fbf05c2385429ccbd5e48ae42ae,
         type: 3}
@@ -312,7 +355,7 @@ PrefabInstance:
     - target: {fileID: 6807123028480452511, guid: 90394fbf05c2385429ccbd5e48ae42ae,
         type: 3}
       propertyPath: m_Name
-      value: Sheriff Carillo Enemy Variant Variant
+      value: VS_Carillo
       objectReference: {fileID: 0}
     - target: {fileID: 6807123028480452511, guid: 90394fbf05c2385429ccbd5e48ae42ae,
         type: 3}
@@ -368,4 +411,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthSlider: {fileID: 1014964949721358072}
-  boss: 0
