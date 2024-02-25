@@ -4,14 +4,15 @@ using UnityEngine;
 
 public class DaughterWhackAMoleState : EnemyState
 {
-    private GameObject[] graves;
-
+    private DaughterData daughterData;
     public DaughterWhackAMoleState(Enemy enemy, EnemyStateMachine enemyStateMachine) : base(enemy, enemyStateMachine) { }
 
     public override void EnterState()
     {
         base.EnterState();
-        graves = FindObjectOfType<GraveContainer>().graves;
+        daughterData = (DaughterData)enemy.FindData("DaughterData");
+        Debug.Log("Entering Whack a mole state");
+        //this.transform.position = daughterData.selectedGrave.transform.position;
     }
     public override void ExitState() { 
         base.ExitState();
