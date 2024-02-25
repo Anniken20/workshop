@@ -4,9 +4,8 @@ using UnityEngine;
 
 public class GraveSelectionState : EnemyState
 {
-    private GameObject[] graves;
     private bool startShake;
-    private DaughterData daughterData;
+    [HideInInspector] public DaughterData daughterData;
 
     public GraveSelectionState(Enemy enemy, EnemyStateMachine enemyStateMachine) : base(enemy, enemyStateMachine) { }
 
@@ -15,8 +14,10 @@ public class GraveSelectionState : EnemyState
         base.EnterState();
         //graves = FindObjectOfType<GraveContainer>().graves;
         daughterData = (DaughterData)enemy.FindData("DaughterData");
-        graves = daughterData.graves.graves;
-        ShakeGrave();
+        //daughterData.graveShaker.ShakeGrave();
+        FindObjectOfType<GraveContainer>().ShakeGrave();
+        //daughterData.graveContainer.ShakeGrave();
+        //ShakeGrave();
 
     }
     public override void ExitState()
@@ -31,7 +32,7 @@ public class GraveSelectionState : EnemyState
     {
         base.FrameUpdate();
     }
-    private GameObject SelectGrave()
+    /*private GameObject SelectGrave()
     {
         if(graves == null || graves.Length == 0)
         {
@@ -61,5 +62,5 @@ public class GraveSelectionState : EnemyState
         }
         daughterData.selectedGrave = grave;
         this.GetComponent<Daughter>().EnterWAM();
-    }
+    }*/
 }

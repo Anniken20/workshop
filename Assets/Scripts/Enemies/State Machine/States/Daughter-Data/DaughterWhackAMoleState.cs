@@ -12,8 +12,7 @@ public class DaughterWhackAMoleState : EnemyState
         base.EnterState();
         daughterData = (DaughterData)enemy.FindData("DaughterData");
         Debug.Log("Entering Whack a mole state");
-        this.transform.position = daughterData.selectedGrave.transform.position;
-        daughterData.selectedGrave = null;
+        //this.transform.position = daughterData.selectedGrave.transform.position;
     }
     public override void ExitState() { 
         base.ExitState();
