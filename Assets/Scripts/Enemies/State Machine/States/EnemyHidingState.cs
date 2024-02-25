@@ -21,6 +21,7 @@ public class EnemyHidingState : EnemyState
         hidingData = (HidingData)enemy.FindData("HidingData");
         //Debug.Log("Started hiding");
         nav.speed = hidingData.hidingSpeed;
+        if (enemy.animator != null) enemy.animator.SetBool("Running", true);
         CalculateHidingSpot();
     }
 

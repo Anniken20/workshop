@@ -123,7 +123,6 @@ public abstract class Enemy : MonoBehaviour, IShootable
         {
             Die();
         }
-
     }
 
     public StateData FindData(string name)
@@ -143,5 +142,20 @@ public abstract class Enemy : MonoBehaviour, IShootable
     public virtual void OnShot(BulletController bullet)
     {
         TakeDamage((int)bullet.currDmg);
+    }
+
+    public void GoToIdle()
+    {
+        stateMachine.ChangeState(idleState);
+    }
+
+    public void Freeze()
+    {
+        animator.playbackTime = 0f;
+    }
+
+    public void Unfreeze()
+    {
+        animator.playbackTime = 1f;
     }
 }

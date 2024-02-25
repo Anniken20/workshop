@@ -33,55 +33,39 @@ public class Sheriff : Enemy
     public void runaway()
     {
         stateMachine.ChangeState(hidingState);
-        animator.SetBool("isRunning", true);
-        animator.SetBool("isShooting", false);
     }
     public void stoprun()
     {
         stateMachine.ChangeState(shootState);
-        animator.SetBool("isRunning", false);
-        animator.SetBool("isShooting", true);
     }
 
     public void startshooting()
     {
         stateMachine.ChangeState(shootState);
-        animator.SetBool("isRunning", false);
-        animator.SetBool("isShooting", true);
     }
     public void stopshooting()
     {
         stateMachine.ChangeState(pacingState);
-        animator.SetBool("isRunning", true);
-        animator.SetBool("isShooting", false);
     }
 
     public void idle()
     {
         stateMachine.ChangeState(idleState);
-        animator.SetBool("isRunning", false);
-        animator.SetBool("isShooting", false);
     }
 
     public void stopidle()
     {
         stateMachine.ChangeState(pacingState);
-        animator.SetBool("isRunning", true);
-        animator.SetBool("isShooting", false);
     }
 
     public void pacing()
     {
         stateMachine.ChangeState(pacingState);
-        animator.SetBool("isRunning", true);
-        animator.SetBool("isShooting", false);
     }
 
     public void stoppacing()
     {
         stateMachine.ChangeState(idleState);
-        animator.SetBool("isRunning", false);
-        animator.SetBool("isShooting", false);
     }
 }
 
