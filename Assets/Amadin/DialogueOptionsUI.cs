@@ -17,7 +17,7 @@ public class DialogueOptionsMenu : MonoBehaviour
     private const string SubtitlesKey = "Subtitles";
     private const string ColorIndexKey = "ColorIndex";
 
-    public ScreenShakeScript screenShakeScript;
+    private ScreenShakeScript screenShakeScript;
     public Toggle screenShakeToggle;
     private const string ScreenShakeKey = "ScreenShake";
 
@@ -33,7 +33,7 @@ public class DialogueOptionsMenu : MonoBehaviour
         new Color(0.5f, 0, 0.5f) // Purple
     };
 
-    public PostProcess postProcess; // Reference to the PostProcess script
+    private PostProcess postProcess; // Reference to the PostProcess script
 
     public Toggle bloomToggle;
     public Toggle chromaticAberrationToggle;
