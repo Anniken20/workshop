@@ -45,6 +45,7 @@ public class PlayerRespawn : MonoBehaviour
         cc.enabled = false;
         transform.position = respawnPosition;
         cc.enabled = true;
+        Camera.main.GetComponent<CameraController>().RecomposeCamera();
     }
 
     public void RestartFromPosition(Vector3 pos)
