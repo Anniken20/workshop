@@ -59,12 +59,14 @@ public class SalesmanBulletState : EnemyState
             targetLocation = target;
             atPlayer = isPlayer;
             nav.SetDestination(target.position);
+            if (enemy.animator != null) enemy.animator.SetBool("Running", true);
             movingToPosition = true;
         }
     }
     private IEnumerator WaitAtPoint()
     {
         //Debug.Log("Waiting At Point");
+        if (enemy.animator != null) enemy.animator.SetBool("Idle", true);
         nav.SetDestination(this.transform.position);
         movingToPosition = false;
         yield return new WaitForSeconds(salesData.locationWaitTime);
@@ -80,6 +82,7 @@ public class SalesmanBulletState : EnemyState
     private void ReturnToPlayer()
     {
         nav.SetDestination(player.position);
+        if (enemy.animator != null) enemy.animator.SetBool("Running", true);
         //targetLocation = player;
         atPlayer = true;
 

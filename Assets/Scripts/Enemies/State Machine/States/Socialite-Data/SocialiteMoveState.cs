@@ -18,6 +18,8 @@ public class SocialiteMoveState : EnemyState
         nav.speed = moveData.moveSpeed;
         SetDestination();
         StartCoroutine(SpawnMist());
+        //Is this how animations are supposed to be set up? idk
+        if (enemy.animator != null) enemy.animator.SetBool("Running", true);
     }
     public override void FrameUpdate()
     {
@@ -30,6 +32,7 @@ public class SocialiteMoveState : EnemyState
     public override void ExitState()
     {
         base.ExitState();
+        if (enemy.animator != null) enemy.animator.SetBool("Running", false);
     }
     private void SetDestination()
     {
