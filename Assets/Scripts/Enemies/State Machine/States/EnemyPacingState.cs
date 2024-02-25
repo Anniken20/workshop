@@ -24,7 +24,7 @@ public class EnemyPacingState : EnemyState
     {
         pacingData = (PacingData)enemy.FindData("PacingData");
         StartPace();
-        if(enemy.animator != null) enemy.animator.SetBool("Pacing", true);
+        if(enemy.animator != null) enemy.animator.SetBool("Running", true);
     }
 
     //start a random timer between 2 values
