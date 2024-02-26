@@ -5,7 +5,7 @@ using UnityEngine;
 public class HorseWrangling : LassoWrangle
 {
     private Horse h;
-    public HorseChargeTrigger chargeTrigger;
+    HorseChargeTrigger chargeTrigger;
     private void Start(){
         h = GetComponentInParent<Horse>();
         chargeTrigger = FindObjectOfType<HorseChargeTrigger>();

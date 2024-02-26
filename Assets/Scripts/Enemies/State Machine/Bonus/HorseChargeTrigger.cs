@@ -12,7 +12,7 @@ public class HorseChargeTrigger : MonoBehaviour
     [HideInInspector] bool horseStunned;
     public float stunnedDuration;
     private bool startStunnedCountdown;
-    public float internalStunDuration;
+    private float internalStunDuration;
     private bool resetStunDuration;
     [HideInInspector] public bool wrangling;
 
