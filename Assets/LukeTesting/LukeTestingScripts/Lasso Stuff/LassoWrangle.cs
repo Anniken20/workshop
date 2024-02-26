@@ -49,6 +49,7 @@ public class LassoWrangle : MonoBehaviour, ILassoable
         controller._manipulatingLasso = true;
         wrangling = true;
         barParent.SetActive(true);
+        StartedWrangling();
     }
     private void Update(){
         if(wrangling){
@@ -83,6 +84,10 @@ public class LassoWrangle : MonoBehaviour, ILassoable
         StartCoroutine(EnableDelay());
         player.canLasso = true;
         controller._manipulatingLasso = false;
+    }
+    public virtual void StartedWrangling()
+    {
+
     }
 
     /*private void WinMiniGame(){

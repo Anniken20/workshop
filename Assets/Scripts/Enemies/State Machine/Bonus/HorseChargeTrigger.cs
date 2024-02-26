@@ -14,6 +14,7 @@ public class HorseChargeTrigger : MonoBehaviour
     private bool startStunnedCountdown;
     private float internalStunDuration;
     private bool resetStunDuration;
+    [HideInInspector] public bool wrangling;
 
     void Start(){
         h = GetComponentInParent<Horse>();
@@ -45,21 +46,26 @@ public class HorseChargeTrigger : MonoBehaviour
             h.Charge();
         }*/
         //Debug.Log(canTrigger);
-        
-        if(horseStunned == true){
-            stunnedText.SetActive(true);
-            startStunnedCountdown = true;
-            if(resetStunDuration){
-                internalStunDuration = stunnedDuration;
-                resetStunDuration = false;
+        if (!wrangling)
+        {
+            if (horseStunned == true)
+            {
+                stunnedText.SetActive(true);
+                startStunnedCountdown = true;
+                if (resetStunDuration)
+                {
+                    internalStunDuration = stunnedDuration;
+                    resetStunDuration = false;
+                }
+            }
+            else
+            {
+                stunnedText.SetActive(false);
+                startStunnedCountdown = false;
+                resetStunDuration = true;
             }
         }
-        else{
-            stunnedText.SetActive(false);
-            startStunnedCountdown = false;
-            resetStunDuration = true;
-        }
-        if(startStunnedCountdown){
+        if(startStunnedCountdown && !wrangling){
             internalStunDuration -= Time.deltaTime;
             if(internalStunDuration <= 0){
                 h.Charge();
