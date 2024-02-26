@@ -30,6 +30,7 @@ public class DialoguePopupController : MonoBehaviour, IInteractable
     [Tooltip("Useful for keeping the player locked even after dialogue.")]
     public bool dontUnlock;
     public bool fixHudAftewards;
+    public DialogueData dialogueData; //SCRIPTABLE DATA
 
     [Header("Dialogue")]
     public UnityEvent onFinishedChatting;

@@ -16,7 +16,6 @@ public class QTETest : MonoBehaviour
     [SerializeField]
     private Enemy enemyScript;
 
-    private int currentEnemyIndex = 0;
     private int WaitingForKey;
     private int QTEGen;
     private bool hasProcessedInput = false;
@@ -28,54 +27,67 @@ public class QTETest : MonoBehaviour
     //Reference to specifically the shoulder cam
     public CinemachineVirtualCamera shoulderCamera;
 
-   // public CharacterMovement iaControls;
-   // private InputAction shoot;
-   public enum EnemyDuelType
-    {
-        Sheriff,
-        Santana,
-        Diana
-    };
-    public EnemyDuelType enemyDuelType;
+    public CharacterMovement iaControls;
+    private InputAction shootInput;
+    private InputAction lassoInput;
+    private InputAction phaseInput;
 
-    void Start()
+    private void OnEnable()
     {
         if (enemyScript != null) {
-
             //subscribe to the enemy's death delegate so it only checks when the enemy takes damage.
             enemyScript.damageDelegate += CheckEnemyHealth;
         }
-        else
-        {
-            //Debug.Log("No enemy scripts set!");
-        }
+
+        iaControls = new CharacterMovement();
+        shootInput = iaControls.CharacterControls.Shoot;
+        lassoInput = iaControls.CharacterControls.Lasso;
+        phaseInput = iaControls.CharacterControls.Phase;
+
+        shootInput.Enable();
+        lassoInput.Enable();
+        phaseInput.Enable();
     }
+
+    private void OnDisable()
+    {
+        if (enemyScript != null)
+        {
+            //unsubscribe to the enemy's death delegate
+            enemyScript.damageDelegate -= CheckEnemyHealth;
+        }
+
+        shootInput.Disable();
+        lassoInput.Disable();
+        phaseInput.Disable();
+    }
+
     public void CheckEnemyHealth()
     {
         //kick out if in a duel already. no need to check and enter more duels
         if (inDuel) return;
 
-        float healthPercentage = 100 * enemyScript.currentHealth / enemyScript.maxHealth;
+        float healthPercentage = enemyScript.currentHealth / enemyScript.maxHealth;
 
-        if (healthPercentage <= 66f && healthPercentage > 33f)
+        if (healthPercentage <= 0.66f && healthPercentage > 0.33f)
         {
-            StartQTE("[U]");
-            //Debug.Log("START QTE");
+            StartQTE();
         }
-        else if (healthPercentage <= 33f && healthPercentage > 0f)
+        else if (healthPercentage <= 0.33f && healthPercentage > 0f)
         {
-            StartQTE("[O]");
-            //Debug.Log("START QTE");
+            StartQTE();
         }
         else if (healthPercentage <= 0f)
         {
-            StartQTE("[L]");
-            //Debug.Log("START QTE");
+            StartQTE();
         }
     }
-    void StartQTE(string key)
+    private void StartQTE()
     {
         inDuel = true;
+
+        enemyScript.Freeze();
+        enemyScript.transform.LookAt(ThirdPersonController.Main.transform.position);
 
         //ThirdPersonController.Main.LockPlayerForDuration(2f);
 
@@ -93,111 +105,59 @@ public class QTETest : MonoBehaviour
 
         //generate one of the random 3 attacks
         QTEGen = Random.Range(0, 3);
-        //Debug.Log("QTEGen is " + QTEGen);
         
-        //hacky garbage to "downcast" to our enemy types that indeed do have an idle state
-        //ex: idle state belongs to Sheriff, not Enemy
-        switch (enemyDuelType)
+        enemyScript.GoToIdle();
+
+        if (QTEGen == 0)
         {
-            case EnemyDuelType.Sheriff:
-                enemyScript.stateMachine.ChangeState(((Sheriff)enemyScript).idleState);
-                break;
-            case EnemyDuelType.Santana:
-                enemyScript.stateMachine.ChangeState(((Santana)enemyScript).idleState);
-                break;
-            case EnemyDuelType.Diana:
-                enemyScript.stateMachine.ChangeState(((Diana)enemyScript).idleState);
-                break;
-        }
-        if(QTEGen == 0)
-        {
-            ThirdPersonController.Main.LockPlayerForDuration(2f);
-            ShowPopupText("PRESS U");
-            StartCoroutine(InputRoutine(KeyCode.U));
+            ThirdPersonController.Main.LockPlayerForDuration(timeToShoot);
+            ShowPopupText("Left-Click!");
+            StartCoroutine(InputRoutine(0));
         } else if(QTEGen == 1)
         {
-            ThirdPersonController.Main.LockPlayerForDuration(2f);
-            ShowPopupText("PRESS O");
-            StartCoroutine(InputRoutine(KeyCode.O));
+            ThirdPersonController.Main.LockPlayerForDuration(timeToShoot);
+            ShowPopupText("Right-Click!");
+            StartCoroutine(InputRoutine(1));
         } else
         {
-            ThirdPersonController.Main.LockPlayerForDuration(2f);
-            ShowPopupText("PRESS L");
-            StartCoroutine(InputRoutine(KeyCode.L));
+            ThirdPersonController.Main.LockPlayerForDuration(timeToShoot);
+            ShowPopupText("T!");
+            StartCoroutine(InputRoutine(2));
         }
     }
-    private IEnumerator InputRoutine(KeyCode shootKey)
+    private IEnumerator InputRoutine(int inputType)
     {
         float timeProgressed = 0f;
 
-        // Pause the game
-       // Time.timeScale = 0;
-
         while (timeProgressed < timeToShoot)
         {
+            if (shootInput.triggered)
+            {
+                if (inputType == 0) StartCoroutine(Correct());
+                else StartCoroutine(Failed());
+
+                yield break;
+            } else if (lassoInput.triggered)
+            {
+                if (inputType == 1) StartCoroutine(Correct());
+                else StartCoroutine(Failed());
+
+                yield break;
+            } else if (phaseInput.triggered)
+            {
+                if (inputType == 2) StartCoroutine(Correct());
+                else StartCoroutine(Failed());
+
+                yield break;
+            }
             // track how long we have been in the shooting window
             timeProgressed += Time.unscaledDeltaTime;
-
-            // if a key is pressed
-            if (Input.anyKeyDown)
-            {
-                // and the key down is the correct input
-                if (Input.GetKeyDown(shootKey))
-                {
-                    StartCoroutine(Correct());
-
-                    // leave this coroutine
-                    yield break;
-                }
-                // is not the correct input
-                else
-                {
-                    StartCoroutine(Failed());
-
-                    // leave this coroutine
-                    yield break;
-                }
-            }
 
             // wait a frame before resuming the while loop
             // nifty trick for coroutines
             yield return null;
         }
-
-        //Debug.Log("Took too long!");
         StartCoroutine(Failed());
-    }
-
-    void CheckInput()
-    {
-        if (WaitingForKey == 1)
-        {
-            if (Input.GetKeyDown(KeyCode.U) && QTEGen == 1)
-            {
-                StartCoroutine(Correct());
-               // Debug.Log("Correct");
-            }
-            else if (Input.GetKeyDown(KeyCode.O) && QTEGen == 2)
-            {
-                StartCoroutine(Correct());
-               // Debug.Log("Correct");
-            }
-            else if (Input.GetKeyDown(KeyCode.L) && QTEGen == 3)
-            {
-                StartCoroutine(Correct());
-              //  Debug.Log("Correct");
-            }
-            else if (!hasProcessedInput)
-            {
-                hasProcessedInput = true;
-                StartCoroutine(Failed());
-              //  Debug.Log("Fail");
-            }
-        }
-    }
-    void ResetInputProcessing()
-    {
-        hasProcessedInput = false; // Reset the input processing flag
     }
 
     void ShowPopupText(string message)
@@ -217,12 +177,11 @@ public class QTETest : MonoBehaviour
     {
         ShowPopupText("Correct!");
 
-        // Resume the game
-        Time.timeScale = 1;
 
         yield return new WaitForSeconds(2f);
         PopupText.text = "";
         CameraController camController = Camera.main.GetComponent<CameraController>();
+        enemyScript.Unfreeze();
         if (camController != null) camController.SwitchCameraView(true);
         inDuel = true;
     }
@@ -230,15 +189,11 @@ public class QTETest : MonoBehaviour
     {
         ShowPopupText("Failed!");
 
-        // Resume the game
-        Time.timeScale = 1;
-
         yield return new WaitForSeconds(2f);
         PopupText.text = "";
         CameraController camController = Camera.main.GetComponent<CameraController>();
-        if(camController != null) camController.SwitchCameraView(true);
+        enemyScript.Unfreeze();
+        if (camController != null) camController.SwitchCameraView(true);
         inDuel = false;
-        //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-        //ResetInputProcessing(); // Reset input processing after coroutine completion
     }
 }

@@ -12,7 +12,7 @@ public struct StateKVP
     public StateData state;
 }
 
-public abstract class Enemy : MonoBehaviour
+public abstract class Enemy : MonoBehaviour, IShootable
 {
     [Header("Additional State Data")]
     [Tooltip("Attach as needed")]
@@ -97,8 +97,8 @@ public abstract class Enemy : MonoBehaviour
         stateMachine.ChangeState(idleState);
 
         //turn off components so it stops moving
-        GetComponent<Animator>().enabled = false;
-        GetComponent<NavMeshAgent>().enabled = false;
+        animator.enabled = false;
+        nav.enabled = false;
 
         yield return new WaitForSeconds(0.5f);
         if(!standWhileDead) transform.DORotate(new Vector3(-88, 0, 0), 1.5f, RotateMode.WorldAxisAdd).SetEase(Ease.OutBounce);
@@ -123,7 +123,6 @@ public abstract class Enemy : MonoBehaviour
         {
             Die();
         }
-
     }
 
     public StateData FindData(string name)
@@ -138,5 +137,25 @@ public abstract class Enemy : MonoBehaviour
         stateDataDict = new();
         foreach (var dataPiece in stateDatas)
             stateDataDict.Add(dataPiece.key, dataPiece.state);
+    }
+
+    public virtual void OnShot(BulletController bullet)
+    {
+        TakeDamage((int)bullet.currDmg);
+    }
+
+    public void GoToIdle()
+    {
+        stateMachine.ChangeState(idleState);
+    }
+
+    public void Freeze()
+    {
+        animator.playbackTime = 0f;
+    }
+
+    public void Unfreeze()
+    {
+        animator.playbackTime = 1f;
     }
 }

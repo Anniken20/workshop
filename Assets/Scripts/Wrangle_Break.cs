@@ -16,7 +16,7 @@ public class Wrangle_Break : LassoWrangle
         lassoObject.GetComponent<LassoDetection>().recall = true;
         player.canLasso = true;
         controller._manipulatingLasso = false;
-        Invoke("ObjBroken", .1f);
+        breaker.BreakIntoPieces();
     }
 
     public override void LoseMiniGame()
@@ -27,10 +27,5 @@ public class Wrangle_Break : LassoWrangle
         barParent.SetActive(false);
         var lassoObject = player.gameObject.GetComponent<LassoController>().projectile;
         lassoObject.GetComponent<LassoDetection>().recall = true;
-    }
-
-    private void ObjBroken()
-    {
-        breaker.BreakIntoPieces();
     }
 }
