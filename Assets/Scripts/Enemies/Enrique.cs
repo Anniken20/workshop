@@ -48,6 +48,7 @@ public class Enrique : Enemy, ICryable
     public void StartCrying()
     {
         stateMachine.ChangeState(cryState);
+        StopSpawning();
     }
 
     
@@ -68,5 +69,19 @@ public class Enrique : Enemy, ICryable
         {
             ghostSpawners[i].ForceSpawns();
         }
+    }
+
+    private void StopSpawning()
+    {
+        for (int i = 0; i < ghostSpawners.Length; i++)
+        {
+            ghostSpawners[i].ForceStopSpawns();
+        }
+    }
+
+    public override void Die()
+    {
+        base.Die();
+        StopSpawning();
     }
 }

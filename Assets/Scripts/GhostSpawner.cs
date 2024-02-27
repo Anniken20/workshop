@@ -63,7 +63,18 @@ public class GhostSpawner : MonoBehaviour
 
     public void ForceSpawns()
     {
+        playerInsideTrigger = true;
         if (spawnCoroutine == null)
             spawnCoroutine = StartCoroutine(SpawnGhosts());
+    }
+
+    public void ForceStopSpawns()
+    {
+        playerInsideTrigger = false;
+        if (spawnCoroutine == null)
+        {
+            StopCoroutine(SpawnGhosts());
+            spawnCoroutine = null;
+        }
     }
 }

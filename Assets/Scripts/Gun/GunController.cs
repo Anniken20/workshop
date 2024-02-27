@@ -71,6 +71,7 @@ public class GunController : MonoBehaviour
     private ThirdPersonController thirdPersonController;
     private int ghostAmmo;
     private BulletHUD bulletHUD;
+    private bool canShootAfterRedirect = true;
     // DEBUG
     private bool isInfiniteBulletsEnabled = false;
     private void Start()
@@ -131,13 +132,13 @@ public class GunController : MonoBehaviour
 
             if (onCooldown) return;
 
-            if (fireOnMouseUp)
+            if (canShootAfterRedirect && fireOnMouseUp)
             {
                 aimingToShoot = true;
                 aimController.DrawLine();
                 aimController.HideCursor();
             }
-            else
+            else if(canShootAfterRedirect)
             {
                 //otherwise fire new bullet
                 FireGun();
@@ -152,6 +153,9 @@ public class GunController : MonoBehaviour
                 aimingToShoot = false;
                 aimController.HideLine();
                 aimController.ShowCursor();
+            } else if(shoot.WasReleasedThisFrame() && fireOnMouseUp && !canShootAfterRedirect)
+            {
+                canShootAfterRedirect = true;
             }
         }
     }
@@ -236,6 +240,7 @@ public class GunController : MonoBehaviour
         if (mostRecentBullet != null  && mostRecentBullet.GetComponent<BulletController>().canBeRedirected)
         {
             lunaMode = true;
+            canShootAfterRedirect = false;
             //Debug.Log("Entered bullet redirect");
             mostRecentBullet.GetComponent<BulletController>().EnterLunaMode();
 
