@@ -11,7 +11,9 @@ public class CageTrap : MonoBehaviour
 
     private ThirdPersonController playerController;
 
-    void Start()
+    private Coroutine trapRoutine;
+
+    private void Start()
     {
         cage.SetActive(true);
         if (player != null)
@@ -23,10 +25,16 @@ public class CageTrap : MonoBehaviour
     // Public method to start the trap, callable by UnityEvent
     public void ActivateTrap()
     {
-        StartCoroutine(TrapPlayer());
+        trapRoutine = StartCoroutine(TrapPlayer());
     }
 
-    IEnumerator TrapPlayer()
+    public void DeactivateTrap()
+    {
+        if(trapRoutine != null) StopCoroutine(trapRoutine);
+        FreePlayer();
+    }
+
+    private IEnumerator TrapPlayer()
     {
         if (playerController != null)
         {
@@ -37,6 +45,11 @@ public class CageTrap : MonoBehaviour
 
         yield return new WaitForSeconds(trapDuration);
 
+        FreePlayer();
+    }
+
+    private void FreePlayer()
+    {
         if (playerController != null)
         {
             playerController.FreeFromLockInPlace();
