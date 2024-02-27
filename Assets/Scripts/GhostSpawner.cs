@@ -60,4 +60,10 @@ public class GhostSpawner : MonoBehaviour
     {
         numEnemiesAlive--;
     }
+
+    public void ForceSpawns()
+    {
+        if (spawnCoroutine == null)
+            spawnCoroutine = StartCoroutine(SpawnGhosts());
+    }
 }
