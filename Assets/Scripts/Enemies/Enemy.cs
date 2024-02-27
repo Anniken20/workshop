@@ -76,7 +76,7 @@ public abstract class Enemy : MonoBehaviour, IShootable
         PlayFootStepSound
     }
 
-    public void Die()
+    public virtual void Die()
     {
        StartCoroutine(DeathRoutine());
 
