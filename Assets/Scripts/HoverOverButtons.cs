@@ -5,7 +5,8 @@ using UnityEngine.EventSystems;
 
 public class HoverOverButtons : MonoBehaviour , IPointerEnterHandler , IPointerExitHandler, IPointerClickHandler
 {
-    public GameObject hoverPanel; 
+    public GameObject hoverPanel;
+    private Vector3 defaultLocalScale;
 
     public void OnPointerEnter(PointerEventData eventData)
     {
@@ -14,21 +15,33 @@ public class HoverOverButtons : MonoBehaviour , IPointerEnterHandler , IPointerE
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        ScaleDown();
+        //ScaleDown();
+        hoverPanel.transform.localScale = defaultLocalScale;
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        ScaleDown();
+        //ScaleDown();
+        hoverPanel.transform.localScale = defaultLocalScale;
     }
 
-    public void ScaleUp()
+    private void ScaleUp()
     {
         hoverPanel.transform.localScale *= 1.2f;
     }
 
-    public void ScaleDown()
+    private void ScaleDown()
     {
         hoverPanel.transform.localScale /= 1.2f;
+    }
+
+    private void OnEnable()
+    {
+        defaultLocalScale = hoverPanel.transform.localScale;
+    }
+
+    private void OnDisable()
+    {
+        hoverPanel.transform.localScale = defaultLocalScale;
     }
 }
