@@ -21,6 +21,9 @@ public class DialogueOptionsMenu : MonoBehaviour
     public Toggle screenShakeToggle;
     private const string ScreenShakeKey = "ScreenShake";
 
+    private const int DefaultTextSize = 24;
+    private const int DefaultTextColorKey = 0;
+
     private Dictionary<string, Color> colorNameToValue = new Dictionary<string, Color>();
 
     // List of colors for the dropdown options
@@ -221,5 +224,12 @@ public class DialogueOptionsMenu : MonoBehaviour
             postProcess._mChromaticAberration.enabled = chromaticAberrationToggle.isOn;
             postProcess._mMVignette.enabled = vignetteToggle.isOn;
         }
+    }
+
+    private void OnEnable()
+    {
+        dialogueText.fontSize = PlayerPrefs.GetInt(TextSizeKey, DefaultTextSize);
+        textSizeSlider.value = PlayerPrefs.GetInt(TextSizeKey, DefaultTextSize);
+        dialogueText.color = colorOptions[PlayerPrefs.GetInt(ColorIndexKey, DefaultTextColorKey)];
     }
 }
