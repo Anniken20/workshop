@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Dialogue Data", menuName = "ScriptableObjects/DialogueData")]
@@ -21,9 +22,15 @@ public class DialogueData : ScriptableObject
         }
     }
 
-    // Dialogue
-    public string speakerName;
-    public string[] dialogueLines;
+    // Ensure that the object persists across scenes
+    private void OnEnable()
+    {
+        DontDestroyOnLoad(this);
+    }
+
+    // Dialogue commented out since should be taking from Cadens already made stuff
+    //public string speakerName;
+    //public string[] dialogueLines;
 
     // Text size and color
     public int textSize = 12;
@@ -31,4 +38,25 @@ public class DialogueData : ScriptableObject
 
     // Subtitles
     public bool subtitlesOn = true;
+
+    // Font selection
+    public bool useDyslexicFont = false;
+    public TMP_FontAsset defaultFont; // Default font
+    public TMP_FontAsset dyslexicFont; // Font for dyslexic mode
+
+    // Screen Shake toggle
+    //public bool screenShakeEnabled;
+
+    // Post-processing toggles
+    //public bool bloomEnabled;
+    //public bool chromaticAberrationEnabled;
+    //public bool vignetteEnabled;
+
+    public TMP_FontAsset GetDialogueFont()
+    {
+        if (useDyslexicFont && dyslexicFont != null)
+            return dyslexicFont;
+        else
+            return defaultFont; // Use default font if dyslexia mode is off or dyslexicFont is not set
+    }
 }
