@@ -10,7 +10,7 @@ public class CoinCollector : MonoBehaviour, IDataPersistence
 
     public TextMeshProUGUI coinsText;
     private RectTransform coinsRectTransform;
-    private static int coinsCollected = 0; 
+    public static int coinsCollected = 0; 
     private Vector2 uiOffScreenPosition; // Position when the UI is off-screen
     private Vector2 uiOnScreenPosition; // Position when the UI is on-screen
 
@@ -85,6 +85,19 @@ public class CoinCollector : MonoBehaviour, IDataPersistence
     }
     public void SaveData(ref GameData data){
         data.coins = coinsCollected;
+    }
+
+    public void SpendCoin(int amount)
+    {   
+        if (coinsCollected >= amount)
+        {
+        coinsCollected -= amount;
+        UpdateCoinsText();
+        ShowCoinsUI();
+        
+        if (moveHUDRoutine != null) StopCoroutine(moveHUDRoutine);
+        moveHUDRoutine = StartCoroutine(HideCoinsUIAfterDelay(5f));
+        }
     }
 }
 
