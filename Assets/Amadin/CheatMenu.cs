@@ -21,15 +21,10 @@ public class CheatMenu : MonoBehaviour
     public Transform[] teleporters;
     public TMP_Dropdown teleportDropdown;
 
-    private CameraController cameraController; // Reference to the CameraController script
-
     private void Start()
     {
         // Hide the debug menu initially
         debugMenu.SetActive(false);
-
-        // Find and store a reference to the CameraController script
-        cameraController = FindObjectOfType<CameraController>();
 
         // Set up teleport dropdown
         if (teleportDropdown != null)
@@ -63,13 +58,11 @@ public class CheatMenu : MonoBehaviour
 
         if (debugMenu.activeSelf)
         {
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
+            PauseMenu.main.PauseNoUI();
         }
         else
         {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
+            PauseMenu.main.UnPauseNoUI();
         }
     }
 
@@ -140,13 +133,9 @@ public class CheatMenu : MonoBehaviour
             if (teleporter != null)
             {
                 playerTransform.position = teleporter.position;
-                Debug.Log("Teleported using dropdown to: " + teleporter.gameObject.name);
 
                 // Reset camera after teleporting
-                if (cameraController != null)
-                {
-                    cameraController.ResetCamera();
-                }
+                Camera.main.GetComponent<CameraController>().RecomposeCamera();
             }
             else
             {
