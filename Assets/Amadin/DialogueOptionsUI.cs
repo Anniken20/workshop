@@ -39,6 +39,8 @@ public class DialogueOptionsMenu : MonoBehaviour
     private const int DefaultTextSize = 24;
     private const int DefaultTextColorKey = 0;
 
+    private FontManager fontManager; // Reference to FontManager script
+
     private Dictionary<string, Color> colorNameToValue = new Dictionary<string, Color>();
 
     // List of colors for the dropdown options
@@ -64,6 +66,20 @@ public class DialogueOptionsMenu : MonoBehaviour
 
     private void Start()
     {
+        fontManager = FindObjectOfType<FontManager>(); // Find FontManager script in the scene
+
+        if (fontManager == null)
+        {
+            Debug.LogError("FontManager script not found in the scene.");
+            return;
+        }
+
+        if (dialogueData == null)
+        {
+            Debug.LogError("DialogueData reference not set in DialogueOptionsMenu.");
+            return;
+        }
+
         // Load saved preference for dyslexia mode
         if (PlayerPrefs.HasKey(DyslexiaModeKey))
         {
@@ -74,13 +90,6 @@ public class DialogueOptionsMenu : MonoBehaviour
 
         // Add listener for dyslexia toggle event
         dyslexiaToggle.onValueChanged.AddListener(OnDyslexiaToggleChanged);
-
-        // Ensure that dialogueData is not null before proceeding YOU NEED THIS
-        if (dialogueData == null)
-        {
-            Debug.LogError("DialogueData reference not set in DialogueOptionsMenu.");
-            return;
-        }
 
         // Populate the dictionary with color names and values
         InitializeColorDictionary();
@@ -162,31 +171,67 @@ public class DialogueOptionsMenu : MonoBehaviour
         textSizeSlider.onValueChanged.RemoveListener(OnTextSizeChanged);
         subtitlesToggle.onValueChanged.RemoveListener(OnSubtitlesToggleChanged);
         colorDropdown.onValueChanged.RemoveListener(OnColorDropdownChanged);
+
+        // Remove toggle value change listener to prevent memory leaks
+        dyslexiaToggle.onValueChanged.RemoveListener(OnDyslexiaToggleChanged);
     }
 
-    private void OnDyslexiaToggleChanged(bool value)
+    public void ToggleDyslexiaMode(bool isEnabled)
     {
-        ToggleDyslexiaMode(value);
-        PlayerPrefs.SetInt(DyslexiaModeKey, value ? 1 : 0);
-    }
+        if (fontManager != null)
+        {
+            fontManager.ToggleDyslexiaMode(isEnabled); // Call FontManager to toggle dyslexia mode
 
-    private void ToggleDyslexiaMode(bool isEnabled)
-    {
+            // Save dyslexia mode preference
+            PlayerPrefs.SetInt(DyslexiaModeKey, isEnabled ? 1 : 0);
+        }
+        else
+        {
+            Debug.LogWarning("FontManager reference is null. Dyslexia mode not toggled.");
+        }
+
         // Only apply dyslexic font if dyslexia mode is explicitly enabled by the user
         if (isEnabled)
         {
             // Set dyslexia mode in dialogue data
             dialogueData.useDyslexicFont = true;
 
-            // Apply dyslexic font
-            dialogueText.font = dialogueData.dyslexicFont;
+            // Apply dyslexic font to all text elements
+            ApplyFontToAllText(dialogueData.dyslexicFont);
         }
         else
         {
             // If dyslexia mode is disabled, use the default font
             dialogueData.useDyslexicFont = false;
-            dialogueText.font = dialogueData.defaultFont; 
+            ApplyFontToAllText(dialogueData.defaultFont);
         }
+    }
+
+    private void ApplyFontToAllText(TMP_FontAsset font)
+    {
+        // Get all TMP_Text components in the scene
+        TMP_Text[] textComponents = FindObjectsOfType<TMP_Text>();
+
+        // Apply the font to each TMP_Text component
+        foreach (TMP_Text textComponent in textComponents)
+        {
+            textComponent.font = font;
+        }
+    }
+
+
+    public TMP_FontAsset GetDialogueFont()
+    {
+        if (dialogueData.useDyslexicFont)
+            return dialogueData.dyslexicFont;
+        else
+            return dialogueData.defaultFont;
+    }
+
+    private void OnDyslexiaToggleChanged(bool value)
+    {
+        ToggleDyslexiaMode(value);
+        PlayerPrefs.SetInt(DyslexiaModeKey, value ? 1 : 0);
     }
 
     private void InitializeColorDictionary()
