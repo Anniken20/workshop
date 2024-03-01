@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using DG.Tweening;
 
 /* AudioManager script
  * 
@@ -22,6 +23,9 @@ public class AudioManager : MonoBehaviour
     public AudioSource sfxAudio;
     public AudioSource dialogueAudio;
     public AudioSource ambienceAudio;
+
+    [Header("Effects")]
+    [SerializeField] private AudioLowPassFilter musicLPFilter;
 
     //keys for player prefs ------------------------------------------------
     [HideInInspector] public const string MASTER_KEY = "masterVolume";
@@ -85,6 +89,8 @@ public class AudioManager : MonoBehaviour
                 break;
         }
     }
+
+    #region Settings
     public void LoadVolume() 
     {
         LoadMasterVolume();
@@ -206,4 +212,14 @@ public class AudioManager : MonoBehaviour
         LoadAmbienceToggle();
         LoadDialogueToggle();
     }
+    #endregion
+
+    #region EffectsMethods
+    public void SetMusicLowPassFilter(int newValue = 22000, float time = 1f)
+    {
+        newValue = Mathf.Clamp(newValue, 0, 22000);
+        DOTween.To(() => musicLPFilter.cutoffFrequency, x => musicLPFilter.cutoffFrequency = x, newValue, time);
+    }
+
+    #endregion
 }
