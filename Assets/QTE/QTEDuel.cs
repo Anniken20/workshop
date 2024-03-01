@@ -11,14 +11,13 @@ using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 using DG.Tweening;
 
-public class QTETest : MonoBehaviour
+public class QTEDuel : MonoBehaviour
 {
     [Header("References")]
     [Tooltip("Reference to the pop-up text element")]
     public TMP_Text PopupText;
     public float timeToShoot;
     [SerializeField] private Enemy enemyScript;
-    public CameraController cameraController;
     public CinemachineVirtualCamera shoulderCamera;
     public Volume postProcessVolume;
     public DuelCameraController duelCameraController;
@@ -233,7 +232,7 @@ public class QTETest : MonoBehaviour
         CameraController camController = Camera.main.GetComponent<CameraController>();
 
         //the parameter should be FALSE in order to switch to the shoulder cam
-        if (camController != null) cameraController.SwitchCameraView(false);
+        if (camController != null) camController.SwitchCameraView(false);
 
         //then set the shoulder cam to focus on the enemy
         shoulderCamera.LookAt = enemyScript.transform;
