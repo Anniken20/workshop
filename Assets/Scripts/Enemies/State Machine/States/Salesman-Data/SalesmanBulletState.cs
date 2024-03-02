@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using StarterAssets;
 
 public class SalesmanBulletState : EnemyState
 {
-    private SalesmanData salesData;
+    [HideInInspector] public SalesmanData salesData;
     public Transform targetLocation;
     private bool movingToPosition;
     private float distanceFromTarget;
@@ -16,9 +17,10 @@ public class SalesmanBulletState : EnemyState
     {
         base.EnterState();
         salesData = (SalesmanData)enemy.FindData("SalesmanData");
-        player = GameObject.FindGameObjectWithTag("Player").transform;
-        nav.speed = salesData.moveSpeed;
-        nav.acceleration = salesData.acceleration;
+        //player = GameObject.FindGameObjectWithTag("Player").transform;
+        player = ThirdPersonController.Main.gameObject.transform;
+        nav.speed = salesData.bulletmoveSpeed;
+        nav.acceleration = salesData.bulletAcceleration;
         StopAllCoroutines();
     }
     public override void FrameUpdate()
@@ -46,6 +48,7 @@ public class SalesmanBulletState : EnemyState
                     StartCoroutine(WaitAtPoint());
                 }
             }
+            nav.SetDestination(targetLocation.position);
         }
     }
     public override void ExitState()
@@ -57,6 +60,7 @@ public class SalesmanBulletState : EnemyState
         if(target != null)
         {
             targetLocation = target;
+            //targetLocation = FindObjectOfType<GhostBulletController>();
             atPlayer = isPlayer;
             nav.SetDestination(target.position);
             if (enemy.animator != null) enemy.animator.SetBool("Running", true);
@@ -81,7 +85,8 @@ public class SalesmanBulletState : EnemyState
     }
     private void ReturnToPlayer()
     {
-        nav.SetDestination(player.position);
+        //nav.SetDestination(player.position);
+        this.GetComponent<Salesman>().ChaseState();
         if (enemy.animator != null) enemy.animator.SetBool("Running", true);
         //targetLocation = player;
         atPlayer = true;

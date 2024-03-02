@@ -5,7 +5,7 @@ using UnityEngine;
 public class Daughter : Enemy
 {
     [HideInInspector] DaughterWhackAMoleState wamState;
-    [HideInInspector] GraveSelectionState graveSelection;
+    [HideInInspector] EnemyShootState shootState;
     private void Awake()
     {
         base.MyAwake();
@@ -13,8 +13,8 @@ public class Daughter : Enemy
         wamState.Initialize(this, stateMachine);
         idleState = gameObject.AddComponent<EnemyIdleState>();
         idleState.Initialize(this, stateMachine);
-        graveSelection = gameObject.AddComponent<GraveSelectionState>();
-        graveSelection.Initialize(this, stateMachine);
+        shootState = gameObject.AddComponent<EnemyShootState>();
+        shootState.Initialize(this, stateMachine);
 
         stateMachine.Initialize(idleState);
     }
@@ -24,7 +24,7 @@ public class Daughter : Enemy
     }
     public void ExitWAM()
     {
-        stateMachine.ChangeState(graveSelection);
+        stateMachine.ChangeState(idleState);
     }
     public void Idle()
     {
@@ -34,12 +34,12 @@ public class Daughter : Enemy
     {
         stateMachine.ChangeState(wamState);
     }
-    public void SelectGrave()
+    public void Shooting()
     {
-        stateMachine.ChangeState(graveSelection);
+        stateMachine.ChangeState(shootState);
     }
-    public void ExitGraveSelection()
+    public void StopShooting()
     {
-        stateMachine.ChangeState(wamState);
+        stateMachine.ChangeState(idleState);
     }
 }
