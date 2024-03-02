@@ -6,7 +6,7 @@ using TMPro;
 public class Interactable : MonoBehaviour
 {
     [SerializeField]
-    private TextMeshProUGUI interactionPrompt; 
+    public TextMeshProUGUI interactionPrompt; 
 
     protected virtual void Awake()
     {

@@ -7,6 +7,7 @@ public class HoverOverButtons : MonoBehaviour , IPointerEnterHandler , IPointerE
 {
     public GameObject hoverPanel;
     private Vector3 defaultLocalScale;
+    private bool firstEnable = true;
 
     public void OnPointerEnter(PointerEventData eventData)
     {
@@ -37,7 +38,11 @@ public class HoverOverButtons : MonoBehaviour , IPointerEnterHandler , IPointerE
 
     private void OnEnable()
     {
-        defaultLocalScale = hoverPanel.transform.localScale;
+        if (firstEnable)
+        {
+            firstEnable = false;
+            defaultLocalScale = hoverPanel.transform.localScale;
+        }
     }
 
     private void OnDisable()

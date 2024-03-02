@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Sheriff : Enemy
+public class Sheriff : DuelEnemy
 {
     [HideInInspector] public EnemyPacingState pacingState;
     [HideInInspector] public EnemyShootState shootState;
@@ -23,6 +23,9 @@ public class Sheriff : Enemy
 
         hidingState = gameObject.AddComponent<EnemyHidingState>();
         hidingState.Initialize(this, stateMachine);
+
+        duelState = gameObject.AddComponent<DuelState>();
+        duelState.Initialize(this, stateMachine);
 
         //set default state
         stateMachine.Initialize(idleState);
@@ -66,6 +69,11 @@ public class Sheriff : Enemy
     public void stoppacing()
     {
         stateMachine.ChangeState(idleState);
+    }
+
+    protected override void StartPhase(int ph)
+    {
+        
     }
 }
 
