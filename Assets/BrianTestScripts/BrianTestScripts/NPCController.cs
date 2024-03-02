@@ -14,6 +14,8 @@ public class NPCController : MonoBehaviour
     public Transform startPoint;
     public Transform endPoint;
     private Vector3 currentTarget;
+    private Vector3 startPointWorldPosition;
+    private Vector3 endPointWorldPosition;
 
     public enum MovementAxis
     {
@@ -23,19 +25,23 @@ public class NPCController : MonoBehaviour
 
     public MovementAxis movementAxis = MovementAxis.X; // Default to X axis
 
-    void Start()
-    {
+   void Start()
+   {
         agent = GetComponent<NavMeshAgent>();
-        currentTarget = startPoint.position;
+        // Store the world positions of the start and end points
+        startPointWorldPosition = startPoint.position;
+        endPointWorldPosition = endPoint.position;
+    
+        // Set the initial target to the world position of the start point
+        currentTarget = startPointWorldPosition;
         agent.SetDestination(currentTarget);
-        StartCoroutine(UpdateDestinationRoutine());
     }
 
     void Update()
     {
         float distanceToPlayer = Vector3.Distance(transform.position, playerTransform.position);
-    
-        // Handle player interaction
+
+       
         if (distanceToPlayer <= interactionDistance)
         {
         if (!agent.isStopped)
@@ -52,36 +58,24 @@ public class NPCController : MonoBehaviour
             agent.isStopped = false;
             agent.SetDestination(currentTarget);
         }
-        
-        // Check if the AI has reached its current target
+
+        // Movement and target switching logic with world positions
         if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
         {
-            // Switch target
-            if (currentTarget == startPoint.position)
+            if (currentTarget == startPointWorldPosition)
             {
-                currentTarget = endPoint.position;
+                currentTarget = endPointWorldPosition;
             }
             else
             {
-                currentTarget = startPoint.position;
+                currentTarget = startPointWorldPosition;
             }
-            
+
             agent.SetDestination(currentTarget);
         }
         }
     }
 
-    IEnumerator UpdateDestinationRoutine()
-    {
-    while (true)
-    {
-        if (!agent.isStopped)
-        {
-            SetNewRandomDestination();
-        }
-        yield return new WaitForSeconds(30); // Wait for 30 seconds before updating the destination again
-    }
-    }
 
     void SetNewRandomDestination()
     {
