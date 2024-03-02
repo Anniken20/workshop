@@ -29,8 +29,8 @@ public class CoinCollector : MonoBehaviour, IDataPersistence
         }
         
         coinsRectTransform = coinsText.GetComponent<RectTransform>();
-        uiOffScreenPosition = new Vector2(600, coinsRectTransform.anchoredPosition.y); // Adjust this value
-        uiOnScreenPosition = new Vector2(460, coinsRectTransform.anchoredPosition.y);    // Adjust this value
+        uiOffScreenPosition = new Vector2(160, coinsRectTransform.anchoredPosition.y); // Adjust this value
+        uiOnScreenPosition = new Vector2(-45, coinsRectTransform.anchoredPosition.y);    // Adjust this value
         DOTween.Init();
     }
 
@@ -64,6 +64,11 @@ public class CoinCollector : MonoBehaviour, IDataPersistence
       coinsRectTransform.DOAnchorPos(uiOnScreenPosition, 0.5f); 
     }
 
+    public void ShowCoinsUIInstant()
+    {
+    coinsRectTransform.anchoredPosition = uiOnScreenPosition; // Instantly place UI on-screen
+    }
+
     private IEnumerator HideCoinsUIAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
@@ -75,7 +80,7 @@ public class CoinCollector : MonoBehaviour, IDataPersistence
         coinsRectTransform.DOAnchorPos(uiOffScreenPosition, 0.5f);
     }
 
-    private void HideCoinsUIInstant()
+    public void HideCoinsUIInstant()
     {
         coinsRectTransform.anchoredPosition = uiOffScreenPosition; // Instantly place UI off-screen
     }
