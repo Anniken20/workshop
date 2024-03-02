@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using DG.Tweening;
 
 /* AudioManager script
  * 
@@ -22,6 +23,9 @@ public class AudioManager : MonoBehaviour
     public AudioSource sfxAudio;
     public AudioSource dialogueAudio;
     public AudioSource ambienceAudio;
+
+    [Header("Effects")]
+    [SerializeField] private AudioLowPassFilter musicLPFilter;
 
     //keys for player prefs ------------------------------------------------
     [HideInInspector] public const string MASTER_KEY = "masterVolume";
@@ -85,6 +89,8 @@ public class AudioManager : MonoBehaviour
                 break;
         }
     }
+
+    #region Settings
     public void LoadVolume() 
     {
         LoadMasterVolume();
@@ -98,7 +104,7 @@ public class AudioManager : MonoBehaviour
     {
         if (PlayerPrefs.GetInt(MASTER_UNMUTED) == 0) return;
         mixer.SetFloat(MASTER_KEY,
-            Mathf.Log10(PlayerPrefs.GetFloat(MASTER_KEY, 0.8f)) * 20f);
+            Mathf.Log10(PlayerPrefs.GetFloat(MASTER_KEY, 0.8f)) * 70f);
         if (Mathf.Approximately(PlayerPrefs.GetFloat(MASTER_KEY), 0))
             mixer.SetFloat(MASTER_KEY, -80f);
     }
@@ -107,7 +113,7 @@ public class AudioManager : MonoBehaviour
     {
         if (PlayerPrefs.GetInt(MUSIC_UNMUTED) == 0) return;
         mixer.SetFloat(MUSIC_KEY,
-            Mathf.Log10(PlayerPrefs.GetFloat(MUSIC_KEY, 0.8f)) * 20f);
+            Mathf.Log10(PlayerPrefs.GetFloat(MUSIC_KEY, 0.8f)) * 70f);
         if (Mathf.Approximately(PlayerPrefs.GetFloat(MUSIC_KEY), 0))
             mixer.SetFloat(MUSIC_KEY, -80f);
             
@@ -117,7 +123,7 @@ public class AudioManager : MonoBehaviour
     {
         if (PlayerPrefs.GetInt(SFX_UNMUTED) == 0) return;
         mixer.SetFloat(SFX_KEY,
-            Mathf.Log10(PlayerPrefs.GetFloat(SFX_KEY, 0.8f)) * 20f);
+            Mathf.Log10(PlayerPrefs.GetFloat(SFX_KEY, 0.8f)) * 70f);
         if (Mathf.Approximately(PlayerPrefs.GetFloat(SFX_KEY), 0))
             mixer.SetFloat(SFX_KEY, -80f);
     }
@@ -126,7 +132,7 @@ public class AudioManager : MonoBehaviour
     {
         if (PlayerPrefs.GetInt(DIALOGUE_UNMUTED) == 0) return;
         mixer.SetFloat(DIALOGUE_KEY,
-            Mathf.Log10(PlayerPrefs.GetFloat(DIALOGUE_KEY, 0.8f)) * 20f);
+            Mathf.Log10(PlayerPrefs.GetFloat(DIALOGUE_KEY, 0.8f)) * 70f);
         if (Mathf.Approximately(PlayerPrefs.GetFloat(DIALOGUE_KEY), 0))
             mixer.SetFloat(DIALOGUE_KEY, -80f);
     }
@@ -135,7 +141,7 @@ public class AudioManager : MonoBehaviour
     {
         if (PlayerPrefs.GetInt(AMBIENCE_UNMUTED) == 0) return;
         mixer.SetFloat(AMBIENCE_KEY,
-            Mathf.Log10(PlayerPrefs.GetFloat(AMBIENCE_KEY, 0.8f)) * 20f);
+            Mathf.Log10(PlayerPrefs.GetFloat(AMBIENCE_KEY, 0.8f)) * 70f);
         if (Mathf.Approximately(PlayerPrefs.GetFloat(AMBIENCE_KEY), 0))
             mixer.SetFloat(AMBIENCE_KEY, -80f);
     }
@@ -206,4 +212,14 @@ public class AudioManager : MonoBehaviour
         LoadAmbienceToggle();
         LoadDialogueToggle();
     }
+    #endregion
+
+    #region EffectsMethods
+    public void SetMusicLowPassFilter(int newValue = 22000, float time = 1f)
+    {
+        newValue = Mathf.Clamp(newValue, 0, 22000);
+        DOTween.To(() => musicLPFilter.cutoffFrequency, x => musicLPFilter.cutoffFrequency = x, newValue, time);
+    }
+
+    #endregion
 }
