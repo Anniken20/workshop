@@ -9,6 +9,9 @@ public class DaughterGraveWrangle : LassoWrangle
     private bool isRotating = false;
     private float rotateSpeed;
     private float holdRotateAngle;
+    [HideInInspector] public Daughter d;
+    [HideInInspector] public bool atGrave;
+    [HideInInspector] public bool peeking;
     private void Start()
     {
         rotateSpeed = GetComponentInParent<GraveSelection>().rotationSpeed;
@@ -44,7 +47,15 @@ public class DaughterGraveWrangle : LassoWrangle
     }
     IEnumerator Rotate()
     {
-        this.GetComponentInChildren<GraveDamageTrigger>().EnableCollider();
+        //this.GetComponentInChildren<GraveDamageTrigger>().EnableCollider();
+        if(atGrave && peeking)
+        {
+            d.TakeDamage(GetComponentInParent<GraveSelection>().graveDMG);
+            GetComponentInParent<GraveSelection>().Whacked();
+            GetComponent<GraveShaker>().CancelPeek();
+            atGrave = false;
+            peeking = false;
+        }
         isRotating = true;
         while(Quaternion.Angle(transform.rotation, targetRotation) > 0.01f)
         {
@@ -61,6 +72,6 @@ public class DaughterGraveWrangle : LassoWrangle
         }
         isRotating = false;
         //Disable Collider
-        this.GetComponentInChildren<GraveDamageTrigger>().DisableCollider();
+        //this.GetComponentInChildren<GraveDamageTrigger>().DisableCollider();
     }
 }

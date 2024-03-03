@@ -13,6 +13,7 @@ public class GraveSelection : MonoBehaviour
     public float shakeAmount;
     public float shakeDuration;
     public float waitTime;
+    public int graveDMG;
     [HideInInspector]
     public enum Axis
     {
@@ -48,6 +49,8 @@ public class GraveSelection : MonoBehaviour
         {
             //Debug.Log("Selected Grave: " + selectedGrave.ToString());
             selectedGrave.GetComponent<GraveShaker>().StartShake(shakeSpeed, shakeAmount, shakeDuration, axis.ToString());
+            selectedGrave.GetComponent<DaughterGraveWrangle>().d = poppy.GetComponent<Daughter>();
+            selectedGrave.GetComponent<DaughterGraveWrangle>().atGrave = true;
         }
     }
     private void Update()
@@ -65,12 +68,42 @@ public class GraveSelection : MonoBehaviour
     }
     public void SelectNewGrave()
     {
+        foreach (var grave in graves)
+        {
+            grave.GetComponent<GraveShaker>().CancelPeek();
+        }
         StartCoroutine(Waiting());
     }
     IEnumerator Waiting()
     {
         yield return new WaitForSeconds(waitTime);
+        Debug.Log("Done Waiting");
         poppyModel.SetActive(false);
         ActivateGrave();
+    }
+    public void Whacked()
+    {
+        poppyModel.SetActive(false);
+        SelectNewGrave();
+    }
+    public void PoppyCombat(GameObject grave)
+    {
+        //poppy.GameObject.GetComponent<NavMeshAgent>().SetActive(true);
+        poppy.GetComponent<Daughter>().Shooting();
+        StartCoroutine(WrangleCooldown(grave));
+    }
+    IEnumerator WrangleCooldown(GameObject grave)
+    {
+        yield return new WaitForSeconds(GetComponentInParent<GraveSelection>().waitTime);
+        Debug.Log("WrangleCooldown thing");
+        Whacked();
+        poppy.GetComponent<Daughter>().Idle();
+        grave.GetComponent<DaughterGraveWrangle>().enabled = true;
+        //poppy.GameObject.GetComponent<NavMeshAgent>().SetActive(false);
+    }
+    public void ReturnToCenter()
+    {
+        MovePoppy(centerGrave.transform.position);
+        poppyModel.SetActive(true);
     }
 }

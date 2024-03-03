@@ -34,7 +34,9 @@ public class GraveShaker : MonoBehaviour
         }
         start = false;
         GetComponentInParent<GraveSelection>().MovePoppy(this.transform.Find("PeekingPOS").position);
-        GetComponentInParent<GraveSelection>().SelectNewGrave();
+        this.GetComponent<DaughterGraveWrangle>().peeking = true;
+        StartCoroutine(PeekingWait());
+        //GetComponentInParent<GraveSelection>().SelectNewGrave();
         this.transform.position = ogPos;
     }
     public void FixedUpdate()
@@ -50,6 +52,21 @@ public class GraveShaker : MonoBehaviour
                 this.transform.position = new Vector3(ogPos.x, ogPos.y, ogPos.z + Mathf.Sin(Time.time * sSpeed) * sAmount);
             }
         }
+    }
+    IEnumerator PeekingWait()
+    {
+        yield return new WaitForSeconds(GetComponentInParent<GraveSelection>().waitTime);
+        Debug.Log("Heading to Out POS");
+        this.GetComponent<DaughterGraveWrangle>().peeking = false;
+        GetComponentInParent<GraveSelection>().MovePoppy(this.transform.Find("OutPOS").position);
+        this.GetComponent<DaughterGraveWrangle>().atGrave = false;
+        //this.GetComponent<DaughterGraveWrangle>().enabled = false;
+        GetComponentInParent<GraveSelection>().PoppyCombat(this.gameObject);
+    }
+    public void CancelPeek()
+    {
+        StopCoroutine(PeekingWait());
+        StopAllCoroutines();
     }
 
 }

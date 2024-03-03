@@ -6,6 +6,9 @@ using UnityEngine.AI;
 public class SocialiteMoveState : EnemyState
 {
     private SocialiteMoveData moveData;
+    private Vector3 point;
+    public Vector3 lastDir = Vector3.zero;
+
 
     public SocialiteMoveState(Enemy enemy, EnemyStateMachine enemyStateMachine) : base(enemy, enemyStateMachine)
     {
@@ -20,6 +23,7 @@ public class SocialiteMoveState : EnemyState
         StartCoroutine(SpawnMist());
         //Is this how animations are supposed to be set up? idk
         if (enemy.animator != null) enemy.animator.SetBool("Running", true);
+ 
     }
     public override void FrameUpdate()
     {
@@ -28,6 +32,14 @@ public class SocialiteMoveState : EnemyState
     public override void PhysicsUpdate()
     {
         base.PhysicsUpdate();
+        if(point != null)
+        {
+            var distanceFromTarget = Vector3.Distance(this.gameObject.transform.position, nav.destination);
+            if (distanceFromTarget <= 1.25)
+            {
+                SetDestination();
+            }
+        }
     }
     public override void ExitState()
     {
@@ -36,17 +48,30 @@ public class SocialiteMoveState : EnemyState
     }
     private void SetDestination()
     {
-        var moveDist = Random.Range(moveData.minMoveDist, moveData.maxMoveDist);
-        var destination = (transform.position + GetDirection() * moveDist);
-        //Debug.Log($"{destination} {moveDist}");
-      //this.transform.LookAt(destination);
-        nav.SetDestination(destination);
-        StartCoroutine(MoveCooldown());
+        point = GetDirection();
+        nav.SetDestination(point);
     }
     Vector3 GetDirection()
     {
-        int randomDirection = Random.Range(0, 4);
-        return moveData.directions[randomDirection];
+        Vector3 farthestPoint = transform.position;
+        float maxDistance = 0f;
+        foreach (Vector3 position in moveData.directions)
+        {
+            if (lastDir != position)
+            {
+                RaycastHit hit;
+                if (Physics.Raycast(transform.position, position, out hit))
+                {
+                    if (hit.distance > maxDistance)
+                    {
+                        maxDistance = hit.distance;
+                        farthestPoint = hit.point;
+                    }
+                }
+            }
+        }
+        lastDir = (farthestPoint - this.transform.position).normalized * -1;
+        return farthestPoint;
     }
     private IEnumerator MoveCooldown()
     {
@@ -61,5 +86,4 @@ public class SocialiteMoveState : EnemyState
         StartCoroutine(SpawnMist());
 
     }
-
 }
