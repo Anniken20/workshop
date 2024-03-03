@@ -30,6 +30,7 @@ public class QTEDuel : MonoBehaviour
     public Image timeMeterFG;
     public CanvasGroup timeMeterCG;
     public ParticleSystem hitSparkSystem;
+    public AudioSource gunShotAudio;
 
     [Header("Difficulty")]
     [Tooltip("The player will have at least this much time to fire. In seconds")]
@@ -40,6 +41,14 @@ public class QTEDuel : MonoBehaviour
     public float lowBoundTimeToPopup;
     [Tooltip("The player will wait at most this much time before being prompted to shoot. In seconds")]
     public float highBoundTimeToPopup;
+    [Tooltip("The amount of damage the enemy takes when player wins.")]
+    public int enemyDamageOnLoss;
+    [Tooltip("The amount of health the enemy restores when enemy wins.")]
+    public int enemyRestoreOnWin;
+    [Tooltip("The amount of damage the player takes when enemy wins.")]
+    public int playerDamageOnLoss;
+    [Tooltip("The amount of time before the player is released after a duel.")]
+    public float releaseTime = 2f;
 
     [Header("Aesthetics")]
     public float duelTimeScale = 0.5f;
@@ -196,13 +205,16 @@ public class QTEDuel : MonoBehaviour
             ThirdPersonController.Main.transform.position +
             ThirdPersonController.Main.transform.forward * 1.0f;
         hitSparkSystem.Play();
+        gunShotAudio.Play();
 
-
+        PlayerWonDuel();
         EndDuel();
         yield break;
     }
     private IEnumerator Failed()
     {
+        gunShotAudio.Play();
+        EnemyWonDuel();
         EndDuel();
         yield break;
     }
@@ -224,12 +236,14 @@ public class QTEDuel : MonoBehaviour
         if (camController != null) camController.SwitchCameraView(true);
         inDuel = false;
         AudioManager.main.SetMusicLowPassFilter();
-        ThirdPersonController.Main.ForceStopConversation();
 
         DOTween.To(() => timeMeterCG.alpha, x => timeMeterCG.alpha = x, 0f, postTransitionDuration*2);
 
         //duel canvas
         Invoke(nameof(TurnoffDuelCanvas), postTransitionDuration);
+
+        //free player
+        Invoke(nameof(FreePlayer), releaseTime);
     }
 
     private void StartDuelAesthetics()
@@ -276,5 +290,23 @@ public class QTEDuel : MonoBehaviour
     private void TurnoffDuelCanvas()
     {
         textCanvas.gameObject.SetActive(false);
+    }
+
+    private void PlayerWonDuel()
+    {
+        duelEnemy.TakeDamage(enemyDamageOnLoss);
+        duelEnemy.PlayerWonDuel();
+    }
+
+    private void EnemyWonDuel()
+    {
+        ThirdPersonController.Main.gameObject.GetComponent<PlayerHealth>().TakeDamage(playerDamageOnLoss);
+        duelEnemy.TakeDamage(-enemyRestoreOnWin);
+        duelEnemy.EnemyWonDuel();
+    }
+
+    private void FreePlayer()
+    {
+        ThirdPersonController.Main.ForceStopConversation();
     }
 }
