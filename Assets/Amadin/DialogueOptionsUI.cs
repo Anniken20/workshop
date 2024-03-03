@@ -5,21 +5,41 @@ using UnityEngine.UI;
 
 public class DialogueOptionsMenu : MonoBehaviour
 {
+    [Header("Dialogue data")]
     // Reference to DialogueData scriptable object
     public DialogueData dialogueData;
+
+    [Header("Dialogue text")]
     public TMP_Text dialogueText; // Reference to the dialogue text object / sample in the actual menu
+
+    [Header("Text size")]
     public TMP_Text textSizeDisplay;
     public Slider textSizeSlider;
+
+    [Header("Subtitle toggle")]
     public Toggle subtitlesToggle;
+
+    [Header("Colour dropdown menu")]
     public TMP_Dropdown colorDropdown;
+
+    [Header("Dyslexia mode toggle")]
+    public Toggle dyslexiaToggle; // Add refrence to dyslexia toggle UI element
 
     private const string TextSizeKey = "TextSize";
     private const string SubtitlesKey = "Subtitles";
     private const string ColorIndexKey = "ColorIndex";
+    private const string DyslexiaModeKey = "DyslexiaMode"; // Key for dyslexia
+    private const string ScreenShakeKey = "ScreenShake";
+
+    [Header("Screen Shake toggle")]
+    public Toggle screenShakeToggle;
 
     private ScreenShakeScript screenShakeScript;
-    public Toggle screenShakeToggle;
-    private const string ScreenShakeKey = "ScreenShake";
+
+    private const int DefaultTextSize = 24;
+    private const int DefaultTextColorKey = 0;
+
+    private FontManager fontManager; // Reference to FontManager script
 
     private Dictionary<string, Color> colorNameToValue = new Dictionary<string, Color>();
 
@@ -35,6 +55,7 @@ public class DialogueOptionsMenu : MonoBehaviour
 
     private PostProcess postProcess; // Reference to the PostProcess script
 
+    [Header("Post processing toggle")]
     public Toggle bloomToggle;
     public Toggle chromaticAberrationToggle;
     public Toggle vignetteToggle;
@@ -45,6 +66,31 @@ public class DialogueOptionsMenu : MonoBehaviour
 
     private void Start()
     {
+        fontManager = FindObjectOfType<FontManager>(); // Find FontManager script in the scene
+
+        if (fontManager == null)
+        {
+            Debug.LogError("FontManager script not found in the scene.");
+            return;
+        }
+
+        if (dialogueData == null)
+        {
+            Debug.LogError("DialogueData reference not set in DialogueOptionsMenu.");
+            return;
+        }
+
+        // Load saved preference for dyslexia mode
+        if (PlayerPrefs.HasKey(DyslexiaModeKey))
+        {
+            bool dyslexiaModeEnabled = PlayerPrefs.GetInt(DyslexiaModeKey) == 1;
+            dyslexiaToggle.isOn = dyslexiaModeEnabled;
+            ToggleDyslexiaMode(dyslexiaModeEnabled);
+        }
+
+        // Add listener for dyslexia toggle event
+        dyslexiaToggle.onValueChanged.AddListener(OnDyslexiaToggleChanged);
+
         // Populate the dictionary with color names and values
         InitializeColorDictionary();
 
@@ -125,8 +171,68 @@ public class DialogueOptionsMenu : MonoBehaviour
         textSizeSlider.onValueChanged.RemoveListener(OnTextSizeChanged);
         subtitlesToggle.onValueChanged.RemoveListener(OnSubtitlesToggleChanged);
         colorDropdown.onValueChanged.RemoveListener(OnColorDropdownChanged);
+
+        // Remove toggle value change listener to prevent memory leaks
+        dyslexiaToggle.onValueChanged.RemoveListener(OnDyslexiaToggleChanged);
     }
 
+    public void ToggleDyslexiaMode(bool isEnabled)
+    {
+        if (fontManager != null)
+        {
+            fontManager.ToggleDyslexiaMode(isEnabled); // Call FontManager to toggle dyslexia mode
+
+            // Save dyslexia mode preference
+            PlayerPrefs.SetInt(DyslexiaModeKey, isEnabled ? 1 : 0);
+        }
+        else
+        {
+            Debug.LogWarning("FontManager reference is null. Dyslexia mode not toggled.");
+        }
+
+        // Only apply dyslexic font if dyslexia mode is explicitly enabled by the user
+        if (isEnabled)
+        {
+            // Set dyslexia mode in dialogue data
+            dialogueData.useDyslexicFont = true;
+
+            // Apply dyslexic font to all text elements
+            ApplyFontToAllText(dialogueData.dyslexicFont);
+        }
+        else
+        {
+            // If dyslexia mode is disabled, use the default font
+            dialogueData.useDyslexicFont = false;
+            ApplyFontToAllText(dialogueData.defaultFont);
+        }
+    }
+
+    private void ApplyFontToAllText(TMP_FontAsset font)
+    {
+        // Get all TMP_Text components in the scene
+        TMP_Text[] textComponents = FindObjectsOfType<TMP_Text>();
+
+        // Apply the font to each TMP_Text component
+        foreach (TMP_Text textComponent in textComponents)
+        {
+            textComponent.font = font;
+        }
+    }
+
+
+    public TMP_FontAsset GetDialogueFont()
+    {
+        if (dialogueData.useDyslexicFont)
+            return dialogueData.dyslexicFont;
+        else
+            return dialogueData.defaultFont;
+    }
+
+    private void OnDyslexiaToggleChanged(bool value)
+    {
+        ToggleDyslexiaMode(value);
+        PlayerPrefs.SetInt(DyslexiaModeKey, value ? 1 : 0);
+    }
 
     private void InitializeColorDictionary()
     {
@@ -221,5 +327,12 @@ public class DialogueOptionsMenu : MonoBehaviour
             postProcess._mChromaticAberration.enabled = chromaticAberrationToggle.isOn;
             postProcess._mMVignette.enabled = vignetteToggle.isOn;
         }
+    }
+
+    private void OnEnable()
+    {
+        dialogueText.fontSize = PlayerPrefs.GetInt(TextSizeKey, DefaultTextSize);
+        textSizeSlider.value = PlayerPrefs.GetInt(TextSizeKey, DefaultTextSize);
+        dialogueText.color = colorOptions[PlayerPrefs.GetInt(ColorIndexKey, DefaultTextColorKey)];
     }
 }

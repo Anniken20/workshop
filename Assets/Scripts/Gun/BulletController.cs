@@ -427,12 +427,9 @@ public class BulletController : MonoBehaviour
             mainCamera.LookAt = playerCamRoot.transform;
 
             //ease look point back to player
-            
-            Vector3 localCamPos = playerCamRoot.transform.localPosition;
-            if (camRootRedirectTween != null) camRootRedirectTween.Kill();
+
             playerCamRoot.transform.position = redirectLookPoint.transform.position;
-            camRootRedirectTween = playerCamRoot.transform.DOLocalMove(localCamPos, 1f);
-            
+            playerCamRoot.GetComponent<PlayerCamRootMover>().ResetPosition();
 
             DOTween.To(() => mainCamera.m_Lens.OrthographicSize,
                 x => mainCamera.m_Lens.OrthographicSize = x,

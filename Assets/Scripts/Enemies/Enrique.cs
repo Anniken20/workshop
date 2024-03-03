@@ -9,6 +9,9 @@ public class Enrique : Enemy, ICryable
 {
     [HideInInspector] public CryState cryState;
     [HideInInspector] public RunToPointsState runToPointsState;
+    private bool inBattle;
+
+    public GhostSpawner[] ghostSpawners;
     private void Awake()
     {
         base.MyAwake();
@@ -23,7 +26,7 @@ public class Enrique : Enemy, ICryable
         runToPointsState.Initialize(this, stateMachine);
 
         //set default state
-        stateMachine.Initialize(idleState);
+        stateMachine.Initialize(cryState);
     }
 
     private void Update()
@@ -38,21 +41,47 @@ public class Enrique : Enemy, ICryable
 
     public void BeginBattle()
     {
+        inBattle = true;
         stateMachine.ChangeState(runToPointsState);
     }
 
     public void StartCrying()
     {
         stateMachine.ChangeState(cryState);
+        StopSpawning();
     }
 
     
     public override void OnShot(BulletController bullet)
     {
+        if (!inBattle) return;
         if (stateMachine.CurrentEnemyState is CryState)
         {
             TakeDamage((int)bullet.currDmg);
             stateMachine.ChangeState(runToPointsState);
+            SpawnGhosts();
         }
+    }
+
+    private void SpawnGhosts()
+    {
+        for(int i = 0; i < ghostSpawners.Length; i++)
+        {
+            ghostSpawners[i].ForceSpawns();
+        }
+    }
+
+    private void StopSpawning()
+    {
+        for (int i = 0; i < ghostSpawners.Length; i++)
+        {
+            ghostSpawners[i].ForceStopSpawns();
+        }
+    }
+
+    public override void Die()
+    {
+        base.Die();
+        StopSpawning();
     }
 }

@@ -60,4 +60,21 @@ public class GhostSpawner : MonoBehaviour
     {
         numEnemiesAlive--;
     }
+
+    public void ForceSpawns()
+    {
+        playerInsideTrigger = true;
+        if (spawnCoroutine == null)
+            spawnCoroutine = StartCoroutine(SpawnGhosts());
+    }
+
+    public void ForceStopSpawns()
+    {
+        playerInsideTrigger = false;
+        if (spawnCoroutine == null)
+        {
+            StopCoroutine(SpawnGhosts());
+            spawnCoroutine = null;
+        }
+    }
 }

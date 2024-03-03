@@ -76,7 +76,7 @@ public abstract class Enemy : MonoBehaviour, IShootable
         PlayFootStepSound
     }
 
-    public void Die()
+    public virtual void Die()
     {
        StartCoroutine(DeathRoutine());
 
@@ -151,11 +151,11 @@ public abstract class Enemy : MonoBehaviour, IShootable
 
     public void Freeze()
     {
-        animator.playbackTime = 0f;
+        //animator.playbackTime = 0f;
     }
 
     public void Unfreeze()
     {
-        animator.playbackTime = 1f;
+        //animator.playbackTime = 1f;
     }
 }
