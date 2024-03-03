@@ -18,11 +18,17 @@ public class QTEDuel : MonoBehaviour
     public Canvas textCanvas;
     public TMP_Text PopupText;
     public GameObject cinematicBar_Top;
+    public Transform cinematicBarToPos_Top;
     public GameObject cinematicBar_Bottom;
+    public Transform cinematicBarToPos_Bottom;
     [SerializeField] private DuelEnemy duelEnemy;
     public CinemachineVirtualCamera shoulderCamera;
     public Volume postProcessVolume;
     public DuelCameraController duelCameraController;
+    public Image timeMeter;
+    public Image timeMeterBG;
+    public Image timeMeterFG;
+    public CanvasGroup timeMeterCG;
 
     [Header("Difficulty")]
     [Tooltip("The player will have at least this much time to fire. In seconds")]
@@ -39,8 +45,14 @@ public class QTEDuel : MonoBehaviour
     public float postTransitionDuration = 1f;
     public int lowPassCutoff = 800;
 
+    [Header("Text Strings")]
+    public string readyString;
+    public string fireString;
+    public string tooEarlyString;
+    public string wonDuelString;
+    public string tooLateString;
+
     //private variables -------------------------
-    private int QTEGen;
     private bool inDuel;
     private float generatedWaitTime;
     private float generatedShootTime;
@@ -105,14 +117,14 @@ public class QTEDuel : MonoBehaviour
 
         generatedWaitTime = Random.Range(lowBoundTimeToPopup, highBoundTimeToPopup);
         ThirdPersonController.Main.ForceStartConversation();
-        ShowPopupText("Ready...");
+        ShowPopupText(readyString);
         StartCoroutine(WaitForPopupRoutine(generatedWaitTime));
     }
 
     private IEnumerator WaitForPopupRoutine(float waitTime)
     {
         yield return new WaitForSecondsRealtime(waitTime);
-        ShowPopupText("FIRE!");
+        ShowPopupText(fireString);
         generatedShootTime = Random.Range(lowBoundTimeToShoot, highBoundTimeToShoot);
         StartCoroutine(InputRoutine(generatedShootTime));
     }
@@ -122,8 +134,12 @@ public class QTEDuel : MonoBehaviour
         float timeStep = 0.005f;
         float timeProgressed = 0f;
 
+        timeMeterCG.alpha = 1f;
+        timeMeter.DOFillAmount(1f, generatedShootTime - 0.1f).SetUpdate(true);
+
         while (timeProgressed < shootTime)
         {
+            Debug.Log("time progressed: " + timeProgressed);
             if (shootInput.triggered)
             {
                 StartCoroutine(Correct());
@@ -136,6 +152,7 @@ public class QTEDuel : MonoBehaviour
             //max 200fps
             yield return new WaitForSecondsRealtime(timeStep);
         }
+        ShowPopupText(tooLateString);
         StartCoroutine(Failed());
     }
 
@@ -155,13 +172,12 @@ public class QTEDuel : MonoBehaviour
 
     private IEnumerator Correct()
     {
-        ShowPopupText("BOOM!");
+        ShowPopupText(wonDuelString);
         EndDuel();
         yield break;
     }
     private IEnumerator Failed()
     {
-        ShowPopupText("MISFIRE!");
         EndDuel();
         yield break;
     }
@@ -184,12 +200,17 @@ public class QTEDuel : MonoBehaviour
         AudioManager.main.SetMusicLowPassFilter();
         ThirdPersonController.Main.ForceStopConversation();
 
+        DOTween.To(() => timeMeterCG.alpha, x => timeMeterCG.alpha = x, 0f, postTransitionDuration);
+
         //duel canvas
-        textCanvas.gameObject.SetActive(false);
+        Invoke(nameof(TurnoffDuelCanvas), 10f);
     }
 
     private void StartDuelAesthetics()
     {
+        //turn on duel canvas
+        textCanvas.gameObject.SetActive(true);
+
         //turn on post processing
         DOTween.To(() => postProcessVolume.weight, x => postProcessVolume.weight = x, 1f, postTransitionDuration);
 
@@ -199,8 +220,6 @@ public class QTEDuel : MonoBehaviour
 
         duelCameraController.StartDuel(highBoundTimeToPopup);
         AudioManager.main.SetMusicLowPassFilter(lowPassCutoff);
-
-        //ThirdPersonController.Main.LockPlayerForDuration(2f);
 
         //Camera.main is a built in singleton for Unity. Singletons are cool look them up. 
         //you can access it from any script without needing to attach a reference.
@@ -217,13 +236,18 @@ public class QTEDuel : MonoBehaviour
         //duel canvas
         textCanvas.gameObject.SetActive(true);
         topBarTween = cinematicBar_Top.transform.DOMove(
-            new Vector3(cinematicBar_Top.transform.position.x,
-            -cinematicBar_Top.transform.position.y), postTransitionDuration).SetEase(Ease.OutCubic);
-        bottomBarTween = cinematicBar_Top.transform.DOMove(
-            new Vector3(cinematicBar_Bottom.transform.position.x,
-            -cinematicBar_Bottom.transform.position.y), postTransitionDuration).SetEase(Ease.OutCubic);
+            new Vector3(cinematicBarToPos_Top.transform.position.x,
+            cinematicBarToPos_Top.position.y), postTransitionDuration * 5f).SetEase(Ease.OutCubic);
+        bottomBarTween = cinematicBar_Bottom.transform.DOMove(
+            new Vector3(cinematicBarToPos_Bottom.transform.position.x,
+            cinematicBarToPos_Bottom.position.y), postTransitionDuration*5f).SetEase(Ease.OutCubic);
 
         topBarTween.SetUpdate(true);
         bottomBarTween.SetUpdate(true);
+    }
+
+    private void TurnoffDuelCanvas()
+    {
+        textCanvas.gameObject.SetActive(false);
     }
 }
