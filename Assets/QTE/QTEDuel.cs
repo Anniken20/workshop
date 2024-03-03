@@ -29,6 +29,7 @@ public class QTEDuel : MonoBehaviour
     public Image timeMeterBG;
     public Image timeMeterFG;
     public CanvasGroup timeMeterCG;
+    public ParticleSystem hitSparkSystem;
 
     [Header("Difficulty")]
     [Tooltip("The player will have at least this much time to fire. In seconds")]
@@ -123,7 +124,25 @@ public class QTEDuel : MonoBehaviour
 
     private IEnumerator WaitForPopupRoutine(float waitTime)
     {
-        yield return new WaitForSecondsRealtime(waitTime);
+        //yield return new WaitForSecondsRealtime(waitTime);
+
+        //buffer in case player was spamming
+        yield return new WaitForSecondsRealtime(2f);
+
+        float endTime = generatedWaitTime + Time.realtimeSinceStartup;
+        while (endTime > Time.realtimeSinceStartup)
+        {
+            //Debug.Log("endTime: " + endTime + ", currTime: " + Time.realtimeSinceStartup);
+            if (shootInput.triggered)
+            {
+                ShowPopupText(tooEarlyString);
+                StartCoroutine(Failed());
+                yield break;
+            }
+
+            //timescale is changing
+            yield return null;
+        }
         ShowPopupText(fireString);
         generatedShootTime = Random.Range(lowBoundTimeToShoot, highBoundTimeToShoot);
         StartCoroutine(InputRoutine(generatedShootTime));
@@ -131,26 +150,24 @@ public class QTEDuel : MonoBehaviour
 
     private IEnumerator InputRoutine(float shootTime)
     {
-        float timeStep = 0.005f;
-        float timeProgressed = 0f;
+        float endTime = shootTime + Time.realtimeSinceStartup;
 
-        timeMeterCG.alpha = 1f;
+        timeMeterBG.gameObject.SetActive(true);
+        timeMeterFG.gameObject.SetActive(true);
+        PopupText.transform.DOShakePosition(0.3f, 15f).SetUpdate(true);
         timeMeter.DOFillAmount(1f, generatedShootTime - 0.1f).SetUpdate(true);
 
-        while (timeProgressed < shootTime)
+        while (endTime > Time.realtimeSinceStartup)
         {
-            Debug.Log("time progressed: " + timeProgressed);
+            //Debug.Log("endTime: " + endTime + ", currTime: " + Time.realtimeSinceStartup);
             if (shootInput.triggered)
             {
                 StartCoroutine(Correct());
                 yield break;
             } 
-            // track how long we have been in the shooting window
-            timeProgressed += timeStep;
 
-            // wait a concrete time since timescale is changing
-            //max 200fps
-            yield return new WaitForSecondsRealtime(timeStep);
+            //timescale is changing
+            yield return null;
         }
         ShowPopupText(tooLateString);
         StartCoroutine(Failed());
@@ -173,6 +190,14 @@ public class QTEDuel : MonoBehaviour
     private IEnumerator Correct()
     {
         ShowPopupText(wonDuelString);
+
+        hitSparkSystem.gameObject.SetActive(true);
+        hitSparkSystem.transform.position = new Vector3(0f, 1.5f) + 
+            ThirdPersonController.Main.transform.position +
+            ThirdPersonController.Main.transform.forward * 1.0f;
+        hitSparkSystem.Play();
+
+
         EndDuel();
         yield break;
     }
@@ -191,19 +216,20 @@ public class QTEDuel : MonoBehaviour
         timeTween.Kill();
         Time.timeScale = 1f;
 
+        PopupText.transform.DOShakePosition(0.3f, 15f).SetUpdate(true);
+
         duelCameraController.Reset();
 
-        PopupText.text = "";
         CameraController camController = Camera.main.GetComponent<CameraController>();
         if (camController != null) camController.SwitchCameraView(true);
         inDuel = false;
         AudioManager.main.SetMusicLowPassFilter();
         ThirdPersonController.Main.ForceStopConversation();
 
-        DOTween.To(() => timeMeterCG.alpha, x => timeMeterCG.alpha = x, 0f, postTransitionDuration);
+        DOTween.To(() => timeMeterCG.alpha, x => timeMeterCG.alpha = x, 0f, postTransitionDuration*2);
 
         //duel canvas
-        Invoke(nameof(TurnoffDuelCanvas), 10f);
+        Invoke(nameof(TurnoffDuelCanvas), postTransitionDuration);
     }
 
     private void StartDuelAesthetics()
@@ -233,8 +259,6 @@ public class QTEDuel : MonoBehaviour
         //then set the shoulder cam to focus on the enemy
         shoulderCamera.LookAt = duelEnemy.transform;
 
-        //duel canvas
-        textCanvas.gameObject.SetActive(true);
         topBarTween = cinematicBar_Top.transform.DOMove(
             new Vector3(cinematicBarToPos_Top.transform.position.x,
             cinematicBarToPos_Top.position.y), postTransitionDuration * 5f).SetEase(Ease.OutCubic);
@@ -244,6 +268,9 @@ public class QTEDuel : MonoBehaviour
 
         topBarTween.SetUpdate(true);
         bottomBarTween.SetUpdate(true);
+
+        PopupText.transform.DOMoveX(PopupText.transform.position.x - 200f, highBoundTimeToPopup + 3f).SetUpdate(true);
+        timeMeterCG.transform.DOMoveX(PopupText.transform.position.x - 200f, highBoundTimeToPopup + 3f).SetUpdate(true);
     }
 
     private void TurnoffDuelCanvas()
