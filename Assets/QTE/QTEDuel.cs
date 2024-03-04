@@ -18,11 +18,19 @@ public class QTEDuel : MonoBehaviour
     public Canvas textCanvas;
     public TMP_Text PopupText;
     public GameObject cinematicBar_Top;
+    public Transform cinematicBarToPos_Top;
     public GameObject cinematicBar_Bottom;
+    public Transform cinematicBarToPos_Bottom;
     [SerializeField] private DuelEnemy duelEnemy;
     public CinemachineVirtualCamera shoulderCamera;
     public Volume postProcessVolume;
     public DuelCameraController duelCameraController;
+    public Image timeMeter;
+    public Image timeMeterBG;
+    public Image timeMeterFG;
+    public CanvasGroup timeMeterCG;
+    public ParticleSystem hitSparkSystem;
+    public AudioSource gunShotAudio;
 
     [Header("Difficulty")]
     [Tooltip("The player will have at least this much time to fire. In seconds")]
@@ -33,17 +41,33 @@ public class QTEDuel : MonoBehaviour
     public float lowBoundTimeToPopup;
     [Tooltip("The player will wait at most this much time before being prompted to shoot. In seconds")]
     public float highBoundTimeToPopup;
+    [Tooltip("The amount of damage the enemy takes when player wins.")]
+    public int enemyDamageOnLoss;
+    [Tooltip("The amount of health the enemy restores when enemy wins.")]
+    public int enemyRestoreOnWin;
+    [Tooltip("The amount of damage the player takes when enemy wins.")]
+    public int playerDamageOnLoss;
+    [Tooltip("The amount of time before the player is released after a duel.")]
+    public float releaseTime = 2f;
 
     [Header("Aesthetics")]
     public float duelTimeScale = 0.5f;
     public float postTransitionDuration = 1f;
     public int lowPassCutoff = 800;
 
+    [Header("Text Strings")]
+    public string readyString;
+    public string fireString;
+    public string tooEarlyString;
+    public string wonDuelString;
+    public string tooLateString;
+
     //private variables -------------------------
-    private int QTEGen;
     private bool inDuel;
     private float generatedWaitTime;
     private float generatedShootTime;
+
+    private int phase = 1;
 
     //input
     public CharacterMovement iaControls;
@@ -83,15 +107,15 @@ public class QTEDuel : MonoBehaviour
 
         float healthPercentage = duelEnemy.currentHealth / duelEnemy.maxHealth;
 
-        if (healthPercentage <= 0.66f && healthPercentage > 0.33f)
+        if (phase == 1 && healthPercentage <= 0.66f && healthPercentage > 0.33f)
         {
             StartQTE();
         }
-        else if (healthPercentage <= 0.33f && healthPercentage > 0f)
+        else if (phase == 2 && healthPercentage <= 0.33f && healthPercentage > 0f)
         {
             StartQTE();
         }
-        else if (healthPercentage <= 0f)
+        else if (phase == 3 && healthPercentage <= 0f)
         {
             StartQTE();
         }
@@ -105,37 +129,58 @@ public class QTEDuel : MonoBehaviour
 
         generatedWaitTime = Random.Range(lowBoundTimeToPopup, highBoundTimeToPopup);
         ThirdPersonController.Main.ForceStartConversation();
-        ShowPopupText("Ready...");
+        ShowPopupText(readyString);
         StartCoroutine(WaitForPopupRoutine(generatedWaitTime));
     }
 
     private IEnumerator WaitForPopupRoutine(float waitTime)
     {
-        yield return new WaitForSecondsRealtime(waitTime);
-        ShowPopupText("FIRE!");
+        //yield return new WaitForSecondsRealtime(waitTime);
+
+        //buffer in case player was spamming
+        yield return new WaitForSecondsRealtime(2f);
+
+        float endTime = generatedWaitTime + Time.realtimeSinceStartup;
+        while (endTime > Time.realtimeSinceStartup)
+        {
+            //Debug.Log("endTime: " + endTime + ", currTime: " + Time.realtimeSinceStartup);
+            if (shootInput.triggered)
+            {
+                ShowPopupText(tooEarlyString);
+                StartCoroutine(Failed());
+                yield break;
+            }
+
+            //timescale is changing
+            yield return null;
+        }
+        ShowPopupText(fireString);
         generatedShootTime = Random.Range(lowBoundTimeToShoot, highBoundTimeToShoot);
         StartCoroutine(InputRoutine(generatedShootTime));
     }
 
     private IEnumerator InputRoutine(float shootTime)
     {
-        float timeStep = 0.005f;
-        float timeProgressed = 0f;
+        float endTime = shootTime + Time.realtimeSinceStartup;
 
-        while (timeProgressed < shootTime)
+        timeMeterBG.gameObject.SetActive(true);
+        timeMeterFG.gameObject.SetActive(true);
+        PopupText.transform.DOShakePosition(0.3f, 15f).SetUpdate(true);
+        timeMeter.DOFillAmount(1f, generatedShootTime - 0.1f).SetUpdate(true);
+
+        while (endTime > Time.realtimeSinceStartup)
         {
+            //Debug.Log("endTime: " + endTime + ", currTime: " + Time.realtimeSinceStartup);
             if (shootInput.triggered)
             {
                 StartCoroutine(Correct());
                 yield break;
             } 
-            // track how long we have been in the shooting window
-            timeProgressed += timeStep;
 
-            // wait a concrete time since timescale is changing
-            //max 200fps
-            yield return new WaitForSecondsRealtime(timeStep);
+            //timescale is changing
+            yield return null;
         }
+        ShowPopupText(tooLateString);
         StartCoroutine(Failed());
     }
 
@@ -155,13 +200,23 @@ public class QTEDuel : MonoBehaviour
 
     private IEnumerator Correct()
     {
-        ShowPopupText("BOOM!");
+        ShowPopupText(wonDuelString);
+
+        hitSparkSystem.gameObject.SetActive(true);
+        hitSparkSystem.transform.position = new Vector3(0f, 1.5f) + 
+            ThirdPersonController.Main.transform.position +
+            ThirdPersonController.Main.transform.forward * 1.0f;
+        hitSparkSystem.Play();
+        gunShotAudio.Play();
+
+        PlayerWonDuel();
         EndDuel();
         yield break;
     }
     private IEnumerator Failed()
     {
-        ShowPopupText("MISFIRE!");
+        gunShotAudio.Play();
+        EnemyWonDuel();
         EndDuel();
         yield break;
     }
@@ -175,21 +230,29 @@ public class QTEDuel : MonoBehaviour
         timeTween.Kill();
         Time.timeScale = 1f;
 
+        PopupText.transform.DOShakePosition(0.3f, 15f).SetUpdate(true);
+
         duelCameraController.Reset();
 
-        PopupText.text = "";
         CameraController camController = Camera.main.GetComponent<CameraController>();
         if (camController != null) camController.SwitchCameraView(true);
         inDuel = false;
         AudioManager.main.SetMusicLowPassFilter();
-        ThirdPersonController.Main.ForceStopConversation();
+
+        DOTween.To(() => timeMeterCG.alpha, x => timeMeterCG.alpha = x, 0f, postTransitionDuration*2);
 
         //duel canvas
-        textCanvas.gameObject.SetActive(false);
+        Invoke(nameof(TurnoffDuelCanvas), postTransitionDuration);
+
+        //free player
+        Invoke(nameof(FreePlayer), releaseTime);
     }
 
     private void StartDuelAesthetics()
     {
+        //turn on duel canvas
+        textCanvas.gameObject.SetActive(true);
+
         //turn on post processing
         DOTween.To(() => postProcessVolume.weight, x => postProcessVolume.weight = x, 1f, postTransitionDuration);
 
@@ -199,8 +262,6 @@ public class QTEDuel : MonoBehaviour
 
         duelCameraController.StartDuel(highBoundTimeToPopup);
         AudioManager.main.SetMusicLowPassFilter(lowPassCutoff);
-
-        //ThirdPersonController.Main.LockPlayerForDuration(2f);
 
         //Camera.main is a built in singleton for Unity. Singletons are cool look them up. 
         //you can access it from any script without needing to attach a reference.
@@ -214,16 +275,41 @@ public class QTEDuel : MonoBehaviour
         //then set the shoulder cam to focus on the enemy
         shoulderCamera.LookAt = duelEnemy.transform;
 
-        //duel canvas
-        textCanvas.gameObject.SetActive(true);
         topBarTween = cinematicBar_Top.transform.DOMove(
-            new Vector3(cinematicBar_Top.transform.position.x,
-            -cinematicBar_Top.transform.position.y), postTransitionDuration).SetEase(Ease.OutCubic);
-        bottomBarTween = cinematicBar_Top.transform.DOMove(
-            new Vector3(cinematicBar_Bottom.transform.position.x,
-            -cinematicBar_Bottom.transform.position.y), postTransitionDuration).SetEase(Ease.OutCubic);
+            new Vector3(cinematicBarToPos_Top.transform.position.x,
+            cinematicBarToPos_Top.position.y), postTransitionDuration * 5f).SetEase(Ease.OutCubic);
+        bottomBarTween = cinematicBar_Bottom.transform.DOMove(
+            new Vector3(cinematicBarToPos_Bottom.transform.position.x,
+            cinematicBarToPos_Bottom.position.y), postTransitionDuration*5f).SetEase(Ease.OutCubic);
 
         topBarTween.SetUpdate(true);
         bottomBarTween.SetUpdate(true);
+
+        PopupText.transform.DOMoveX(PopupText.transform.position.x - 200f, highBoundTimeToPopup + 3f).SetUpdate(true);
+        timeMeterCG.transform.DOMoveX(PopupText.transform.position.x - 200f, highBoundTimeToPopup + 3f).SetUpdate(true);
+    }
+
+    private void TurnoffDuelCanvas()
+    {
+        textCanvas.gameObject.SetActive(false);
+    }
+
+    private void PlayerWonDuel()
+    {
+        phase++;
+        duelEnemy.TakeDamage(enemyDamageOnLoss);
+        duelEnemy.PlayerWonDuel();
+    }
+
+    private void EnemyWonDuel()
+    {
+        ThirdPersonController.Main.gameObject.GetComponent<PlayerHealth>().TakeDamage(playerDamageOnLoss);
+        duelEnemy.TakeDamage(-enemyRestoreOnWin);
+        duelEnemy.EnemyWonDuel();
+    }
+
+    private void FreePlayer()
+    {
+        ThirdPersonController.Main.ForceStopConversation();
     }
 }

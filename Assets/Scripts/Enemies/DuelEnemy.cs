@@ -4,6 +4,7 @@ using UnityEngine;
 
 public abstract class DuelEnemy : Enemy
 {
+    [Header("Duel Enemy Variables")]
     public int phase = 1;
     [HideInInspector] public DuelState duelState;
 
@@ -20,12 +21,29 @@ public abstract class DuelEnemy : Enemy
 
     public virtual void PlayerWonDuel()
     {
-
+        switch (phase)
+        {
+            case 1:
+                GoNextPhase();
+                break;
+            case 2:
+                GoNextPhase();
+                break;
+            case 3:
+                Die();
+                break;
+        }
     }
 
     public virtual void EnemyWonDuel()
     {
 
+    }
+
+    public override void TakeDamage(int delta)
+    {
+        currentHealth -= delta;
+        damageDelegate?.Invoke();
     }
 
     protected abstract void StartPhase(int ph);
