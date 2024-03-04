@@ -67,6 +67,8 @@ public class QTEDuel : MonoBehaviour
     private float generatedWaitTime;
     private float generatedShootTime;
 
+    private int phase = 1;
+
     //input
     public CharacterMovement iaControls;
     private InputAction shootInput;
@@ -105,15 +107,15 @@ public class QTEDuel : MonoBehaviour
 
         float healthPercentage = duelEnemy.currentHealth / duelEnemy.maxHealth;
 
-        if (healthPercentage <= 0.66f && healthPercentage > 0.33f)
+        if (phase == 1 && healthPercentage <= 0.66f && healthPercentage > 0.33f)
         {
             StartQTE();
         }
-        else if (healthPercentage <= 0.33f && healthPercentage > 0f)
+        else if (phase == 2 && healthPercentage <= 0.33f && healthPercentage > 0f)
         {
             StartQTE();
         }
-        else if (healthPercentage <= 0f)
+        else if (phase == 3 && healthPercentage <= 0f)
         {
             StartQTE();
         }
@@ -294,6 +296,7 @@ public class QTEDuel : MonoBehaviour
 
     private void PlayerWonDuel()
     {
+        phase++;
         duelEnemy.TakeDamage(enemyDamageOnLoss);
         duelEnemy.PlayerWonDuel();
     }
