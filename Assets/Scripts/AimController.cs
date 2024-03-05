@@ -32,6 +32,10 @@ public class AimController : MonoBehaviour
     public float snapIncrements;
     public bool showBounceAim;
     public float bounceAimDist;
+    [Tooltip("Will set the aim line to different " +
+        "colors and scroll speeds depending on the targeted object.")]
+    public bool contextualAimLine;
+    public AimLineData aimLineData;
 
     [Header("IK Setup")]
     private Animator animator;
@@ -217,6 +221,30 @@ public class AimController : MonoBehaviour
         else
         {
             aimLine.SetPosition(1, angle * 500f);
+            if (contextualAimLine)
+            {
+                aimLineData.scrollLineMaterial.SetColor(aimLineData.key_albedo, aimLineData.normalAimColor);
+                aimLineData.scrollLineMaterial.SetFloat(aimLineData.key_scrollSpeed, aimLineData.normalScrollSpeed);
+            }
+        }
+
+        if (contextualAimLine)
+        {
+            if (hitData.collider.gameObject.GetComponent<IShootable>() != null
+                || hitData.collider.gameObject.GetComponent<ShootableController>() != null)
+            {
+                aimLineData.scrollLineMaterial.SetColor(aimLineData.key_albedo, aimLineData.shootableAimColor);
+                aimLineData.scrollLineMaterial.SetFloat(aimLineData.key_scrollSpeed, aimLineData.shootableScrollSpeed);
+            } else if(hitData.collider.gameObject.GetComponent<ILassoable>() != null)
+            {
+                aimLineData.scrollLineMaterial.SetColor(aimLineData.key_albedo, aimLineData.lassoableAimColor);
+                aimLineData.scrollLineMaterial.SetFloat(aimLineData.key_scrollSpeed, aimLineData.lassoableScrollSpeed);
+            }
+            else
+            {
+                aimLineData.scrollLineMaterial.SetColor(aimLineData.key_albedo, aimLineData.normalAimColor);
+                aimLineData.scrollLineMaterial.SetFloat(aimLineData.key_scrollSpeed, aimLineData.normalScrollSpeed);
+            }
         }
     }
 
