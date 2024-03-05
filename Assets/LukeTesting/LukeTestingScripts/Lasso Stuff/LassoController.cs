@@ -66,6 +66,11 @@ public class LassoController : MonoBehaviour
     [Header("Lasso Spin Speed")]
     [SerializeField] [Range(0f, 30f)] private float spinSpeed = 4.5f;
 
+    [Tooltip("Will set the aim line to different " +
+        "colors and scroll speeds depending on the targeted object.")]
+    public bool contextualAimLine;
+    public AimLineData aimLineData;
+
     private Animator animator;
 
     [HideInInspector] public bool endThrow = true;
@@ -136,36 +141,48 @@ public class LassoController : MonoBehaviour
                 lassoSounds.Play();
                 StartSpinSound = false;
             }
-            
-        
-        
-        
 
+            lineRend.enabled = true;
+            lineRend.positionCount = Mathf.CeilToInt(linePoints / tBetween) + 1;
 
+            Vector3 lassoVelocity = lassoLaunchStrength * aimAngle / lassoObject.GetComponent<Rigidbody>().mass;
 
+            int i = 0;
 
-        lineRend.enabled = true;
-        lineRend.positionCount = Mathf.CeilToInt(linePoints / tBetween) + 1;
+            lineRend.SetPosition(i, lassoSpinLocation.transform.position);
+            for(float time = 0; time < linePoints; time += tBetween){
+                i++;
+                Vector3 point  = lassoSpinLocation.transform.position + time * lassoVelocity;
+                point.y = lassoSpinLocation.transform.position.y + lassoVelocity.y * time + (Physics.gravity.y / 2f * time * time);
 
-        Vector3 lassoVelocity = lassoLaunchStrength * aimAngle / lassoObject.GetComponent<Rigidbody>().mass;
+                lineRend.SetPosition(i, point);
 
-        int i = 0;
-
-        lineRend.SetPosition(i, lassoSpinLocation.transform.position);
-        for(float time = 0; time < linePoints; time += tBetween){
-            i++;
-            Vector3 point  = lassoSpinLocation.transform.position + time * lassoVelocity;
-            point.y = lassoSpinLocation.transform.position.y + lassoVelocity.y * time + (Physics.gravity.y / 2f * time * time);
-
-            lineRend.SetPosition(i, point);
-
-            Vector3 lastPosition = lineRend.GetPosition(i - 1);
-            if(Physics.Raycast(lastPosition, (point - lastPosition).normalized, out RaycastHit hit, (point - lastPosition).magnitude, lassoAimMask)){
-                lineRend.SetPosition(i, hit.point);
-                lineRend.positionCount = i + 1;
-                return;
+                Vector3 lastPosition = lineRend.GetPosition(i - 1);
+                if(Physics.Raycast(lastPosition, (point - lastPosition).normalized, out RaycastHit hitData, (point - lastPosition).magnitude, lassoAimMask)){
+                    lineRend.SetPosition(i, hitData.point);
+                    lineRend.positionCount = i + 1;
+                    if (contextualAimLine)
+                    {
+                        if (hitData.collider.gameObject.GetComponent<IShootable>() != null
+                            || hitData.collider.gameObject.GetComponent<ShootableController>() != null)
+                        {
+                            aimLineData.scrollLineMaterial.SetColor(aimLineData.key_albedo, aimLineData.shootableAimColor);
+                            aimLineData.scrollLineMaterial.SetFloat(aimLineData.key_scrollSpeed, aimLineData.shootableScrollSpeed);
+                        }
+                        else if (hitData.collider.gameObject.GetComponent<ILassoable>() != null)
+                        {
+                            aimLineData.scrollLineMaterial.SetColor(aimLineData.key_albedo, aimLineData.lassoableAimColor);
+                            aimLineData.scrollLineMaterial.SetFloat(aimLineData.key_scrollSpeed, aimLineData.lassoableScrollSpeed);
+                        }
+                        else
+                        {
+                            aimLineData.scrollLineMaterial.SetColor(aimLineData.key_albedo, aimLineData.normalAimColor);
+                            aimLineData.scrollLineMaterial.SetFloat(aimLineData.key_scrollSpeed, aimLineData.normalScrollSpeed);
+                        }
+                    }
+                    return;
+                }
             }
-        }
         }
     }
 
