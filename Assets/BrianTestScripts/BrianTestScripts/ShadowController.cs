@@ -49,7 +49,7 @@ public class ShadowController : MonoBehaviour
     void TriggerFallingCube()
     {
         // Instantiate the cube at player's position plus some height
-        GameObject fallingCube = Instantiate(fallingCubePrefab, player.position + Vector3.up * 10, Quaternion.identity);
+        GameObject fallingCube = Instantiate(fallingCubePrefab, player.position + Vector3.up * 5, Quaternion.identity);
     }
 
     void ResetShadowAndTimer()
