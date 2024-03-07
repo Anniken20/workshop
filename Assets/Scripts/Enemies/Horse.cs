@@ -37,7 +37,13 @@ public class Horse : Enemy
         stateMachine.Initialize(idleState);
     }
 
+    public void ChargeAfterXSeconds(int x)
+    {
+        Invoke(nameof(Charge), x);
+    }
+
     public void Charge(){
+        Debug.Log("bla hblah blah");
         this.GetComponent<Rigidbody>().velocity = Vector3.zero;
         isCharging = true;
         stateMachine.ChangeState(chargeState);

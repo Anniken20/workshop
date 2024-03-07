@@ -27,7 +27,7 @@ public class EnemyChargeState : EnemyState
         base.FrameUpdate();
 
         // Continue charging toward the player
-        Debug.Log("charging towards player");
+        Debug.Log("charging towards " + player.position);
         nav.SetDestination(player.position);
     }
 
