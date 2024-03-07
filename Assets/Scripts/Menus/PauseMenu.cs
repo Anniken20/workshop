@@ -28,6 +28,8 @@ public class PauseMenu : MonoBehaviour
     private InputAction cotnrols;
     public CharacterMovement iaControls;
 
+    private float prevTimeScale;
+
     //singleton
     public static PauseMenu main;
 
@@ -58,6 +60,7 @@ public class PauseMenu : MonoBehaviour
         Cursor.visible = true;
         PausePanel.SetActive(true);
         HUD.SetActive(false);
+        prevTimeScale = Time.timeScale;
         Time.timeScale = 0;
         onPause?.Invoke();
     }
@@ -68,7 +71,7 @@ public class PauseMenu : MonoBehaviour
         Cursor.visible = false;
         PausePanel.SetActive(false);
         HUD.SetActive(true);
-        Time.timeScale = 1;
+        Time.timeScale = prevTimeScale;
         onResume?.Invoke();
     }
 
@@ -77,6 +80,7 @@ public class PauseMenu : MonoBehaviour
         paused = true;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+        prevTimeScale = Time.timeScale;
         Time.timeScale = 0;
         onPause?.Invoke();
     }
@@ -86,7 +90,7 @@ public class PauseMenu : MonoBehaviour
         paused = false;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-        Time.timeScale = 1;
+        Time.timeScale = prevTimeScale;
         onResume?.Invoke();
     }
 
