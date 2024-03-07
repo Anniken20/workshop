@@ -42,6 +42,7 @@ public class DialogueData : ScriptableObject
     // Font selection
     public bool useDyslexicFont = false;
     public TMP_FontAsset defaultFont; // Default font
+    public TMP_FontAsset additionalDefaultFont; // Additional default font
     public TMP_FontAsset dyslexicFont; // Font for dyslexic mode
 
     // Screen Shake toggle

@@ -42,8 +42,8 @@ public class Shop : Interactable
         }
         else
         {
-            CloseShopMenu();
             SwitchGameControls(true);
+            CloseShopMenu();
             CoinCollector.Instance.HideCoinsUIInstant();
         }
     }
@@ -57,6 +57,21 @@ public class Shop : Interactable
             audioSource.Play(); 
         }
     }
+    
+    public void BuySecretKey()
+    {
+        // Check if player has enough coins and doesn't already own the secret key
+        if (CoinCollector.Instance != null && CoinCollector.coinsCollected >= cost && !InventoryManager.Instance.inventoryItems.Contains(InventoryManager.AllItems.SecretKey))
+        {
+            SpendCoin(); 
+            InventoryManager.Instance.AddItem(InventoryManager.AllItems.SecretKey); // Adds the secret key to the inventory
+            Debug.Log("Secret Key Purchased!");
+        }
+         else
+        {
+            Debug.Log("Not enough coins or key already purchased.");
+        }
+}
 
 
     private void SwitchGameControls(bool state)

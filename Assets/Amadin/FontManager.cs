@@ -7,14 +7,18 @@ public class FontManager : MonoBehaviour
     private static FontManager _instance;
 
     [SerializeField] private DialogueData dialogueData;
-    // Don't ask this bullshit took too fucking long
+
     public static FontManager Instance
     {
         get
         {
             if (_instance == null)
             {
-                Debug.LogError("FontManager instance is null.");
+                _instance = FindObjectOfType<FontManager>();
+                if (_instance == null)
+                {
+                    Debug.LogError("FontManager instance is null.");
+                }
             }
             return _instance;
         }
@@ -36,6 +40,19 @@ public class FontManager : MonoBehaviour
         if (dialogueData != null)
         {
             dialogueData.useDyslexicFont = isEnabled;
+            UpdateAllTextUI();
+        }
+        else
+        {
+            Debug.LogWarning("DialogueData reference is null. Ensure it's assigned properly.");
+        }
+    }
+
+    public void RevertToDefaultFont()
+    {
+        if (dialogueData != null)
+        {
+            dialogueData.useDyslexicFont = false;
             UpdateAllTextUI();
         }
         else
@@ -66,13 +83,21 @@ public class FontManager : MonoBehaviour
     {
         if (dialogueData != null)
         {
-            if (dialogueData.useDyslexicFont)
+            if (dialogueData.useDyslexicFont && dialogueData.dyslexicFont != null)
             {
                 return dialogueData.dyslexicFont;
             }
             else
             {
-                return dialogueData.defaultFont;
+                // Check if an additional default font is specified and dyslexic font mode is disabled
+                if (!dialogueData.useDyslexicFont && dialogueData.additionalDefaultFont != null)
+                {
+                    return dialogueData.additionalDefaultFont;
+                }
+                else
+                {
+                    return dialogueData.defaultFont;
+                }
             }
         }
         else
@@ -81,4 +106,5 @@ public class FontManager : MonoBehaviour
             return null;
         }
     }
+
 }

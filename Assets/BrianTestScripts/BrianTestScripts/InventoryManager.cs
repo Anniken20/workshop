@@ -76,5 +76,6 @@ public class InventoryManager : MonoBehaviour
         Rosary,
         Dynamite,
         HourglassNecklace,
+        SecretKey,
     }
 }
