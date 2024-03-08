@@ -8,6 +8,10 @@ public class SalesmanData : StateData
     public float maxFollowDistance;
     public float locationWaitTime;
     public float stopFollowingDistance;
-    public float moveSpeed;
-    public float acceleration;
+    public float bulletmoveSpeed;
+    public float chasemoveSpeed;
+    public float bulletAcceleration;
+    public float chaseAcceleration;
+    //public int damage;
+    //public float damageCD;
 }

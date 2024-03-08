@@ -7,6 +7,7 @@ public class HorseStunnedState : EnemyState
 {
     [HideInInspector] public bool isStunned;
     public GameObject lassoTarget;
+    private Animator anim;
     public HorseStunnedState(Enemy enemy, EnemyStateMachine enemyStateMachine) : base(enemy, enemyStateMachine)
     {
 
@@ -19,6 +20,10 @@ public class HorseStunnedState : EnemyState
 
     public override void EnterState()
     {
+        anim = this.GetComponent<Animator>();
+        if(enemy.animator != null) enemy.animator.SetBool("Stunned", true);
+        anim.SetBool("Running", false);
+        anim.SetBool("Stunned", true);
         isStunned = true;
         Enemy h = GetComponentInParent<Enemy>();
         lassoTarget = h.lassoTarget;
@@ -39,6 +44,8 @@ public class HorseStunnedState : EnemyState
 
     public override void ExitState()
     {
+        if(enemy.animator != null) enemy.animator.SetBool("Stunned", false);
+        anim.SetBool("Stunned", false);
         isStunned = false;
         nav.isStopped = false;
         lassoTarget.GetComponent<BoxCollider>().enabled = false;
