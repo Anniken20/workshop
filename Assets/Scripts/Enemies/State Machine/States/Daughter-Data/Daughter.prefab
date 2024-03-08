@@ -136,14 +136,39 @@ MonoBehaviour:
   itemPortrait: {fileID: 0}
   firePoint: {fileID: 4140048465515008337}
   defaultMovementSpeed: 0
-  animator: {fileID: 0}
+  animator: {fileID: 8377657851535016414}
   idleState: {fileID: 0}
   lassoTarget: {fileID: 0}
   onDeath:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: GraveSelection, Assembly-CSharp
+        m_MethodName: ReturnToCenter
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: GraveSelection, Assembly-CSharp
+        m_MethodName: Death
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   standWhileDead: 0
-  coinPrefab: {fileID: 0}
+  coinPrefab: {fileID: 7941349997394948523, guid: 184bf3debdf50479ab231bb8a12c689f,
+    type: 3}
   minCoins: 1
   maxCoins: 5
   coinDropRadius: 1.5
@@ -294,17 +319,17 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: c8e7830dd9b4c3f4090c5c6ce4859962,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.7071068
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c8e7830dd9b4c3f4090c5c6ce4859962,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c8e7830dd9b4c3f4090c5c6ce4859962,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.7071067
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c8e7830dd9b4c3f4090c5c6ce4859962,
         type: 3}

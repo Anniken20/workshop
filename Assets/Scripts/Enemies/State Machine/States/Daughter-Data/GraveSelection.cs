@@ -106,4 +106,11 @@ public class GraveSelection : MonoBehaviour
         MovePoppy(centerGrave.transform.position);
         poppyModel.SetActive(true);
     }
+    public void Death(){
+        StopAllCoroutines();
+        foreach (var grave in graves)
+        {
+            grave.GetComponent<GraveShaker>().CancelPeek();
+        }
+    }
 }
