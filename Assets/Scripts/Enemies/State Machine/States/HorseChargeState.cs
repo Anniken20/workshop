@@ -13,6 +13,7 @@ public class HorseChargeState : EnemyState
     private bool activelyCharging;
     private Vector3 destination;
     private bool canLook = true;
+    private Animator anim;
 
     public HorseChargeState(Enemy enemy, EnemyStateMachine enemyStateMachine) : base(enemy, enemyStateMachine)
     {
@@ -21,6 +22,8 @@ public class HorseChargeState : EnemyState
 
     public override void EnterState()
     {
+        //if(enemy.animator != null) enemy.animator.SetBool("Running", true);
+        anim = this.GetComponent<Animator>();
         canLook = true;
         readyingCharge = true;
         player = GameObject.FindGameObjectWithTag("Player").transform; 
@@ -42,6 +45,11 @@ public class HorseChargeState : EnemyState
         if(readyingCharge && canLook){
             this.transform.LookAt(player);
         }
+        var distanceFromTarget = Vector3.Distance(this.gameObject.transform.position, nav.destination);
+            if (distanceFromTarget <= 1.25)
+            {
+                EnterState();
+            }
 
     }
 
@@ -51,6 +59,8 @@ public class HorseChargeState : EnemyState
         nav.speed = enemy.defaultMovementSpeed; // Reset the speed to the default value
         this.GetComponent<Rigidbody>().velocity = Vector3.zero;
         activelyCharging = false;
+        if(enemy.animator != null) enemy.animator.SetBool("Running", false);
+        anim.SetBool("Running", false);
     }
 
     private IEnumerator ReadyingCharge(){
@@ -59,6 +69,8 @@ public class HorseChargeState : EnemyState
         readyingCharge = false;
         destination = (transform.position + this.transform.forward * 15);
         nav.SetDestination(destination);
+        if(enemy.animator != null) enemy.animator.SetBool("Running", true);
+        anim.SetBool("Running", true);
         StartCoroutine(LookDelay());
         
     }
