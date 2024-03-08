@@ -4,95 +4,69 @@ using UnityEngine;
 
 public class GraveShaker : MonoBehaviour
 {
-    public bool status;
-    public float shakeSpeed;
-    public float shakeAmount;
-    public float shakeDuration;
-    /*[SerializeField] GameObject[] graves;
-    [HideInInspector]
-    public enum Axis
+    private bool start;
+    private float sSpeed;
+    private float sAmount;
+    private float sDur;
+    private string a;
+    private Vector3 ogPos;
+    private void Start()
     {
-        x,
-        z
-    };
-    public Axis axis = new Axis();*/
-    //private GameObject selectedGrave;
-    /*private GameObject SelectGrave()
-    {
-        if (graves == null || graves.Length == 0)
-        {
-            Debug.LogWarning("The graves list is empty or null because of the implication...");
-            return null;
-        }
-        int randomGrave = Random.Range(0, graves.Length);
-        return graves[randomGrave];
+        ogPos = this.transform.position;
     }
-    public void ShakeGrave()
+    public void StartShake(float shakeSpeed, float shakeAmount, float shakeDuration, string axis)
     {
-        status = true;
-        Debug.Log("Staring to shake");
-        var selectedGrave = SelectGrave();
-        if (selectedGrave != null)
-        {
-            Debug.Log("Selected Grave: " + selectedGrave.ToString());
-            StartCoroutine(Shaking(selectedGrave));
-        }
+        sSpeed = shakeSpeed;
+        sAmount = shakeAmount;
+        sDur = shakeDuration;
+        a = axis;
+        StartCoroutine(Shake());
     }
-    IEnumerator Shaking(GameObject grave)
+    public IEnumerator Shake()
     {
         float elapsedTime = 0.0f;
-        var ogPos = grave.transform.position;
-        while (elapsedTime < shakeDuration)
+        while (elapsedTime < sDur)
         {
-            if (axis.ToString() == "X")
-            {
-                grave.transform.position = new Vector3(ogPos.x + Mathf.Sin(Time.time * shakeSpeed) * shakeAmount, ogPos.y, ogPos.z);
-            }
-            if (axis.ToString() == "Z")
-            {
-                grave.transform.position = new Vector3(ogPos.x, ogPos.y, ogPos.z + Mathf.Sin(Time.time * shakeSpeed) * shakeAmount);
-            }
+            //Debug.Log(this.gameObject.name +": " +elapsedTime.ToString());
+            start = true;
             elapsedTime += Time.deltaTime;
             yield return null;
         }
-        status = false;
-        grave.transform.position = ogPos;
-    }*/
-    public void StartShaking(float sshakeSpeed, float sshakeAmount, float sshakeDuration, string axis, bool status)
-    {
-        if (status)
-        {
-            shakeSpeed = sshakeSpeed;
-            shakeAmount = sshakeAmount;
-            shakeDuration = sshakeDuration;
-            //axis = saxis;
-            StartCoroutine(Shake(shakeSpeed, shakeAmount, shakeDuration, axis));
-        }
-        else
-        {
-            
-        }
-    }
-
-    IEnumerator Shake(float shakeSpeed, float shakeAmount, float shakeDuration, string axis)
-    {
-        float elapsedTime = 0.0f;
-        var ogPos = this.transform.position;
-        while (elapsedTime < shakeDuration)
-        {
-            Debug.Log(this.gameObject.name +": " +elapsedTime.ToString());
-            if (axis.ToString() == "X")
-            {
-                this.transform.position = new Vector3(ogPos.x + Mathf.Sin(Time.time * shakeSpeed) * shakeAmount, ogPos.y, ogPos.z);
-            }
-            if (axis.ToString() == "Z")
-            {
-                this.transform.position = new Vector3(ogPos.x, ogPos.y, ogPos.z + Mathf.Sin(Time.time * shakeSpeed) * shakeAmount);
-            }
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
+        start = false;
+        GetComponentInParent<GraveSelection>().MovePoppy(this.transform.Find("PeekingPOS").position);
+        this.GetComponent<DaughterGraveWrangle>().peeking = true;
+        StartCoroutine(PeekingWait());
+        //GetComponentInParent<GraveSelection>().SelectNewGrave();
         this.transform.position = ogPos;
+    }
+    public void FixedUpdate()
+    {
+        if(start)
+        {
+            if (a.ToString() == "x")
+            {
+                this.transform.position = new Vector3(ogPos.x + Mathf.Sin(Time.time * sSpeed) * sAmount, ogPos.y, ogPos.z);
+            }
+            if (a.ToString() == "z")
+            {
+                this.transform.position = new Vector3(ogPos.x, ogPos.y, ogPos.z + Mathf.Sin(Time.time * sSpeed) * sAmount);
+            }
+        }
+    }
+    IEnumerator PeekingWait()
+    {
+        yield return new WaitForSeconds(GetComponentInParent<GraveSelection>().waitTime);
+        Debug.Log("Heading to Out POS");
+        this.GetComponent<DaughterGraveWrangle>().peeking = false;
+        GetComponentInParent<GraveSelection>().MovePoppy(this.transform.Find("OutPOS").position);
+        this.GetComponent<DaughterGraveWrangle>().atGrave = false;
+        //this.GetComponent<DaughterGraveWrangle>().enabled = false;
+        GetComponentInParent<GraveSelection>().PoppyCombat(this.gameObject);
+    }
+    public void CancelPeek()
+    {
+        StopCoroutine(PeekingWait());
+        StopAllCoroutines();
     }
 
 }

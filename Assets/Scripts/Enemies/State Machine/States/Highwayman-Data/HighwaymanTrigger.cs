@@ -2,30 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SocialiteMoveTrigger : MonoBehaviour
+public class HighwaymanTrigger : MonoBehaviour
 {
-    private Socialite s;
+    private Highwayman h;
     private bool canTrigger = true;
-    public bool pressed;
-    private void Start()
-    {
-        s = GetComponentInParent<Socialite>();
+    [SerializeField] bool pressed;
+    private void Start(){
+        h = GetComponentInParent<Highwayman>();
     }
-    void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Player") && canTrigger)
         {
-            s.StartMove();
+            h.SelectTile();
             canTrigger = false;
         }
-
     }
     void Update()
     {
-        if (pressed)
-        {
-            s.StartMove();
+        if(pressed){
             pressed = false;
+            h.SelectTile();
         }
     }
 }
