@@ -80,6 +80,7 @@ public class PauseMenu : MonoBehaviour
         paused = true;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+        prevTimeScale = Time.timeScale;
         Time.timeScale = 0;
         onPause?.Invoke();
     }
