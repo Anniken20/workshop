@@ -12,6 +12,9 @@ public class PauseMenu : MonoBehaviour
     public GameObject mainMenu;
     public GameObject HUD;
 
+    public Image fadeImage; // Reference to the fade image object
+    public float fadeSpeed; // Speed of the fade effect
+
     //delegate events that every script can subscribe to.
     //when this is called via this script, every script's subscriber function is called
     public delegate void OnPause();
@@ -73,6 +76,12 @@ public class PauseMenu : MonoBehaviour
         HUD.SetActive(true);
         Time.timeScale = prevTimeScale;
         onResume?.Invoke();
+
+        // Activate the fade image
+        fadeImage.gameObject.SetActive(true);
+
+        // Start the fade effect
+        StartCoroutine(FadeOutImage());
     }
 
     public void PauseNoUI()
@@ -135,6 +144,20 @@ public class PauseMenu : MonoBehaviour
     {
         controlsPanel.SetActive(false);
         settingsPanel.SetActive(true);
+    }
+
+    private IEnumerator FadeOutImage()
+    {
+        Color color = fadeImage.color;
+        while (color.a > 0)
+        {
+            color.a -= Time.deltaTime * fadeSpeed;
+            fadeImage.color = color;
+            yield return null;
+        }
+
+        // Deactivate the fade image when the fade is complete
+        fadeImage.gameObject.SetActive(false);
     }
 
     //when not in-game but looking at settings
