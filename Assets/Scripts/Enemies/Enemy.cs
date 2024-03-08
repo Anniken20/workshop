@@ -26,8 +26,11 @@ public abstract class Enemy : MonoBehaviour, IShootable
     public Transform firePoint; // The position where the projectiles are spawned
     public float defaultMovementSpeed;
     public Animator animator;
+    public bool duelEnemy = false;
+
     [HideInInspector] public EnemyStateMachine stateMachine;
     [HideInInspector] public EnemyIdleState idleState;
+    [HideInInspector] public DuelState duelState;
 
     [Header("Stunned Variables")]
     public GameObject lassoTarget;
@@ -54,7 +57,11 @@ public abstract class Enemy : MonoBehaviour, IShootable
         //idleState.Initialize(this, stateMachine);
         LoadUpDictionary();
     }
-    
+    public void StartDuel()
+    {
+        stateMachine.ChangeState(duelState);
+    }
+
     private void Start()
     {
         currentHealth = maxHealth;
@@ -119,7 +126,7 @@ public abstract class Enemy : MonoBehaviour, IShootable
     {
         currentHealth -= delta;
         damageDelegate?.Invoke();
-        if(currentHealth < 0)
+        if(currentHealth < 0 && !duelEnemy)
         {
             Die();
         }

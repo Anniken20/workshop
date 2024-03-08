@@ -34,6 +34,9 @@ public class Horse : Enemy
         freezeState = gameObject.AddComponent<HorseFreezeState>();
         freezeState.Initialize(this, stateMachine);
 
+        duelState = gameObject.AddComponent<DuelState>();
+        duelState.Initialize(this, stateMachine);
+
         stateMachine.Initialize(idleState);
     }
 

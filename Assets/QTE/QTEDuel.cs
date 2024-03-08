@@ -21,7 +21,8 @@ public class QTEDuel : MonoBehaviour
     public Transform cinematicBarToPos_Top;
     public GameObject cinematicBar_Bottom;
     public Transform cinematicBarToPos_Bottom;
-    [SerializeField] private DuelEnemy duelEnemy;
+    [SerializeField] private Enemy duelEnemy;
+    [SerializeField] private Enemy nextEnemy;
     public CinemachineVirtualCamera shoulderCamera;
     public Volume postProcessVolume;
     public DuelCameraController duelCameraController;
@@ -31,6 +32,7 @@ public class QTEDuel : MonoBehaviour
     public CanvasGroup timeMeterCG;
     public ParticleSystem hitSparkSystem;
     public AudioSource gunShotAudio;
+    public int enemyPhaseLevel;
 
     [Header("Difficulty")]
     [Tooltip("The player will have at least this much time to fire. In seconds")]
@@ -298,14 +300,26 @@ public class QTEDuel : MonoBehaviour
     {
         phase++;
         duelEnemy.TakeDamage(enemyDamageOnLoss);
-        duelEnemy.PlayerWonDuel();
+
+        if(enemyPhaseLevel < 3 || nextEnemy == null)
+        {
+            nextEnemy.gameObject.SetActive(true);
+            nextEnemy.transform.position = transform.position;
+            nextEnemy.currentHealth = duelEnemy.currentHealth;
+
+            gameObject.SetActive(false);
+        } else
+        {
+            duelEnemy.Die();
+        }
+        //duelEnemy.PlayerWonDuel();
     }
 
     private void EnemyWonDuel()
     {
         ThirdPersonController.Main.gameObject.GetComponent<PlayerHealth>().TakeDamage(playerDamageOnLoss);
         duelEnemy.TakeDamage(-enemyRestoreOnWin);
-        duelEnemy.EnemyWonDuel();
+        //duelEnemy.EnemyWonDuel();
     }
 
     private void FreePlayer()

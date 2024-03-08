@@ -24,6 +24,8 @@ public class HorseChargeTrigger : MonoBehaviour
         if (other.gameObject.CompareTag("Player") && canTrigger && sState.isStunned == false){
             //h.Freeze();
             h.Charge();
+
+            Debug.Log("called charge by " + gameObject.name);
             canTrigger = false;
             StopCoroutine(TriggerDelay());
         }
@@ -51,6 +53,8 @@ public class HorseChargeTrigger : MonoBehaviour
             if (horseStunned == true)
             {
                 stunnedText.SetActive(true);
+                //stunnedText.transform.LookAt(Camera.main.transform);
+                stunnedText.transform.rotation = Quaternion.identity;
                 startStunnedCountdown = true;
                 if (resetStunDuration)
                 {
@@ -68,6 +72,8 @@ public class HorseChargeTrigger : MonoBehaviour
         if(startStunnedCountdown && !wrangling){
             internalStunDuration -= Time.deltaTime;
             if(internalStunDuration <= 0){
+
+                Debug.Log("called charge by " + gameObject.name);
                 h.Charge();
                 horseStunned = false;
                 startStunnedCountdown = false;
