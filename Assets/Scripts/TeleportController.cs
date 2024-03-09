@@ -174,4 +174,16 @@ public class TeleportController : MonoBehaviour
         //arbitrary value but makes sure that the camera is back to the normal angle before it switches over
         yield return new WaitForSeconds(8f);
     }
+
+    public void ForceActive(bool active2)
+    {
+        if(active2)
+        {
+            active = true;
+        }
+        if(!active2)
+        {
+            active = false;
+        }
+    }
 }

@@ -6,6 +6,7 @@ public class SocialiteMoveTrigger : MonoBehaviour
 {
     private Socialite s;
     private bool canTrigger = true;
+    public bool pressed;
     private void Start()
     {
         s = GetComponentInParent<Socialite>();
@@ -18,5 +19,13 @@ public class SocialiteMoveTrigger : MonoBehaviour
             canTrigger = false;
         }
 
+    }
+    void Update()
+    {
+        if (pressed)
+        {
+            s.StartMove();
+            pressed = false;
+        }
     }
 }

@@ -65,10 +65,12 @@ public class Horse : Enemy
         stateMachine.ChangeState(pacingState);
     }
     public void Idle(){
+        if(this.animator != null) this.animator.SetBool("Idle", true);
         stateMachine.ChangeState(idleState);
     }
     public void StopIdle(){
         stateMachine.ChangeState(pacingState);
+        if(this.animator != null) this.animator.SetBool("Idle", false);
     }
     public void Pacing(){
         stateMachine.ChangeState(pacingState);
@@ -81,5 +83,8 @@ public class Horse : Enemy
     }
     public void StopFreeze(){
         stateMachine.ChangeState(idleState);
+    }
+    public void SetDead(){
+        GetComponent<Animator>().SetBool("Dead", true);
     }
 }

@@ -10,6 +10,7 @@ public class SocialiteMoveData : StateData
     public float maxMoveDist;
     public float minMoveDist;
     public Vector3[] directions = new Vector3[4];
+    //public List<Vector3> directions;
     public GameObject mistObj;
     public float mistSpawnCD;
 }
