@@ -21,7 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: lambert1
-  m_Shader: {fileID: -6465566751694194690, guid: 30d2647f28aced6418305e5a02a1300d,
+  m_Shader: {fileID: -6465566751694194690, guid: 253f9f474fc035d4fad35d32169bb8af,
     type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -33,12 +33,20 @@ Material:
   m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []
-  m_LockedProperties: _Toon_Ramp_Smoothness
+  m_LockedProperties: _Toon_Ramp_Smoothness _Toon_Ramp_Tinting
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
     - _BaseMap:
         m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BaseTex:
+        m_Texture: {fileID: 2800000, guid: 2a3b121c0ee23b94d99f2a95c35fc748, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BaseTex_1:
+        m_Texture: {fileID: 2800000, guid: 2a3b121c0ee23b94d99f2a95c35fc748, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
@@ -61,6 +69,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _HeightMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _MainTex:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -79,6 +91,18 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _ParallaxMap:
         m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_3f8ac702ea674f8495b428162a92b854_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: af1166213d9f90e49970fac95805f7a5, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_63e8db99b61a4e0c9ccbbfa159f0261f_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: ff025109e48915242beecbd2fc5d428b, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_d3b0f82b14e24d28b709fd37b220f04b_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: feab03019c85f5041ab4f72af276d1c0, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
@@ -118,12 +142,15 @@ Material:
     - _DstBlend: 0
     - _DstBlendAlpha: 0
     - _EnvironmentReflections: 1
+    - _FadeEffect: 3.32
     - _Float: 0.98
     - _GlossMapScale: 1
     - _Glossiness: 0
     - _GlossyReflections: 1
+    - _Height: 0.32
     - _Metallic: 0
     - _Mode: 0
+    - _NormalStrength: 100
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _QueueControl: 0
@@ -147,6 +174,7 @@ Material:
     - _Color: {r: 0.7353569, g: 0.7353569, b: 0.7353569, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _MixColor: {r: 0.25833115, g: 1, b: 0.1830188, a: 0}
+    - _Offset: {r: 0, g: 0, b: 0, a: 0}
     - _RimLightColor: {r: 0.5803921, g: 0.8588235, b: 0.8392157, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
     - _Tiling: {r: 1, g: 1, b: 0, a: 0}

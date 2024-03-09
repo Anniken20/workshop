@@ -7,30 +7,50 @@ using UnityEngine.InputSystem;
 using TMPro;
 using Cinemachine;
 using StarterAssets;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
+using DG.Tweening;
 
 public class QTETest : MonoBehaviour
 {
-    public TMP_Text PopupText; // Reference to the pop-up text element
+    [Header("References")]
+    [Tooltip("Reference to the pop-up text element")]
+    public TMP_Text PopupText;
     public float timeToShoot;
+    [SerializeField] private Enemy enemyScript;
+    public CameraController cameraController;
+    public CinemachineVirtualCamera shoulderCamera;
+    public Volume postProcessVolume;
+    public DuelCameraController duelCameraController;
 
-    [SerializeField]
-    private Enemy enemyScript;
+    [Header("Difficulty")]
+    [Tooltip("The player will have at least this much time to fire. In seconds")]
+    private float lowBoundTimeToShoot;
+    [Tooltip("The player will have at most this much time to fire. In seconds")]
+    private float highBoundTimeToShoot;
+    [Tooltip("The player will wait at least this much time before being prompted to shoot. In seconds")]
+    private float lowBoundTimeToPopup;
+    [Tooltip("The player will wait at most this much time before being prompted to shoot. In seconds")]
+    private float highBoundTimeToPopup;
 
-    private int WaitingForKey;
+    [Header("Aesthetics")]
+    public float duelTimeScale = 0.5f;
+    public float postTransitionDuration = 1f;
+    public int lowPassCutoff = 800;
+
+
+    //private variables -------------------------
+
     private int QTEGen;
-    private bool hasProcessedInput = false;
     private bool inDuel;
 
-    // Reference to the CameraController script
-    public CameraController cameraController;
-
-    //Reference to specifically the shoulder cam
-    public CinemachineVirtualCamera shoulderCamera;
-
+    //input
     public CharacterMovement iaControls;
     private InputAction shootInput;
     private InputAction lassoInput;
     private InputAction phaseInput;
+
+    private Tween timeTween;
 
     private void OnEnable()
     {
@@ -84,29 +104,15 @@ public class QTETest : MonoBehaviour
     }
     private void StartQTE()
     {
-        inDuel = true;
+        StartDuelAesthetics();
 
+        inDuel = true;
         enemyScript.Freeze();
         enemyScript.transform.LookAt(ThirdPersonController.Main.transform.position);
-
-        //ThirdPersonController.Main.LockPlayerForDuration(2f);
-
-        //Camera.main is a built in singleton for Unity. Singletons are cool look them up. 
-        //you can access it from any script without needing to attach a reference.
-        //attaching a reference works great too and is good practice. 
-        //this is just a good strategy to avoid having to attach references for everything. 
-        CameraController camController = Camera.main.GetComponent<CameraController>();
-
-        //the parameter should be FALSE in order to switch to the shoulder cam
-        if (camController != null) cameraController.SwitchCameraView(false);
-
-        //then set the shoulder cam to focus on the enemy
-        shoulderCamera.LookAt = enemyScript.transform;
+        enemyScript.GoToIdle();
 
         //generate one of the random 3 attacks
         QTEGen = Random.Range(0, 3);
-        
-        enemyScript.GoToIdle();
 
         if (QTEGen == 0)
         {
@@ -127,6 +133,7 @@ public class QTETest : MonoBehaviour
     }
     private IEnumerator InputRoutine(int inputType)
     {
+        float timeStep = 0.005f;
         float timeProgressed = 0f;
 
         while (timeProgressed < timeToShoot)
@@ -151,11 +158,11 @@ public class QTETest : MonoBehaviour
                 yield break;
             }
             // track how long we have been in the shooting window
-            timeProgressed += Time.unscaledDeltaTime;
+            timeProgressed += timeStep;
 
-            // wait a frame before resuming the while loop
-            // nifty trick for coroutines
-            yield return null;
+            // wait a concrete time since timescale is changing
+            //max 200fps
+            yield return new WaitForSecondsRealtime(timeStep);
         }
         StartCoroutine(Failed());
     }
@@ -170,30 +177,65 @@ public class QTETest : MonoBehaviour
     {
         yield return new WaitForSeconds(2f);
         PopupText.text = "";
-        WaitingForKey = 0;
     }
 
     IEnumerator Correct()
     {
         ShowPopupText("Correct!");
 
-
         yield return new WaitForSeconds(2f);
-        PopupText.text = "";
-        CameraController camController = Camera.main.GetComponent<CameraController>();
-        enemyScript.Unfreeze();
-        if (camController != null) camController.SwitchCameraView(true);
-        inDuel = true;
+        EndDuel();
     }
     IEnumerator Failed()
     {
         ShowPopupText("Failed!");
 
         yield return new WaitForSeconds(2f);
+        EndDuel();
+    }
+
+    private void EndDuel()
+    {
+        //turn on post processing
+        DOTween.To(() => postProcessVolume.weight, x => postProcessVolume.weight = x, 0f, postTransitionDuration);
+
+        //slow down time
+        Time.timeScale = 1f;
+
+        duelCameraController.Reset();
+
         PopupText.text = "";
         CameraController camController = Camera.main.GetComponent<CameraController>();
         enemyScript.Unfreeze();
         if (camController != null) camController.SwitchCameraView(true);
         inDuel = false;
+        AudioManager.main.SetMusicLowPassFilter();
+    }
+
+    private void StartDuelAesthetics()
+    {
+        //turn on post processing
+        DOTween.To(() => postProcessVolume.weight, x => postProcessVolume.weight = x, 1f, postTransitionDuration);
+
+        //slow down time
+        timeTween.SetUpdate(true);
+        timeTween = DOTween.To(() => Time.timeScale, x => Time.timeScale = x, duelTimeScale, postTransitionDuration);
+
+        duelCameraController.StartDuel(highBoundTimeToPopup);
+        AudioManager.main.SetMusicLowPassFilter(lowPassCutoff);
+
+        //ThirdPersonController.Main.LockPlayerForDuration(2f);
+
+        //Camera.main is a built in singleton for Unity. Singletons are cool look them up. 
+        //you can access it from any script without needing to attach a reference.
+        //attaching a reference works great too and is good practice. 
+        //this is just a good strategy to avoid having to attach references for everything. 
+        CameraController camController = Camera.main.GetComponent<CameraController>();
+
+        //the parameter should be FALSE in order to switch to the shoulder cam
+        if (camController != null) cameraController.SwitchCameraView(false);
+
+        //then set the shoulder cam to focus on the enemy
+        shoulderCamera.LookAt = enemyScript.transform;
     }
 }

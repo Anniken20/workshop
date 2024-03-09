@@ -37,7 +37,13 @@ public class Horse : Enemy
         stateMachine.Initialize(idleState);
     }
 
+    public void ChargeAfterXSeconds(int x)
+    {
+        Invoke(nameof(Charge), x);
+    }
+
     public void Charge(){
+        Debug.Log("bla hblah blah");
         this.GetComponent<Rigidbody>().velocity = Vector3.zero;
         isCharging = true;
         stateMachine.ChangeState(chargeState);
@@ -56,10 +62,12 @@ public class Horse : Enemy
         stateMachine.ChangeState(pacingState);
     }
     public void Idle(){
+        if(this.animator != null) this.animator.SetBool("Idle", true);
         stateMachine.ChangeState(idleState);
     }
     public void StopIdle(){
         stateMachine.ChangeState(pacingState);
+        if(this.animator != null) this.animator.SetBool("Idle", false);
     }
     public void Pacing(){
         stateMachine.ChangeState(pacingState);
@@ -72,5 +80,8 @@ public class Horse : Enemy
     }
     public void StopFreeze(){
         stateMachine.ChangeState(idleState);
+    }
+    public void SetDead(){
+        GetComponent<Animator>().SetBool("Dead", true);
     }
 }

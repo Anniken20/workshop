@@ -115,7 +115,7 @@ public abstract class Enemy : MonoBehaviour, IShootable
         if (!standWhileDead) Destroy(this);
     }
 
-    public void TakeDamage(int delta)
+    public virtual void TakeDamage(int delta)
     {
         currentHealth -= delta;
         damageDelegate?.Invoke();
@@ -151,11 +151,11 @@ public abstract class Enemy : MonoBehaviour, IShootable
 
     public void Freeze()
     {
-        animator.playbackTime = 0f;
+        //animator.playbackTime = 0f;
     }
 
     public void Unfreeze()
     {
-        animator.playbackTime = 1f;
+        //animator.playbackTime = 1f;
     }
 }

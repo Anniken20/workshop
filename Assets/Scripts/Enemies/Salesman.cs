@@ -5,6 +5,7 @@ using UnityEngine;
 public class Salesman : Enemy
 {
     [HideInInspector] public SalesmanBulletState bulletState;
+    [HideInInspector] public SalesmanChasePlayerState chaseState;
     [HideInInspector] public EnemyPacingState pacingState;
     private void Awake()
     {
@@ -15,6 +16,9 @@ public class Salesman : Enemy
         bulletState.Initialize(this, stateMachine);
         idleState = gameObject.AddComponent<EnemyIdleState>();
         idleState.Initialize(this, stateMachine);
+        chaseState = gameObject.AddComponent<SalesmanChasePlayerState>();
+        chaseState.Initialize(this, stateMachine);
+
 
         stateMachine.Initialize(idleState);
 
@@ -31,8 +35,16 @@ public class Salesman : Enemy
     {
         stateMachine.ChangeState(bulletState);
     }
-    public void BulletLightState()
+    public void ExitBulletState()
     {
         stateMachine.ChangeState(pacingState);
+    }
+    public void ChaseState()
+    {
+        stateMachine.ChangeState(chaseState);
+    }
+    public void ExitChase()
+    {
+        stateMachine.ChangeState(idleState);
     }
 }

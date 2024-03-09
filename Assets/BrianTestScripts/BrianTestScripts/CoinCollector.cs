@@ -10,7 +10,7 @@ public class CoinCollector : MonoBehaviour, IDataPersistence
 
     public TextMeshProUGUI coinsText;
     private RectTransform coinsRectTransform;
-    private static int coinsCollected = 0; 
+    public static int coinsCollected = 0; 
     private Vector2 uiOffScreenPosition; // Position when the UI is off-screen
     private Vector2 uiOnScreenPosition; // Position when the UI is on-screen
 
@@ -29,8 +29,8 @@ public class CoinCollector : MonoBehaviour, IDataPersistence
         }
         
         coinsRectTransform = coinsText.GetComponent<RectTransform>();
-        uiOffScreenPosition = new Vector2(600, coinsRectTransform.anchoredPosition.y); // Adjust this value
-        uiOnScreenPosition = new Vector2(460, coinsRectTransform.anchoredPosition.y);    // Adjust this value
+        uiOffScreenPosition = new Vector2(160, coinsRectTransform.anchoredPosition.y); // Adjust this value
+        uiOnScreenPosition = new Vector2(-45, coinsRectTransform.anchoredPosition.y);    // Adjust this value
         DOTween.Init();
     }
 
@@ -64,6 +64,11 @@ public class CoinCollector : MonoBehaviour, IDataPersistence
       coinsRectTransform.DOAnchorPos(uiOnScreenPosition, 0.5f); 
     }
 
+    public void ShowCoinsUIInstant()
+    {
+    coinsRectTransform.anchoredPosition = uiOnScreenPosition; // Instantly place UI on-screen
+    }
+
     private IEnumerator HideCoinsUIAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
@@ -75,7 +80,7 @@ public class CoinCollector : MonoBehaviour, IDataPersistence
         coinsRectTransform.DOAnchorPos(uiOffScreenPosition, 0.5f);
     }
 
-    private void HideCoinsUIInstant()
+    public void HideCoinsUIInstant()
     {
         coinsRectTransform.anchoredPosition = uiOffScreenPosition; // Instantly place UI off-screen
     }
@@ -85,6 +90,19 @@ public class CoinCollector : MonoBehaviour, IDataPersistence
     }
     public void SaveData(ref GameData data){
         data.coins = coinsCollected;
+    }
+
+    public void SpendCoin(int amount)
+    {   
+        if (coinsCollected >= amount)
+        {
+        coinsCollected -= amount;
+        UpdateCoinsText();
+        ShowCoinsUI();
+        
+        if (moveHUDRoutine != null) StopCoroutine(moveHUDRoutine);
+        moveHUDRoutine = StartCoroutine(HideCoinsUIAfterDelay(5f));
+        }
     }
 }
 

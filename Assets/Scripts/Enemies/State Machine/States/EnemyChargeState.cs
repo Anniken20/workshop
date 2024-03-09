@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using StarterAssets;
 
 public class EnemyChargeState : EnemyState
 {
@@ -10,13 +11,13 @@ public class EnemyChargeState : EnemyState
 
     public EnemyChargeState(Enemy enemy, EnemyStateMachine enemyStateMachine) : base(enemy, enemyStateMachine)
     {
-        player = GameObject.FindGameObjectWithTag("Player").transform; 
+         
     }
 
     public override void EnterState()
     {
         base.EnterState();
-        Debug.Log("Started charging");
+        player = ThirdPersonController.Main.transform;
         nav.speed = chargeSpeed;
         nav.SetDestination(player.position);
     }
@@ -26,13 +27,13 @@ public class EnemyChargeState : EnemyState
         base.FrameUpdate();
 
         // Continue charging toward the player
+        Debug.Log("charging towards " + player.position);
         nav.SetDestination(player.position);
     }
 
     public override void ExitState()
     {
         base.ExitState();
-        Debug.Log("Stopped charging");
         nav.speed = enemy.defaultMovementSpeed; // Reset the speed to the default value
     }
 }

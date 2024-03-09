@@ -4,19 +4,17 @@ using UnityEngine;
 
 public class DaughterTrigger : MonoBehaviour
 {
-    private Daughter d;
+    [SerializeField] GraveSelection g;
     private bool canTrigger = true;
 
     private void Start()
     {
-        d = GetComponentInParent<Daughter>();
-        //Debug.Log(d.name);
     }
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Player") && canTrigger)
         {
-            d.SelectGrave();
+            g.ActivateGrave();
             canTrigger = false;
         }
     }

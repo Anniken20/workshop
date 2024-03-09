@@ -12,6 +12,9 @@ public class PauseMenu : MonoBehaviour
     public GameObject mainMenu;
     public GameObject HUD;
 
+    public Image fadeImage; // Reference to the fade image object
+    public float fadeSpeed; // Speed of the fade effect
+
     //delegate events that every script can subscribe to.
     //when this is called via this script, every script's subscriber function is called
     public delegate void OnPause();
@@ -27,6 +30,8 @@ public class PauseMenu : MonoBehaviour
     private InputAction pause;
     private InputAction cotnrols;
     public CharacterMovement iaControls;
+
+    private float prevTimeScale;
 
     //singleton
     public static PauseMenu main;
@@ -58,6 +63,7 @@ public class PauseMenu : MonoBehaviour
         Cursor.visible = true;
         PausePanel.SetActive(true);
         HUD.SetActive(false);
+        prevTimeScale = Time.timeScale;
         Time.timeScale = 0;
         onPause?.Invoke();
     }
@@ -68,8 +74,14 @@ public class PauseMenu : MonoBehaviour
         Cursor.visible = false;
         PausePanel.SetActive(false);
         HUD.SetActive(true);
-        Time.timeScale = 1;
+        Time.timeScale = prevTimeScale;
         onResume?.Invoke();
+
+        // Activate the fade image
+        fadeImage.gameObject.SetActive(true);
+
+        // Start the fade effect
+        StartCoroutine(FadeOutImage());
     }
 
     public void PauseNoUI()
@@ -77,6 +89,7 @@ public class PauseMenu : MonoBehaviour
         paused = true;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+        prevTimeScale = Time.timeScale;
         Time.timeScale = 0;
         onPause?.Invoke();
     }
@@ -86,7 +99,7 @@ public class PauseMenu : MonoBehaviour
         paused = false;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-        Time.timeScale = 1;
+        Time.timeScale = prevTimeScale;
         onResume?.Invoke();
     }
 
@@ -131,6 +144,20 @@ public class PauseMenu : MonoBehaviour
     {
         controlsPanel.SetActive(false);
         settingsPanel.SetActive(true);
+    }
+
+    private IEnumerator FadeOutImage()
+    {
+        Color color = fadeImage.color;
+        while (color.a > 0)
+        {
+            color.a -= Time.deltaTime * fadeSpeed;
+            fadeImage.color = color;
+            yield return null;
+        }
+
+        // Deactivate the fade image when the fade is complete
+        fadeImage.gameObject.SetActive(false);
     }
 
     //when not in-game but looking at settings
