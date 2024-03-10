@@ -40,6 +40,7 @@ public class PauseMenu : MonoBehaviour
     {
         iaControls = new CharacterMovement();
         main = this;
+        prevTimeScale = 1f;
     }
 
     private void Update()
@@ -63,7 +64,8 @@ public class PauseMenu : MonoBehaviour
         Cursor.visible = true;
         PausePanel.SetActive(true);
         HUD.SetActive(false);
-        prevTimeScale = Time.timeScale;
+        if(Time.timeScale != 0) prevTimeScale = Time.timeScale;
+
         Time.timeScale = 0;
         onPause?.Invoke();
     }
@@ -89,7 +91,8 @@ public class PauseMenu : MonoBehaviour
         paused = true;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
-        prevTimeScale = Time.timeScale;
+        if (Time.timeScale != 0) prevTimeScale = Time.timeScale;
+
         Time.timeScale = 0;
         onPause?.Invoke();
     }
