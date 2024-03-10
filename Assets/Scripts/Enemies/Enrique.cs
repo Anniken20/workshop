@@ -25,6 +25,9 @@ public class Enrique : Enemy, ICryable
         runToPointsState = gameObject.AddComponent<RunToPointsState>();
         runToPointsState.Initialize(this, stateMachine);
 
+        duelState = gameObject.AddComponent<DuelState>();
+        duelState.Initialize(this, stateMachine);
+
         //set default state
         stateMachine.Initialize(cryState);
     }
