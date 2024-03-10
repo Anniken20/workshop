@@ -25,7 +25,7 @@ public class HorseChargeTrigger : MonoBehaviour
             //h.Freeze();
             h.Charge();
 
-            Debug.Log("called charge by " + gameObject.name);
+            //Debug.Log("called charge by " + gameObject.name);
             canTrigger = false;
             StopCoroutine(TriggerDelay());
         }

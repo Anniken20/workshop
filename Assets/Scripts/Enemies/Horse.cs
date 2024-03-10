@@ -46,7 +46,7 @@ public class Horse : Enemy
     }
 
     public void Charge(){
-        Debug.Log("bla hblah blah");
+        //Debug.Log("bla hblah blah");
         this.GetComponent<Rigidbody>().velocity = Vector3.zero;
         isCharging = true;
         stateMachine.ChangeState(chargeState);

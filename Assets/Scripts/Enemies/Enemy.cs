@@ -96,7 +96,7 @@ public abstract class Enemy : MonoBehaviour, IShootable
             Instantiate(coinPrefab, spawnPosition, Quaternion.identity);
         }
 
-        itemPortrait.SetActive(false);
+        if(itemPortrait != null) itemPortrait.SetActive(false);
     }
 
     private IEnumerator DeathRoutine()
