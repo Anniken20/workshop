@@ -10,6 +10,7 @@ using StarterAssets;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 using DG.Tweening;
+using UnityEngine.Events;
 
 public class QTEDuel : MonoBehaviour
 {
@@ -21,7 +22,10 @@ public class QTEDuel : MonoBehaviour
     public Transform cinematicBarToPos_Top;
     public GameObject cinematicBar_Bottom;
     public Transform cinematicBarToPos_Bottom;
-    [SerializeField] private DuelEnemy duelEnemy;
+    [SerializeField] private Enemy duelEnemy;
+    [SerializeField] private Enemy nextEnemy;
+    public bool inheritPosition;
+    public QTEDuel nextQTEDuel;
     public CinemachineVirtualCamera shoulderCamera;
     public Volume postProcessVolume;
     public DuelCameraController duelCameraController;
@@ -31,6 +35,8 @@ public class QTEDuel : MonoBehaviour
     public CanvasGroup timeMeterCG;
     public ParticleSystem hitSparkSystem;
     public AudioSource gunShotAudio;
+    public int enemyPhaseLevel;
+    public UnityEvent nextPhaseEvent;
 
     [Header("Difficulty")]
     [Tooltip("The player will have at least this much time to fire. In seconds")]
@@ -76,6 +82,9 @@ public class QTEDuel : MonoBehaviour
     private Tween timeTween;
     private Tween topBarTween;
     private Tween bottomBarTween;
+
+    private EnemyState prevState;
+    private EnemyStateMachine stateMachine;
 
     private void OnEnable()
     {
@@ -125,6 +134,7 @@ public class QTEDuel : MonoBehaviour
         StartDuelAesthetics();
 
         inDuel = true;
+        prevState = duelEnemy.stateMachine.CurrentEnemyState;
         duelEnemy.StartDuel();
 
         generatedWaitTime = Random.Range(lowBoundTimeToPopup, highBoundTimeToPopup);
@@ -298,14 +308,37 @@ public class QTEDuel : MonoBehaviour
     {
         phase++;
         duelEnemy.TakeDamage(enemyDamageOnLoss);
-        duelEnemy.PlayerWonDuel();
+
+        if(enemyPhaseLevel < 3 && nextEnemy != null)
+        {
+            if (inheritPosition)
+            {
+                nextEnemy.transform.position = duelEnemy.transform.position;
+            }
+            
+            nextEnemy.currentHealth = duelEnemy.currentHealth;
+            nextEnemy.gameObject.SetActive(true);
+            nextPhaseEvent?.Invoke();
+
+            duelEnemy.gameObject.SetActive(false);
+            nextQTEDuel.gameObject.SetActive(true);
+
+            gameObject.SetActive(false);
+        } else
+        {
+            duelEnemy.Die();
+        }
+        //duelEnemy.PlayerWonDuel();
     }
 
     private void EnemyWonDuel()
     {
         ThirdPersonController.Main.gameObject.GetComponent<PlayerHealth>().TakeDamage(playerDamageOnLoss);
         duelEnemy.TakeDamage(-enemyRestoreOnWin);
-        duelEnemy.EnemyWonDuel();
+
+        stateMachine = duelEnemy.stateMachine;
+        stateMachine.ChangeState(prevState);
+        //duelEnemy.EnemyWonDuel();
     }
 
     private void FreePlayer()

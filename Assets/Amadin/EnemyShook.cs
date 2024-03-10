@@ -3,18 +3,20 @@ using UnityEngine.UI;
 using DG.Tweening;
 using System.Collections.Generic;
 
-public class EnemyHealthDisplay : MonoBehaviour
+public class EnemyShook : MonoBehaviour
 {
-    public Image mainHealthBar;
-    public Image laggingHealthBar;
+    public Slider mainHealthSlider; // Reference to the main health slider
+    public Slider laggingHealthSlider; // Reference to the lagging health slider
     public GameObject enemyPortrait;
     public float lagTime = 2f; // Time in seconds for the lagging health bar to catch up
     public float shakeDuration = 0.5f;
     public float shakeStrength = 0.1f;
     public int shakeVibrato = 10;
     public float shakeRandomness = 90f;
+    public float lagFadeDuration = 1f; // Duration for the lagging health bar to fade out after boss takes damage
 
     private List<Enemy> enemies = new List<Enemy>();
+    private bool bossTakingDamage = false; // Flag to track if boss is currently taking damage
 
     private void OnEnable()
     {
@@ -25,7 +27,7 @@ public class EnemyHealthDisplay : MonoBehaviour
         // Subscribe to the delegate for each enemy
         foreach (Enemy enemy in enemies)
         {
-            enemy.damageDelegate += ShakePortraitAndUpdateHealth;
+            enemy.damageDelegate += OnBossDamaged;
         }
     }
 
@@ -34,16 +36,19 @@ public class EnemyHealthDisplay : MonoBehaviour
         // Unsubscribe from the delegate for each enemy
         foreach (Enemy enemy in enemies)
         {
-            enemy.damageDelegate -= ShakePortraitAndUpdateHealth;
+            enemy.damageDelegate -= OnBossDamaged;
         }
 
         // Clear the list of enemies
         enemies.Clear();
     }
 
-    private void ShakePortraitAndUpdateHealth()
+    private void OnBossDamaged()
     {
-        // Shake the enemy's portrait
+        // Set flag to indicate boss is taking damage
+        bossTakingDamage = true;
+
+        // Shake the portrait
         ShakePortrait();
 
         // Update health bars
@@ -58,7 +63,7 @@ public class EnemyHealthDisplay : MonoBehaviour
 
     private void UpdateHealthBars()
     {
-        // Update main health bar
+        // Update main health slider
         float totalHealth = 0f;
         float totalMaxHealth = 0f;
         foreach (Enemy enemy in enemies)
@@ -67,13 +72,35 @@ public class EnemyHealthDisplay : MonoBehaviour
             totalMaxHealth += enemy.maxHealth;
         }
         float newHealth = totalHealth / totalMaxHealth;
-        mainHealthBar.fillAmount = newHealth;
+        mainHealthSlider.value = newHealth;
 
-        // Calculate lagging health bar's target fill amount
-        float lagTargetFill = Mathf.Clamp(newHealth, 0f, 1f);
+        if (bossTakingDamage)
+        {
+            // Calculate lagging health slider's target value based on main health slider's value
+            float lagTargetValue = mainHealthSlider.value;
 
-        // Update lagging health bar with a delay
-        DOTween.To(() => laggingHealthBar.fillAmount, x => laggingHealthBar.fillAmount = x, lagTargetFill, lagTime);
+            // Update lagging health slider with a delay
+            DOTween.To(() => laggingHealthSlider.value, x => laggingHealthSlider.value = x, lagTargetValue, lagTime)
+                .OnComplete(() =>
+                {
+                    // After lag time, fade out the lagging health bar
+                    FadeOutLaggingHealthBar();
+                });
+        }
+    }
+
+    private void FadeOutLaggingHealthBar()
+    {
+        // Fade out the lagging health slider's fill image 
+        Image laggingFillImage = laggingHealthSlider.fillRect.GetComponent<Image>();
+        laggingFillImage.DOFade(0f, lagFadeDuration).OnComplete(() =>
+        {
+            // Reset flag and set lagging health slider's value to match main health slider's value
+            bossTakingDamage = false;
+            laggingHealthSlider.value = mainHealthSlider.value;
+
+            // Reset alpha back to 1
+            laggingFillImage.DOFade(1f, 0f);
+        });
     }
 }
-

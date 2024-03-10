@@ -23,6 +23,7 @@ public class RunToPointsState : EnemyState
     public override void FrameUpdate()
     {
         if (ReachedDestination()) {
+            Debug.Log("reached destination");
             if (runToPointsData.cryAfterReachingDestination)
             {
                 ((ICryable)enemy).StartCrying();
