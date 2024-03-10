@@ -14,7 +14,7 @@ public class HorseWrangling : LassoWrangle
         chargeTrigger = FindObjectOfType<HorseChargeTrigger>();
     }
     public override void WinMiniGame(){
-         base.WinMiniGame();
+        base.WinMiniGame();
         StopCoroutine(lossRoutine);
         Debug.Log("U win :D");     
         wrangling = false;
