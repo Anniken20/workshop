@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BrittleFloor : OnPlayerHit
+public class HighwaymanFloor : OnPlayerHit
 {
     [SerializeField] float shakeSpeed;
     [SerializeField] float shakeAmount;
@@ -19,23 +19,27 @@ public class BrittleFloor : OnPlayerHit
     private bool shake;
     [SerializeField] float breakDelay;
     [SerializeField] float reappearDelay;
+    public Highwayman h;
     private void Start(){
         isAvailable = true;
         ogPos = this.transform.position;
         shakeDir = axis.ToString();
+        h = GetComponentInParent<TileContainer>().highwayman;
     }
     [HideInInspector] public bool canTrigger = true;
     [HideInInspector] public bool isAvailable;
      public override void HitEffect(Collision other){
-        //Maybe Add some shake animation here?
         if(canTrigger){
+            if(h != null){
+                h.SelectTile();
+            }
+            else{
+                Debug.LogWarning("Highwayman must be assigned to the tile container parent!");
+            }
             StartCoroutine(DisappearDelay());
             StartCoroutine(Shake());
             canTrigger = false;
         }
-        
-        //^^
-        //Destroy(gameObject, breakDelay);
     }
     public IEnumerator Shake(){
         float elapsedTime = 0.0f;
@@ -61,10 +65,10 @@ public class BrittleFloor : OnPlayerHit
         yield return new WaitForSeconds(breakDelay);
         this.GetComponent<MeshRenderer>().enabled = false;
         this.GetComponent<BoxCollider>().enabled = false;
-        isAvailable = false;
         StartCoroutine(ReappearDelay());
     }
     public IEnumerator ReappearDelay(){
+        isAvailable = false;
         yield return new WaitForSeconds(reappearDelay);
         canTrigger = true;
         isAvailable = true;
