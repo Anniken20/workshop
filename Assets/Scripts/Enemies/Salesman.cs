@@ -18,7 +18,8 @@ public class Salesman : Enemy
         idleState.Initialize(this, stateMachine);
         chaseState = gameObject.AddComponent<SalesmanChasePlayerState>();
         chaseState.Initialize(this, stateMachine);
-
+        duelState = gameObject.AddComponent<DuelState>();
+        duelState.Initialize(this, stateMachine);
 
         stateMachine.Initialize(idleState);
 
