@@ -15,6 +15,8 @@ public class Daughter : Enemy
         idleState.Initialize(this, stateMachine);
         shootState = gameObject.AddComponent<EnemyShootState>();
         shootState.Initialize(this, stateMachine);
+        duelState = gameObject.AddComponent<DuelState>();
+        duelState.Initialize(this, stateMachine);
 
         stateMachine.Initialize(idleState);
     }
