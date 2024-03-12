@@ -6,12 +6,15 @@ public class HorseWrangling : LassoWrangle
 {
     private Horse h;
     HorseChargeTrigger chargeTrigger;
+    private Animator anim;
     private void Start(){
         h = GetComponentInParent<Horse>();
+        anim = h.GetComponent<Animator>();
+        //if(h.animator != null) h.animator.SetBool("BeingWrangled", true);
         chargeTrigger = FindObjectOfType<HorseChargeTrigger>();
     }
     public override void WinMiniGame(){
-         base.WinMiniGame();
+        base.WinMiniGame();
         StopCoroutine(lossRoutine);
         Debug.Log("U win :D");     
         wrangling = false;
@@ -22,6 +25,8 @@ public class HorseWrangling : LassoWrangle
         h.isStunned = false;
         //h.currentHealth -= 35;
         h.TakeDamage(35);
+        if(h.animator != null) h.animator.SetBool("BeingWrangled", false);
+        anim.SetBool("BeingWrangled", false);
         if (chargeTrigger != null)
         {
             chargeTrigger.wrangling = false;
@@ -37,6 +42,8 @@ public class HorseWrangling : LassoWrangle
         h.Charge();
         h.isStunned = false;
         //h.currentHealth += 15;
+        if(h.animator != null) h.animator.SetBool("BeingWrangled", false);
+        anim.SetBool("BeingWrangled", false);
         if (chargeTrigger != null)
         {
             chargeTrigger.wrangling = false;
@@ -47,6 +54,8 @@ public class HorseWrangling : LassoWrangle
         if(chargeTrigger != null) 
         {
             chargeTrigger.wrangling = true;
+            anim.SetBool("BeingWrangled", true);
+            anim.SetBool("Stunned", false);
         }
     }
 }

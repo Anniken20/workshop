@@ -27,6 +27,9 @@ public class Grant : Enemy
         knockbackState = gameObject.AddComponent<KnockbackState>();
         knockbackState.Initialize(this, stateMachine);
 
+        duelState = gameObject.AddComponent<DuelState>();
+        duelState.Initialize(this, stateMachine);
+
         //set default state
         stateMachine.Initialize(idleState);
     }

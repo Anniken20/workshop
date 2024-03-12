@@ -7,7 +7,7 @@ public class Sheriff : DuelEnemy
     [HideInInspector] public EnemyPacingState pacingState;
     [HideInInspector] public EnemyShootState shootState;
     [HideInInspector] public EnemyHidingState hidingState;
-    [HideInInspector] public EnemyChargeState chargeState;
+    [HideInInspector] public HorseChargeState chargeState;
     [HideInInspector] public RunToPointsState runToPointsState;
     [HideInInspector] public KnockbackState knockbackState;
     [HideInInspector] public EnemyThrowState throwState;
@@ -33,7 +33,7 @@ public class Sheriff : DuelEnemy
         hidingState = gameObject.AddComponent<EnemyHidingState>();
         hidingState.Initialize(this, stateMachine);
 
-        chargeState = gameObject.AddComponent<EnemyChargeState>();
+        chargeState = gameObject.AddComponent<HorseChargeState>();
         chargeState.Initialize(this, stateMachine);
 
         runToPointsState = gameObject.AddComponent<RunToPointsState>();

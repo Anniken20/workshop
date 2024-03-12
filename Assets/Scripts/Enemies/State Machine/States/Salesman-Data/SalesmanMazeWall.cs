@@ -4,12 +4,7 @@ using UnityEngine;
 
 public class SalesmanMazeWall : MonoBehaviour, IShootable
 {
-    private Salesman salesmanRef;
-    //private bool checkDist;
-    private void Start()
-    {
-        salesmanRef = FindObjectOfType<Salesman>();
-    }
+    public Salesman salesmanRef;
     public void OnShot(BulletController bullet)
     {
         salesmanRef.BulletState();
