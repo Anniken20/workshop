@@ -1,4 +1,4 @@
-using UnityEngine;
+/*using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 using System.Collections.Generic;
@@ -103,4 +103,4 @@ public class EnemyShook : MonoBehaviour
             laggingFillImage.DOFade(1f, 0f);
         });
     }
-}
+}*/
