@@ -24,6 +24,8 @@ public class HorseStunnedState : EnemyState
         if(enemy.animator != null) enemy.animator.SetBool("Stunned", true);
         anim.SetBool("Running", false);
         anim.SetBool("Stunned", true);
+        if (enemy.animator != null) enemy.animator.SetBool("Idle", false);
+        anim.SetBool("Idle", false);
         isStunned = true;
         Enemy h = GetComponentInParent<Enemy>();
         lassoTarget = h.lassoTarget;

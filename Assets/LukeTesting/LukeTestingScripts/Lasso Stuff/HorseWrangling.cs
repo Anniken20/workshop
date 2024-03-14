@@ -27,6 +27,8 @@ public class HorseWrangling : LassoWrangle
         h.TakeDamage(35);
         if(h.animator != null) h.animator.SetBool("BeingWrangled", false);
         anim.SetBool("BeingWrangled", false);
+        if(h.animator != null) h.animator.SetBool("Idle", true);
+        anim.SetBool("Idle", true);
         if (chargeTrigger != null)
         {
             chargeTrigger.wrangling = false;
@@ -44,6 +46,8 @@ public class HorseWrangling : LassoWrangle
         //h.currentHealth += 15;
         if(h.animator != null) h.animator.SetBool("BeingWrangled", false);
         anim.SetBool("BeingWrangled", false);
+        if(h.animator != null) h.animator.SetBool("Idle", true);
+        anim.SetBool("Idle", true);
         if (chargeTrigger != null)
         {
             chargeTrigger.wrangling = false;
@@ -56,6 +60,19 @@ public class HorseWrangling : LassoWrangle
             chargeTrigger.wrangling = true;
             anim.SetBool("BeingWrangled", true);
             anim.SetBool("Stunned", false);
+        }
+    }
+    public override void Update(){
+        base.Update();
+        if(h.currentHealth <= 0){
+            WinMiniGame();
+            anim.enabled = true;
+            anim.SetBool("Dead", true);
+            anim.SetBool("BeingWrangled", false);
+            anim.SetBool("Idle", false);
+            anim.SetBool("Running", false);
+            anim.SetBool("Stunned", false);
+            this.gameObject.SetActive(false);
         }
     }
 }
