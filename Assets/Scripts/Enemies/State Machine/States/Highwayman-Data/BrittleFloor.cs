@@ -20,12 +20,12 @@ public class BrittleFloor : OnPlayerHit
     [SerializeField] float breakDelay;
     [SerializeField] float reappearDelay;
     private void Start(){
+        isAvailable = true;
         ogPos = this.transform.position;
         shakeDir = axis.ToString();
     }
-    private bool canTrigger = true;
+    [HideInInspector] public bool canTrigger = true;
     [HideInInspector] public bool isAvailable;
-
      public override void HitEffect(Collision other){
         //Maybe Add some shake animation here?
         if(canTrigger){

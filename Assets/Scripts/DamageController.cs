@@ -29,6 +29,12 @@ public class DamageController : MonoBehaviour
     public Image fullHealthBar;
     public Image healthBarMask;
     public float healthBarFadeTime = 1f; // Time in seconds for health bar to fade
+    [Header("Regen")]
+    public bool regen;
+    [Tooltip("Amount of damage needed to not regen")]
+    public int regenDMG;
+    [Tooltip("Time to wait before regen")]
+    public float regenTimer;
 
     private float currDmg;
     public BreakController breakController;
@@ -78,6 +84,9 @@ public class DamageController : MonoBehaviour
             lastDamageTime = Time.time;
             isTakingDamage = true;
         }
+        if(regen && dmg < regenDMG){
+            StartCoroutine(Regenerate(dmg));
+        }
 
         if (currDmg >= dmgTilBreak)
         {
@@ -119,5 +128,9 @@ public class DamageController : MonoBehaviour
             // If BreakController is not found, destroy the object
             Destroy(gameObject);
         }
+    }
+         public IEnumerator Regenerate(float dmg){
+        yield return new WaitForSeconds(regenTimer);
+        currDmg -= dmg;
     }
 }

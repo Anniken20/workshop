@@ -34,6 +34,9 @@ public class Horse : Enemy
         freezeState = gameObject.AddComponent<HorseFreezeState>();
         freezeState.Initialize(this, stateMachine);
 
+        duelState = gameObject.AddComponent<DuelState>();
+        duelState.Initialize(this, stateMachine);
+
         stateMachine.Initialize(idleState);
     }
 
@@ -43,7 +46,7 @@ public class Horse : Enemy
     }
 
     public void Charge(){
-        Debug.Log("bla hblah blah");
+        //Debug.Log("bla hblah blah");
         this.GetComponent<Rigidbody>().velocity = Vector3.zero;
         isCharging = true;
         stateMachine.ChangeState(chargeState);

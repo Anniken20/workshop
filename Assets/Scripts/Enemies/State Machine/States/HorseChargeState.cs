@@ -69,7 +69,9 @@ public class HorseChargeState : EnemyState
         readyingCharge = false;
         destination = (transform.position + this.transform.forward * 15);
         nav.SetDestination(destination);
-        if(enemy.animator != null) enemy.animator.SetBool("Running", true);
+        if (enemy.animator != null) enemy.animator.SetBool("Idle", false);
+        anim.SetBool("Idle", false);
+        if (enemy.animator != null) enemy.animator.SetBool("Running", true);
         anim.SetBool("Running", true);
         StartCoroutine(LookDelay());
         
@@ -77,5 +79,7 @@ public class HorseChargeState : EnemyState
     private IEnumerator LookDelay(){
         yield return new WaitForSeconds(1f);
         canLook = true;
+        if (enemy.animator != null) enemy.animator.SetBool("Idle", true);
+        anim.SetBool("Idle", true);
     }
 }

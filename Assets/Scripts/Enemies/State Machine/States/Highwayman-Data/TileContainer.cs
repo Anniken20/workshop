@@ -5,4 +5,5 @@ using UnityEngine;
 public class TileContainer : MonoBehaviour
 {
     public GameObject[] tileObjs;
+    public Highwayman highwayman;
 }

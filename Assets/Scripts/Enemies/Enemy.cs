@@ -26,8 +26,11 @@ public abstract class Enemy : MonoBehaviour, IShootable
     public Transform firePoint; // The position where the projectiles are spawned
     public float defaultMovementSpeed;
     public Animator animator;
+    public bool duelEnemy = false;
+
     [HideInInspector] public EnemyStateMachine stateMachine;
     [HideInInspector] public EnemyIdleState idleState;
+    [HideInInspector] public DuelState duelState;
 
     [Header("Stunned Variables")]
     public GameObject lassoTarget;
@@ -41,6 +44,12 @@ public abstract class Enemy : MonoBehaviour, IShootable
     public int minCoins = 1; // Minimum number of coins to drop
     public int maxCoins = 5; // Maximum number of coins to drop
     public float coinDropRadius = 1.5f; // Radius within which coins will scatter
+    [Header("Regen")]
+    public bool regen;
+    [Tooltip("Amount of damage needed to not regen")]
+    public int regenDMG;
+    [Tooltip("Time to wait before regen")]
+    public float regenTimer;
 
     protected NavMeshAgent nav;
 
@@ -54,7 +63,11 @@ public abstract class Enemy : MonoBehaviour, IShootable
         //idleState.Initialize(this, stateMachine);
         LoadUpDictionary();
     }
-    
+    public void StartDuel()
+    {
+        stateMachine.ChangeState(duelState);
+    }
+
     private void Start()
     {
         currentHealth = maxHealth;
@@ -89,7 +102,7 @@ public abstract class Enemy : MonoBehaviour, IShootable
             Instantiate(coinPrefab, spawnPosition, Quaternion.identity);
         }
 
-        itemPortrait.SetActive(false);
+        if(itemPortrait != null) itemPortrait.SetActive(false);
     }
 
     private IEnumerator DeathRoutine()
@@ -119,10 +132,14 @@ public abstract class Enemy : MonoBehaviour, IShootable
     {
         currentHealth -= delta;
         damageDelegate?.Invoke();
-        if(currentHealth < 0)
+        if(regen && delta < regenDMG){
+            StartCoroutine(Regenerate(delta));
+        }
+        if(currentHealth < 0 && !duelEnemy)
         {
             Die();
         }
+        
     }
 
     public StateData FindData(string name)
@@ -157,5 +174,9 @@ public abstract class Enemy : MonoBehaviour, IShootable
     public void Unfreeze()
     {
         //animator.playbackTime = 1f;
+    }
+     public IEnumerator Regenerate(float dmg){
+        yield return new WaitForSeconds(regenTimer);
+        currentHealth += dmg;
     }
 }

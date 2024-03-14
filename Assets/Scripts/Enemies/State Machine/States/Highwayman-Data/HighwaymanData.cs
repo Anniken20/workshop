@@ -5,4 +5,5 @@ using UnityEngine;
 public class HighwaymanData : StateData
 {
     public float pauseDuration;
+    public int damage;
 }
