@@ -14,6 +14,7 @@ public class BreakController : MonoBehaviour
     public float disableRigidbodyDelay = 30f; // Time before disabling rigidbodies
     public float enableRigidbodyDelay = 30f; // Time to enable rigidbodies again if not motionless
     public AudioClip breakSound;
+    public int maxFragmentsToSpawn = 5;
 
     private Rigidbody[] fragmentRigidbodies;
     private Vector3[] initialFragmentPositions;
@@ -92,54 +93,55 @@ public class BreakController : MonoBehaviour
 
     public void BreakIntoPieces()
     {
-        // Check if there are fragments assigned
+        Debug.Log("BreakIntoPieces called.");
+
         if (fragments != null && fragments.Length > 0)
         {
-            // Calculate the position for the smaller fragments
-            Vector3 originalPosition = transform.position;
-            Vector3 fragmentSize = transform.localScale / 3; // Assuming the box is divided into 9 smaller boxes
+        Vector3 originalPosition = transform.position;
+        // Use Mathf.Min to ensure we don't attempt to spawn more fragments than we have available or exceed our maxFragmentsToSpawn
+        int fragmentsToSpawn = Mathf.Min(maxFragmentsToSpawn, fragments.Length);
 
-            for (int x = -1; x <= 1; x++)
+        Debug.Log($"Spawning {fragmentsToSpawn} fragments.");
+
+        for (int i = 0; i < fragmentsToSpawn; i++)
+        {
+            // Randomize position around the original object within a specified range
+            Vector3 spawnOffset = Random.insideUnitSphere * explosionRadius; // Adjust radius as needed
+            Vector3 fragmentPosition = originalPosition + spawnOffset;
+
+            // Choose a random fragment from the available prefabs
+            GameObject fragmentPrefab = fragments[Random.Range(0, fragments.Length)];
+            GameObject fragment = Instantiate(fragmentPrefab, fragmentPosition, Quaternion.identity);
+            Debug.Log($"Spawned fragment at {fragmentPosition}.");
+
+            // Apply an explosion force to the fragment
+            Rigidbody rb = fragment.GetComponent<Rigidbody>();
+            if (rb != null)
             {
-                for (int y = -1; y <= 1; y++)
-                {
-                    for (int z = -1; z <= 1; z++)
-                    {
-                        Vector3 fragmentPosition = originalPosition + new Vector3(x * fragmentSize.x, y * fragmentSize.y, z * fragmentSize.z);
-
-                        // Instantiate the fragment
-                        GameObject fragment = Instantiate(fragments[Random.Range(0, fragments.Length)], fragmentPosition, Quaternion.identity);
-
-                        // Apply an explosion force to the fragment
-                        Rigidbody rb = fragment.GetComponent<Rigidbody>();
-                        if (rb != null)
-                        {
-                            Vector3 randomDirection = Random.onUnitSphere;
-                            rb.AddForce(randomDirection * explosionForce, ForceMode.Impulse);
-                        }
-                    }
-                }
+                Vector3 randomDirection = Random.onUnitSphere;
+                rb.AddForce(randomDirection * explosionForce, ForceMode.Impulse);
             }
-            PlayBreakSound();
+        }
 
-            int coinsToSpawn = Random.Range(minCoins, maxCoins + 1);
-            for (int i = 0; i < coinsToSpawn; i++)
-            {
-                SpawnCoin();
-            }
+        PlayBreakSound();
+        
+        int coinsToSpawn = Random.Range(minCoins, maxCoins + 1);
+        for (int i = 0; i < coinsToSpawn; i++)
+        {
+            SpawnCoin();
+        }
 
-            // Destroy the original object
-            Destroy(gameObject);
-            
+        // Destroy the original object
+        Destroy(gameObject);
         }
         else
         {
-            Debug.LogError("Fragments not assigned in the Inspector.");
+        Debug.LogError("Fragments not assigned in the Inspector.");
         }
     }
 
     private void SpawnCoin()
-{
+    {
     if (coinPrefab != null)
     {
         Vector3 spawnPosition = GetValidSpawnPosition();
@@ -159,7 +161,7 @@ public class BreakController : MonoBehaviour
     {
         Debug.LogError("Coin prefab not set.");
     }
-}
+    }
 
 private Vector3 GetValidSpawnPosition()
 {

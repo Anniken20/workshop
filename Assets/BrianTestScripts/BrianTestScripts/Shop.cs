@@ -16,16 +16,20 @@ public class Shop : Interactable
     private Button closeButton; // Assign in the Inspector
     [SerializeField]
     private AudioSource audioSource; // Ensure this is set up in the inspector
+    [SerializeField]
+    private GameObject secretKeyMenu; // Assign in the Inspector
 
 
     protected override void Awake()
     {
         shopMenu.SetActive(false);
+        secretKeyMenu.SetActive(false);
     }
+
 
     private void Update()
     {
-        if (interactionPrompt.gameObject.activeSelf && Input.GetKeyDown(KeyCode.E))
+        if (isPlayerInRange && Input.GetKeyDown(KeyCode.E))
         {
             ToggleShopMenu(true);
         }
@@ -48,6 +52,22 @@ public class Shop : Interactable
         }
     }
 
+    public void ToggleSecretKeyMenu(bool show)
+    {
+        secretKeyMenu.SetActive(show); // Toggle visibility
+
+        if (show)
+        {
+            SwitchGameControls(false);
+            CoinCollector.Instance.ShowCoinsUIInstant(); 
+        }
+        else
+        {
+            SwitchGameControls(true);
+            CoinCollector.Instance.HideCoinsUIInstant();
+        }
+    }
+
 
     public void SpendCoin()
     {
@@ -66,12 +86,14 @@ public class Shop : Interactable
             SpendCoin(); 
             InventoryManager.Instance.AddItem(InventoryManager.AllItems.SecretKey); // Adds the secret key to the inventory
             Debug.Log("Secret Key Purchased!");
+
+             ToggleSecretKeyMenu(false);
         }
          else
         {
             Debug.Log("Not enough coins or key already purchased.");
         }
-}
+    }
 
 
     private void SwitchGameControls(bool state)
@@ -93,5 +115,5 @@ public class Shop : Interactable
         shopMenu.SetActive(false);
     }
 
-
+     
 }

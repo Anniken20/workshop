@@ -7,6 +7,7 @@ public class Interactable : MonoBehaviour
 {
     [SerializeField]
     public TextMeshProUGUI interactionPrompt; 
+    protected bool isPlayerInRange = false;
 
     protected virtual void Awake()
     {
@@ -21,6 +22,7 @@ public class Interactable : MonoBehaviour
     {
         if (other.CompareTag("Player")) 
         {
+            isPlayerInRange = true;
             ShowPrompt();
         }
     }
@@ -30,6 +32,7 @@ public class Interactable : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            isPlayerInRange = false;
             HidePrompt();
         }
     }
