@@ -5,44 +5,34 @@ using DG.Tweening;
 using UnityEngine.Splines;
 using StarterAssets;
 
-public class MinecartMechanic : OnPlayerHit
+public class MinecartMechanic : MonoBehaviour
 {
     private SplineAnimate splineAnimator;
-    private ThirdPersonController playerCon;
-    public override void HitEffect(Collision col)
+
+    //start and stop for a frame to fix rotation bug
+    private void Start()
     {
-        Debug.Log("Stepped on minecart");
         splineAnimator = GetComponent<SplineAnimate>();
-        //col.transform.SetParent(transform);
-        //transform.DOMoveZ(transform.position.z - 10f, 2f);
-
-        StartCoroutine(MovePlayerWithMinecartRoutine());
-
-        splineAnimator.Play();
+        splineAnimator.Updated += OnUpdateSpline;
     }
 
-    //kick the player off
-    public void OnCollisionExit(Collision other)
+    public void OnUpdateSpline(Vector3 pos, Quaternion rotation)
     {
-        if (other.gameObject.CompareTag("Player"))
+        if(splineAnimator.NormalizedTime > 0.99f)
         {
-            other.gameObject.transform.SetParent(null);
+            splineAnimator.NormalizedTime = 1f;
+            OnEnd();
         }
     }
 
-    private IEnumerator MovePlayerWithMinecartRoutine()
+    public void HitWall()
     {
-        while (true) {
-            playerCon.SetMotion(Vector3.zero);
-
-            //wait a frame before resuming
-            yield return null;
-
-            //check if reached end of track
-            if(splineAnimator.NormalizedTime > 0.99f)
-            {
-                yield break;
-            }
-        }
+        
     }
+
+    public void OnEnd()
+    {
+
+    }
+ 
 }
