@@ -15,7 +15,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &9114425312041962816
 Transform:
   m_ObjectHideFlags: 0
@@ -46,7 +46,7 @@ GameObject:
   - component: {fileID: 789360493142119989}
   - component: {fileID: 6853251303696504389}
   - component: {fileID: 6367622214414071629}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Sphere_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -83,7 +83,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 668555417666841677}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -205,6 +205,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 178ec662c4deb0a429840c14ddbaf639, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pressed: 0
 --- !u!1 &3042301126768150424
 GameObject:
   m_ObjectHideFlags: 0
@@ -217,13 +218,13 @@ GameObject:
   - component: {fileID: 5177652426094104062}
   - component: {fileID: 5513202070777818323}
   - component: {fileID: 2010849898906261493}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &518617011329460752
 Transform:
   m_ObjectHideFlags: 0
@@ -350,7 +351,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5021336571173377408}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: umbreller
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -388,7 +389,7 @@ GameObject:
   - component: {fileID: 4583817102058691019}
   - component: {fileID: 4514657413013638213}
   - component: {fileID: 3053631475832103845}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Sphere_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -425,7 +426,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5724714187198103756}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -705,7 +706,7 @@ GameObject:
   - component: {fileID: 8003373501627635507}
   - component: {fileID: 1586812206627446132}
   - component: {fileID: 1525568174727135399}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Sphere_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -742,7 +743,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6577609812616730456}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -838,7 +839,7 @@ Transform:
   - {fileID: 6147246239890301613}
   - {fileID: 6241235982070508131}
   m_Father: {fileID: 0}
-  m_RootOrder: 65
+  m_RootOrder: 66
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!195 &3189935935697196880
 NavMeshAgent:
@@ -904,7 +905,9 @@ MonoBehaviour:
   firePoint: {fileID: 0}
   defaultMovementSpeed: 0
   animator: {fileID: 2020881012105122110}
+  duelEnemy: 0
   idleState: {fileID: 0}
+  duelState: {fileID: 0}
   lassoTarget: {fileID: 0}
   onDeath:
     m_PersistentCalls:
@@ -951,6 +954,9 @@ MonoBehaviour:
   minCoins: 20
   maxCoins: 20
   coinDropRadius: 1.5
+  regen: 0
+  regenDMG: 0
+  regenTimer: 0
   moveState: {fileID: 0}
 --- !u!114 &9040212178346145771
 MonoBehaviour:
@@ -1064,15 +1070,80 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7100915445484394379, guid: 07639b9a86a16a84fabc99e35c6be9e2,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
     - target: {fileID: -5752253009351772717, guid: 07639b9a86a16a84fabc99e35c6be9e2,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 7691b7c0f9785eb4ab66140716afe973, type: 2}
+    - target: {fileID: -4490145476563414267, guid: 07639b9a86a16a84fabc99e35c6be9e2,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: -1000074312964261668, guid: 07639b9a86a16a84fabc99e35c6be9e2,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: -822488911812607819, guid: 07639b9a86a16a84fabc99e35c6be9e2,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: -81484758859107038, guid: 07639b9a86a16a84fabc99e35c6be9e2,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 589568399821033400, guid: 07639b9a86a16a84fabc99e35c6be9e2,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 07639b9a86a16a84fabc99e35c6be9e2,
         type: 3}
       propertyPath: m_Name
       value: Model_Benita
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 07639b9a86a16a84fabc99e35c6be9e2,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 2056315171588494952, guid: 07639b9a86a16a84fabc99e35c6be9e2,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 4082118484071434968, guid: 07639b9a86a16a84fabc99e35c6be9e2,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 5868271355360801540, guid: 07639b9a86a16a84fabc99e35c6be9e2,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 6543163237309587407, guid: 07639b9a86a16a84fabc99e35c6be9e2,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 8175752319835011208, guid: 07639b9a86a16a84fabc99e35c6be9e2,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 8517020220153859464, guid: 07639b9a86a16a84fabc99e35c6be9e2,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

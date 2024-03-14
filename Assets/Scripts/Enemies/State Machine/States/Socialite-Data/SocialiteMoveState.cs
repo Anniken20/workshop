@@ -21,8 +21,7 @@ public class SocialiteMoveState : EnemyState
         nav.speed = moveData.moveSpeed;
         SetDestination();
         StartCoroutine(SpawnMist());
-        //Is this how animations are supposed to be set up? idk
-        if (enemy.animator != null) enemy.animator.SetBool("Running", true);
+        //if (enemy.animator != null) enemy.animator.SetBool("Running", true);
  
     }
     public override void FrameUpdate()
@@ -35,7 +34,7 @@ public class SocialiteMoveState : EnemyState
         if(point != null)
         {
             var distanceFromTarget = Vector3.Distance(this.gameObject.transform.position, nav.destination);
-            if (distanceFromTarget <= 1.25)
+            if (distanceFromTarget <= 1.5)
             {
                 SetDestination();
             }
@@ -44,7 +43,7 @@ public class SocialiteMoveState : EnemyState
     public override void ExitState()
     {
         base.ExitState();
-        if (enemy.animator != null) enemy.animator.SetBool("Running", false);
+        //if (enemy.animator != null) enemy.animator.SetBool("Running", false);
     }
     private void SetDestination()
     {
@@ -53,6 +52,7 @@ public class SocialiteMoveState : EnemyState
     }
     Vector3 GetDirection()
     {
+        int layerMask = ~(1 << moveData.ignoreLayer);
         Vector3 farthestPoint = transform.position;
         float maxDistance = 0f;
         foreach (Vector3 position in moveData.directions)
@@ -60,8 +60,9 @@ public class SocialiteMoveState : EnemyState
             if (lastDir != position)
             {
                 RaycastHit hit;
-                if (Physics.Raycast(transform.position, position, out hit))
+                if (Physics.Raycast(transform.position, position, out hit, Mathf.Infinity, ~layerMask))
                 {
+                    Debug.Log("Hit: " +hit.collider.name);
                     if (hit.distance > maxDistance)
                     {
                         maxDistance = hit.distance;

@@ -46,8 +46,11 @@ public class HorseChargeState : EnemyState
             this.transform.LookAt(player);
         }
         var distanceFromTarget = Vector3.Distance(this.gameObject.transform.position, nav.destination);
-            if (distanceFromTarget <= 1.25)
+            if (distanceFromTarget <= 1.25 && GetComponentInParent<HorseChargeTrigger>().wrangling == false)
             {
+                if (enemy.animator != null) enemy.animator.SetBool("Idle", true);
+                if(enemy.animator != null) enemy.animator.SetBool("Running", false);
+                anim.SetBool("Running", false);
                 EnterState();
             }
 
@@ -79,6 +82,8 @@ public class HorseChargeState : EnemyState
     private IEnumerator LookDelay(){
         yield return new WaitForSeconds(1f);
         canLook = true;
+        if(enemy.animator != null) enemy.animator.SetBool("Running", false);
+        anim.SetBool("Running", false);
         if (enemy.animator != null) enemy.animator.SetBool("Idle", true);
         anim.SetBool("Idle", true);
     }
