@@ -24,6 +24,8 @@ public class HealthBarFade : MonoBehaviour
     // Add reference to the enemy script
     public Enemy myEnemy;
 
+    private Tween lagBarTween;
+
     private void Awake()
     {
         if (barImage == null)
@@ -116,18 +118,24 @@ public class HealthBarFade : MonoBehaviour
     public void SetHealth(float healthNormalized)
     {
         // Ensure health value is clamped between 0 and 1
-        //healthNormalized = Mathf.Clamp01(healthNormalized);
-        healthNormalized = myEnemy.currentHealth / myEnemy.maxHealth;
+
+
+        Debug.Log("health normalized: " + healthNormalized);
         barImage.fillAmount = healthNormalized;
+
+        //fresh tween
+        if (lagBarTween != null) lagBarTween.Kill();
+        lagBarTween = damagedBarImage.DOFillAmount(barImage.fillAmount, damagedHealthFadeTimerMax).SetEase(Ease.InCubic);
     }
 
     // Method to handle enemy damage event
     private void MyMethod()
     {
+        SetHealth(myEnemy.currentHealth / myEnemy.maxHealth);
         if (damagedColor.a < 0)
         {
             // Set the damaged health bar color and timer
-            damagedBarImage.fillAmount = barImage.fillAmount;
+            //damagedBarImage.fillAmount = barImage.fillAmount;
             damagedColor.a = 1f;
             damagedBarImage.color = damagedColor;
             damagedHealthFadeTimer = damagedHealthFadeTimerMax;
