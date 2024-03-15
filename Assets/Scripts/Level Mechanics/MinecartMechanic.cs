@@ -70,7 +70,26 @@ public class MinecartMechanic : MonoBehaviour
         else
         {
             splineAnimator.Container = spl;
-            //splineAnimator.NormalizedTime = spl.
+            splineAnimator.NormalizedTime = 0;
+            /*
+            float theTime;
+            SplineUtility.GetNearestPoint<Spline>(splineAnimator.Container.Spline,
+                ThirdPersonController.Main.transform.position,
+                out _,
+                out theTime);
+            splineAnimator.NormalizedTime = theTime;
+            splineAnimator.enabled = true;
+            */
+        }
+    }
+
+    public void SwitchTracks(SplineContainer spl)
+    {
+        if (spl == null) { }
+        else
+        {
+            splineAnimator.Container = spl;
+            splineAnimator.NormalizedTime = 0;
         }
     }
  
