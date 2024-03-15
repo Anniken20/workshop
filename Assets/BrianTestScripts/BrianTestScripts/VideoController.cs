@@ -6,7 +6,7 @@ using UnityEngine.Video;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
 
-public class VideoController : MonoBehaviour
+public class VideoController : MonoBehaviour, IDataPersistence
 {
     //public CharacterMovement iaControls;
     //private InputAction shoot;
@@ -14,6 +14,7 @@ public class VideoController : MonoBehaviour
     public VideoPlayer videoPlayer; 
     public RawImage rawImage; 
     private bool canSkip = false; 
+    public bool isIntro;
 
     void Start()
     {
@@ -75,4 +76,17 @@ public class VideoController : MonoBehaviour
     {
         shoot.Disable();
     }*/
+    public void LoadData(GameData data){
+        if(data.checkpointScene != "" && isIntro || data.checkpointScene != null && isIntro){
+            this.nextSceneName = data.checkpointScene;
+            //Debug.Log("next scene set to: " +data.checkpointScene +" Confirmation: " +nextSceneName);
+        }
+        else{
+            nextSceneName = "Tutorial 1";
+            //Debug.Log("next scene set to da tutorial " +" Confirmation: " +nextSceneName);
+        }
+    }
+    public void SaveData(ref GameData data){
+
+    }
 }

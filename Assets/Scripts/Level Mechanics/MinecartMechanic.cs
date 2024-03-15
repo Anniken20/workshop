@@ -5,44 +5,92 @@ using DG.Tweening;
 using UnityEngine.Splines;
 using StarterAssets;
 
-public class MinecartMechanic : OnPlayerHit
+public class MinecartMechanic : MonoBehaviour
 {
     private SplineAnimate splineAnimator;
-    private ThirdPersonController playerCon;
-    public override void HitEffect(Collision col)
+    public GameObject riderTransform;
+    private CharacterController characterController;
+    private Coroutine rideRoutine;
+
+    //start and stop for a frame to fix rotation bug
+    private void Start()
     {
-        Debug.Log("Stepped on minecart");
         splineAnimator = GetComponent<SplineAnimate>();
-        //col.transform.SetParent(transform);
-        //transform.DOMoveZ(transform.position.z - 10f, 2f);
+    }
 
-        StartCoroutine(MovePlayerWithMinecartRoutine());
-
+    public void StartRide()
+    {
         splineAnimator.Play();
+        rideRoutine = StartCoroutine(RideRoutine());
     }
 
-    //kick the player off
-    public void OnCollisionExit(Collision other)
+    private IEnumerator RideRoutine()
     {
-        if (other.gameObject.CompareTag("Player"))
+        characterController = ThirdPersonController.Main.GetComponent<CharacterController>();
+        characterController.enabled = false;
+        while (true)
         {
-            other.gameObject.transform.SetParent(null);
-        }
-    }
-
-    private IEnumerator MovePlayerWithMinecartRoutine()
-    {
-        while (true) {
-            playerCon.SetMotion(Vector3.zero);
-
-            //wait a frame before resuming
             yield return null;
-
-            //check if reached end of track
-            if(splineAnimator.NormalizedTime > 0.99f)
-            {
-                yield break;
-            }
+            ThirdPersonController.Main.transform.position = riderTransform.transform.position;
         }
     }
+
+    public void OnUpdateSpline(Vector3 pos, Quaternion rotation)
+    {
+        if(splineAnimator.NormalizedTime > 0.99f)
+        {
+            splineAnimator.NormalizedTime = 1f;
+            OnEnd();
+        }
+    }
+
+    public void CheckSplineTime()
+    {
+        if (splineAnimator.NormalizedTime > 0.99f)
+        {
+            splineAnimator.NormalizedTime = 1f;
+            OnEnd();
+        }
+    }
+
+    public void HitWall()
+    {
+        
+    }
+
+    public void OnEnd()
+    {
+        StopCoroutine(rideRoutine);
+    }
+
+    public void SwitchTracks(GameObject newTrack)
+    {
+        SplineContainer spl = newTrack.gameObject.GetComponent<SplineContainer>();
+        if (spl == null) Debug.LogWarning("No spline component on " + newTrack.name);
+        else
+        {
+            splineAnimator.Container = spl;
+            splineAnimator.NormalizedTime = 0;
+            /*
+            float theTime;
+            SplineUtility.GetNearestPoint<Spline>(splineAnimator.Container.Spline,
+                ThirdPersonController.Main.transform.position,
+                out _,
+                out theTime);
+            splineAnimator.NormalizedTime = theTime;
+            splineAnimator.enabled = true;
+            */
+        }
+    }
+
+    public void SwitchTracks(SplineContainer spl)
+    {
+        if (spl == null) { }
+        else
+        {
+            splineAnimator.Container = spl;
+            splineAnimator.NormalizedTime = 0;
+        }
+    }
+ 
 }

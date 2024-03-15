@@ -13,4 +13,5 @@ public class SocialiteMoveData : StateData
     //public List<Vector3> directions;
     public GameObject mistObj;
     public float mistSpawnCD;
+    public LayerMask ignoreLayer;
 }
