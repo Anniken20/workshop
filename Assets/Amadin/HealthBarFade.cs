@@ -116,7 +116,8 @@ public class HealthBarFade : MonoBehaviour
     public void SetHealth(float healthNormalized)
     {
         // Ensure health value is clamped between 0 and 1
-        healthNormalized = Mathf.Clamp01(healthNormalized);
+        //healthNormalized = Mathf.Clamp01(healthNormalized);
+        healthNormalized = myEnemy.currentHealth / myEnemy.maxHealth;
         barImage.fillAmount = healthNormalized;
     }
 
