@@ -53,7 +53,7 @@ public class LassoWrangle : MonoBehaviour, ILassoable
         barParent.SetActive(true);
         StartedWrangling();
     }
-    private void Update(){
+    public virtual void Update(){
         if(wrangling){
         currentAmount = Mathf.Clamp(currentAmount, 0, barCapacity);
             if(lasso.triggered ){
