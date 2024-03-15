@@ -46,7 +46,7 @@ public class HorseChargeState : EnemyState
             this.transform.LookAt(player);
         }
         var distanceFromTarget = Vector3.Distance(this.gameObject.transform.position, nav.destination);
-            if (distanceFromTarget <= 1.25 && GetComponentInParent<HorseChargeTrigger>().wrangling == false)
+            if (distanceFromTarget <= 1.25 && GetComponentInChildren<HorseChargeTrigger>().wrangling == false)
             {
                 if (enemy.animator != null) enemy.animator.SetBool("Idle", true);
                 if(enemy.animator != null) enemy.animator.SetBool("Running", false);

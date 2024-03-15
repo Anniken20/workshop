@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class LassoWrangle : MonoBehaviour, ILassoable
 {
-
+    public bool lockInWrangle = true;
     public CharacterMovement iaControls;
     private InputAction lasso;
     [HideInInspector] public LassoGrappleScript player;
@@ -26,7 +26,8 @@ public class LassoWrangle : MonoBehaviour, ILassoable
         iaControls = new CharacterMovement();
     }
     public void Lassoed(Transform attachPoint, bool active, GameObject thisObject){
-        player = FindObjectOfType<LassoGrappleScript>();
+        //player = FindObjectOfType<LassoGrappleScript>();
+        player = ThirdPersonController.Main.GetComponent<LassoGrappleScript>();
         controller = ThirdPersonController.Main;
         currentAmount = 0f;
         wrangleBar.fillAmount = 0;
@@ -46,7 +47,8 @@ public class LassoWrangle : MonoBehaviour, ILassoable
 
     private void StartMiniGame(){
         player.canLasso = false;
-        controller._manipulatingLasso = true;
+        if(lockInWrangle)
+            controller._manipulatingLasso = true;
         wrangling = true;
         barParent.SetActive(true);
         StartedWrangling();
