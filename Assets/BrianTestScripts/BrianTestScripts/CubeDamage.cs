@@ -28,5 +28,8 @@ public class CubeDamage : MonoBehaviour
 
             Destroy(gameObject);
         }
+        else{
+            Destroy(gameObject);
+        }
     }
 }
