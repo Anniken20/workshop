@@ -58,6 +58,14 @@ public class MinecartMechanic : MonoBehaviour
         
     }
 
+    public void EndRide()
+    {
+        OnEnd();
+        splineAnimator.Pause();
+        characterController = ThirdPersonController.Main.GetComponent<CharacterController>();
+        characterController.enabled = true;
+    }
+
     public void OnEnd()
     {
         StopCoroutine(rideRoutine);
