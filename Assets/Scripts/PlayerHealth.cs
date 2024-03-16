@@ -6,7 +6,7 @@ using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.InputSystem;
 
-public class PlayerHealth : MonoBehaviour
+public class PlayerHealth : MonoBehaviour, IDataPersistence
 {
     public int maxHealth = 100;
     public int currentHealth;
@@ -114,5 +114,16 @@ public class PlayerHealth : MonoBehaviour
         currentHealth = maxHealth;
         UpdateHealthUI();
         GetComponent<PlayerRespawn>().Die();
+    }
+
+    public void LoadData(GameData data)
+    {
+        currentHealth = data.playerHealth;
+        UpdateHealthUI();
+    }
+    
+    public void SaveData(ref GameData data)
+    {
+        data.playerHealth = currentHealth;
     }
 }

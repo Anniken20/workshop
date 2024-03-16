@@ -73,7 +73,7 @@ public class HorseChargeTrigger : MonoBehaviour
             internalStunDuration -= Time.deltaTime;
             if(internalStunDuration <= 0){
 
-                Debug.Log("called charge by " + gameObject.name);
+                //Debug.Log("called charge by " + gameObject.name);
                 h.Charge();
                 horseStunned = false;
                 startStunnedCountdown = false;

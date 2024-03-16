@@ -13,7 +13,7 @@ public class SalesmanBulletState : EnemyState
     private bool atPlayer;
 
     public SalesmanBulletState(Enemy enemy, EnemyStateMachine enemyStateMachine) : base(enemy, enemyStateMachine){}
-        public override void EnterState()
+    public override void EnterState()
     {
         base.EnterState();
         salesData = (SalesmanData)enemy.FindData("SalesmanData");
@@ -33,7 +33,7 @@ public class SalesmanBulletState : EnemyState
         //Debug.Log(atPlayer);
         if(distanceFromTarget <= salesData.maxFollowDistance)
         {
-            HeadToTarget(targetLocation, atPlayer);
+            if (targetLocation != null) HeadToTarget(targetLocation, atPlayer);
         }
         if(movingToPosition)
         {
@@ -48,7 +48,7 @@ public class SalesmanBulletState : EnemyState
                     StartCoroutine(WaitAtPoint());
                 }
             }
-            nav.SetDestination(targetLocation.position);
+            if (targetLocation != null) nav.SetDestination(targetLocation.position);
         }
     }
     public override void ExitState()
@@ -90,11 +90,7 @@ public class SalesmanBulletState : EnemyState
         if (enemy.animator != null) enemy.animator.SetBool("Running", true);
         //targetLocation = player;
         atPlayer = true;
-
-        
-
     }
-
 
 }
 

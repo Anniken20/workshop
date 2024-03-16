@@ -9,7 +9,8 @@ public class Horse : Enemy
     [HideInInspector] public HorseChargeState chargeState;
     [HideInInspector] public HorseFreezeState freezeState;
     [HideInInspector] public bool isCharging;
-
+    private Animator anim;
+    private Vector3 startPOS;
     //public GameObject stunnedText;
     //public GameObject chargingText;
 
@@ -18,7 +19,8 @@ public class Horse : Enemy
     private void Awake(){
 
         base.MyAwake();
-
+        startPOS = this.transform.position;
+        anim = this.GetComponent<Animator>();
         idleState = gameObject.AddComponent<EnemyIdleState>();
         idleState.Initialize(this, stateMachine);
 
@@ -85,6 +87,15 @@ public class Horse : Enemy
         stateMachine.ChangeState(idleState);
     }
     public void SetDead(){
-        GetComponent<Animator>().SetBool("Dead", true);
+        //if(this.animator != null) this.animator.SetBool("Dead", true);
+        anim.enabled = true;
+        anim.SetBool("Dead", true);
+        anim.SetBool("BeingWrangled", false);
+        anim.SetBool("Idle", false);
+        anim.SetBool("Running", false);
+        anim.SetBool("Stunned", false);
+        this.transform.position = startPOS;
+        //if(this.animator != null) this.animator.SetBool("BeingWrangled", false);
+        GetComponentInChildren<HorseWrangling>().gameObject.SetActive(false);
     }
 }

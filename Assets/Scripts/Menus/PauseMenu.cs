@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+
 public class PauseMenu : MonoBehaviour
 {
     public GameObject PausePanel;
@@ -43,11 +44,17 @@ public class PauseMenu : MonoBehaviour
         prevTimeScale = 1f;
     }
 
+    private void Start()
+    {
+        // Disable the fade image at the start of the game
+        fadeImage.gameObject.SetActive(false);
+    }
+
     private void Update()
     {
-        if(pause.triggered)
+        if (pause.triggered)
         {
-            if(paused)
+            if (paused)
             {
                 Continue();
             }
@@ -64,13 +71,15 @@ public class PauseMenu : MonoBehaviour
         Cursor.visible = true;
         PausePanel.SetActive(true);
         HUD.SetActive(false);
-        if(Time.timeScale != 0) prevTimeScale = Time.timeScale;
+        if (Time.timeScale != 0) prevTimeScale = Time.timeScale;
 
         Time.timeScale = 0;
         onPause?.Invoke();
     }
     public void Continue()
     {
+        Debug.Log("Continue method called"); // Check if the method is being called
+
         paused = false;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -79,7 +88,18 @@ public class PauseMenu : MonoBehaviour
         Time.timeScale = prevTimeScale;
         onResume?.Invoke();
 
-        // Activate the fade image
+        // Enable the canvas containing the fade image
+        Canvas canvas = fadeImage.GetComponentInParent<Canvas>();
+        if (canvas != null)
+        {
+            canvas.enabled = true;
+        }
+        else
+        {
+            Debug.LogError("Canvas not found for fade image!");
+        }
+
+        // Enable the fade image
         fadeImage.gameObject.SetActive(true);
 
         // Start the fade effect
@@ -151,29 +171,40 @@ public class PauseMenu : MonoBehaviour
 
     private IEnumerator FadeOutImage()
     {
+        Debug.Log("Fading out image");
+
+        // Ensure fade image is active
+        fadeImage.gameObject.SetActive(true);
+
         Color color = fadeImage.color;
         while (color.a > 0)
         {
             color.a -= Time.deltaTime * fadeSpeed;
             fadeImage.color = color;
+            Debug.Log("Alpha: " + color.a); // Check alpha value during fade
             yield return null;
         }
 
+        // Set the alpha back to 1 after fading out
+        color.a = 1f;
+        fadeImage.color = color;
+
         // Deactivate the fade image when the fade is complete
         fadeImage.gameObject.SetActive(false);
+        Debug.Log("Fade out complete");
     }
 
     //when not in-game but looking at settings
     public void Back()
     {
-        if(mainMenu != null) mainMenu.SetActive(true);
-        if(PausePanel != null) PausePanel.SetActive(false);
+        if (mainMenu != null) mainMenu.SetActive(true);
+        if (PausePanel != null) PausePanel.SetActive(false);
     }
 
     public void LeaveSettings()
     {
         settingsPanel.SetActive(false);
-        if(PausePanel != null) PausePanel.SetActive(true);
+        if (PausePanel != null) PausePanel.SetActive(true);
     }
 
     private void OnEnable()
