@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InventoryManager : MonoBehaviour
+public class InventoryManager : MonoBehaviour, IDataPersistence
 {
     public static InventoryManager Instance;
 
@@ -77,5 +77,16 @@ public class InventoryManager : MonoBehaviour
         Dynamite,
         HourglassNecklace,
         SecretKey,
+    }
+
+    public void LoadData(GameData data)
+    {
+        inventoryItems = data.inventoryItems;
+        UpdateCollectedItemUI(); // Update UI to reflect loaded items
+    }
+
+    public void SaveData(ref GameData data)
+    {
+        data.inventoryItems = inventoryItems;
     }
 }
