@@ -9,6 +9,7 @@ public class GameData
    public int testingSave;
    public Vector3 savedCheckpoint;
    public string checkpointScene;
+   public int playerHealth;
 //These will be the default values when the game is loaded with no save data to pull from.
    public GameData(){
         this.coins = 0;
@@ -16,5 +17,6 @@ public class GameData
         this.testingSave = 0;
         this.savedCheckpoint = Vector3.zero;
         this.checkpointScene = "Tutorial 1";
+        this.playerHealth = 100;
    } 
 }
