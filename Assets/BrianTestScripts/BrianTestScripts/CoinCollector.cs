@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using DG.Tweening;
+using UnityEngine.SceneManagement;
 
 public class CoinCollector : MonoBehaviour, IDataPersistence
 {
@@ -22,16 +23,29 @@ public class CoinCollector : MonoBehaviour, IDataPersistence
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
+            SceneManager.sceneLoaded += OnSceneLoaded;
         }
         else if (Instance != this)
         {
             Destroy(gameObject);
         }
-        
-        coinsRectTransform = coinsText.GetComponent<RectTransform>();
-        uiOffScreenPosition = new Vector2(160, coinsRectTransform.anchoredPosition.y); // Adjust this value
-        uiOnScreenPosition = new Vector2(-45, coinsRectTransform.anchoredPosition.y);    // Adjust this value
+
         DOTween.Init();
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        coinsText = GameObject.FindGameObjectWithTag("CoinsText")?.GetComponent<TextMeshProUGUI>();
+        coinsRectTransform = coinsText?.GetComponent<RectTransform>();
+
+        if (coinsRectTransform != null)
+        {
+            uiOffScreenPosition = new Vector2(160, coinsRectTransform.anchoredPosition.y);
+            uiOnScreenPosition = new Vector2(-45, coinsRectTransform.anchoredPosition.y);
+  
+            UpdateCoinsText();
+            HideCoinsUIInstant(); 
+        }
     }
 
     private void Start()
@@ -104,5 +118,11 @@ public class CoinCollector : MonoBehaviour, IDataPersistence
         moveHUDRoutine = StartCoroutine(HideCoinsUIAfterDelay(5f));
         }
     }
+    
+    private void OnDestroy()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
 }
 
