@@ -52,7 +52,7 @@ public class SocialiteMoveState : EnemyState
     }
     Vector3 GetDirection()
     {
-        //var layerMask = ~(1<<moveData.ignoreLayer);
+        int layerMask = ~(1 << moveData.ignoreLayer);
         Vector3 farthestPoint = transform.position;
         float maxDistance = 0f;
         foreach (Vector3 position in moveData.directions)
@@ -60,12 +60,11 @@ public class SocialiteMoveState : EnemyState
             if (lastDir != position)
             {
                 RaycastHit hit;
-                if (Physics.Raycast(transform.position, position, out hit, Mathf.Infinity, moveData.ignoreLayer))
+                if (Physics.Raycast(transform.position, position, out hit, Mathf.Infinity, ~layerMask))
                 {
-                    //Debug.Log("Socialite Hit: " + hit.collider.name);
+                    Debug.Log("Socialite Hit: " + hit.collider.name);
                     if (hit.distance > maxDistance)
                     {
-                        Debug.Log("Socialite Hit: " + hit.collider.name);
                         maxDistance = hit.distance;
                         farthestPoint = hit.point;
                     }

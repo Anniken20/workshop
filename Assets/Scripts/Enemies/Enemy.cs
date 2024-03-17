@@ -52,7 +52,6 @@ public abstract class Enemy : MonoBehaviour, IShootable, IDataPersistence
         Rocco,
         Carillo,
         Diana,
-        Santana,
         Jabroni
     }
     public Enemies enemy = new Enemies();
