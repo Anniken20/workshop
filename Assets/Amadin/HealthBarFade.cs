@@ -24,6 +24,9 @@ public class HealthBarFade : MonoBehaviour
     // Add reference to the enemy script
     public Enemy myEnemy;
 
+    // Reference to the portrait object
+    public GameObject portrait;
+
     private Tween lagBarTween;
 
     private void Awake()
@@ -118,10 +121,7 @@ public class HealthBarFade : MonoBehaviour
     public void SetHealth(float healthNormalized)
     {
         // Ensure health value is clamped between 0 and 1
-
-
-        Debug.Log("health normalized: " + healthNormalized);
-        barImage.fillAmount = healthNormalized;
+        barImage.fillAmount = Mathf.Clamp01(healthNormalized);
 
         //fresh tween
         if (lagBarTween != null) lagBarTween.Kill();
@@ -135,15 +135,14 @@ public class HealthBarFade : MonoBehaviour
         if (damagedColor.a < 0)
         {
             // Set the damaged health bar color and timer
-            //damagedBarImage.fillAmount = barImage.fillAmount;
             damagedColor.a = 1f;
             damagedBarImage.color = damagedColor;
             damagedHealthFadeTimer = damagedHealthFadeTimerMax;
 
-            // Shake the enemy's portrait
-            if (myEnemy != null)
+            // Shake the portrait using DOTween
+            if (portrait != null)
             {
-                myEnemy.transform.DOShakePosition(shakeDuration, shakeStrength, shakeVibrato, shakeRandomness);
+                portrait.transform.DOShakePosition(shakeDuration, shakeStrength, shakeVibrato, shakeRandomness);
             }
         }
         else // If double hit
@@ -152,10 +151,10 @@ public class HealthBarFade : MonoBehaviour
             damagedBarImage.color = damagedColor;
             damagedHealthFadeTimer = damagedHealthFadeTimerMax;
 
-            // Shake the enemy's portrait
-            if (myEnemy != null)
+            // Shake the portrait using DOTween
+            if (portrait != null)
             {
-                myEnemy.transform.DOShakePosition(shakeDuration, shakeStrength, shakeVibrato, shakeRandomness);
+                portrait.transform.DOShakePosition(shakeDuration, shakeStrength, shakeVibrato, shakeRandomness);
             }
         }
     }

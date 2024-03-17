@@ -62,7 +62,7 @@ public class SocialiteMoveState : EnemyState
                 RaycastHit hit;
                 if (Physics.Raycast(transform.position, position, out hit, Mathf.Infinity, ~layerMask))
                 {
-                    Debug.Log("Hit: " +hit.collider.name);
+                    Debug.Log("Socialite Hit: " + hit.collider.name);
                     if (hit.distance > maxDistance)
                     {
                         maxDistance = hit.distance;

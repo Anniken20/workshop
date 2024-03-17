@@ -11,6 +11,7 @@ public class GameData
    public string checkpointScene;
    public int playerHealth;
    public List<InventoryManager.AllItems> inventoryItems;
+   public List<Enemy.Enemies> deadEnemies;
 //These will be the default values when the game is loaded with no save data to pull from.
    public GameData(){
         this.coins = 0;
@@ -20,5 +21,7 @@ public class GameData
         this.checkpointScene = "Tutorial 1";
         this.playerHealth = 100;
         this.inventoryItems = new List<InventoryManager.AllItems>();
-   } 
+        this.deadEnemies = new List<Enemy.Enemies>();
+   }
 }
+
