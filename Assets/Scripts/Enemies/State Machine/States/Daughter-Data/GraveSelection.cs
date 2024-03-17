@@ -24,11 +24,13 @@ public class GraveSelection : MonoBehaviour
     [Header("References")]
     public GameObject poppyModel;
     public GameObject centerGrave;
-    [SerializeField] GameObject poppy;
+    public GameObject poppy;
     [SerializeField] GameObject[] graves;
+    private Daughter d;
     private void Start()
     {
         //poppy.transform.position = daughterStandbyPOS.position;
+        d = poppy.GetComponentInChildren<Daughter>();
         poppyModel.SetActive(false);
     }
     private GameObject SelectGrave()
@@ -90,6 +92,7 @@ public class GraveSelection : MonoBehaviour
     {
         //poppy.GameObject.GetComponent<NavMeshAgent>().SetActive(true);
         poppy.GetComponent<Daughter>().Shooting();
+        StartCoroutine(ShootDelay());
         StartCoroutine(WrangleCooldown(grave));
     }
     IEnumerator WrangleCooldown(GameObject grave)
@@ -108,9 +111,15 @@ public class GraveSelection : MonoBehaviour
     }
     public void Death(){
         StopAllCoroutines();
+        d.GetComponent<Animator>().SetBool("Idle", true);
         foreach (var grave in graves)
         {
             grave.GetComponent<GraveShaker>().CancelPeek();
         }
+    }
+    public IEnumerator ShootDelay(){
+        yield return new WaitForSeconds(1.5f);
+        d.GetComponent<Animator>().SetBool("Jumping", false);
+        d.GetComponent<Animator>().SetBool("Shooting", true);
     }
 }
