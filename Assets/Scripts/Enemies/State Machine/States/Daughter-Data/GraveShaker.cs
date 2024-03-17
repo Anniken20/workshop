@@ -10,9 +10,11 @@ public class GraveShaker : MonoBehaviour
     private float sDur;
     private string a;
     private Vector3 ogPos;
+    public Daughter d;
     private void Start()
     {
         ogPos = this.transform.position;
+        d = GetComponentInParent<GraveSelection>().poppy.GetComponentInChildren<Daughter>();
     }
     public void StartShake(float shakeSpeed, float shakeAmount, float shakeDuration, string axis)
     {
@@ -34,6 +36,8 @@ public class GraveShaker : MonoBehaviour
         }
         start = false;
         GetComponentInParent<GraveSelection>().MovePoppy(this.transform.Find("PeekingPOS").position);
+        d.GetComponent<Animator>().SetBool("Idle", false);
+        d.GetComponent<Animator>().SetBool("Climbing", true);
         this.GetComponent<DaughterGraveWrangle>().peeking = true;
         StartCoroutine(PeekingWait());
         //GetComponentInParent<GraveSelection>().SelectNewGrave();
@@ -59,6 +63,8 @@ public class GraveShaker : MonoBehaviour
         Debug.Log("Heading to Out POS");
         this.GetComponent<DaughterGraveWrangle>().peeking = false;
         GetComponentInParent<GraveSelection>().MovePoppy(this.transform.Find("OutPOS").position);
+        d.GetComponent<Animator>().SetBool("Climbing", false);
+        d.GetComponent<Animator>().SetBool("Jumping", true);
         this.GetComponent<DaughterGraveWrangle>().atGrave = false;
         //this.GetComponent<DaughterGraveWrangle>().enabled = false;
         GetComponentInParent<GraveSelection>().PoppyCombat(this.gameObject);
