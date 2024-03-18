@@ -118,7 +118,7 @@ public class CoinCollector : MonoBehaviour, IDataPersistence
         moveHUDRoutine = StartCoroutine(HideCoinsUIAfterDelay(5f));
         }
     }
-    
+
     private void OnDestroy()
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
