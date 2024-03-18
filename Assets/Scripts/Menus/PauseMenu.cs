@@ -181,7 +181,7 @@ public class PauseMenu : MonoBehaviour
         {
             color.a -= Time.deltaTime * fadeSpeed;
             fadeImage.color = color;
-            Debug.Log("Alpha: " + color.a); // Check alpha value during fade
+            //Debug.Log("Alpha: " + color.a); // Check alpha value during fade
             yield return null;
         }
 

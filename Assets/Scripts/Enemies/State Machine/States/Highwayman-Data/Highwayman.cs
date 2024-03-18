@@ -21,6 +21,9 @@ public class Highwayman : Enemy
         idleState.Initialize(this, stateMachine);
         attackState = gameObject.AddComponent<HighwaymanAttackState>();
         attackState.Initialize(this, stateMachine);
+        duelState = gameObject.AddComponent<DuelState>();
+        duelState.Initialize(this, stateMachine);
+
         stateMachine.Initialize(idleState);
     }
     public void SelectTile(){
