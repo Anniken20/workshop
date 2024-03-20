@@ -16,7 +16,7 @@ public class NPCController : MonoBehaviour
     private Vector3 currentTarget;
     private Vector3 startPointWorldPosition;
     private Vector3 endPointWorldPosition;
-    //public Animator anim;
+    public Animator anim;
 
     public enum MovementAxis
     {
@@ -36,8 +36,8 @@ public class NPCController : MonoBehaviour
         // Set the initial target to the world position of the start point
         currentTarget = startPointWorldPosition;
         agent.SetDestination(currentTarget);
-       // anim.SetBool("Walking", true);
-        //anim.SetBool("Idle", false);
+        anim.SetBool("Idle", false);
+        anim.SetBool("Walking", true);
     }
 
     void Update()
@@ -51,8 +51,8 @@ public class NPCController : MonoBehaviour
         {
             agent.isStopped = true;
             agent.ResetPath(); // Stop moving towards the current target
-           // anim.SetBool("Idle", true);
-           // anim.SetBool("Walking", false);
+            anim.SetBool("Walking", false);
+            anim.SetBool("Idle", true);
             }
         FaceTarget(playerTransform.position);
         }
@@ -62,8 +62,8 @@ public class NPCController : MonoBehaviour
         {
             agent.isStopped = false;
             agent.SetDestination(currentTarget);
-           // anim.SetBool("Walking", true);
-           // anim.SetBool("Idle", false);
+            anim.SetBool("Idle", false);
+            anim.SetBool("Walking", true);
             }
 
         // Movement and target switching logic with world positions
