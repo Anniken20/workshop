@@ -1,26 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class InstaKillEnemy : MonoBehaviour
 {
-    private Salesman s;
-    //public int damage;
-    private Animator anim;
-
-    private void Start()
-    {
-        s = GetComponentInParent<Salesman>();
-        //damage = 500;
-        anim = s.GetComponent<Animator>();
-    }
+    public int damage;
+    public UnityEvent onJordanHit;
+    public Animator anim;
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.CompareTag("Player"))
+        Salesman s = other.gameObject.GetComponent<Salesman>();
+        if (s != null)
         {
-            s.TakeDamage(500);
+            Debug.Log("Jordan hit death trigger");
+            s.TakeDamage(damage);
+            onJordanHit?.Invoke();
             anim.SetBool("Walking", false);
             anim.SetBool("Dead", true);
         }
