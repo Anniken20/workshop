@@ -2,63 +2,78 @@ using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.UI;
 
-public class BrightnessControl : MonoBehaviour
+public class PostProcessingController : MonoBehaviour
 {
-    public Slider brightnessSlider; // Reference to the slider UI element
-    public float minBrightness = -20f; // Minimum brightness value
-    public float maxBrightness = 20f; // Maximum brightness value
+    public PostProcessVolume postProcessVolume;
+    public Slider gammaSlider;
+    public Slider brightnessSlider;
+    public Slider contrastSlider;
 
-    private PostProcessVolume volume; // Reference to the Post-Processing Volume
-    private PostProcessProfile profile; // Reference to the Post-Processing Profile
-    private ColorGrading colorGrading; // Reference to the Color Grading effect
-    private const string brightnessKey = "BrightnessSetting"; // Key for storing brightness in PlayerPrefs
+    private ColorGrading colorGrading;
+
+    private bool slidersChanged = false; // Flag to track if sliders have been changed
 
     void Start()
     {
-        // Get the Post-Processing Volume component attached to the camera
-        volume = GetComponent<PostProcessVolume>();
-
-        // If a Post-Processing Volume component is not found, create one
-        if (volume == null)
+        if (postProcessVolume == null)
         {
-            volume = gameObject.AddComponent<PostProcessVolume>();
-            volume.isGlobal = true;
+            Debug.LogError("Post Process Volume not assigned!");
+            return;
         }
 
-        // Assign the existing Post-Processing Profile named "Brightness" or create a new one
-        profile = volume.sharedProfile ? volume.sharedProfile : ScriptableObject.CreateInstance<PostProcessProfile>();
-        volume.sharedProfile = profile;
+        postProcessVolume.profile.TryGetSettings(out colorGrading);
 
-        // Get or set the brightness setting from PlayerPrefs
-        float brightnessValue = PlayerPrefs.GetFloat(brightnessKey, 0f);
-        SetBrightness(brightnessValue);
+        if (colorGrading == null)
+        {
+            Debug.LogError("Color Grading not found in Post Process Volume!");
+            return;
+        }
 
-        // Add listener for value changes in the slider
-        brightnessSlider.onValueChanged.AddListener(SetBrightness);
+        // Load saved settings or defaults if sliders have been changed
+        if (PlayerPrefs.HasKey("SlidersChanged"))
+        {
+            gammaSlider.value = PlayerPrefs.GetFloat("Gamma", 0f);
+            brightnessSlider.value = PlayerPrefs.GetFloat("Brightness", 0f);
+            contrastSlider.value = PlayerPrefs.GetFloat("Contrast", 0f);
+        }
+
+        ApplySettings();
     }
 
-    void SetBrightness(float brightnessValue)
+    public void OnGammaChange(float value)
     {
-        // Ensure brightness value is within range
-        brightnessValue = Mathf.Clamp(brightnessValue, minBrightness, maxBrightness);
-
-        // Save the brightness setting to PlayerPrefs
-        PlayerPrefs.SetFloat(brightnessKey, brightnessValue);
-        PlayerPrefs.Save();
-
-        // Modify the post exposure setting in the Post-Processing Profile
-        var colorGradingSettings = profile.GetSetting<ColorGrading>();
-        if (colorGradingSettings != null)
-        {
-            // Adjust the post exposure value
-            colorGradingSettings.postExposure.value = brightnessValue;
-        }
-        else
-        {
-            // If ColorGrading settings not found, add it to the profile and set brightness
-            colorGradingSettings = profile.AddSettings<ColorGrading>();
-            colorGradingSettings.postExposure.value = brightnessValue;
-        }
+        PlayerPrefs.SetFloat("Gamma", value);
+        slidersChanged = true;
+        ApplySettings();
     }
 
+    public void OnBrightnessChange(float value)
+    {
+        PlayerPrefs.SetFloat("Brightness", value);
+        slidersChanged = true;
+        ApplySettings();
+    }
+
+    public void OnContrastChange(float value)
+    {
+        PlayerPrefs.SetFloat("Contrast", value);
+        slidersChanged = true;
+        ApplySettings();
+    }
+
+    private void ApplySettings()
+    {
+        if (!slidersChanged) // Only apply settings if sliders have been changed
+            return;
+
+        float gamma = Mathf.Pow(2f, gammaSlider.value - 10f); // Scale and offset slider value
+        float brightness = Mathf.Clamp(brightnessSlider.value - 10f, -1f, 1f); // Scale and offset slider value to range [-1, 1]
+        float contrast = Mathf.Clamp(contrastSlider.value - 10f, -1f, 1f); // Scale and offset slider value to range [-1, 1]
+
+        colorGrading.gamma.value = new Vector4(gamma, gamma, gamma, 1f);
+        colorGrading.postExposure.value = brightness;
+        colorGrading.contrast.value = contrast;
+
+        PlayerPrefs.SetInt("SlidersChanged", 1); // Save flag indicating sliders have been changed
+    }
 }
