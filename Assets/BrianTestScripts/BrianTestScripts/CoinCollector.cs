@@ -40,8 +40,8 @@ public class CoinCollector : MonoBehaviour, IDataPersistence
 
         if (coinsRectTransform != null)
         {
-            uiOffScreenPosition = new Vector2(160, coinsRectTransform.anchoredPosition.y);
-            uiOnScreenPosition = new Vector2(-45, coinsRectTransform.anchoredPosition.y);
+            uiOffScreenPosition = new Vector2(660, coinsRectTransform.anchoredPosition.y);
+            uiOnScreenPosition = new Vector2(451, coinsRectTransform.anchoredPosition.y);
   
             UpdateCoinsText();
             HideCoinsUIInstant(); 
