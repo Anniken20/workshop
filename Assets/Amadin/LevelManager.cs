@@ -82,6 +82,9 @@ public class LevelManager : MonoBehaviour
             string levelName = "Level " + i; // Level names: Level 1, Level 2, Level 3
             bool isUnlocked = completedLevels.Contains(levelName);
             levelNPCs[i].SetActive(isUnlocked); // Activate NPC if the corresponding level is completed
+            if(isUnlocked)
+                levelNPCs[i - 1].SetActive(false); //To deactivate the old ones that were already shown, added by Holly
+                
             Debug.Log("NPC " + levelName + " state: " + isUnlocked);
         }
     }
