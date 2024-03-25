@@ -82,7 +82,7 @@ public class VideoController : MonoBehaviour, IDataPersistence
             //Debug.Log("next scene set to: " +data.checkpointScene +" Confirmation: " +nextSceneName);
         }
         else{
-            nextSceneName = "Tutorial 1";
+            //nextSceneName = "Tutorial 1";
             //Debug.Log("next scene set to da tutorial " +" Confirmation: " +nextSceneName);
         }
     }
