@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.VFX;
 
 public class GhostEnemy : MonoBehaviour, IShootable
 {
@@ -9,7 +10,6 @@ public class GhostEnemy : MonoBehaviour, IShootable
     public int damage = 1; // Damage inflicted to the player when in attack range
     public int maxHealth = 50; // Maximum health of the ghost
     public float attackCooldown = 2f; // Cooldown time between attacks
-    public float minDistanceBetweenGhosts = 2f; // Min distance
 
     private GameObject player; // Who ghost attacks and deals damage to
     private GameObject target; //where ghsot looks at and matches Y value with
@@ -19,6 +19,8 @@ public class GhostEnemy : MonoBehaviour, IShootable
     public AggroScript aggroScript; // ref to aggro script 
     public float lookAtOffset = 1.4f;
 
+    private VisualEffect _visualEffectController;
+
     public void OnShot(BulletController bullet)
     {
         TakeDamage((int)bullet.currDmg);
@@ -27,11 +29,13 @@ public class GhostEnemy : MonoBehaviour, IShootable
     void Awake()
     {
         aggroScript = GetComponentInChildren<AggroScript>();
+        _visualEffectController = GetComponentInChildren<VisualEffect>();
+
     }
     void Start()
     {
         currentHealth = maxHealth;
-        CheckAndRepositionIfNecessary();
+
     }
 
     void Update()
@@ -83,7 +87,7 @@ public class GhostEnemy : MonoBehaviour, IShootable
     void Die()
     {
         // Perform death-related actions (e.g., play death animation, drop items, etc.)
-        Destroy(gameObject);
+        StartCoroutine(DoEffectDeath(0.8f));
     }
 
     void ResetAttackCooldown()
@@ -109,26 +113,18 @@ public class GhostEnemy : MonoBehaviour, IShootable
         }
 
     }
-    // Fixing the spawning on top of each other by checking the position
-    void CheckAndRepositionIfNecessary()
-    {
-        Collider[] colliders = Physics.OverlapSphere(transform.position, minDistanceBetweenGhosts);
-        foreach (Collider col in colliders)
-        {
-            if (col.gameObject != gameObject && col.CompareTag("GhostEnemy"))
-            {
-                Vector3 newPosition = GetRandomPosition();
-                transform.position = newPosition;
-                CheckAndRepositionIfNecessary();
-                break;
-            }
-        }
-    }
 
-    Vector3 GetRandomPosition()
+    IEnumerator DoEffectDeath(float deathTime)
     {
-        float randomX = Random.Range(-10f, 10f); // Adjust range
-        float randomZ = Random.Range(-10f, 10f); // Adjust range
-        return new Vector3(randomX, transform.position.y, randomZ);
+        float currentTime = 0;
+        while (currentTime < deathTime)
+        {
+            _visualEffectController.SetFloat("TimeDissolve",  currentTime / deathTime);
+            currentTime += Time.deltaTime;
+            yield return null;
+        }
+        
+        Destroy(gameObject);
+
     }
 }
