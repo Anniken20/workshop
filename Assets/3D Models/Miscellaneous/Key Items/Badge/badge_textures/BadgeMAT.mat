@@ -21,7 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: BadgeMAT
-  m_Shader: {fileID: -6465566751694194690, guid: ee940a1e784e66746a93f4920629ee28,
+  m_Shader: {fileID: -6465566751694194690, guid: 30d2647f28aced6418305e5a02a1300d,
     type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -61,6 +61,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _HeightMap:
+        m_Texture: {fileID: 2800000, guid: d9a3d35315e43a743947ea4a32105923, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _MainTex:
         m_Texture: {fileID: 2800000, guid: 364e52e9c158cdd469c97c709c3453c0, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -89,6 +93,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _Texture:
+        m_Texture: {fileID: 2800000, guid: 364e52e9c158cdd469c97c709c3453c0, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -107,6 +115,7 @@ Material:
     - _AlphaToMask: 0
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
+    - _Brightness: 0
     - _BumpScale: 1
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
@@ -121,11 +130,13 @@ Material:
     - _Glossiness: 0
     - _GlossyReflections: 0
     - _Metallic: 0
+    - _NormalStrength: 100
     - _OcclusionStrength: 1
     - _Parallax: 0.005
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
+    - _RimLightPower: 5
     - _ShadowStep: 0
     - _ShadowTexture: 0
     - _Smoothness: 0.5
@@ -134,6 +145,8 @@ Material:
     - _SrcBlend: 1
     - _SrcBlendAlpha: 1
     - _Surface: 0
+    - _Toon_Ramp_Offset: 0.5
+    - _Toon_Ramp_Smoothness: 0.05
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
@@ -141,8 +154,13 @@ Material:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _MainColor: {r: 1, g: 1, b: 1, a: 0}
+    - _MixColor: {r: 0, g: 0, b: 0, a: 0}
+    - _Offset: {r: 0, g: 0, b: 0, a: 0}
+    - _RimLightColor: {r: 0.5803921, g: 0.8588235, b: 0.8392157, a: 0}
     - _ShadowColor: {r: 0.6792453, g: 0.6792453, b: 0.6792453, a: 0}
     - _ShadowPatternColor: {r: 0, g: 0, b: 0, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
+    - _Tiling: {r: 1, g: 1, b: 0, a: 0}
+    - _Toon_Ramp_Tinting: {r: 0.027122643, g: 0.011565652, b: 0.0026866768, a: 0}
     - _Vector2: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []

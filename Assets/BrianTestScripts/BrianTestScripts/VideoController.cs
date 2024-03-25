@@ -10,6 +10,8 @@ public class VideoController : MonoBehaviour, IDataPersistence
 {
     //public CharacterMovement iaControls;
     //private InputAction shoot;
+    public GameObject LoadingScreen;
+    public Image LoadingBarFill;
     public string nextSceneName; // Name of the scene to transition to
     public VideoPlayer videoPlayer; 
     public RawImage rawImage; 
@@ -46,13 +48,34 @@ public class VideoController : MonoBehaviour, IDataPersistence
     void EndReached(VideoPlayer vp)
     {
         // Load the next scene when the video ends
-        SceneManager.LoadScene(nextSceneName);
+        LoadScene(nextSceneName);
+    }
+
+    public void LoadScene(string nextSceneName)
+    {
+        StartCoroutine(LoadSceneAsync(nextSceneName));
+    }
+
+    IEnumerator LoadSceneAsync(string nextSceneName)
+    {
+        AsyncOperation operation = SceneManager.LoadSceneAsync(nextSceneName);
+
+        LoadingScreen.SetActive(true);
+
+        while (!operation.isDone)
+        {
+            float progressValue=Mathf.Clamp01(operation.progress/0.9f);
+
+            LoadingBarFill.fillAmount = progressValue;
+
+            yield return null;
+        }
     }
 
     void SkipVideo()
     {
         // Load the next scene when skipping
-        SceneManager.LoadScene(nextSceneName);
+        LoadScene(nextSceneName);
     }
 
     void OnDestroy()
@@ -82,7 +105,7 @@ public class VideoController : MonoBehaviour, IDataPersistence
             //Debug.Log("next scene set to: " +data.checkpointScene +" Confirmation: " +nextSceneName);
         }
         else{
-            nextSceneName = "Tutorial 1";
+            //nextSceneName = "Tutorial 1";
             //Debug.Log("next scene set to da tutorial " +" Confirmation: " +nextSceneName);
         }
     }

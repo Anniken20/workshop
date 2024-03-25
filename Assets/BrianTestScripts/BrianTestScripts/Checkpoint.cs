@@ -41,8 +41,10 @@ public class Checkpoint : MonoBehaviour, IDataPersistence
         LoadToCheckpoint();
     }
     public void SaveData(ref GameData data){
-        data.savedCheckpoint = activeCheckpoint.gameObject.transform.position;
-        data.checkpointScene = SceneManager.GetActiveScene().name;
+        if(activeCheckpoint != null){
+            data.savedCheckpoint = activeCheckpoint.gameObject.transform.position;
+            data.checkpointScene = SceneManager.GetActiveScene().name;
+        }
     }
     private void LoadToCheckpoint(){
         if(savedCheckpoint != Vector3.zero && SceneManager.GetActiveScene().name == checkpointScene){

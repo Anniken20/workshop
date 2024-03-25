@@ -64,6 +64,7 @@ public class SalesmanBulletState : EnemyState
             atPlayer = isPlayer;
             nav.SetDestination(target.position);
             if (enemy.animator != null) enemy.animator.SetBool("Running", true);
+            enemy.animator.SetBool("Idle", false);
             movingToPosition = true;
         }
     }
@@ -71,6 +72,7 @@ public class SalesmanBulletState : EnemyState
     {
         //Debug.Log("Waiting At Point");
         if (enemy.animator != null) enemy.animator.SetBool("Idle", true);
+        enemy.animator.SetBool("Running", false);
         nav.SetDestination(this.transform.position);
         movingToPosition = false;
         yield return new WaitForSeconds(salesData.locationWaitTime);
@@ -88,6 +90,7 @@ public class SalesmanBulletState : EnemyState
         //nav.SetDestination(player.position);
         this.GetComponent<Salesman>().ChaseState();
         if (enemy.animator != null) enemy.animator.SetBool("Running", true);
+        enemy.animator.SetBool("Idle", false);
         //targetLocation = player;
         atPlayer = true;
     }
