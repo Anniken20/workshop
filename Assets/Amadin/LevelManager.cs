@@ -77,15 +77,30 @@ public class LevelManager : MonoBehaviour
     // Update NPC states in the hub based on completed levels
     private void UpdateHubNPCs()
     {
-        for (int i = 1; i < levelNPCs.Length; i++) // Start from index 1 to skip Tutorial
+        GameObject previousNPC = null; // Track the previously activated NPC
+
+        for (int i = 1; i <= completedLevels.Count; i++) // Start from level 1
         {
             string levelName = "Level " + i; // Level names: Level 1, Level 2, Level 3
             bool isUnlocked = completedLevels.Contains(levelName);
-            levelNPCs[i].SetActive(isUnlocked); // Activate NPC if the corresponding level is completed
-            if(isUnlocked)
-                levelNPCs[i - 1].SetActive(false); //To deactivate the old ones that were already shown, added by Holly
-                
-            Debug.Log("NPC " + levelName + " state: " + isUnlocked);
+            GameObject npc = GameObject.Find(levelName + " NPC"); // Find NPC GameObject by name
+            if (npc != null)
+            {
+                npc.SetActive(isUnlocked); // Activate NPC if found and the corresponding level is completed
+                Debug.Log("NPC " + levelName + " state: " + isUnlocked);
+
+                if (previousNPC != null && previousNPC != npc)
+                {
+                    previousNPC.SetActive(false); // Deactivate the previous NPC if it's different from the current one
+                }
+
+                previousNPC = npc; // Update the previous NPC to the current one
+            }
+            else
+            {
+                Debug.LogWarning("NPC for " + levelName + " not found!");
+            }
         }
     }
+
 }
