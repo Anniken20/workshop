@@ -17,12 +17,16 @@ public class BountyBoard : MonoBehaviour
     private float prevTimeScale = 1f; // Store the previous time scale before pausing
     public static event Action onPause;
 
+    // Save data keys for level completion status
+    private string level2CompletedKey = "Level2Completed";
+    private string level3CompletedKey = "Level3Completed";
+
     private void Start()
     {
         // Load playerEnteredOnce state from PlayerPrefs
         playerEnteredOnce = PlayerPrefs.GetInt(playerEnteredOnceKey, 0) == 1;
 
-        // Hook up buttons to their respective functions
+        // Buttons to their respective functions
         level1Button.onClick.AddListener(StartLevel1);
         level2Button.onClick.AddListener(StartLevel2);
         level3Button.onClick.AddListener(StartLevel3);
@@ -35,6 +39,14 @@ public class BountyBoard : MonoBehaviour
 
         // Enable the particle effect when the scene starts
         particleEffect.SetActive(true);
+
+        // Check if level 2 is completed and activate/deactivate its button accordingly
+        bool level2Completed = PlayerPrefs.GetInt(level2CompletedKey, 0) == 1;
+        level2Button.interactable = level2Completed;
+
+        // Check if level 3 is completed and activate/deactivate its button accordingly
+        bool level3Completed = PlayerPrefs.GetInt(level3CompletedKey, 0) == 1;
+        level3Button.interactable = level3Completed;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -117,9 +129,9 @@ public class BountyBoard : MonoBehaviour
     {
         if (paused)
         {
-            paused = false; 
-            Cursor.lockState = CursorLockMode.Locked; 
-            Cursor.visible = false; 
+            paused = false;
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
 
             Time.timeScale = prevTimeScale;
             onPause?.Invoke();
