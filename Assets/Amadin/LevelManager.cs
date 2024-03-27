@@ -79,28 +79,31 @@ public class LevelManager : MonoBehaviour
     {
         GameObject previousNPC = null; // Track the previously activated NPC
 
-        for (int i = 1; i <= completedLevels.Count; i++) // Start from level 1
+        for (int i = 0; i < levelNPCs.Length; i++)
         {
-            string levelName = "Level " + i; // Level names: Level 1, Level 2, Level 3
-            bool isUnlocked = completedLevels.Contains(levelName);
-            GameObject npc = GameObject.Find(levelName + " NPC"); // Find NPC GameObject by name
-            if (npc != null)
-            {
-                npc.SetActive(isUnlocked); // Activate NPC if found and the corresponding level is completed
-                Debug.Log("NPC " + levelName + " state: " + isUnlocked);
+            GameObject npc = levelNPCs[i]; // Get the NPC GameObject
+            string levelName = "Level " + (i + 1); // Generate level name
 
+            // Check if the level is completed
+            bool isUnlocked = completedLevels.Contains(levelName);
+
+            // Activate or destroy NPC based on completion status
+            if (isUnlocked)
+            {
+                npc.SetActive(true); // Activate the NPC for the completed level
                 if (previousNPC != null && previousNPC != npc)
                 {
-                    previousNPC.SetActive(false); // Deactivate the previous NPC if it's different from the current one
+                    Destroy(previousNPC); // Destroy the NPC from the previous completed level
                 }
-
-                previousNPC = npc; // Update the previous NPC to the current one
+                previousNPC = npc; // Update previous NPC
             }
             else
             {
-                Debug.LogWarning("NPC for " + levelName + " not found!");
+                if (npc.activeSelf)
+                {
+                    Destroy(npc); // Destroy the NPC if it's not for a completed level
+                }
             }
         }
     }
-
 }

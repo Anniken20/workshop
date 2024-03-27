@@ -121,7 +121,8 @@ public class HealthBarFade : MonoBehaviour
     public void SetHealth(float healthNormalized)
     {
         // Ensure health value is clamped between 0 and 1
-        barImage.fillAmount = Mathf.Clamp01(healthNormalized);
+        float adjustedHealthNormalized = Mathf.Clamp01(healthNormalized + 0.02f);
+        barImage.fillAmount = adjustedHealthNormalized;
 
         //fresh tween
         if (lagBarTween != null) lagBarTween.Kill();
