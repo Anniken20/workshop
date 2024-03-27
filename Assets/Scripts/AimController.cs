@@ -228,7 +228,7 @@ public class AimController : MonoBehaviour
             }
         }
 
-        if (contextualAimLine)
+        if (contextualAimLine && hitData.collider != null)
         {
             if (hitData.collider.gameObject.GetComponent<IShootable>() != null
                 || hitData.collider.gameObject.GetComponent<ShootableController>() != null)

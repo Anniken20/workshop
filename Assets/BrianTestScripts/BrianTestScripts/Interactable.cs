@@ -7,6 +7,7 @@ public class Interactable : MonoBehaviour
 {
     [SerializeField]
     public TextMeshProUGUI interactionPrompt; 
+    protected bool isPlayerInRange = false;
 
     protected virtual void Awake()
     {
@@ -17,11 +18,25 @@ public class Interactable : MonoBehaviour
         interactionPrompt.text = ""; 
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.E) && isPlayerInRange)
+        {
+            HidePrompt();
+        }
+    }
+
     public void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player")) 
         {
+            isPlayerInRange = true;
             ShowPrompt();
+
+            if(Input.GetKeyDown(KeyCode.E))
+            {
+                HidePrompt();
+            }
         }
     }
 
@@ -30,13 +45,14 @@ public class Interactable : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            isPlayerInRange = false;
             HidePrompt();
         }
     }
 
     protected virtual void ShowPrompt()
     {
-        interactionPrompt.text = "Press 'E' to interact"; // Set prompt text
+        interactionPrompt.text = "Hover Cursor Over Target & Press 'E' to interact"; // Set prompt text
         interactionPrompt.gameObject.SetActive(true); // Make sure the prompt is visible
     }
 

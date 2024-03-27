@@ -6,14 +6,17 @@ using UnityEngine.Video;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
 
-public class VideoController : MonoBehaviour
+public class VideoController : MonoBehaviour, IDataPersistence
 {
     //public CharacterMovement iaControls;
     //private InputAction shoot;
+    public GameObject LoadingScreen;
+    public Image LoadingBarFill;
     public string nextSceneName; // Name of the scene to transition to
     public VideoPlayer videoPlayer; 
     public RawImage rawImage; 
     private bool canSkip = false; 
+    public bool isIntro;
 
     void Start()
     {
@@ -45,13 +48,34 @@ public class VideoController : MonoBehaviour
     void EndReached(VideoPlayer vp)
     {
         // Load the next scene when the video ends
-        SceneManager.LoadScene(nextSceneName);
+        LoadScene(nextSceneName);
+    }
+
+    public void LoadScene(string nextSceneName)
+    {
+        StartCoroutine(LoadSceneAsync(nextSceneName));
+    }
+
+    IEnumerator LoadSceneAsync(string nextSceneName)
+    {
+        AsyncOperation operation = SceneManager.LoadSceneAsync(nextSceneName);
+
+        LoadingScreen.SetActive(true);
+
+        while (!operation.isDone)
+        {
+            float progressValue=Mathf.Clamp01(operation.progress/0.9f);
+
+            LoadingBarFill.fillAmount = progressValue;
+
+            yield return null;
+        }
     }
 
     void SkipVideo()
     {
         // Load the next scene when skipping
-        SceneManager.LoadScene(nextSceneName);
+        LoadScene(nextSceneName);
     }
 
     void OnDestroy()
@@ -75,4 +99,17 @@ public class VideoController : MonoBehaviour
     {
         shoot.Disable();
     }*/
+    public void LoadData(GameData data){
+        if(data.checkpointScene != "" && isIntro || data.checkpointScene != null && isIntro){
+            this.nextSceneName = data.checkpointScene;
+            //Debug.Log("next scene set to: " +data.checkpointScene +" Confirmation: " +nextSceneName);
+        }
+        else{
+            //nextSceneName = "Tutorial 1";
+            //Debug.Log("next scene set to da tutorial " +" Confirmation: " +nextSceneName);
+        }
+    }
+    public void SaveData(ref GameData data){
+
+    }
 }

@@ -11,7 +11,7 @@ public class ProfilesMenu : MonoBehaviour
 
     public void StartGameWithProfile(int profileIndex)
     {
-        SceneManager.LoadScene("IntroCutscene");
+        SceneManager.LoadScene("IntroCutscene_MP4");
         PlayerPrefs.SetInt("SelectedProfileIndex", profileIndex);
     }
 

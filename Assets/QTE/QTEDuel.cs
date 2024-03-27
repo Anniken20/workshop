@@ -116,11 +116,11 @@ public class QTEDuel : MonoBehaviour
 
         float healthPercentage = duelEnemy.currentHealth / duelEnemy.maxHealth;
 
-        if (phase == 1 && healthPercentage <= 0.66f && healthPercentage > 0.33f)
+        if (phase == 1 && healthPercentage <= 0.66f)
         {
             StartQTE();
         }
-        else if (phase == 2 && healthPercentage <= 0.33f && healthPercentage > 0f)
+        else if (phase == 2 && healthPercentage <= 0.33f)
         {
             StartQTE();
         }

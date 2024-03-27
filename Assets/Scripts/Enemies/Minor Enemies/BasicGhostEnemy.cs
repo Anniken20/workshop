@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.VFX;
 
 public class GhostEnemy : MonoBehaviour, IShootable
 {
@@ -18,6 +19,8 @@ public class GhostEnemy : MonoBehaviour, IShootable
     public AggroScript aggroScript; // ref to aggro script 
     public float lookAtOffset = 1.4f;
 
+    private VisualEffect _visualEffectController;
+
     public void OnShot(BulletController bullet)
     {
         TakeDamage((int)bullet.currDmg);
@@ -26,11 +29,13 @@ public class GhostEnemy : MonoBehaviour, IShootable
     void Awake()
     {
         aggroScript = GetComponentInChildren<AggroScript>();
+        _visualEffectController = GetComponentInChildren<VisualEffect>();
+
     }
     void Start()
     {
         currentHealth = maxHealth;
-        
+
     }
 
     void Update()
@@ -82,7 +87,7 @@ public class GhostEnemy : MonoBehaviour, IShootable
     void Die()
     {
         // Perform death-related actions (e.g., play death animation, drop items, etc.)
-        Destroy(gameObject);
+        StartCoroutine(DoEffectDeath(0.8f));
     }
 
     void ResetAttackCooldown()
@@ -106,6 +111,20 @@ public class GhostEnemy : MonoBehaviour, IShootable
                 }
             }
         }
+
+    }
+
+    IEnumerator DoEffectDeath(float deathTime)
+    {
+        float currentTime = 0;
+        while (currentTime < deathTime)
+        {
+            _visualEffectController.SetFloat("TimeDissolve",  currentTime / deathTime);
+            currentTime += Time.deltaTime;
+            yield return null;
+        }
+        
+        Destroy(gameObject);
 
     }
 }

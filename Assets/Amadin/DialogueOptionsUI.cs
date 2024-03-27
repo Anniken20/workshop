@@ -6,11 +6,10 @@ using UnityEngine.UI;
 public class DialogueOptionsMenu : MonoBehaviour
 {
     [Header("Dialogue data")]
-    // Reference to DialogueData scriptable object
     public DialogueData dialogueData;
 
     [Header("Dialogue text")]
-    public TMP_Text dialogueText; // Reference to the dialogue text object / sample in the actual menu
+    public TMP_Text dialogueText;
 
     [Header("Text size")]
     public TMP_Text textSizeDisplay;
@@ -23,27 +22,17 @@ public class DialogueOptionsMenu : MonoBehaviour
     public TMP_Dropdown colorDropdown;
 
     [Header("Dyslexia mode toggle")]
-    public Toggle dyslexiaToggle; // Add refrence to dyslexia toggle UI element
+    public Toggle dyslexiaToggle;
 
     private const string TextSizeKey = "TextSize";
     private const string SubtitlesKey = "Subtitles";
     private const string ColorIndexKey = "ColorIndex";
-    private const string DyslexiaModeKey = "DyslexiaMode"; // Key for dyslexia
-    private const string ScreenShakeKey = "ScreenShake";
-
-    [Header("Screen Shake toggle")]
-    public Toggle screenShakeToggle;
-
-    private ScreenShakeScript screenShakeScript;
+    private const string DyslexiaModeKey = "DyslexiaMode";
 
     private const int DefaultTextSize = 24;
-    private const int DefaultTextColorKey = 0;
-
-    private FontManager fontManager; // Reference to FontManager script
+    private const int DefaultTextColorIndex = 0;
 
     private Dictionary<string, Color> colorNameToValue = new Dictionary<string, Color>();
-
-    // List of colors for the dropdown options
     private readonly Color[] colorOptions = {
         Color.white,
         Color.red,
@@ -53,185 +42,103 @@ public class DialogueOptionsMenu : MonoBehaviour
         new Color(0.5f, 0, 0.5f) // Purple
     };
 
-    private PostProcess postProcess; // Reference to the PostProcess script
-
-    [Header("Post processing toggle")]
-    public Toggle bloomToggle;
-    public Toggle chromaticAberrationToggle;
-    public Toggle vignetteToggle;
-
-    private const string BloomEnabledKey = "BloomEnabled";
-    private const string ChromaticAberrationEnabledKey = "ChromaticAberrationEnabled";
-    private const string VignetteEnabledKey = "VignetteEnabled";
-
     private void Start()
     {
-        fontManager = FindObjectOfType<FontManager>(); // Find FontManager script in the scene
-
-        if (fontManager == null)
-        {
-            Debug.LogError("FontManager script not found in the scene.");
-            return;
-        }
-
         if (dialogueData == null)
         {
             Debug.LogError("DialogueData reference not set in DialogueOptionsMenu.");
             return;
         }
 
-        // Load saved preference for dyslexia mode
+        InitializeColorDictionary();
+        PopulateColorDropdown();
+        LoadPlayerPrefs();
+
+        // Set default values
+        dialogueData.textSize = DefaultTextSize;
+        dialogueText.fontSize = DefaultTextSize;
+        dialogueData.textColor = colorOptions[DefaultTextColorIndex];
+        dialogueText.color = dialogueData.textColor;
+
+        // Enable all options except dyslexia mode
+        subtitlesToggle.isOn = true;
+        colorDropdown.value = DefaultTextColorIndex;
+        dyslexiaToggle.isOn = false; // Dyslexia mode is off by default
+
+        textSizeSlider.value = DefaultTextSize;
+        textSizeDisplay.text = DefaultTextSize.ToString();
+
+        // Add listeners
+        textSizeSlider.onValueChanged.AddListener(OnTextSizeChanged);
+        subtitlesToggle.onValueChanged.AddListener(OnSubtitlesToggleChanged);
+        colorDropdown.onValueChanged.AddListener(OnColorDropdownChanged);
+        dyslexiaToggle.onValueChanged.AddListener(OnDyslexiaToggleChanged);
+    }
+
+    private void OnDestroy()
+    {
+        textSizeSlider.onValueChanged.RemoveListener(OnTextSizeChanged);
+        subtitlesToggle.onValueChanged.RemoveListener(OnSubtitlesToggleChanged);
+        colorDropdown.onValueChanged.RemoveListener(OnColorDropdownChanged);
+        dyslexiaToggle.onValueChanged.RemoveListener(OnDyslexiaToggleChanged);
+    }
+
+    private void LoadPlayerPrefs()
+    {
+        if (PlayerPrefs.HasKey(TextSizeKey))
+        {
+            dialogueData.textSize = PlayerPrefs.GetInt(TextSizeKey);
+            textSizeSlider.value = dialogueData.textSize;
+            textSizeDisplay.text = dialogueData.textSize.ToString();
+        }
+        else
+        {
+            textSizeSlider.value = DefaultTextSize;
+            textSizeDisplay.text = DefaultTextSize.ToString();
+        }
+
+        if (PlayerPrefs.HasKey(SubtitlesKey))
+        {
+            dialogueData.subtitlesOn = PlayerPrefs.GetInt(SubtitlesKey) == 1;
+            subtitlesToggle.isOn = dialogueData.subtitlesOn;
+        }
+
+        if (PlayerPrefs.HasKey(ColorIndexKey))
+        {
+            int colorIndex = PlayerPrefs.GetInt(ColorIndexKey);
+            colorDropdown.value = colorIndex;
+            OnColorDropdownChanged(colorIndex);
+        }
+
         if (PlayerPrefs.HasKey(DyslexiaModeKey))
         {
             bool dyslexiaModeEnabled = PlayerPrefs.GetInt(DyslexiaModeKey) == 1;
             dyslexiaToggle.isOn = dyslexiaModeEnabled;
             ToggleDyslexiaMode(dyslexiaModeEnabled);
         }
-
-        // Add listener for dyslexia toggle event
-        dyslexiaToggle.onValueChanged.AddListener(OnDyslexiaToggleChanged);
-
-        // Populate the dictionary with color names and values
-        InitializeColorDictionary();
-
-        // Populate the color dropdown with color options
-        PopulateColorDropdown();
-
-        if (postProcess != null)
-        {
-            // Set initial toggle values based on post-process parameters
-            bloomToggle.isOn = PlayerPrefs.GetInt(BloomEnabledKey, 1) == 1;
-            chromaticAberrationToggle.isOn = PlayerPrefs.GetInt(ChromaticAberrationEnabledKey, 1) == 1;
-            vignetteToggle.isOn = PlayerPrefs.GetInt(VignetteEnabledKey, 1) == 1;
-
-            // Apply initial settings
-            ApplyPostProcessSettings();
-        }
-
-        // Add listeners for toggle value changes
-        bloomToggle.onValueChanged.AddListener(OnBloomToggleChanged);
-        chromaticAberrationToggle.onValueChanged.AddListener(OnChromaticAberrationToggleChanged);
-        vignetteToggle.onValueChanged.AddListener(OnVignetteToggleChanged);
-
-        if (screenShakeScript != null && screenShakeToggle != null)
-        {
-            // Load saved preference for screen shake
-            if (PlayerPrefs.HasKey(ScreenShakeKey))
-            {
-                bool screenShakeEnabled = PlayerPrefs.GetInt(ScreenShakeKey) == 1;
-                screenShakeToggle.isOn = screenShakeEnabled;
-                screenShakeScript.shakeScreen = screenShakeEnabled;
-            }
-
-            // Add listener for toggle event
-            screenShakeToggle.onValueChanged.AddListener(OnScreenShakeToggleChanged);
-        }
-
-        // Populate the color dropdown with color options
-        PopulateColorDropdown();
-
-        if (dialogueData != null)
-        {
-            // Load saved preferences
-            if (PlayerPrefs.HasKey(TextSizeKey))
-                dialogueData.textSize = PlayerPrefs.GetInt(TextSizeKey);
-            if (PlayerPrefs.HasKey(SubtitlesKey))
-                dialogueData.subtitlesOn = PlayerPrefs.GetInt(SubtitlesKey) == 1;
-            if (PlayerPrefs.HasKey(ColorIndexKey))
-            {
-                int colorIndex = PlayerPrefs.GetInt(ColorIndexKey);
-                colorDropdown.value = colorIndex;
-                OnColorDropdownChanged(colorIndex);
-            }
-
-            // Update UI
-            textSizeSlider.value = dialogueData.textSize;
-            subtitlesToggle.isOn = dialogueData.subtitlesOn;
-        }
-
-        // Add listeners for UI events
-        textSizeSlider.onValueChanged.AddListener(OnTextSizeChanged);
-        subtitlesToggle.onValueChanged.AddListener(OnSubtitlesToggleChanged);
-        colorDropdown.onValueChanged.AddListener(OnColorDropdownChanged);
-    }
-
-    private void OnDestroy()
-    {
-        // Remove toggle value change listeners to prevent memory leaks
-        bloomToggle.onValueChanged.RemoveListener(OnBloomToggleChanged);
-        chromaticAberrationToggle.onValueChanged.RemoveListener(OnChromaticAberrationToggleChanged);
-        vignetteToggle.onValueChanged.RemoveListener(OnVignetteToggleChanged);
-
-        // Remove listener to prevent memory leaks
-        if (screenShakeToggle != null)
-        {
-            screenShakeToggle.onValueChanged.RemoveListener(OnScreenShakeToggleChanged);
-        }
-        // Remove listeners to prevent memory leaks
-        textSizeSlider.onValueChanged.RemoveListener(OnTextSizeChanged);
-        subtitlesToggle.onValueChanged.RemoveListener(OnSubtitlesToggleChanged);
-        colorDropdown.onValueChanged.RemoveListener(OnColorDropdownChanged);
-
-        // Remove toggle value change listener to prevent memory leaks
-        dyslexiaToggle.onValueChanged.RemoveListener(OnDyslexiaToggleChanged);
     }
 
     public void ToggleDyslexiaMode(bool isEnabled)
     {
-        if (fontManager != null)
-        {
-            fontManager.ToggleDyslexiaMode(isEnabled); // Call FontManager to toggle dyslexia mode
+        dialogueData.useDyslexicFont = isEnabled;
+        PlayerPrefs.SetInt(DyslexiaModeKey, isEnabled ? 1 : 0);
 
-            // Save dyslexia mode preference
-            PlayerPrefs.SetInt(DyslexiaModeKey, isEnabled ? 1 : 0);
-        }
-        else
-        {
-            Debug.LogWarning("FontManager reference is null. Dyslexia mode not toggled.");
-        }
-
-        // Only apply dyslexic font if dyslexia mode is explicitly enabled by the user
-        if (isEnabled)
-        {
-            // Set dyslexia mode in dialogue data
-            dialogueData.useDyslexicFont = true;
-
-            // Apply dyslexic font to all text elements
-            ApplyFontToAllText(dialogueData.dyslexicFont);
-        }
-        else
-        {
-            // If dyslexia mode is disabled, use the default font
-            dialogueData.useDyslexicFont = false;
-            ApplyFontToAllText(dialogueData.defaultFont);
-        }
+        TMP_FontAsset font = isEnabled ? dialogueData.dyslexicFont : dialogueData.defaultFont;
+        ApplyFontToAllText(font);
     }
 
     private void ApplyFontToAllText(TMP_FontAsset font)
     {
-        // Get all TMP_Text components in the scene
         TMP_Text[] textComponents = FindObjectsOfType<TMP_Text>();
-
-        // Apply the font to each TMP_Text component
         foreach (TMP_Text textComponent in textComponents)
         {
             textComponent.font = font;
         }
     }
 
-
-    public TMP_FontAsset GetDialogueFont()
-    {
-        if (dialogueData.useDyslexicFont)
-            return dialogueData.dyslexicFont;
-        else
-            return dialogueData.defaultFont;
-    }
-
     private void OnDyslexiaToggleChanged(bool value)
     {
         ToggleDyslexiaMode(value);
-        PlayerPrefs.SetInt(DyslexiaModeKey, value ? 1 : 0);
     }
 
     private void InitializeColorDictionary()
@@ -248,41 +155,24 @@ public class DialogueOptionsMenu : MonoBehaviour
     private void PopulateColorDropdown()
     {
         colorDropdown.ClearOptions();
-
-        // Create a list of dropdown options
         var options = new List<TMP_Dropdown.OptionData>();
 
-        // Add each color name as a dropdown option
         foreach (string colorName in colorNameToValue.Keys)
         {
             var option = new TMP_Dropdown.OptionData(colorName);
             options.Add(option);
         }
 
-        // Add options to the dropdown
         colorDropdown.AddOptions(options);
-    }
-    private void OnScreenShakeToggleChanged(bool value)
-    {
-        if (screenShakeScript != null)
-        {
-            // Update screen shake boolean in ScreenShakeScript
-            screenShakeScript.shakeScreen = value;
-
-            // Save preference
-            PlayerPrefs.SetInt(ScreenShakeKey, value ? 1 : 0);
-        }
     }
 
     private void OnTextSizeChanged(float value)
     {
-        dialogueData.textSize = Mathf.RoundToInt(value);
-        textSizeDisplay.text = dialogueData.textSize.ToString();
-
-        // Update dialogue text size
-        dialogueText.fontSize = dialogueData.textSize;
-
-        PlayerPrefs.SetInt(TextSizeKey, dialogueData.textSize);
+        int newSize = Mathf.RoundToInt(value);
+        dialogueData.textSize = newSize;
+        dialogueText.fontSize = newSize;
+        textSizeDisplay.text = newSize.ToString();
+        PlayerPrefs.SetInt(TextSizeKey, newSize);
     }
 
     private void OnSubtitlesToggleChanged(bool value)
@@ -293,46 +183,8 @@ public class DialogueOptionsMenu : MonoBehaviour
 
     private void OnColorDropdownChanged(int index)
     {
-        // Set the text color based on the selected dropdown option
         dialogueData.textColor = colorOptions[index];
         dialogueText.color = dialogueData.textColor;
-
         PlayerPrefs.SetInt(ColorIndexKey, index);
-    }
-
-    private void OnBloomToggleChanged(bool value)
-    {
-        PlayerPrefs.SetInt(BloomEnabledKey, value ? 1 : 0);
-        ApplyPostProcessSettings();
-    }
-
-    private void OnChromaticAberrationToggleChanged(bool value)
-    {
-        PlayerPrefs.SetInt(ChromaticAberrationEnabledKey, value ? 1 : 0);
-        ApplyPostProcessSettings();
-    }
-
-    private void OnVignetteToggleChanged(bool value)
-    {
-        PlayerPrefs.SetInt(VignetteEnabledKey, value ? 1 : 0);
-        ApplyPostProcessSettings();
-    }
-
-    private void ApplyPostProcessSettings()
-    {
-        if (postProcess != null)
-        {
-            // Enable or disable post-processing effects based on toggle values
-            postProcess._mBloomIntensity.enabled = bloomToggle.isOn;
-            postProcess._mChromaticAberration.enabled = chromaticAberrationToggle.isOn;
-            postProcess._mMVignette.enabled = vignetteToggle.isOn;
-        }
-    }
-
-    private void OnEnable()
-    {
-        dialogueText.fontSize = PlayerPrefs.GetInt(TextSizeKey, DefaultTextSize);
-        textSizeSlider.value = PlayerPrefs.GetInt(TextSizeKey, DefaultTextSize);
-        dialogueText.color = colorOptions[PlayerPrefs.GetInt(ColorIndexKey, DefaultTextColorKey)];
     }
 }

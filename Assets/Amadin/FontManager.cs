@@ -63,8 +63,16 @@ public class FontManager : MonoBehaviour
 
     private void UpdateAllTextUI()
     {
-        TMP_Text[] allTextComponents = Resources.FindObjectsOfTypeAll<TMP_Text>();
-        foreach (TMP_Text textComponent in allTextComponents)
+        // Update TextMeshPro components
+        TMP_Text[] allTMPTextComponents = Resources.FindObjectsOfTypeAll<TMP_Text>();
+        foreach (TMP_Text textComponent in allTMPTextComponents)
+        {
+            UpdateTextComponent(textComponent);
+        }
+
+        // Update standard Unity UI Text components
+        Text[] allTextComponents = Resources.FindObjectsOfTypeAll<Text>();
+        foreach (Text textComponent in allTextComponents)
         {
             UpdateTextComponent(textComponent);
         }
@@ -79,6 +87,11 @@ public class FontManager : MonoBehaviour
         }
     }
 
+    private void UpdateTextComponent(Text textComponent)
+    {
+        Debug.LogWarning("Attempting to assign TMPro font asset to UnityEngine.UI.Text. Please ensure correct font assignments.");
+    }
+
     private TMP_FontAsset GetAppropriateFontAsset()
     {
         if (dialogueData != null)
@@ -89,7 +102,6 @@ public class FontManager : MonoBehaviour
             }
             else
             {
-                // Check if an additional default font is specified and dyslexic font mode is disabled
                 if (!dialogueData.useDyslexicFont && dialogueData.additionalDefaultFont != null)
                 {
                     return dialogueData.additionalDefaultFont;
@@ -106,5 +118,4 @@ public class FontManager : MonoBehaviour
             return null;
         }
     }
-
 }

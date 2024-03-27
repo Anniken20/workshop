@@ -4,12 +4,9 @@ using UnityEngine;
 
 public class Santana : Enemy
 {
-    [HideInInspector] public EnemyIdleState idleState;
     [HideInInspector] public EnemyPacingState pacingState;
     [HideInInspector] public EnemyLobAttackState lobAttackState;
     [HideInInspector] public EnemyAOEAttackState AOEAttackState;
-    
-    public Animator animator;
 
     private void Awake()
     {

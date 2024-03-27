@@ -13,6 +13,8 @@ public class Socialite : Enemy
         idleState.Initialize(this, stateMachine);
         moveState = gameObject.AddComponent<SocialiteMoveState>();
         moveState.Initialize(this, stateMachine);
+        duelState = gameObject.AddComponent<DuelState>();
+        duelState.Initialize(this, stateMachine);
         stateMachine.Initialize(idleState);
     }
     public void Idle()

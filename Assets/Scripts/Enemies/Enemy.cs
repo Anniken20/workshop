@@ -12,7 +12,7 @@ public struct StateKVP
     public StateData state;
 }
 
-public abstract class Enemy : MonoBehaviour, IShootable
+public abstract class Enemy : MonoBehaviour, IShootable, IDataPersistence
 {
     [Header("Additional State Data")]
     [Tooltip("Attach as needed")]
@@ -36,9 +36,27 @@ public abstract class Enemy : MonoBehaviour, IShootable
     public GameObject lassoTarget;
 
     [Header("Death")]
+    public UnityEvent silentDeath;
     public UnityEvent onDeath;
     public bool standWhileDead;
-
+    [HideInInspector]
+    public enum Enemies{
+        Horse,
+        Enrique,
+        Grant,
+        Poppy,
+        Jordan,
+        Benita,
+        Highwayman,
+        Wren,
+        Rocco,
+        Carillo,
+        Diana,
+        Santana,
+        Jabroni
+    }
+    public Enemies enemy = new Enemies();
+    public static List<Enemies> enemiesList = new List<Enemies>();
     [Header("Loot")]
     public GameObject coinPrefab; // Reference to the coin prefab
     public int minCoins = 1; // Minimum number of coins to drop
@@ -121,7 +139,9 @@ public abstract class Enemy : MonoBehaviour, IShootable
 
         //destroy this object
         if (!standWhileDead) Destroy(gameObject, 3f);
-
+        if(!enemiesList.Contains(enemy)){
+            enemiesList.Add(this.enemy);
+        }
         onDeath?.Invoke();
 
         //destroy this script
@@ -179,4 +199,18 @@ public abstract class Enemy : MonoBehaviour, IShootable
         yield return new WaitForSeconds(regenTimer);
         currentHealth += dmg;
     }
+    public void LoadData(GameData data){
+        if(data.deadEnemies.Contains(this.enemy)){
+            SilentDeath();
+        }
+        enemiesList = data.deadEnemies;
+    }
+    public void SaveData(ref GameData data){
+        data.deadEnemies = enemiesList;
+    }
+    private void SilentDeath(){
+        silentDeath?.Invoke();
+        Destroy(this.gameObject);
+    }
+
 }
