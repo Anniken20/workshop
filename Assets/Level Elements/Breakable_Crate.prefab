@@ -525,6 +525,9 @@ MonoBehaviour:
   fullHealthBar: {fileID: 0}
   healthBarMask: {fileID: 0}
   healthBarFadeTime: 1
+  regen: 0
+  regenDMG: 0
+  regenTimer: 0
   breakController: {fileID: 979334566317088279}
 --- !u!114 &979334566317088279
 MonoBehaviour:
@@ -561,6 +564,8 @@ MonoBehaviour:
   disableRigidbodyDelay: 30
   enableRigidbodyDelay: 30
   breakSound: {fileID: 8300000, guid: e7131229cebc64b4ab3adaa9125b4cb8, type: 3}
+  clipLength: 0.5
+  maxFragmentsToSpawn: 5
 --- !u!65 &557493312222062310
 BoxCollider:
   m_ObjectHideFlags: 0
