@@ -38,12 +38,14 @@ public class Checkpoint : MonoBehaviour, IDataPersistence
     public void LoadData(GameData data){
         this.savedCheckpoint = data.savedCheckpoint;
         this.checkpointScene = data.checkpointScene;
+        CoinCollector.coinsCollected = data.coins;
         LoadToCheckpoint();
     }
     public void SaveData(ref GameData data){
         if(activeCheckpoint != null){
             data.savedCheckpoint = activeCheckpoint.gameObject.transform.position;
             data.checkpointScene = SceneManager.GetActiveScene().name;
+            data.coins = CoinCollector.coinsCollected;
         }
     }
     private void LoadToCheckpoint(){
