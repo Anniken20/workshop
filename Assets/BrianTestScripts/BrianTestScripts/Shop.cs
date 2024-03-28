@@ -105,7 +105,7 @@ public class Shop : Interactable
     public void BuySecretKey()
     {
         // Check if player has enough coins and doesn't already own the secret key
-        if (CoinCollector.Instance != null && CoinCollector.coinsCollected >= cost && !InventoryManager.Instance.inventoryItems.Contains(InventoryManager.AllItems.SecretKey))
+        if (CoinCollector.Instance != null && CoinCollector.coinsCollected >= secretKeyCost && !InventoryManager.Instance.inventoryItems.Contains(InventoryManager.AllItems.SecretKey))
         {
             SpendCoin(secretKeyCost); 
             InventoryManager.Instance.AddItem(InventoryManager.AllItems.SecretKey); // Adds the secret key to the inventory
@@ -121,7 +121,7 @@ public class Shop : Interactable
 
     public void BuyAmmo()
     {
-        if (CoinCollector.Instance != null && CoinCollector.coinsCollected >= cost)
+        if (CoinCollector.Instance != null && CoinCollector.coinsCollected >= ammoCost)
         {
              GunController gunController = FindObjectOfType<GunController>(); 
              if (gunController != null)
