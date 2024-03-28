@@ -102,7 +102,7 @@ public class AudioManager : MonoBehaviour
 
     public void LoadMasterVolume()
     {
-        if (PlayerPrefs.GetInt(MASTER_UNMUTED) == 0) return;
+        if (PlayerPrefs.GetInt(MASTER_UNMUTED, 1) == 0) return;
         mixer.SetFloat(MASTER_KEY,
             Mathf.Log10(PlayerPrefs.GetFloat(MASTER_KEY, 0.8f)) * 70f);
         if (Mathf.Approximately(PlayerPrefs.GetFloat(MASTER_KEY), 0))
@@ -111,7 +111,7 @@ public class AudioManager : MonoBehaviour
 
     public void LoadMusicVolume()
     {
-        if (PlayerPrefs.GetInt(MUSIC_UNMUTED) == 0) return;
+        if (PlayerPrefs.GetInt(MUSIC_UNMUTED, 1) == 0) return;
         mixer.SetFloat(MUSIC_KEY,
             Mathf.Log10(PlayerPrefs.GetFloat(MUSIC_KEY, 0.8f)) * 70f);
         if (Mathf.Approximately(PlayerPrefs.GetFloat(MUSIC_KEY), 0))
@@ -121,7 +121,7 @@ public class AudioManager : MonoBehaviour
 
     public void LoadSFXVolume()
     {
-        if (PlayerPrefs.GetInt(SFX_UNMUTED) == 0) return;
+        if (PlayerPrefs.GetInt(SFX_UNMUTED, 1) == 0) return;
         mixer.SetFloat(SFX_KEY,
             Mathf.Log10(PlayerPrefs.GetFloat(SFX_KEY, 0.8f)) * 70f);
         if (Mathf.Approximately(PlayerPrefs.GetFloat(SFX_KEY), 0))
@@ -130,7 +130,7 @@ public class AudioManager : MonoBehaviour
 
     public void LoadDialogueVolume()
     {
-        if (PlayerPrefs.GetInt(DIALOGUE_UNMUTED) == 0) return;
+        if (PlayerPrefs.GetInt(DIALOGUE_UNMUTED, 1) == 0) return;
         mixer.SetFloat(DIALOGUE_KEY,
             Mathf.Log10(PlayerPrefs.GetFloat(DIALOGUE_KEY, 0.8f)) * 70f);
         if (Mathf.Approximately(PlayerPrefs.GetFloat(DIALOGUE_KEY), 0))
@@ -139,7 +139,7 @@ public class AudioManager : MonoBehaviour
 
     public void LoadAmbienceVolume()
     {
-        if (PlayerPrefs.GetInt(AMBIENCE_UNMUTED) == 0) return;
+        if (PlayerPrefs.GetInt(AMBIENCE_UNMUTED, 1) == 0) return;
         mixer.SetFloat(AMBIENCE_KEY,
             Mathf.Log10(PlayerPrefs.GetFloat(AMBIENCE_KEY, 0.8f)) * 70f);
         if (Mathf.Approximately(PlayerPrefs.GetFloat(AMBIENCE_KEY), 0))
