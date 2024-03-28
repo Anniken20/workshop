@@ -29,7 +29,7 @@ public class PauseMenu : MonoBehaviour
     private const string mainMenuScene = "MainMenu";
 
     private InputAction pause;
-    private InputAction cotnrols;
+    private InputAction controls;
     public CharacterMovement iaControls;
 
     private float prevTimeScale;

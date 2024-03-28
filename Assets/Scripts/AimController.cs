@@ -215,7 +215,14 @@ public class AimController : MonoBehaviour
         {
             aimLine.SetPosition(1, hitData.point);
             //ShowBulletFuture(hitData.point, Vector3.Reflect(angle, hitData.normal));
-            ShowBulletFuture(hitData.point, Vector3.Reflect(angle, hitData.normal));
+
+            //only shot bullet bounce line if not gonna hit a shootable object
+            if (hitData.collider.gameObject.GetComponent<IShootable>() == null
+                && hitData.collider.gameObject.GetComponent<ShootableController>() == null)
+            {
+                if(!LayerManager.main.IsNoRicochetLayer(hitData.collider.gameObject))
+                    ShowBulletFuture(hitData.point, Vector3.Reflect(angle, hitData.normal));
+            }   
         }
         //otherwise set position 1 far away in that direction
         else

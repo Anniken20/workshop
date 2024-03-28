@@ -12,6 +12,11 @@ public class GhostController : MonoBehaviour
 
     [Header("Phase Level")]
     public PhaseLevel phaseLevel;
+
+    [Header("Gameplay Settings")]
+    [Tooltip("The player will be locked from moving for this long" +
+        " after being sent back to their original phase position" +
+        " if phase ended inside an object. ")] public float lockedDuration = 0.2f;
     
     [Header("FullScreenTest Controller")]
     [SerializeField] private float _phasingDisplayTime = 5.0f;
@@ -190,7 +195,7 @@ public class GhostController : MonoBehaviour
             transform.position = startPosition;
 
             //a little freeze to prevent disorienting the player
-            ThirdPersonController.Main.LockPlayerForDuration(0.2f);
+            ThirdPersonController.Main.LockPlayerForDuration(lockedDuration);
 
             inAnObject = false;
 
