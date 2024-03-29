@@ -18,6 +18,8 @@ public class GhostEnemy : MonoBehaviour, IShootable
 
     public AggroScript aggroScript; // ref to aggro script 
     public float lookAtOffset = 1.4f;
+    public AudioClip[] deathSounds;
+    private AudioSource audioSource;
 
     private VisualEffect _visualEffectController;
 
@@ -35,7 +37,7 @@ public class GhostEnemy : MonoBehaviour, IShootable
     void Start()
     {
         currentHealth = maxHealth;
-
+        audioSource = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -87,7 +89,7 @@ public class GhostEnemy : MonoBehaviour, IShootable
     void Die()
     {
         // Perform death-related actions (e.g., play death animation, drop items, etc.)
-        StartCoroutine(DoEffectDeath(0.8f));
+        StartCoroutine(DoEffectDeath(1.2f));
     }
 
     void ResetAttackCooldown()
@@ -116,6 +118,16 @@ public class GhostEnemy : MonoBehaviour, IShootable
 
     IEnumerator DoEffectDeath(float deathTime)
     {
+        // Check if there are death sounds available
+        if (deathSounds.Length > 0)
+        {
+            // Choose a random death sound
+            AudioClip randomDeathSound = deathSounds[Random.Range(0, deathSounds.Length)];
+
+            // Play the chosen death sound
+            audioSource.PlayOneShot(randomDeathSound);
+        }
+
         float currentTime = 0;
         while (currentTime < deathTime)
         {
