@@ -16,6 +16,8 @@ public class NPCController : MonoBehaviour
     private Vector3 currentTarget;
     private Vector3 startPointWorldPosition;
     private Vector3 endPointWorldPosition;
+    public Transform defaultLookAtTarget;
+    private bool isFacingPlayer = false;
     public Animator anim;
 
     public enum MovementAxis
@@ -44,45 +46,50 @@ public class NPCController : MonoBehaviour
     {
         float distanceToPlayer = Vector3.Distance(transform.position, playerTransform.position);
 
-       
         if (distanceToPlayer <= interactionDistance)
         {
-        if (!agent.isStopped)
-        {
-            agent.isStopped = true;
-            agent.ResetPath(); // Stop moving towards the current target
-            anim.SetBool("Walking", false);
-            anim.SetBool("Idle", true);
+            if (!agent.isStopped)
+            {
+                agent.isStopped = true;
+                agent.ResetPath(); // Stop moving towards the current target
+                anim.SetBool("Walking", false);
+                anim.SetBool("Idle", true);
             }
-        FaceTarget(playerTransform.position);
+            FaceTarget(playerTransform.position);
+            isFacingPlayer = true;
         }
         else
         {
-        if (agent.isStopped || !agent.hasPath)
-        {
-            agent.isStopped = false;
-            agent.SetDestination(currentTarget);
-            anim.SetBool("Idle", false);
-            anim.SetBool("Walking", true);
+            if (agent.isStopped || !agent.hasPath)
+            {
+                agent.isStopped = false;
+                agent.SetDestination(currentTarget);
+                anim.SetBool("Idle", false);
+                anim.SetBool("Walking", true);
+                isFacingPlayer = false;
             }
 
-        // Movement and target switching logic with world positions
-        if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
-        {
-            if (currentTarget == startPointWorldPosition)
+            // Movement and target switching logic with world positions
+            if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
             {
-                currentTarget = endPointWorldPosition;
-            }
-            else
-            {
-                currentTarget = startPointWorldPosition;
-            }
+                if (currentTarget == startPointWorldPosition)
+                {
+                    currentTarget = endPointWorldPosition;
+                }
+                else
+                {
+                    currentTarget = startPointWorldPosition;
+                }
 
-            agent.SetDestination(currentTarget);
-        }
+                agent.SetDestination(currentTarget);
+            }
+            else if (!isFacingPlayer && defaultLookAtTarget != null)
+            {
+                // When idle and not facing the player, look towards the default target
+                FaceTarget(defaultLookAtTarget.position);
+            }
         }
     }
-
 
     void SetNewRandomDestination()
     {
