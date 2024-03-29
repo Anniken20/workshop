@@ -16,6 +16,7 @@ public class BreakController : MonoBehaviour
     public AudioClip breakSound;
     public float clipLength;
     public int maxFragmentsToSpawn = 5;
+    [SerializeField] private float spawnDistance = 3f;
 
     private Rigidbody[] fragmentRigidbodies;
     private Vector3[] initialFragmentPositions;
@@ -125,7 +126,7 @@ private Vector3 GetValidSpawnPosition()
 {
     int attempts = 20; // Increase the number of attempts
     float spawnRadius = 0.4f; // Reduce the radius for checking clear space
-    float spawnDistance = 3f; // Distance from the object center to attempt spawning
+   
 
     for (int i = 0; i < attempts; i++)
     {
