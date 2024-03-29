@@ -111,6 +111,7 @@ public class PlayerHealth : MonoBehaviour, IDataPersistence
 
     public void Die()
     {
+        CoinCollector.Instance.LoseCoinsOnDeath(10);
         currentHealth = maxHealth;
         UpdateHealthUI();
         GetComponent<PlayerRespawn>().Die();

@@ -169,10 +169,23 @@ public class LassoDetection : MonoBehaviour
         if(onObject){
             var xScale = otherObject.transform.localScale.x -0.25f;//+ xVariaton; //+ .15f;
             var zScale = otherObject.transform.localScale.z -0.6f;//+ zVariation; //+ .15f;
-            transform.localScale = new Vector3(xScale, transform.localScale.y, zScale);
-            Vector3 heldPos = new Vector3(otherObject.transform.position.x, otherObject.transform.position.y + otherExtents.y, otherObject.transform.position.z);
+            var scaleRatio = Mathf.Abs(xScale / zScale);
+            if(scaleRatio <= 1){
+                transform.localScale = new Vector3(xScale, transform.localScale.y, zScale);
+                Vector3 heldPos = new Vector3(otherObject.transform.position.x, otherObject.transform.position.y + otherExtents.y, otherObject.transform.position.z);
+                transform.position = heldPos;
+            }
+            else{
+                //Debug.Log("Else Scale: " +scaleRatio);
+                transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y, transform.localScale.z);
+                //this.transform.position = new Vector3(transform.position.x, transform.position.y - 1.4f, transform.position.z);
+                transform.position = otherObject.transform.position;
+                transform.Rotate(0, 0, 90);
+
+            }
+            //Vector3 heldPos = new Vector3(otherObject.transform.position.x, otherObject.transform.position.y + otherExtents.y, otherObject.transform.position.z);
             //transform.position = otherObject.transform.position;
-            transform.position = heldPos;
+            //transform.position = heldPos;
 
         }
 

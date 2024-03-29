@@ -5,21 +5,23 @@ using System;
 
 public class BountyBoard : MonoBehaviour
 {
-    public GameObject levelSelectPopup; // Reference to the level select pop-up UI
+    public GameObject levelSelectPopup;
     public Button level1Button;
     public Button level2Button;
     public Button level3Button;
-    public GameObject particleEffect; // Reference to the particle effect GameObject
+    public GameObject particleEffect;
+    public ClearSaveData clearSaveDataScript;
 
-    private bool playerEnteredOnce = false; // Track if the player has entered the trigger at least once
-    private string playerEnteredOnceKey = "PlayerEnteredOnce"; // Key for PlayerPrefs
-    private bool paused = false; // Track if the game is paused
-    private float prevTimeScale = 1f; // Store the previous time scale before pausing
+    private bool playerEnteredOnce = false;
+    private string playerEnteredOnceKey = "PlayerEnteredOnce";
+    private bool paused = false;
+    private float prevTimeScale = 1f;
     public static event Action onPause;
 
-    // Save data keys for level completion status
-    private string level2CompletedKey = "Level2Completed";
-    private string level3CompletedKey = "Level3Completed";
+    // Save data keys for defeating characters
+    private string carilloDefeatedKey = "CarilloDefeated";
+    private string santanaDefeatedKey = "SantanaDefeated";
+    private string dianaDefeatedKey = "DianaDefeated";
 
     private void Start()
     {
@@ -40,13 +42,27 @@ public class BountyBoard : MonoBehaviour
         // Enable the particle effect when the scene starts
         particleEffect.SetActive(true);
 
-        // Check if level 2 is completed and activate/deactivate its button accordingly
-        bool level2Completed = PlayerPrefs.GetInt(level2CompletedKey, 0) == 1;
-        level2Button.interactable = level2Completed;
+        // Check if characters are defeated and activate/deactivate level buttons accordingly
+        bool carilloDefeated = PlayerPrefs.GetInt(carilloDefeatedKey, 0) == 1;
+        bool santanaDefeated = PlayerPrefs.GetInt(santanaDefeatedKey, 0) == 1;
+        bool dianaDefeated = PlayerPrefs.GetInt(dianaDefeatedKey, 0) == 1;
 
-        // Check if level 3 is completed and activate/deactivate its button accordingly
-        bool level3Completed = PlayerPrefs.GetInt(level3CompletedKey, 0) == 1;
-        level3Button.interactable = level3Completed;
+        // Enable level 2 button if Carillo is defeated
+        level2Button.interactable = carilloDefeated;
+
+        // Enable level 3 button if Santana is defeated
+        level3Button.interactable = santanaDefeated;
+
+        // Disable level 2 and level 3 buttons if Carillo and Santana are not defeated respectively
+        if (!carilloDefeated)
+        {
+            level2Button.interactable = false;
+        }
+
+        if (!santanaDefeated)
+        {
+            level3Button.interactable = false;
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -135,6 +151,15 @@ public class BountyBoard : MonoBehaviour
 
             Time.timeScale = prevTimeScale;
             onPause?.Invoke();
+        }
+    }
+
+    // Method to clear player's data
+    public void ClearPlayerData()
+    {
+        if (clearSaveDataScript != null)
+        {
+            clearSaveDataScript.Pressed();
         }
     }
 
