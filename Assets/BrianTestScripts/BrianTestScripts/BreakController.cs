@@ -23,10 +23,12 @@ public class BreakController : MonoBehaviour
     private bool rigidbodiesDisabled = false;
     private float lastMovementTime;
     private AudioSource audioSource;
+    private Collider c;
 
     private void Start()
     {
          audioSource = GetComponent<AudioSource>();
+        c = GetComponent<Collider>();
         // Check if there are fragments assigned
         if (fragments != null && fragments.Length > 0)
         {
@@ -149,14 +151,26 @@ private Vector3 GetValidSpawnPosition()
 
     private void PlayBreakSound()
     {
-        if (audioSource != null && breakSound != null)
+        MeshRenderer meshRenderer = GetComponent<MeshRenderer>();
+        
+        if(meshRenderer != null)
         {
-            audioSource.PlayOneShot(breakSound); 
+            meshRenderer.enabled = false;
+            c.enabled = false;
+            if (audioSource != null && breakSound != null)
+            {
+                audioSource.PlayOneShot(breakSound);
+            }
+            else
+            {
+                Debug.LogError("AudioSource or breakSound not set.");
+            }
         }
         else
         {
-            Debug.LogError("AudioSource or breakSound not set.");
+            return;
         }
+
     }
 
     IEnumerator BreakWithSFX(float clipLength)
@@ -195,8 +209,7 @@ private Vector3 GetValidSpawnPosition()
             SpawnCoin();
         }
 
-        MeshRenderer meshRenderer = GetComponent<MeshRenderer>();
-        meshRenderer.enabled = false;
+
         PlayBreakSound();
         yield return new WaitForSeconds(clipLength);
 

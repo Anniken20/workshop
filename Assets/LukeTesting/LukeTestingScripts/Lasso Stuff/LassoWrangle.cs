@@ -117,7 +117,7 @@ public class LassoWrangle : MonoBehaviour, ILassoable
 
     public IEnumerator EnableDelay(){
         //Debug.Log("Timer started");
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.1f);
         //Debug.Log("ENDED!!");
         player.canLasso = true;
         controller._manipulatingLasso = false;
