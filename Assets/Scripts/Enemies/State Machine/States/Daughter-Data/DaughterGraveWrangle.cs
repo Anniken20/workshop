@@ -5,6 +5,8 @@ using UnityEngine;
 public class DaughterGraveWrangle : LassoWrangle
 {
     private Quaternion startRotation;
+    private float initialZ;
+    private float stepZ;
     private Quaternion targetRotation;
     private bool isRotating = false;
     private float rotateSpeed;
@@ -71,6 +73,7 @@ public class DaughterGraveWrangle : LassoWrangle
             yield return null;
         }
         isRotating = false;
+        stepZ = 0f;
         //Disable Collider
         //this.GetComponentInChildren<GraveDamageTrigger>().DisableCollider();
     }

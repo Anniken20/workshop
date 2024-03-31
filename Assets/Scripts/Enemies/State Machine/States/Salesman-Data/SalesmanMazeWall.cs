@@ -7,8 +7,10 @@ public class SalesmanMazeWall : MonoBehaviour, IShootable
     public Salesman salesmanRef;
     public void OnShot(BulletController bullet)
     {
-        salesmanRef.BulletState();
-        var Pos = bullet.gameObject.transform;
-        salesmanRef.gameObject.GetComponent<SalesmanBulletState>().HeadToTarget(Pos, false);
+        if(salesmanRef.canDoStuff == true){
+            salesmanRef.BulletState();
+            var Pos = bullet.gameObject.transform;
+            salesmanRef.gameObject.GetComponent<SalesmanBulletState>().HeadToTarget(Pos, false);
+        }
     }
 }
