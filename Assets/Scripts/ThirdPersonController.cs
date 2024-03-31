@@ -16,8 +16,12 @@ namespace StarterAssets
 #endif
     public class ThirdPersonController : MonoBehaviour
     {
-        //singleon
+        //singleton
         public static ThirdPersonController Main;
+
+        //delegates
+        public delegate void DeathDelegate();
+        public DeathDelegate deathDelegate;
 
         public CharacterMovement iaControls;
         private InputAction sprint;
@@ -145,6 +149,9 @@ namespace StarterAssets
 
         private void Awake()
         {
+            //singleton behavior
+            Main = this;
+
             iaControls = new CharacterMovement();
             _canMove = true;
             _inDialogue = false;
@@ -152,9 +159,6 @@ namespace StarterAssets
 
         private void Start()
         {
-            //singleton behavior
-            Main = this;
-
             _hasAnimator = TryGetComponent(out _animator);
             _controller = GetComponent<CharacterController>();
             _input = GetComponent<StarterAssetsInputs>();
@@ -414,6 +418,7 @@ namespace StarterAssets
 
         public void Death()
         {
+            deathDelegate?.Invoke();
             Debug.Log("You died!");
         }
 
@@ -541,6 +546,17 @@ namespace StarterAssets
                 extraMotion = new Vector3 (0, 0, 0);
             }
             
+        }
+
+        public void StartDuelAnim()
+        {
+            //_animator.SetBool("Dueling", true);
+            _animator.SetTrigger("shootTrigger");
+        }
+
+        public void StopDuelAnim()
+        {
+            //_animator.SetBool("Dueling", false);
         }
 
         public Vector3 CorePosition()
