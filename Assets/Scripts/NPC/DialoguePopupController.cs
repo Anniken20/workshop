@@ -18,6 +18,7 @@ public struct DialogueFrame
     [Tooltip("The time it takes between each character")]
     public float writeWaitTime;
     public UnityEvent onWriteEvent;
+    public AudioClip chirp;
 }
 
 public class DialoguePopupController : MonoBehaviour, IInteractable
@@ -50,11 +51,16 @@ public class DialoguePopupController : MonoBehaviour, IInteractable
     private readonly float lockoutTime = 1f;
 
     private Coroutine inputRoutine;
+    public AudioClip[] popupSounds;
+    public AudioClip[] keyTypes;
+    public AudioClip keyFinish;
+    private AudioSource audioSource;
 
 
     private void Start()
     {
         HUDScaler = GameObject.FindGameObjectWithTag("HUD").GetComponentInChildren<Scale>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     public void Interacted()
@@ -67,6 +73,11 @@ public class DialoguePopupController : MonoBehaviour, IInteractable
         {
             if(!onlyOnce || !spokenTo)
             {
+                // Choose a random popup sound
+                AudioClip popupSound = popupSounds[UnityEngine.Random.Range(0, popupSounds.Length)];
+
+                // Play the chosen popup sound
+                audioSource.PlayOneShot(popupSound);
                 BeginSpeaking();
                 inDialogue = true;
                 spokenTo = true;
@@ -89,6 +100,11 @@ public class DialoguePopupController : MonoBehaviour, IInteractable
         } else
         {
             DisplayDialoguePiece(dialogueIndex);
+            // Choose a random popup sound
+            AudioClip popupSound = popupSounds[UnityEngine.Random.Range(0, popupSounds.Length)];
+
+            // Play the chosen popup sound
+            audioSource.PlayOneShot(popupSound);
         }
     }
 
@@ -121,6 +137,7 @@ public class DialoguePopupController : MonoBehaviour, IInteractable
 
     private void DisplayDialoguePiece(int i)
     {
+        audioSource.PlayOneShot(dialogues[i].chirp);
         dialogues[i].onWriteEvent.Invoke();
         DialogueManager.Main.characterNameText.text = dialogues[i].name;
         DialogueManager.Main.characterPortrait.sprite = dialogues[i].portrait;
@@ -137,8 +154,17 @@ public class DialoguePopupController : MonoBehaviour, IInteractable
         {
             yield return new WaitForSeconds(waitTime);
             DialogueManager.Main.characterText.text += msg[i];
+            if(i % 5 == 0)
+            {
+                // Choose a random popup sound
+                AudioClip keyType = keyTypes[UnityEngine.Random.Range(0, keyTypes.Length)];
+
+                // Play the chosen popup sound
+                audioSource.PlayOneShot(keyType);
+            }
             i++;
         }
+        audioSource.PlayOneShot(keyFinish);
         writing = false;
     }
 
