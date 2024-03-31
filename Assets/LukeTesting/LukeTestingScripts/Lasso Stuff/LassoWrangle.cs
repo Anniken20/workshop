@@ -74,6 +74,7 @@ public class LassoWrangle : MonoBehaviour, ILassoable
     }
     private void FixedUpdate(){
         if(wrangling){
+            barParent.SetActive(true);
             currentAmount -= barDepleteRate * Time.fixedDeltaTime;
             wrangleBar.fillAmount = currentAmount / barCapacity;
             
