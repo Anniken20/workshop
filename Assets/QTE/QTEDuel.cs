@@ -355,6 +355,7 @@ public class QTEDuel : MonoBehaviour
             duelEnemy.gameObject.SetActive(false);
             nextQTEDuel.gameObject.SetActive(true);
 
+            ThirdPersonController.Main.deathDelegate -= PlayerDied;
             TurnOff(gameObject, 1.5f);
         } else
         {
