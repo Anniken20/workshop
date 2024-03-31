@@ -1967,6 +1967,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 103656986}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: e63c727a418cf494a8ba936994df9445,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 103656988}
   m_SourcePrefab: {fileID: 100100000, guid: e63c727a418cf494a8ba936994df9445, type: 3}
 --- !u!4 &103656979 stripped
 Transform:
@@ -1997,6 +2001,7 @@ MonoBehaviour:
   interactionDistance: 3
   startPoint: {fileID: 205688720}
   endPoint: {fileID: 710365606}
+  defaultLookAtTarget: {fileID: 0}
   anim: {fileID: 103656985}
   movementAxis: 0
 --- !u!195 &103656982
@@ -2073,6 +2078,7 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 8300000, guid: 83347e31664fd5140a03511a8aadeaa5, type: 3}
   - name: Valentina Sombra
     portrait: {fileID: 21300000, guid: 42c18b3140bf76e4f8f9db8f511606c9, type: 3}
     message: Nothin of the sort just yet, Im figurin these place out right now
@@ -2080,6 +2086,7 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
   - name: Pepe Paz
     portrait: {fileID: 21300000, guid: edcf0bfbfd4554e409ed8559841e46d4, type: 3}
     message: "I can see that for sure, I\u2019ll see ya around partner!"
@@ -2087,6 +2094,23 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 8300000, guid: 3d8b5be7a5f4c394097aa56cb90e83da, type: 3}
+  popupSounds:
+  - {fileID: 8300000, guid: bc451deb56795ce40917b027654d7416, type: 3}
+  - {fileID: 8300000, guid: 8a6126b18c4851641b7b3cd6aa700e66, type: 3}
+  - {fileID: 8300000, guid: c31d695bdf2123f4d99d7f600d6a4b36, type: 3}
+  keyTypes:
+  - {fileID: 8300000, guid: 84ca795cbd385cb459bc1963d221642e, type: 3}
+  - {fileID: 8300000, guid: bbc318af5f24e1e47a1339a92f14e81b, type: 3}
+  - {fileID: 8300000, guid: f616e4ac3439ffc4ab10d56101f1f216, type: 3}
+  - {fileID: 8300000, guid: a0ae216d1390e78489bdb942cab1d2d9, type: 3}
+  - {fileID: 8300000, guid: adb076eb8c07a5b49a6a38fbe446e2f6, type: 3}
+  - {fileID: 8300000, guid: 727d9d72d57719441a6136086e7fee9b, type: 3}
+  - {fileID: 8300000, guid: 576486f3cf4a19d4f94a3f11ee0afa9c, type: 3}
+  - {fileID: 8300000, guid: e2ee5188ea0a34f4397c09f98ca41988, type: 3}
+  - {fileID: 8300000, guid: 7db0a075bdaeffd44b92c34d6610b3aa, type: 3}
+  - {fileID: 8300000, guid: 6f543e7de00bfe94e822b643eb464b43, type: 3}
+  keyFinish: {fileID: 8300000, guid: 5ed0064032429ed419537431b422d0ea, type: 3}
 --- !u!95 &103656985 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: e63c727a418cf494a8ba936994df9445,
@@ -2127,6 +2151,103 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactionPrompt: {fileID: 1938446663}
+--- !u!82 &103656988
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 103656980}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: -6514915561845674498, guid: e62c89e87d63cf447a63b2b55d9915e8,
+    type: 2}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1001 &109624254
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3755,6 +3876,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 183840418}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: bba5759de132c8240b6ec81a67ede12d,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 183840423}
   m_SourcePrefab: {fileID: 100100000, guid: bba5759de132c8240b6ec81a67ede12d, type: 3}
 --- !u!4 &183840416 stripped
 Transform:
@@ -3869,6 +3994,7 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
   - name: Valentina Sombra
     portrait: {fileID: 21300000, guid: 42c18b3140bf76e4f8f9db8f511606c9, type: 3}
     message: Or, you know, you can thank me.
@@ -3876,6 +4002,7 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
   - name: Lucero Marin
     portrait: {fileID: 21300000, guid: 0a3b977c8f0578a44961bcf606e7ad02, type: 3}
     message: "Ah, so it was you who settled the chaos out here.  You have this town\u2019s
@@ -3884,6 +4011,7 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
   - name: Valentina Sombra
     portrait: {fileID: 21300000, guid: 42c18b3140bf76e4f8f9db8f511606c9, type: 3}
     message: "I doubt that, but I\u2019ll keep it in mind."
@@ -3891,6 +4019,120 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
+  popupSounds:
+  - {fileID: 8300000, guid: bc451deb56795ce40917b027654d7416, type: 3}
+  - {fileID: 8300000, guid: 8a6126b18c4851641b7b3cd6aa700e66, type: 3}
+  - {fileID: 8300000, guid: c31d695bdf2123f4d99d7f600d6a4b36, type: 3}
+  keyTypes:
+  - {fileID: 8300000, guid: 84ca795cbd385cb459bc1963d221642e, type: 3}
+  - {fileID: 8300000, guid: bbc318af5f24e1e47a1339a92f14e81b, type: 3}
+  - {fileID: 8300000, guid: f616e4ac3439ffc4ab10d56101f1f216, type: 3}
+  - {fileID: 8300000, guid: a0ae216d1390e78489bdb942cab1d2d9, type: 3}
+  - {fileID: 8300000, guid: adb076eb8c07a5b49a6a38fbe446e2f6, type: 3}
+  - {fileID: 8300000, guid: 727d9d72d57719441a6136086e7fee9b, type: 3}
+  - {fileID: 8300000, guid: 576486f3cf4a19d4f94a3f11ee0afa9c, type: 3}
+  - {fileID: 8300000, guid: e2ee5188ea0a34f4397c09f98ca41988, type: 3}
+  - {fileID: 8300000, guid: 7db0a075bdaeffd44b92c34d6610b3aa, type: 3}
+  - {fileID: 8300000, guid: 6f543e7de00bfe94e822b643eb464b43, type: 3}
+  keyFinish: {fileID: 8300000, guid: 5ed0064032429ed419537431b422d0ea, type: 3}
+--- !u!82 &183840423
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 183840417}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: -6514915561845674498, guid: e62c89e87d63cf447a63b2b55d9915e8,
+    type: 2}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1001 &184216218
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5043,6 +5285,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 264961523}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 01a9f98b0e2252042bff4d8b3eb809a4,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 264961528}
   m_SourcePrefab: {fileID: 100100000, guid: 01a9f98b0e2252042bff4d8b3eb809a4, type: 3}
 --- !u!4 &264961521 stripped
 Transform:
@@ -5156,6 +5402,7 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
   - name: Valentina Sombra
     portrait: {fileID: 21300000, guid: 42c18b3140bf76e4f8f9db8f511606c9, type: 3}
     message: Excuse me?
@@ -5163,6 +5410,7 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
   - name: Ursula Orellana
     portrait: {fileID: 21300000, guid: 0f9aa2cfbdd00764c9f383d3aa14a6a9, type: 3}
     message: Your iron!  What is that?  .38?
@@ -5170,6 +5418,7 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
   - name: Valentina Sombra
     portrait: {fileID: 21300000, guid: 42c18b3140bf76e4f8f9db8f511606c9, type: 3}
     message: "It\u2019s\u2026yeah."
@@ -5177,6 +5426,7 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
   - name: Ursula Orellana
     portrait: {fileID: 21300000, guid: 0f9aa2cfbdd00764c9f383d3aa14a6a9, type: 3}
     message: "What I thought.  Feel free an\u2019 stop on by if ya\u2019d like fer
@@ -5185,6 +5435,7 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
   - name: Valentina Sombra
     portrait: {fileID: 21300000, guid: 42c18b3140bf76e4f8f9db8f511606c9, type: 3}
     message: "I\u2019ll bear that in mind.  Thanks."
@@ -5192,6 +5443,120 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
+  popupSounds:
+  - {fileID: 8300000, guid: bc451deb56795ce40917b027654d7416, type: 3}
+  - {fileID: 8300000, guid: 8a6126b18c4851641b7b3cd6aa700e66, type: 3}
+  - {fileID: 8300000, guid: c31d695bdf2123f4d99d7f600d6a4b36, type: 3}
+  keyTypes:
+  - {fileID: 8300000, guid: 84ca795cbd385cb459bc1963d221642e, type: 3}
+  - {fileID: 8300000, guid: bbc318af5f24e1e47a1339a92f14e81b, type: 3}
+  - {fileID: 8300000, guid: f616e4ac3439ffc4ab10d56101f1f216, type: 3}
+  - {fileID: 8300000, guid: a0ae216d1390e78489bdb942cab1d2d9, type: 3}
+  - {fileID: 8300000, guid: adb076eb8c07a5b49a6a38fbe446e2f6, type: 3}
+  - {fileID: 8300000, guid: 727d9d72d57719441a6136086e7fee9b, type: 3}
+  - {fileID: 8300000, guid: 576486f3cf4a19d4f94a3f11ee0afa9c, type: 3}
+  - {fileID: 8300000, guid: e2ee5188ea0a34f4397c09f98ca41988, type: 3}
+  - {fileID: 8300000, guid: 7db0a075bdaeffd44b92c34d6610b3aa, type: 3}
+  - {fileID: 8300000, guid: 6f543e7de00bfe94e822b643eb464b43, type: 3}
+  keyFinish: {fileID: 8300000, guid: 5ed0064032429ed419537431b422d0ea, type: 3}
+--- !u!82 &264961528
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 264961522}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: -6514915561845674498, guid: e62c89e87d63cf447a63b2b55d9915e8,
+    type: 2}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1001 &270201364
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7003,6 +7368,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 350250422}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 3c275a30d02cb0d4590eb6e6dc96d5dd,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 350250428}
   m_SourcePrefab: {fileID: 100100000, guid: 3c275a30d02cb0d4590eb6e6dc96d5dd, type: 3}
 --- !u!4 &350250419 stripped
 Transform:
@@ -7073,6 +7442,7 @@ MonoBehaviour:
   interactionDistance: 3
   startPoint: {fileID: 910950001}
   endPoint: {fileID: 1382112361}
+  defaultLookAtTarget: {fileID: 0}
   anim: {fileID: 350250421}
   movementAxis: 1
 --- !u!195 &350250425
@@ -7149,6 +7519,7 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
   - name: Valentina Sombra
     portrait: {fileID: 21300000, guid: 42c18b3140bf76e4f8f9db8f511606c9, type: 3}
     message: "Was nothin\u2019.  Hardly the worst job I\u2019ve e\u2019er taken."
@@ -7156,6 +7527,7 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
   - name: Dorian Knox
     portrait: {fileID: 21300000, guid: 8de8573151db0be46befc1deeeb1137d, type: 3}
     message: "Well, the town\u2019ll be restin\u2019 a lot easier knowing the folks
@@ -7164,6 +7536,120 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
+  popupSounds:
+  - {fileID: 8300000, guid: bc451deb56795ce40917b027654d7416, type: 3}
+  - {fileID: 8300000, guid: 8a6126b18c4851641b7b3cd6aa700e66, type: 3}
+  - {fileID: 8300000, guid: c31d695bdf2123f4d99d7f600d6a4b36, type: 3}
+  keyTypes:
+  - {fileID: 8300000, guid: 84ca795cbd385cb459bc1963d221642e, type: 3}
+  - {fileID: 8300000, guid: bbc318af5f24e1e47a1339a92f14e81b, type: 3}
+  - {fileID: 8300000, guid: f616e4ac3439ffc4ab10d56101f1f216, type: 3}
+  - {fileID: 8300000, guid: a0ae216d1390e78489bdb942cab1d2d9, type: 3}
+  - {fileID: 8300000, guid: adb076eb8c07a5b49a6a38fbe446e2f6, type: 3}
+  - {fileID: 8300000, guid: 727d9d72d57719441a6136086e7fee9b, type: 3}
+  - {fileID: 8300000, guid: 576486f3cf4a19d4f94a3f11ee0afa9c, type: 3}
+  - {fileID: 8300000, guid: e2ee5188ea0a34f4397c09f98ca41988, type: 3}
+  - {fileID: 8300000, guid: 7db0a075bdaeffd44b92c34d6610b3aa, type: 3}
+  - {fileID: 8300000, guid: 6f543e7de00bfe94e822b643eb464b43, type: 3}
+  keyFinish: {fileID: 8300000, guid: 5ed0064032429ed419537431b422d0ea, type: 3}
+--- !u!82 &350250428
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 350250420}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: -6514915561845674498, guid: e62c89e87d63cf447a63b2b55d9915e8,
+    type: 2}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &352960131
 GameObject:
   m_ObjectHideFlags: 0
@@ -8335,6 +8821,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 408446520}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: eedefb7f48ba1c5478e3284918d954b9,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 408446525}
   m_SourcePrefab: {fileID: 100100000, guid: eedefb7f48ba1c5478e3284918d954b9, type: 3}
 --- !u!4 &408446518 stripped
 Transform:
@@ -8449,6 +8939,7 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
   - name: Valentina Sombra
     portrait: {fileID: 21300000, guid: 42c18b3140bf76e4f8f9db8f511606c9, type: 3}
     message: "\u2018aven\u2019t add much in the way o\u2019 time to spend my nights
@@ -8457,6 +8948,7 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
   - name: Wallace Reid-Arroyo
     portrait: {fileID: 21300000, guid: 2b42211769f0ed04a80be3ef991f031b, type: 3}
     message: "Heh; well, room\u2019s yers for the takin\u2019 if e\u2019er ya need
@@ -8465,6 +8957,7 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
   - name: Valentina Sombra
     portrait: {fileID: 21300000, guid: 42c18b3140bf76e4f8f9db8f511606c9, type: 3}
     message: "I\u2019ll remember that.  Thanks again!"
@@ -8472,6 +8965,120 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
+  popupSounds:
+  - {fileID: 8300000, guid: bc451deb56795ce40917b027654d7416, type: 3}
+  - {fileID: 8300000, guid: 8a6126b18c4851641b7b3cd6aa700e66, type: 3}
+  - {fileID: 8300000, guid: c31d695bdf2123f4d99d7f600d6a4b36, type: 3}
+  keyTypes:
+  - {fileID: 8300000, guid: 84ca795cbd385cb459bc1963d221642e, type: 3}
+  - {fileID: 8300000, guid: bbc318af5f24e1e47a1339a92f14e81b, type: 3}
+  - {fileID: 8300000, guid: f616e4ac3439ffc4ab10d56101f1f216, type: 3}
+  - {fileID: 8300000, guid: a0ae216d1390e78489bdb942cab1d2d9, type: 3}
+  - {fileID: 8300000, guid: adb076eb8c07a5b49a6a38fbe446e2f6, type: 3}
+  - {fileID: 8300000, guid: 727d9d72d57719441a6136086e7fee9b, type: 3}
+  - {fileID: 8300000, guid: 576486f3cf4a19d4f94a3f11ee0afa9c, type: 3}
+  - {fileID: 8300000, guid: e2ee5188ea0a34f4397c09f98ca41988, type: 3}
+  - {fileID: 8300000, guid: 7db0a075bdaeffd44b92c34d6610b3aa, type: 3}
+  - {fileID: 8300000, guid: 6f543e7de00bfe94e822b643eb464b43, type: 3}
+  keyFinish: {fileID: 8300000, guid: 5ed0064032429ed419537431b422d0ea, type: 3}
+--- !u!82 &408446525
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 408446519}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: -6514915561845674498, guid: e62c89e87d63cf447a63b2b55d9915e8,
+    type: 2}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &412347674
 GameObject:
   m_ObjectHideFlags: 0
@@ -10151,6 +10758,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 490229332}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 67779d1419ff27d42b332ea55fcdbab1,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 490229334}
   m_SourcePrefab: {fileID: 100100000, guid: 67779d1419ff27d42b332ea55fcdbab1, type: 3}
 --- !u!4 &490229326 stripped
 Transform:
@@ -10181,6 +10792,7 @@ MonoBehaviour:
   interactionDistance: 3
   startPoint: {fileID: 1452735358}
   endPoint: {fileID: 1745008269}
+  defaultLookAtTarget: {fileID: 0}
   anim: {fileID: 490229327}
   movementAxis: 1
 --- !u!195 &490229329
@@ -10257,6 +10869,7 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
   - name: Valentina Sombra
     portrait: {fileID: 21300000, guid: 42c18b3140bf76e4f8f9db8f511606c9, type: 3}
     message: Got a problem with that?
@@ -10264,6 +10877,7 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
   - name: Paloma Hawkins
     portrait: {fileID: 21300000, guid: d57bcdbc497a3384ba51d4bd635f6a75, type: 3}
     message: "Not yet.  Let\u2019s hope that doesn\u2019t change.  For your sake."
@@ -10271,6 +10885,7 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
   - name: Valentina Sombra
     portrait: {fileID: 21300000, guid: 42c18b3140bf76e4f8f9db8f511606c9, type: 3}
     message: Hmph.  Right.
@@ -10278,6 +10893,23 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
+  popupSounds:
+  - {fileID: 8300000, guid: bc451deb56795ce40917b027654d7416, type: 3}
+  - {fileID: 8300000, guid: 8a6126b18c4851641b7b3cd6aa700e66, type: 3}
+  - {fileID: 8300000, guid: c31d695bdf2123f4d99d7f600d6a4b36, type: 3}
+  keyTypes:
+  - {fileID: 8300000, guid: 84ca795cbd385cb459bc1963d221642e, type: 3}
+  - {fileID: 8300000, guid: bbc318af5f24e1e47a1339a92f14e81b, type: 3}
+  - {fileID: 8300000, guid: f616e4ac3439ffc4ab10d56101f1f216, type: 3}
+  - {fileID: 8300000, guid: a0ae216d1390e78489bdb942cab1d2d9, type: 3}
+  - {fileID: 8300000, guid: adb076eb8c07a5b49a6a38fbe446e2f6, type: 3}
+  - {fileID: 8300000, guid: 727d9d72d57719441a6136086e7fee9b, type: 3}
+  - {fileID: 8300000, guid: 576486f3cf4a19d4f94a3f11ee0afa9c, type: 3}
+  - {fileID: 8300000, guid: e2ee5188ea0a34f4397c09f98ca41988, type: 3}
+  - {fileID: 8300000, guid: 7db0a075bdaeffd44b92c34d6610b3aa, type: 3}
+  - {fileID: 8300000, guid: 6f543e7de00bfe94e822b643eb464b43, type: 3}
+  keyFinish: {fileID: 8300000, guid: 5ed0064032429ed419537431b422d0ea, type: 3}
 --- !u!135 &490229332
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -10312,6 +10944,103 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactionPrompt: {fileID: 1938446663}
+--- !u!82 &490229334
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 274157504}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: -6514915561845674498, guid: e62c89e87d63cf447a63b2b55d9915e8,
+    type: 2}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1001 &494950118
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13814,6 +14543,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1183880701}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 3c275a30d02cb0d4590eb6e6dc96d5dd,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1183880702}
   m_SourcePrefab: {fileID: 100100000, guid: 3c275a30d02cb0d4590eb6e6dc96d5dd, type: 3}
 --- !u!4 &691649184 stripped
 Transform:
@@ -15089,6 +15822,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 785833358}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 9d0e95409e19f1f48a80f27446886ab3,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 785833363}
   m_SourcePrefab: {fileID: 100100000, guid: 9d0e95409e19f1f48a80f27446886ab3, type: 3}
 --- !u!4 &785833356 stripped
 Transform:
@@ -15203,6 +15940,7 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
   - name: Valentina Sombra
     portrait: {fileID: 21300000, guid: 42c18b3140bf76e4f8f9db8f511606c9, type: 3}
     message: "Don\u2019t believe so, no.  What\u2019s it to ya?"
@@ -15210,6 +15948,7 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
   - name: Douglass Graves
     portrait: {fileID: 21300000, guid: b1441f0a2757e56438ea5c2ce916a5a9, type: 3}
     message: Hmph.  Nothing, I suppose.  Keep your nose out of trouble and we can
@@ -15218,6 +15957,7 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
   - name: Valentina Sombra
     portrait: {fileID: 21300000, guid: 42c18b3140bf76e4f8f9db8f511606c9, type: 3}
     message: "You do know I\u2019ve been saving yer town \u2018ere, don\u2019t ya?"
@@ -15225,6 +15965,7 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
   - name: Douglass Graves
     portrait: {fileID: 21300000, guid: b1441f0a2757e56438ea5c2ce916a5a9, type: 3}
     message: "Hmph.  I\u2019ve \u2018eard that before.  I\u2019ll be watching you."
@@ -15232,6 +15973,120 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
+  popupSounds:
+  - {fileID: 8300000, guid: bc451deb56795ce40917b027654d7416, type: 3}
+  - {fileID: 8300000, guid: 8a6126b18c4851641b7b3cd6aa700e66, type: 3}
+  - {fileID: 8300000, guid: c31d695bdf2123f4d99d7f600d6a4b36, type: 3}
+  keyTypes:
+  - {fileID: 8300000, guid: 84ca795cbd385cb459bc1963d221642e, type: 3}
+  - {fileID: 8300000, guid: bbc318af5f24e1e47a1339a92f14e81b, type: 3}
+  - {fileID: 8300000, guid: f616e4ac3439ffc4ab10d56101f1f216, type: 3}
+  - {fileID: 8300000, guid: a0ae216d1390e78489bdb942cab1d2d9, type: 3}
+  - {fileID: 8300000, guid: adb076eb8c07a5b49a6a38fbe446e2f6, type: 3}
+  - {fileID: 8300000, guid: 727d9d72d57719441a6136086e7fee9b, type: 3}
+  - {fileID: 8300000, guid: 576486f3cf4a19d4f94a3f11ee0afa9c, type: 3}
+  - {fileID: 8300000, guid: e2ee5188ea0a34f4397c09f98ca41988, type: 3}
+  - {fileID: 8300000, guid: 7db0a075bdaeffd44b92c34d6610b3aa, type: 3}
+  - {fileID: 8300000, guid: 6f543e7de00bfe94e822b643eb464b43, type: 3}
+  keyFinish: {fileID: 8300000, guid: 5ed0064032429ed419537431b422d0ea, type: 3}
+--- !u!82 &785833363
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 785833357}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: -6514915561845674498, guid: e62c89e87d63cf447a63b2b55d9915e8,
+    type: 2}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &788056525
 GameObject:
   m_ObjectHideFlags: 0
@@ -16124,6 +16979,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 826131426}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a3b05c11e8f661e45a5e6beef30133e1,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 826131432}
   m_SourcePrefab: {fileID: 100100000, guid: a3b05c11e8f661e45a5e6beef30133e1, type: 3}
 --- !u!4 &826131423 stripped
 Transform:
@@ -16194,6 +17053,7 @@ MonoBehaviour:
   interactionDistance: 3
   startPoint: {fileID: 1966556669}
   endPoint: {fileID: 1966556669}
+  defaultLookAtTarget: {fileID: 0}
   anim: {fileID: 826131425}
   movementAxis: 1
 --- !u!195 &826131429
@@ -16271,6 +17131,7 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
   - name: Valentina Sombra
     portrait: {fileID: 21300000, guid: 42c18b3140bf76e4f8f9db8f511606c9, type: 3}
     message: "Might have.  Took care o\u2019 that Benita lass that was giving you
@@ -16279,6 +17140,7 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
   - name: Calista Bautista
     portrait: {fileID: 21300000, guid: 323c2b5a81d39274cac1dff2cfe3830f, type: 3}
     message: "For all the hauntin\u2019 she\u2019s been giving me, I\u2019d think
@@ -16287,6 +17149,120 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
+  popupSounds:
+  - {fileID: 8300000, guid: bc451deb56795ce40917b027654d7416, type: 3}
+  - {fileID: 8300000, guid: 8a6126b18c4851641b7b3cd6aa700e66, type: 3}
+  - {fileID: 8300000, guid: c31d695bdf2123f4d99d7f600d6a4b36, type: 3}
+  keyTypes:
+  - {fileID: 8300000, guid: 84ca795cbd385cb459bc1963d221642e, type: 3}
+  - {fileID: 8300000, guid: bbc318af5f24e1e47a1339a92f14e81b, type: 3}
+  - {fileID: 8300000, guid: f616e4ac3439ffc4ab10d56101f1f216, type: 3}
+  - {fileID: 8300000, guid: a0ae216d1390e78489bdb942cab1d2d9, type: 3}
+  - {fileID: 8300000, guid: adb076eb8c07a5b49a6a38fbe446e2f6, type: 3}
+  - {fileID: 8300000, guid: 727d9d72d57719441a6136086e7fee9b, type: 3}
+  - {fileID: 8300000, guid: 576486f3cf4a19d4f94a3f11ee0afa9c, type: 3}
+  - {fileID: 8300000, guid: e2ee5188ea0a34f4397c09f98ca41988, type: 3}
+  - {fileID: 8300000, guid: 7db0a075bdaeffd44b92c34d6610b3aa, type: 3}
+  - {fileID: 8300000, guid: 6f543e7de00bfe94e822b643eb464b43, type: 3}
+  keyFinish: {fileID: 8300000, guid: 5ed0064032429ed419537431b422d0ea, type: 3}
+--- !u!82 &826131432
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 826131424}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: -6514915561845674498, guid: e62c89e87d63cf447a63b2b55d9915e8,
+    type: 2}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1001 &832843780
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16778,6 +17754,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 870973697}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: eedefb7f48ba1c5478e3284918d954b9,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 870973702}
   m_SourcePrefab: {fileID: 100100000, guid: eedefb7f48ba1c5478e3284918d954b9, type: 3}
 --- !u!4 &870973695 stripped
 Transform:
@@ -16892,6 +17872,7 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
   - name: Valentina Sombra
     portrait: {fileID: 21300000, guid: 42c18b3140bf76e4f8f9db8f511606c9, type: 3}
     message: Expected anything less?
@@ -16899,6 +17880,7 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
   - name: Wallace Reid-Arroyo
     portrait: {fileID: 21300000, guid: 2b42211769f0ed04a80be3ef991f031b, type: 3}
     message: "No, I\u2026I\u2019d just like to know what happened there?  Did you
@@ -16907,6 +17889,7 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
   - name: Valentina Sombra
     portrait: {fileID: 21300000, guid: 42c18b3140bf76e4f8f9db8f511606c9, type: 3}
     message: "I did.  Seemed committed enough towards this inn bein\u2019 the best
@@ -16915,6 +17898,7 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
   - name: Wallace Reid-Arroyo
     portrait: {fileID: 21300000, guid: 2b42211769f0ed04a80be3ef991f031b, type: 3}
     message: "Well\u2026fighting n\u2019er was his nature.  He can rest easy knowin\u2019
@@ -16924,6 +17908,7 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
   - name: Valentina Sombra
     portrait: {fileID: 21300000, guid: 42c18b3140bf76e4f8f9db8f511606c9, type: 3}
     message: "I\u2019ll keep that in mind.  \u2018ppreciated."
@@ -16931,6 +17916,120 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
+  popupSounds:
+  - {fileID: 8300000, guid: bc451deb56795ce40917b027654d7416, type: 3}
+  - {fileID: 8300000, guid: 8a6126b18c4851641b7b3cd6aa700e66, type: 3}
+  - {fileID: 8300000, guid: c31d695bdf2123f4d99d7f600d6a4b36, type: 3}
+  keyTypes:
+  - {fileID: 8300000, guid: 84ca795cbd385cb459bc1963d221642e, type: 3}
+  - {fileID: 8300000, guid: bbc318af5f24e1e47a1339a92f14e81b, type: 3}
+  - {fileID: 8300000, guid: f616e4ac3439ffc4ab10d56101f1f216, type: 3}
+  - {fileID: 8300000, guid: a0ae216d1390e78489bdb942cab1d2d9, type: 3}
+  - {fileID: 8300000, guid: adb076eb8c07a5b49a6a38fbe446e2f6, type: 3}
+  - {fileID: 8300000, guid: 727d9d72d57719441a6136086e7fee9b, type: 3}
+  - {fileID: 8300000, guid: 576486f3cf4a19d4f94a3f11ee0afa9c, type: 3}
+  - {fileID: 8300000, guid: e2ee5188ea0a34f4397c09f98ca41988, type: 3}
+  - {fileID: 8300000, guid: 7db0a075bdaeffd44b92c34d6610b3aa, type: 3}
+  - {fileID: 8300000, guid: 6f543e7de00bfe94e822b643eb464b43, type: 3}
+  keyFinish: {fileID: 8300000, guid: 5ed0064032429ed419537431b422d0ea, type: 3}
+--- !u!82 &870973702
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 870973696}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: -6514915561845674498, guid: e62c89e87d63cf447a63b2b55d9915e8,
+    type: 2}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &872350457
 GameObject:
   m_ObjectHideFlags: 0
@@ -18492,6 +19591,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 919163325}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 65b7b8f97e0c6fa4d905f4fc5726a8a9,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 919163331}
   m_SourcePrefab: {fileID: 100100000, guid: 65b7b8f97e0c6fa4d905f4fc5726a8a9, type: 3}
 --- !u!4 &919163322 stripped
 Transform:
@@ -18562,6 +19665,7 @@ MonoBehaviour:
   interactionDistance: 3
   startPoint: {fileID: 412347675}
   endPoint: {fileID: 412347675}
+  defaultLookAtTarget: {fileID: 0}
   anim: {fileID: 919163324}
   movementAxis: 1
 --- !u!195 &919163328
@@ -18638,6 +19742,7 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
   - name: Valentina Sombra
     portrait: {fileID: 21300000, guid: 42c18b3140bf76e4f8f9db8f511606c9, type: 3}
     message: "You know I ne\u2019er say \u2018no\u2019 to a good drink.  Might stop
@@ -18646,6 +19751,7 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
   - name: Millie Hopps
     portrait: {fileID: 21300000, guid: a75b4da1dec375a4ead49c821fe4a7ed, type: 3}
     message: "I sure hope ya do!  Place is always more lively whene\u2019er you\u2019re
@@ -18654,6 +19760,120 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
+  popupSounds:
+  - {fileID: 8300000, guid: bc451deb56795ce40917b027654d7416, type: 3}
+  - {fileID: 8300000, guid: 8a6126b18c4851641b7b3cd6aa700e66, type: 3}
+  - {fileID: 8300000, guid: c31d695bdf2123f4d99d7f600d6a4b36, type: 3}
+  keyTypes:
+  - {fileID: 8300000, guid: 84ca795cbd385cb459bc1963d221642e, type: 3}
+  - {fileID: 8300000, guid: bbc318af5f24e1e47a1339a92f14e81b, type: 3}
+  - {fileID: 8300000, guid: f616e4ac3439ffc4ab10d56101f1f216, type: 3}
+  - {fileID: 8300000, guid: a0ae216d1390e78489bdb942cab1d2d9, type: 3}
+  - {fileID: 8300000, guid: adb076eb8c07a5b49a6a38fbe446e2f6, type: 3}
+  - {fileID: 8300000, guid: 727d9d72d57719441a6136086e7fee9b, type: 3}
+  - {fileID: 8300000, guid: 576486f3cf4a19d4f94a3f11ee0afa9c, type: 3}
+  - {fileID: 8300000, guid: e2ee5188ea0a34f4397c09f98ca41988, type: 3}
+  - {fileID: 8300000, guid: 7db0a075bdaeffd44b92c34d6610b3aa, type: 3}
+  - {fileID: 8300000, guid: 6f543e7de00bfe94e822b643eb464b43, type: 3}
+  keyFinish: {fileID: 8300000, guid: 5ed0064032429ed419537431b422d0ea, type: 3}
+--- !u!82 &919163331
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 919163323}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: -6514915561845674498, guid: e62c89e87d63cf447a63b2b55d9915e8,
+    type: 2}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1001 &922627781
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -20604,6 +21824,7 @@ MonoBehaviour:
   breakSound: {fileID: 0}
   clipLength: 0
   maxFragmentsToSpawn: 5
+  spawnDistance: 3
 --- !u!65 &1007482117
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -23313,6 +24534,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1141720654}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 452579622511afe43b53ecc246b0e921,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1141720659}
   m_SourcePrefab: {fileID: 100100000, guid: 452579622511afe43b53ecc246b0e921, type: 3}
 --- !u!4 &1141720652 stripped
 Transform:
@@ -23428,6 +24653,7 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
   - name: Valentina Sombra
     portrait: {fileID: 21300000, guid: 42c18b3140bf76e4f8f9db8f511606c9, type: 3}
     message: What can I say?  I get the job done.
@@ -23435,6 +24661,7 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
   - name: Killian De la Cruz
     portrait: {fileID: 21300000, guid: bb7285438e471c14a93245b53474ff47, type: 3}
     message: "Heh.  So I can tell.  Well for what it\u2019s worth, you have my thanks,
@@ -23443,6 +24670,7 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
   - name: Valentina Sombra
     portrait: {fileID: 21300000, guid: 42c18b3140bf76e4f8f9db8f511606c9, type: 3}
     message: "It just might.  \u2018ppreciated."
@@ -23450,6 +24678,120 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
+  popupSounds:
+  - {fileID: 8300000, guid: bc451deb56795ce40917b027654d7416, type: 3}
+  - {fileID: 8300000, guid: 8a6126b18c4851641b7b3cd6aa700e66, type: 3}
+  - {fileID: 8300000, guid: c31d695bdf2123f4d99d7f600d6a4b36, type: 3}
+  keyTypes:
+  - {fileID: 8300000, guid: 84ca795cbd385cb459bc1963d221642e, type: 3}
+  - {fileID: 8300000, guid: bbc318af5f24e1e47a1339a92f14e81b, type: 3}
+  - {fileID: 8300000, guid: f616e4ac3439ffc4ab10d56101f1f216, type: 3}
+  - {fileID: 8300000, guid: a0ae216d1390e78489bdb942cab1d2d9, type: 3}
+  - {fileID: 8300000, guid: adb076eb8c07a5b49a6a38fbe446e2f6, type: 3}
+  - {fileID: 8300000, guid: 727d9d72d57719441a6136086e7fee9b, type: 3}
+  - {fileID: 8300000, guid: 576486f3cf4a19d4f94a3f11ee0afa9c, type: 3}
+  - {fileID: 8300000, guid: e2ee5188ea0a34f4397c09f98ca41988, type: 3}
+  - {fileID: 8300000, guid: 7db0a075bdaeffd44b92c34d6610b3aa, type: 3}
+  - {fileID: 8300000, guid: 6f543e7de00bfe94e822b643eb464b43, type: 3}
+  keyFinish: {fileID: 8300000, guid: 5ed0064032429ed419537431b422d0ea, type: 3}
+--- !u!82 &1141720659
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1141720653}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: -6514915561845674498, guid: e62c89e87d63cf447a63b2b55d9915e8,
+    type: 2}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &1146406445
 GameObject:
   m_ObjectHideFlags: 0
@@ -24177,6 +25519,7 @@ MonoBehaviour:
   interactionDistance: 3
   startPoint: {fileID: 430305952}
   endPoint: {fileID: 1228965232}
+  defaultLookAtTarget: {fileID: 0}
   anim: {fileID: 1183880699}
   movementAxis: 1
 --- !u!195 &1183880696
@@ -24253,6 +25596,7 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 8300000, guid: c149de9ef56c3b946b5abbe36b8ad893, type: 3}
   - name: Valentina Sombra
     portrait: {fileID: 21300000, guid: 42c18b3140bf76e4f8f9db8f511606c9, type: 3}
     message: "Wow partner, I heard rumors this here town has been in some real chaos,
@@ -24261,6 +25605,7 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
   - name: Dorian Knox
     portrait: {fileID: 21300000, guid: 8de8573151db0be46befc1deeeb1137d, type: 3}
     message: "As much as I would like to fight ya on that, I simply don\u2019t have
@@ -24270,6 +25615,7 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 8300000, guid: 8b0d1e3a7d2dec045867db452b8d214e, type: 3}
   - name: Valentina Sombra
     portrait: {fileID: 21300000, guid: 42c18b3140bf76e4f8f9db8f511606c9, type: 3}
     message: "Well I guess I can pitch in and help y\u2019all out, but it wont come
@@ -24278,6 +25624,7 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
   - name: Dorian Knox
     portrait: {fileID: 21300000, guid: 8de8573151db0be46befc1deeeb1137d, type: 3}
     message: "Oh! Forgive my rudeness, I\u2019m Dorian, uh sorry, I guess I should
@@ -24287,6 +25634,7 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 8300000, guid: e828955948417094eb4d2369b48186d3, type: 3}
   - name: Dorian Knox
     portrait: {fileID: 21300000, guid: 8de8573151db0be46befc1deeeb1137d, type: 3}
     message: "If I m-may, the past sheriff, Carrillo, she\u2019s been givin\u2019
@@ -24296,6 +25644,23 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 8300000, guid: 447dc7e9a5839ae47a8f5a06942cde87, type: 3}
+  popupSounds:
+  - {fileID: 8300000, guid: bc451deb56795ce40917b027654d7416, type: 3}
+  - {fileID: 8300000, guid: 8a6126b18c4851641b7b3cd6aa700e66, type: 3}
+  - {fileID: 8300000, guid: c31d695bdf2123f4d99d7f600d6a4b36, type: 3}
+  keyTypes:
+  - {fileID: 8300000, guid: 84ca795cbd385cb459bc1963d221642e, type: 3}
+  - {fileID: 8300000, guid: bbc318af5f24e1e47a1339a92f14e81b, type: 3}
+  - {fileID: 8300000, guid: f616e4ac3439ffc4ab10d56101f1f216, type: 3}
+  - {fileID: 8300000, guid: a0ae216d1390e78489bdb942cab1d2d9, type: 3}
+  - {fileID: 8300000, guid: adb076eb8c07a5b49a6a38fbe446e2f6, type: 3}
+  - {fileID: 8300000, guid: 727d9d72d57719441a6136086e7fee9b, type: 3}
+  - {fileID: 8300000, guid: 576486f3cf4a19d4f94a3f11ee0afa9c, type: 3}
+  - {fileID: 8300000, guid: e2ee5188ea0a34f4397c09f98ca41988, type: 3}
+  - {fileID: 8300000, guid: 7db0a075bdaeffd44b92c34d6610b3aa, type: 3}
+  - {fileID: 8300000, guid: 6f543e7de00bfe94e822b643eb464b43, type: 3}
+  keyFinish: {fileID: 8300000, guid: 5ed0064032429ed419537431b422d0ea, type: 3}
 --- !u!95 &1183880699 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: 3c275a30d02cb0d4590eb6e6dc96d5dd,
@@ -24336,6 +25701,103 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 3.2039046
   m_Center: {x: 0.0000003351707, y: 0.5975222, z: -0.14605999}
+--- !u!82 &1183880702
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1183880693}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: -6514915561845674498, guid: e62c89e87d63cf447a63b2b55d9915e8,
+    type: 2}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1001 &1185662786
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -24555,6 +26017,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1190906770}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 65b7b8f97e0c6fa4d905f4fc5726a8a9,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1190906772}
   m_SourcePrefab: {fileID: 100100000, guid: 65b7b8f97e0c6fa4d905f4fc5726a8a9, type: 3}
 --- !u!4 &1190906762 stripped
 Transform:
@@ -24585,6 +26051,7 @@ MonoBehaviour:
   interactionDistance: 3
   startPoint: {fileID: 697844199}
   endPoint: {fileID: 697844199}
+  defaultLookAtTarget: {fileID: 0}
   anim: {fileID: 1190906769}
   movementAxis: 1
 --- !u!195 &1190906766
@@ -24660,6 +26127,7 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 8300000, guid: 07f4ae2dfb8d24f4bb363b1e9b7d0304, type: 3}
   - name: Valentina Sombra
     portrait: {fileID: 21300000, guid: 42c18b3140bf76e4f8f9db8f511606c9, type: 3}
     message: ' Thanks? Sayin somethin like that out of the bat is not what I expected.'
@@ -24667,6 +26135,7 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
   - name: Millie Hopps
     portrait: {fileID: 21300000, guid: a75b4da1dec375a4ead49c821fe4a7ed, type: 3}
     message: Oh! My apologies! Just doin my best to keep everyone in high spirits
@@ -24675,6 +26144,7 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 8300000, guid: d040c8452cb51e347883140114c8e8a1, type: 3}
   - name: Valentina Sombra
     portrait: {fileID: 21300000, guid: 42c18b3140bf76e4f8f9db8f511606c9, type: 3}
     message: "I can see that, I\u2019ll be back here for the pep rally I suppose"
@@ -24682,6 +26152,23 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
+  popupSounds:
+  - {fileID: 8300000, guid: bc451deb56795ce40917b027654d7416, type: 3}
+  - {fileID: 8300000, guid: 8a6126b18c4851641b7b3cd6aa700e66, type: 3}
+  - {fileID: 8300000, guid: c31d695bdf2123f4d99d7f600d6a4b36, type: 3}
+  keyTypes:
+  - {fileID: 8300000, guid: 84ca795cbd385cb459bc1963d221642e, type: 3}
+  - {fileID: 8300000, guid: bbc318af5f24e1e47a1339a92f14e81b, type: 3}
+  - {fileID: 8300000, guid: f616e4ac3439ffc4ab10d56101f1f216, type: 3}
+  - {fileID: 8300000, guid: a0ae216d1390e78489bdb942cab1d2d9, type: 3}
+  - {fileID: 8300000, guid: adb076eb8c07a5b49a6a38fbe446e2f6, type: 3}
+  - {fileID: 8300000, guid: 727d9d72d57719441a6136086e7fee9b, type: 3}
+  - {fileID: 8300000, guid: 576486f3cf4a19d4f94a3f11ee0afa9c, type: 3}
+  - {fileID: 8300000, guid: e2ee5188ea0a34f4397c09f98ca41988, type: 3}
+  - {fileID: 8300000, guid: 7db0a075bdaeffd44b92c34d6610b3aa, type: 3}
+  - {fileID: 8300000, guid: 6f543e7de00bfe94e822b643eb464b43, type: 3}
+  keyFinish: {fileID: 8300000, guid: 5ed0064032429ed419537431b422d0ea, type: 3}
 --- !u!95 &1190906769 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: 65b7b8f97e0c6fa4d905f4fc5726a8a9,
@@ -24722,6 +26209,103 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactionPrompt: {fileID: 1938446663}
+--- !u!82 &1190906772
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1190906763}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: -6514915561845674498, guid: e62c89e87d63cf447a63b2b55d9915e8,
+    type: 2}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1001 &1199375435
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -25026,6 +26610,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1201096270}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 452579622511afe43b53ecc246b0e921,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1201096275}
   m_SourcePrefab: {fileID: 100100000, guid: 452579622511afe43b53ecc246b0e921, type: 3}
 --- !u!4 &1201096268 stripped
 Transform:
@@ -25140,6 +26728,7 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
   - name: Valentina Sombra
     portrait: {fileID: 21300000, guid: 42c18b3140bf76e4f8f9db8f511606c9, type: 3}
     message: "Not too new, I\u2019ve just saved yer town."
@@ -25147,6 +26736,7 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
   - name: Killian De la Cruz
     portrait: {fileID: 21300000, guid: bb7285438e471c14a93245b53474ff47, type: 3}
     message: "Ah, so that\u2019d be you then I have to thank.  That case, first ride
@@ -25155,6 +26745,7 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
   - name: Valentina Sombra
     portrait: {fileID: 21300000, guid: 42c18b3140bf76e4f8f9db8f511606c9, type: 3}
     message: "I\u2019m overcome with confidence.  I\u2019ll pass for now."
@@ -25162,6 +26753,120 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
+  popupSounds:
+  - {fileID: 8300000, guid: bc451deb56795ce40917b027654d7416, type: 3}
+  - {fileID: 8300000, guid: 8a6126b18c4851641b7b3cd6aa700e66, type: 3}
+  - {fileID: 8300000, guid: c31d695bdf2123f4d99d7f600d6a4b36, type: 3}
+  keyTypes:
+  - {fileID: 8300000, guid: 84ca795cbd385cb459bc1963d221642e, type: 3}
+  - {fileID: 8300000, guid: bbc318af5f24e1e47a1339a92f14e81b, type: 3}
+  - {fileID: 8300000, guid: f616e4ac3439ffc4ab10d56101f1f216, type: 3}
+  - {fileID: 8300000, guid: a0ae216d1390e78489bdb942cab1d2d9, type: 3}
+  - {fileID: 8300000, guid: adb076eb8c07a5b49a6a38fbe446e2f6, type: 3}
+  - {fileID: 8300000, guid: 727d9d72d57719441a6136086e7fee9b, type: 3}
+  - {fileID: 8300000, guid: 576486f3cf4a19d4f94a3f11ee0afa9c, type: 3}
+  - {fileID: 8300000, guid: e2ee5188ea0a34f4397c09f98ca41988, type: 3}
+  - {fileID: 8300000, guid: 7db0a075bdaeffd44b92c34d6610b3aa, type: 3}
+  - {fileID: 8300000, guid: 6f543e7de00bfe94e822b643eb464b43, type: 3}
+  keyFinish: {fileID: 8300000, guid: 5ed0064032429ed419537431b422d0ea, type: 3}
+--- !u!82 &1201096275
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1201096269}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: -6514915561845674498, guid: e62c89e87d63cf447a63b2b55d9915e8,
+    type: 2}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1001 &1204890562
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -26750,6 +28455,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1330134408}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: e63c727a418cf494a8ba936994df9445,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1330134414}
   m_SourcePrefab: {fileID: 100100000, guid: e63c727a418cf494a8ba936994df9445, type: 3}
 --- !u!4 &1330134405 stripped
 Transform:
@@ -26820,6 +28529,7 @@ MonoBehaviour:
   interactionDistance: 3
   startPoint: {fileID: 1287363665}
   endPoint: {fileID: 1722772977}
+  defaultLookAtTarget: {fileID: 0}
   anim: {fileID: 1330134407}
   movementAxis: 0
 --- !u!195 &1330134411
@@ -26896,6 +28606,7 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
   - name: Valentina Sombra
     portrait: {fileID: 21300000, guid: 42c18b3140bf76e4f8f9db8f511606c9, type: 3}
     message: "Hmm.  It\u2019s taken care of.  Big Daddy\u2019s restin\u2019 easy
@@ -26904,6 +28615,7 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
   - name: Pepe Paz
     portrait: {fileID: 21300000, guid: edcf0bfbfd4554e409ed8559841e46d4, type: 3}
     message: "That\u2019s some relief, I guess.  Poor boy.  Things ain\u2019t gonna
@@ -26913,6 +28625,120 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
+  popupSounds:
+  - {fileID: 8300000, guid: bc451deb56795ce40917b027654d7416, type: 3}
+  - {fileID: 8300000, guid: 8a6126b18c4851641b7b3cd6aa700e66, type: 3}
+  - {fileID: 8300000, guid: c31d695bdf2123f4d99d7f600d6a4b36, type: 3}
+  keyTypes:
+  - {fileID: 8300000, guid: 84ca795cbd385cb459bc1963d221642e, type: 3}
+  - {fileID: 8300000, guid: bbc318af5f24e1e47a1339a92f14e81b, type: 3}
+  - {fileID: 8300000, guid: f616e4ac3439ffc4ab10d56101f1f216, type: 3}
+  - {fileID: 8300000, guid: a0ae216d1390e78489bdb942cab1d2d9, type: 3}
+  - {fileID: 8300000, guid: adb076eb8c07a5b49a6a38fbe446e2f6, type: 3}
+  - {fileID: 8300000, guid: 727d9d72d57719441a6136086e7fee9b, type: 3}
+  - {fileID: 8300000, guid: 576486f3cf4a19d4f94a3f11ee0afa9c, type: 3}
+  - {fileID: 8300000, guid: e2ee5188ea0a34f4397c09f98ca41988, type: 3}
+  - {fileID: 8300000, guid: 7db0a075bdaeffd44b92c34d6610b3aa, type: 3}
+  - {fileID: 8300000, guid: 6f543e7de00bfe94e822b643eb464b43, type: 3}
+  keyFinish: {fileID: 8300000, guid: 5ed0064032429ed419537431b422d0ea, type: 3}
+--- !u!82 &1330134414
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1330134406}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: -6514915561845674498, guid: e62c89e87d63cf447a63b2b55d9915e8,
+    type: 2}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1001 &1335042098
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -29040,6 +30866,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1475704166}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: e63c727a418cf494a8ba936994df9445,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1475704172}
   m_SourcePrefab: {fileID: 100100000, guid: e63c727a418cf494a8ba936994df9445, type: 3}
 --- !u!4 &1475704163 stripped
 Transform:
@@ -29110,6 +30940,7 @@ MonoBehaviour:
   interactionDistance: 3
   startPoint: {fileID: 1146406446}
   endPoint: {fileID: 1126697072}
+  defaultLookAtTarget: {fileID: 0}
   anim: {fileID: 1475704165}
   movementAxis: 0
 --- !u!195 &1475704169
@@ -29186,6 +31017,7 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
   - name: Valentina Sombra
     portrait: {fileID: 21300000, guid: 42c18b3140bf76e4f8f9db8f511606c9, type: 3}
     message: "Well, I s\u2019ppose.  How\u2019s ranchin\u2019 been treatin\u2019
@@ -29194,6 +31026,7 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
   - name: Pepe Paz
     portrait: {fileID: 21300000, guid: edcf0bfbfd4554e409ed8559841e46d4, type: 3}
     message: "Gotten\u2019 better.  Found a young heifer pokin\u2019 round Big Daddy\u2019s
@@ -29203,6 +31036,7 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
   - name: Valentina Sombra
     portrait: {fileID: 21300000, guid: 42c18b3140bf76e4f8f9db8f511606c9, type: 3}
     message: "Well she\u2019d be lucky to have ya."
@@ -29210,6 +31044,7 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
   - name: Pepe Paz
     portrait: {fileID: 21300000, guid: edcf0bfbfd4554e409ed8559841e46d4, type: 3}
     message: "\u2019ppreciate ya sayin\u2019 so.  See ya \u2018round!"
@@ -29217,6 +31052,120 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
+  popupSounds:
+  - {fileID: 8300000, guid: bc451deb56795ce40917b027654d7416, type: 3}
+  - {fileID: 8300000, guid: 8a6126b18c4851641b7b3cd6aa700e66, type: 3}
+  - {fileID: 8300000, guid: c31d695bdf2123f4d99d7f600d6a4b36, type: 3}
+  keyTypes:
+  - {fileID: 8300000, guid: 84ca795cbd385cb459bc1963d221642e, type: 3}
+  - {fileID: 8300000, guid: bbc318af5f24e1e47a1339a92f14e81b, type: 3}
+  - {fileID: 8300000, guid: f616e4ac3439ffc4ab10d56101f1f216, type: 3}
+  - {fileID: 8300000, guid: a0ae216d1390e78489bdb942cab1d2d9, type: 3}
+  - {fileID: 8300000, guid: adb076eb8c07a5b49a6a38fbe446e2f6, type: 3}
+  - {fileID: 8300000, guid: 727d9d72d57719441a6136086e7fee9b, type: 3}
+  - {fileID: 8300000, guid: 576486f3cf4a19d4f94a3f11ee0afa9c, type: 3}
+  - {fileID: 8300000, guid: e2ee5188ea0a34f4397c09f98ca41988, type: 3}
+  - {fileID: 8300000, guid: 7db0a075bdaeffd44b92c34d6610b3aa, type: 3}
+  - {fileID: 8300000, guid: 6f543e7de00bfe94e822b643eb464b43, type: 3}
+  keyFinish: {fileID: 8300000, guid: 5ed0064032429ed419537431b422d0ea, type: 3}
+--- !u!82 &1475704172
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1475704164}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: -6514915561845674498, guid: e62c89e87d63cf447a63b2b55d9915e8,
+    type: 2}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1001 &1478501383
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -29440,6 +31389,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1485970478}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 3c275a30d02cb0d4590eb6e6dc96d5dd,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1485970484}
   m_SourcePrefab: {fileID: 100100000, guid: 3c275a30d02cb0d4590eb6e6dc96d5dd, type: 3}
 --- !u!4 &1485970475 stripped
 Transform:
@@ -29510,6 +31463,7 @@ MonoBehaviour:
   interactionDistance: 3
   startPoint: {fileID: 1078556689}
   endPoint: {fileID: 983429985}
+  defaultLookAtTarget: {fileID: 0}
   anim: {fileID: 1485970477}
   movementAxis: 1
 --- !u!195 &1485970481
@@ -29587,6 +31541,7 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
   - name: Valentina Sombra
     portrait: {fileID: 21300000, guid: 42c18b3140bf76e4f8f9db8f511606c9, type: 3}
     message: "You\u2019d be s\u2019pposin\u2019 right."
@@ -29594,6 +31549,7 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
   - name: Dorian Knox
     portrait: {fileID: 21300000, guid: 8de8573151db0be46befc1deeeb1137d, type: 3}
     message: "I see.  If I may ask then, what was happenin\u2019 with her?"
@@ -29601,6 +31557,7 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
   - name: Valentina Sombra
     portrait: {fileID: 21300000, guid: 42c18b3140bf76e4f8f9db8f511606c9, type: 3}
     message: "She thought the town was in danger and that she was protectin\u2019
@@ -29609,6 +31566,7 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
   - name: Dorian Knox
     portrait: {fileID: 21300000, guid: 8de8573151db0be46befc1deeeb1137d, type: 3}
     message: "Hrmm.  Figures she thought she was doing the right thing.  Never would\u2019ve
@@ -29618,6 +31576,7 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
   - name: Valentina Sombra
     portrait: {fileID: 21300000, guid: 42c18b3140bf76e4f8f9db8f511606c9, type: 3}
     message: "Don\u2019t mention it."
@@ -29625,6 +31584,120 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
+  popupSounds:
+  - {fileID: 8300000, guid: bc451deb56795ce40917b027654d7416, type: 3}
+  - {fileID: 8300000, guid: 8a6126b18c4851641b7b3cd6aa700e66, type: 3}
+  - {fileID: 8300000, guid: c31d695bdf2123f4d99d7f600d6a4b36, type: 3}
+  keyTypes:
+  - {fileID: 8300000, guid: 84ca795cbd385cb459bc1963d221642e, type: 3}
+  - {fileID: 8300000, guid: bbc318af5f24e1e47a1339a92f14e81b, type: 3}
+  - {fileID: 8300000, guid: f616e4ac3439ffc4ab10d56101f1f216, type: 3}
+  - {fileID: 8300000, guid: a0ae216d1390e78489bdb942cab1d2d9, type: 3}
+  - {fileID: 8300000, guid: adb076eb8c07a5b49a6a38fbe446e2f6, type: 3}
+  - {fileID: 8300000, guid: 727d9d72d57719441a6136086e7fee9b, type: 3}
+  - {fileID: 8300000, guid: 576486f3cf4a19d4f94a3f11ee0afa9c, type: 3}
+  - {fileID: 8300000, guid: e2ee5188ea0a34f4397c09f98ca41988, type: 3}
+  - {fileID: 8300000, guid: 7db0a075bdaeffd44b92c34d6610b3aa, type: 3}
+  - {fileID: 8300000, guid: 6f543e7de00bfe94e822b643eb464b43, type: 3}
+  keyFinish: {fileID: 8300000, guid: 5ed0064032429ed419537431b422d0ea, type: 3}
+--- !u!82 &1485970484
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1485970476}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: -6514915561845674498, guid: e62c89e87d63cf447a63b2b55d9915e8,
+    type: 2}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &1488518205
 GameObject:
   m_ObjectHideFlags: 0
@@ -30386,7 +32459,7 @@ PrefabInstance:
     - target: {fileID: 3403904910980620515, guid: 6cebc20f4d85d6a4f93b8b119157a33c,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.9641565
+      value: -0.9642982
       objectReference: {fileID: 0}
     - target: {fileID: 3403904910980620515, guid: 6cebc20f4d85d6a4f93b8b119157a33c,
         type: 3}
@@ -30396,7 +32469,7 @@ PrefabInstance:
     - target: {fileID: 3403904910980620515, guid: 6cebc20f4d85d6a4f93b8b119157a33c,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1.0273948
+      value: 1.0275115
       objectReference: {fileID: 0}
     - target: {fileID: 3403904910980620515, guid: 6cebc20f4d85d6a4f93b8b119157a33c,
         type: 3}
@@ -30521,12 +32594,12 @@ PrefabInstance:
     - target: {fileID: 7169721200175234842, guid: 6cebc20f4d85d6a4f93b8b119157a33c,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.000022295784
+      value: -0.000022315557
       objectReference: {fileID: 0}
     - target: {fileID: 7169721200175234842, guid: 6cebc20f4d85d6a4f93b8b119157a33c,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.000005449003
+      value: 0.0000054538355
       objectReference: {fileID: 0}
     - target: {fileID: 7172346989808765903, guid: 6cebc20f4d85d6a4f93b8b119157a33c,
         type: 3}
@@ -30616,12 +32689,12 @@ PrefabInstance:
     - target: {fileID: 8764098702666554367, guid: 6cebc20f4d85d6a4f93b8b119157a33c,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.000022295784
+      value: -0.000022315557
       objectReference: {fileID: 0}
     - target: {fileID: 8764098702666554367, guid: 6cebc20f4d85d6a4f93b8b119157a33c,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.000005449003
+      value: 0.0000054538355
       objectReference: {fileID: 0}
     - target: {fileID: 9142747722827427783, guid: 6cebc20f4d85d6a4f93b8b119157a33c,
         type: 3}
@@ -33837,6 +35910,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1750645266}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 65b7b8f97e0c6fa4d905f4fc5726a8a9,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1750645272}
   m_SourcePrefab: {fileID: 100100000, guid: 65b7b8f97e0c6fa4d905f4fc5726a8a9, type: 3}
 --- !u!4 &1750645263 stripped
 Transform:
@@ -33907,6 +35984,7 @@ MonoBehaviour:
   interactionDistance: 3
   startPoint: {fileID: 891544487}
   endPoint: {fileID: 891544487}
+  defaultLookAtTarget: {fileID: 0}
   anim: {fileID: 1750645265}
   movementAxis: 1
 --- !u!195 &1750645269
@@ -33983,6 +36061,7 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
   - name: Valentina Sombra
     portrait: {fileID: 21300000, guid: 42c18b3140bf76e4f8f9db8f511606c9, type: 3}
     message: "Few of those your pard\u2019ner tried smashin\u2019 into me, but I
@@ -33991,6 +36070,7 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
   - name: Millie Hopps
     portrait: {fileID: 21300000, guid: a75b4da1dec375a4ead49c821fe4a7ed, type: 3}
     message: That you did!
@@ -33998,6 +36078,120 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
+  popupSounds:
+  - {fileID: 8300000, guid: bc451deb56795ce40917b027654d7416, type: 3}
+  - {fileID: 8300000, guid: 8a6126b18c4851641b7b3cd6aa700e66, type: 3}
+  - {fileID: 8300000, guid: c31d695bdf2123f4d99d7f600d6a4b36, type: 3}
+  keyTypes:
+  - {fileID: 8300000, guid: 84ca795cbd385cb459bc1963d221642e, type: 3}
+  - {fileID: 8300000, guid: bbc318af5f24e1e47a1339a92f14e81b, type: 3}
+  - {fileID: 8300000, guid: f616e4ac3439ffc4ab10d56101f1f216, type: 3}
+  - {fileID: 8300000, guid: a0ae216d1390e78489bdb942cab1d2d9, type: 3}
+  - {fileID: 8300000, guid: adb076eb8c07a5b49a6a38fbe446e2f6, type: 3}
+  - {fileID: 8300000, guid: 727d9d72d57719441a6136086e7fee9b, type: 3}
+  - {fileID: 8300000, guid: 576486f3cf4a19d4f94a3f11ee0afa9c, type: 3}
+  - {fileID: 8300000, guid: e2ee5188ea0a34f4397c09f98ca41988, type: 3}
+  - {fileID: 8300000, guid: 7db0a075bdaeffd44b92c34d6610b3aa, type: 3}
+  - {fileID: 8300000, guid: 6f543e7de00bfe94e822b643eb464b43, type: 3}
+  keyFinish: {fileID: 8300000, guid: 5ed0064032429ed419537431b422d0ea, type: 3}
+--- !u!82 &1750645272
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1750645264}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: -6514915561845674498, guid: e62c89e87d63cf447a63b2b55d9915e8,
+    type: 2}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1001 &1762249499
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -34338,6 +36532,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1773493349}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: bba5759de132c8240b6ec81a67ede12d,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1773493354}
   m_SourcePrefab: {fileID: 100100000, guid: bba5759de132c8240b6ec81a67ede12d, type: 3}
 --- !u!4 &1773493347 stripped
 Transform:
@@ -34452,6 +36650,7 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
   - name: Valentina Sombra
     portrait: {fileID: 21300000, guid: 42c18b3140bf76e4f8f9db8f511606c9, type: 3}
     message: "Hrmm.  I did.  He\u2019s with his god now."
@@ -34459,6 +36658,7 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
   - name: Lucero Marin
     portrait: {fileID: 21300000, guid: 0a3b977c8f0578a44961bcf606e7ad02, type: 3}
     message: "I should thank you then.  Things won\u2019t be the same without him
@@ -34467,6 +36667,7 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
   - name: Valentina Sombra
     portrait: {fileID: 21300000, guid: 42c18b3140bf76e4f8f9db8f511606c9, type: 3}
     message: No need to thank me.
@@ -34474,6 +36675,7 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
   - name: Lucero Marin
     portrait: {fileID: 21300000, guid: 0a3b977c8f0578a44961bcf606e7ad02, type: 3}
     message: God be with you, child.
@@ -34481,6 +36683,7 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
   - name: Valentina Sombra
     portrait: {fileID: 21300000, guid: 42c18b3140bf76e4f8f9db8f511606c9, type: 3}
     message: Hmph.  With you too, I suppose.
@@ -34488,6 +36691,120 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
+  popupSounds:
+  - {fileID: 8300000, guid: bc451deb56795ce40917b027654d7416, type: 3}
+  - {fileID: 8300000, guid: 8a6126b18c4851641b7b3cd6aa700e66, type: 3}
+  - {fileID: 8300000, guid: c31d695bdf2123f4d99d7f600d6a4b36, type: 3}
+  keyTypes:
+  - {fileID: 8300000, guid: 84ca795cbd385cb459bc1963d221642e, type: 3}
+  - {fileID: 8300000, guid: bbc318af5f24e1e47a1339a92f14e81b, type: 3}
+  - {fileID: 8300000, guid: f616e4ac3439ffc4ab10d56101f1f216, type: 3}
+  - {fileID: 8300000, guid: a0ae216d1390e78489bdb942cab1d2d9, type: 3}
+  - {fileID: 8300000, guid: adb076eb8c07a5b49a6a38fbe446e2f6, type: 3}
+  - {fileID: 8300000, guid: 727d9d72d57719441a6136086e7fee9b, type: 3}
+  - {fileID: 8300000, guid: 576486f3cf4a19d4f94a3f11ee0afa9c, type: 3}
+  - {fileID: 8300000, guid: e2ee5188ea0a34f4397c09f98ca41988, type: 3}
+  - {fileID: 8300000, guid: 7db0a075bdaeffd44b92c34d6610b3aa, type: 3}
+  - {fileID: 8300000, guid: 6f543e7de00bfe94e822b643eb464b43, type: 3}
+  keyFinish: {fileID: 8300000, guid: 5ed0064032429ed419537431b422d0ea, type: 3}
+--- !u!82 &1773493354
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1773493348}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: -6514915561845674498, guid: e62c89e87d63cf447a63b2b55d9915e8,
+    type: 2}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &1776050635
 GameObject:
   m_ObjectHideFlags: 0
@@ -35219,6 +37536,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1824446425}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 9e29230562b58244b8240c933a9e2cbd,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1824446430}
   m_SourcePrefab: {fileID: 100100000, guid: 9e29230562b58244b8240c933a9e2cbd, type: 3}
 --- !u!4 &1824446423 stripped
 Transform:
@@ -35332,6 +37653,7 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
   - name: Valentina Sombra
     portrait: {fileID: 21300000, guid: 42c18b3140bf76e4f8f9db8f511606c9, type: 3}
     message: "Been here a small bit helpin\u2019 folks out.  Got some work need doin\u2019?"
@@ -35339,6 +37661,7 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
   - name: Robin Hawkins
     portrait: {fileID: 21300000, guid: cfab25da5cc5fe043a2a5323d581eb12, type: 3}
     message: "Heh.  Not right now, no, but let me know if there\u2019s anything I
@@ -35347,6 +37670,7 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
   - name: Valentina Sombra
     portrait: {fileID: 21300000, guid: 42c18b3140bf76e4f8f9db8f511606c9, type: 3}
     message: Noted.  Thanks.
@@ -35354,6 +37678,120 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
+  popupSounds:
+  - {fileID: 8300000, guid: bc451deb56795ce40917b027654d7416, type: 3}
+  - {fileID: 8300000, guid: 8a6126b18c4851641b7b3cd6aa700e66, type: 3}
+  - {fileID: 8300000, guid: c31d695bdf2123f4d99d7f600d6a4b36, type: 3}
+  keyTypes:
+  - {fileID: 8300000, guid: 84ca795cbd385cb459bc1963d221642e, type: 3}
+  - {fileID: 8300000, guid: bbc318af5f24e1e47a1339a92f14e81b, type: 3}
+  - {fileID: 8300000, guid: f616e4ac3439ffc4ab10d56101f1f216, type: 3}
+  - {fileID: 8300000, guid: a0ae216d1390e78489bdb942cab1d2d9, type: 3}
+  - {fileID: 8300000, guid: adb076eb8c07a5b49a6a38fbe446e2f6, type: 3}
+  - {fileID: 8300000, guid: 727d9d72d57719441a6136086e7fee9b, type: 3}
+  - {fileID: 8300000, guid: 576486f3cf4a19d4f94a3f11ee0afa9c, type: 3}
+  - {fileID: 8300000, guid: e2ee5188ea0a34f4397c09f98ca41988, type: 3}
+  - {fileID: 8300000, guid: 7db0a075bdaeffd44b92c34d6610b3aa, type: 3}
+  - {fileID: 8300000, guid: 6f543e7de00bfe94e822b643eb464b43, type: 3}
+  keyFinish: {fileID: 8300000, guid: 5ed0064032429ed419537431b422d0ea, type: 3}
+--- !u!82 &1824446430
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1824446424}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: -6514915561845674498, guid: e62c89e87d63cf447a63b2b55d9915e8,
+    type: 2}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &1838152162
 GameObject:
   m_ObjectHideFlags: 0
@@ -36671,6 +39109,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1884367838}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 5f324efb68c71a548a72ccaf8cfbe1c0,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1884367840}
   m_SourcePrefab: {fileID: 100100000, guid: 5f324efb68c71a548a72ccaf8cfbe1c0, type: 3}
 --- !u!4 &1884367830 stripped
 Transform:
@@ -36770,6 +39212,7 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
   - name: Valentina Sombra
     portrait: {fileID: 21300000, guid: 42c18b3140bf76e4f8f9db8f511606c9, type: 3}
     message: "That\u2019d be right."
@@ -36777,6 +39220,7 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
   - name: Dalia Rios
     portrait: {fileID: 21300000, guid: fc4838ac898b44a44b9d542303f46294, type: 3}
     message: "Well, you have my deepes\u2019 thanks, then!  Soon as I get my shop
@@ -36786,6 +39230,7 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
   - name: Valentina Sombra
     portrait: {fileID: 21300000, guid: 42c18b3140bf76e4f8f9db8f511606c9, type: 3}
     message: "I\u2019ll consider it, thanks."
@@ -36793,6 +39238,23 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
+  popupSounds:
+  - {fileID: 8300000, guid: bc451deb56795ce40917b027654d7416, type: 3}
+  - {fileID: 8300000, guid: 8a6126b18c4851641b7b3cd6aa700e66, type: 3}
+  - {fileID: 8300000, guid: c31d695bdf2123f4d99d7f600d6a4b36, type: 3}
+  keyTypes:
+  - {fileID: 8300000, guid: 84ca795cbd385cb459bc1963d221642e, type: 3}
+  - {fileID: 8300000, guid: bbc318af5f24e1e47a1339a92f14e81b, type: 3}
+  - {fileID: 8300000, guid: f616e4ac3439ffc4ab10d56101f1f216, type: 3}
+  - {fileID: 8300000, guid: a0ae216d1390e78489bdb942cab1d2d9, type: 3}
+  - {fileID: 8300000, guid: adb076eb8c07a5b49a6a38fbe446e2f6, type: 3}
+  - {fileID: 8300000, guid: 727d9d72d57719441a6136086e7fee9b, type: 3}
+  - {fileID: 8300000, guid: 576486f3cf4a19d4f94a3f11ee0afa9c, type: 3}
+  - {fileID: 8300000, guid: e2ee5188ea0a34f4397c09f98ca41988, type: 3}
+  - {fileID: 8300000, guid: 7db0a075bdaeffd44b92c34d6610b3aa, type: 3}
+  - {fileID: 8300000, guid: 6f543e7de00bfe94e822b643eb464b43, type: 3}
+  keyFinish: {fileID: 8300000, guid: 5ed0064032429ed419537431b422d0ea, type: 3}
 --- !u!114 &1884367836
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -36810,6 +39272,7 @@ MonoBehaviour:
   interactionDistance: 3
   startPoint: {fileID: 510868444}
   endPoint: {fileID: 510868444}
+  defaultLookAtTarget: {fileID: 0}
   anim: {fileID: 1884367837}
   movementAxis: 1
 --- !u!95 &1884367837 stripped
@@ -36852,6 +39315,103 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactionPrompt: {fileID: 1938446663}
+--- !u!82 &1884367840
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1884367831}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: -6514915561845674498, guid: e62c89e87d63cf447a63b2b55d9915e8,
+    type: 2}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &1909460561
 GameObject:
   m_ObjectHideFlags: 0
@@ -37846,6 +40406,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1945600690}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 5f324efb68c71a548a72ccaf8cfbe1c0,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1945600696}
   m_SourcePrefab: {fileID: 100100000, guid: 5f324efb68c71a548a72ccaf8cfbe1c0, type: 3}
 --- !u!4 &1945600687 stripped
 Transform:
@@ -37916,6 +40480,7 @@ MonoBehaviour:
   interactionDistance: 3
   startPoint: {fileID: 381240917}
   endPoint: {fileID: 381240917}
+  defaultLookAtTarget: {fileID: 0}
   anim: {fileID: 1945600689}
   movementAxis: 1
 --- !u!195 &1945600693
@@ -38003,6 +40568,7 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
   - name: Valentina Sombra
     portrait: {fileID: 21300000, guid: 42c18b3140bf76e4f8f9db8f511606c9, type: 3}
     message: I did.
@@ -38010,6 +40576,7 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
   - name: Dalia Rios
     portrait: {fileID: 21300000, guid: fc4838ac898b44a44b9d542303f46294, type: 3}
     message: "And she\u2026is she?"
@@ -38017,6 +40584,7 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
   - name: Valentina Sombra
     portrait: {fileID: 21300000, guid: 42c18b3140bf76e4f8f9db8f511606c9, type: 3}
     message: "She\u2019s at peace now; don\u2019t worry."
@@ -38024,6 +40592,7 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
   - name: Dalia Rios
     portrait: {fileID: 21300000, guid: fc4838ac898b44a44b9d542303f46294, type: 3}
     message: "I\u2026thank you.  Truly; thank you, stranger.  To know Poppy is at
@@ -38032,6 +40601,7 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
   - name: Valentina Sombra
     portrait: {fileID: 21300000, guid: 42c18b3140bf76e4f8f9db8f511606c9, type: 3}
     message: "Don\u2019t mention it."
@@ -38039,6 +40609,120 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
+  popupSounds:
+  - {fileID: 8300000, guid: bc451deb56795ce40917b027654d7416, type: 3}
+  - {fileID: 8300000, guid: 8a6126b18c4851641b7b3cd6aa700e66, type: 3}
+  - {fileID: 8300000, guid: c31d695bdf2123f4d99d7f600d6a4b36, type: 3}
+  keyTypes:
+  - {fileID: 8300000, guid: 84ca795cbd385cb459bc1963d221642e, type: 3}
+  - {fileID: 8300000, guid: bbc318af5f24e1e47a1339a92f14e81b, type: 3}
+  - {fileID: 8300000, guid: f616e4ac3439ffc4ab10d56101f1f216, type: 3}
+  - {fileID: 8300000, guid: a0ae216d1390e78489bdb942cab1d2d9, type: 3}
+  - {fileID: 8300000, guid: adb076eb8c07a5b49a6a38fbe446e2f6, type: 3}
+  - {fileID: 8300000, guid: 727d9d72d57719441a6136086e7fee9b, type: 3}
+  - {fileID: 8300000, guid: 576486f3cf4a19d4f94a3f11ee0afa9c, type: 3}
+  - {fileID: 8300000, guid: e2ee5188ea0a34f4397c09f98ca41988, type: 3}
+  - {fileID: 8300000, guid: 7db0a075bdaeffd44b92c34d6610b3aa, type: 3}
+  - {fileID: 8300000, guid: 6f543e7de00bfe94e822b643eb464b43, type: 3}
+  keyFinish: {fileID: 8300000, guid: 5ed0064032429ed419537431b422d0ea, type: 3}
+--- !u!82 &1945600696
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1945600688}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: -6514915561845674498, guid: e62c89e87d63cf447a63b2b55d9915e8,
+    type: 2}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1001 &1946200659
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -39459,6 +42143,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 2033881353}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a3b05c11e8f661e45a5e6beef30133e1,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2033881355}
   m_SourcePrefab: {fileID: 100100000, guid: a3b05c11e8f661e45a5e6beef30133e1, type: 3}
 --- !u!4 &2033881345 stripped
 Transform:
@@ -39489,6 +42177,7 @@ MonoBehaviour:
   interactionDistance: 3
   startPoint: {fileID: 2038507338}
   endPoint: {fileID: 2038507338}
+  defaultLookAtTarget: {fileID: 0}
   anim: {fileID: 2033881352}
   movementAxis: 1
 --- !u!195 &2033881349
@@ -39564,6 +42253,7 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
   - name: Calista Bautista
     portrait: {fileID: 21300000, guid: 323c2b5a81d39274cac1dff2cfe3830f, type: 3}
     message: "Hm, what?  Oh; yes, I\u2019m fine.  Just haven\u2019t been sleeping
@@ -39572,6 +42262,7 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
   - name: Valentina Sombra
     portrait: {fileID: 21300000, guid: 42c18b3140bf76e4f8f9db8f511606c9, type: 3}
     message: "If it were \u2018em ghosts \u2018round \u2018ere keeping you up, they\u2019re
@@ -39580,6 +42271,7 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
   - name: Calista Bautista
     portrait: {fileID: 21300000, guid: 323c2b5a81d39274cac1dff2cfe3830f, type: 3}
     message: "No, it wasn\u2019t them.  Not those ghosts at least; it\u2019s\u2026it
@@ -39588,6 +42280,7 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
   - name: Valentina Sombra
     portrait: {fileID: 21300000, guid: 42c18b3140bf76e4f8f9db8f511606c9, type: 3}
     message: Suit yerself, then.
@@ -39595,6 +42288,23 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
+  popupSounds:
+  - {fileID: 8300000, guid: bc451deb56795ce40917b027654d7416, type: 3}
+  - {fileID: 8300000, guid: 8a6126b18c4851641b7b3cd6aa700e66, type: 3}
+  - {fileID: 8300000, guid: c31d695bdf2123f4d99d7f600d6a4b36, type: 3}
+  keyTypes:
+  - {fileID: 8300000, guid: 84ca795cbd385cb459bc1963d221642e, type: 3}
+  - {fileID: 8300000, guid: bbc318af5f24e1e47a1339a92f14e81b, type: 3}
+  - {fileID: 8300000, guid: f616e4ac3439ffc4ab10d56101f1f216, type: 3}
+  - {fileID: 8300000, guid: a0ae216d1390e78489bdb942cab1d2d9, type: 3}
+  - {fileID: 8300000, guid: adb076eb8c07a5b49a6a38fbe446e2f6, type: 3}
+  - {fileID: 8300000, guid: 727d9d72d57719441a6136086e7fee9b, type: 3}
+  - {fileID: 8300000, guid: 576486f3cf4a19d4f94a3f11ee0afa9c, type: 3}
+  - {fileID: 8300000, guid: e2ee5188ea0a34f4397c09f98ca41988, type: 3}
+  - {fileID: 8300000, guid: 7db0a075bdaeffd44b92c34d6610b3aa, type: 3}
+  - {fileID: 8300000, guid: 6f543e7de00bfe94e822b643eb464b43, type: 3}
+  keyFinish: {fileID: 8300000, guid: 5ed0064032429ed419537431b422d0ea, type: 3}
 --- !u!95 &2033881352 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: a3b05c11e8f661e45a5e6beef30133e1,
@@ -39635,6 +42345,103 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactionPrompt: {fileID: 1938446663}
+--- !u!82 &2033881355
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2033881346}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: -6514915561845674498, guid: e62c89e87d63cf447a63b2b55d9915e8,
+    type: 2}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1001 &2037230367
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -40958,6 +43765,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 2137067622}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: eedefb7f48ba1c5478e3284918d954b9,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2137067623}
   m_SourcePrefab: {fileID: 100100000, guid: eedefb7f48ba1c5478e3284918d954b9, type: 3}
 --- !u!4 &2137067614 stripped
 Transform:
@@ -41023,6 +43834,7 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
   - name: Valentina Sombra
     portrait: {fileID: 21300000, guid: 42c18b3140bf76e4f8f9db8f511606c9, type: 3}
     message: "I see this place is somethin else. I\u2019ll head on over if I need
@@ -41031,6 +43843,7 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
   - name: Wallace Reid-Arroyo
     portrait: {fileID: 21300000, guid: 2b42211769f0ed04a80be3ef991f031b, type: 3}
     message: "Sounds great! Guess I\u2019ll see ya around."
@@ -41038,6 +43851,23 @@ MonoBehaviour:
     onWriteEvent:
       m_PersistentCalls:
         m_Calls: []
+    chirp: {fileID: 0}
+  popupSounds:
+  - {fileID: 8300000, guid: bc451deb56795ce40917b027654d7416, type: 3}
+  - {fileID: 8300000, guid: 8a6126b18c4851641b7b3cd6aa700e66, type: 3}
+  - {fileID: 8300000, guid: c31d695bdf2123f4d99d7f600d6a4b36, type: 3}
+  keyTypes:
+  - {fileID: 8300000, guid: 84ca795cbd385cb459bc1963d221642e, type: 3}
+  - {fileID: 8300000, guid: bbc318af5f24e1e47a1339a92f14e81b, type: 3}
+  - {fileID: 8300000, guid: f616e4ac3439ffc4ab10d56101f1f216, type: 3}
+  - {fileID: 8300000, guid: a0ae216d1390e78489bdb942cab1d2d9, type: 3}
+  - {fileID: 8300000, guid: adb076eb8c07a5b49a6a38fbe446e2f6, type: 3}
+  - {fileID: 8300000, guid: 727d9d72d57719441a6136086e7fee9b, type: 3}
+  - {fileID: 8300000, guid: 576486f3cf4a19d4f94a3f11ee0afa9c, type: 3}
+  - {fileID: 8300000, guid: e2ee5188ea0a34f4397c09f98ca41988, type: 3}
+  - {fileID: 8300000, guid: 7db0a075bdaeffd44b92c34d6610b3aa, type: 3}
+  - {fileID: 8300000, guid: 6f543e7de00bfe94e822b643eb464b43, type: 3}
+  keyFinish: {fileID: 8300000, guid: 5ed0064032429ed419537431b422d0ea, type: 3}
 --- !u!135 &2137067620
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -41087,6 +43917,103 @@ MonoBehaviour:
   playerTransform: {fileID: 1536818709}
   detectionRadius: 10
   interactionDistance: 3
+--- !u!82 &2137067623
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2137067615}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: -6514915561845674498, guid: e62c89e87d63cf447a63b2b55d9915e8,
+    type: 2}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1001 &2138216100
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -43012,6 +45939,7 @@ MonoBehaviour:
   breakSound: {fileID: 0}
   clipLength: 0
   maxFragmentsToSpawn: 5
+  spawnDistance: 3
 --- !u!114 &8301571552382649431
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -43383,6 +46311,7 @@ MonoBehaviour:
   breakSound: {fileID: 0}
   clipLength: 0
   maxFragmentsToSpawn: 5
+  spawnDistance: 3
 --- !u!114 &8725148466300974727
 MonoBehaviour:
   m_ObjectHideFlags: 0
