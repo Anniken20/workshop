@@ -196,7 +196,7 @@ public class QTEDuel : MonoBehaviour
         timeMeterFG.gameObject.SetActive(true);
         PopupText.transform.DOShakePosition(0.3f, 15f).SetUpdate(true);
         timeMeter.DOFillAmount(1f, generatedShootTime - 0.1f).SetUpdate(true);
-        duelAudioSource.Pause();
+        duelAudioSource.Stop();
         duelAudioSource.PlayOneShot(quickDrawSFX);
 
         while (endTime > Time.realtimeSinceStartup)
@@ -355,12 +355,23 @@ public class QTEDuel : MonoBehaviour
             duelEnemy.gameObject.SetActive(false);
             nextQTEDuel.gameObject.SetActive(true);
 
-            gameObject.SetActive(false);
+            TurnOff(gameObject, 1.5f);
         } else
         {
             duelEnemy.Die();
         }
         //duelEnemy.PlayerWonDuel();
+    }
+
+    private void TurnOff(GameObject go, float inTime)
+    {
+        StartCoroutine(TurnOffRoutine(go, inTime));
+    }
+
+    private IEnumerator TurnOffRoutine(GameObject go, float inTime)
+    {
+        yield return new WaitForSeconds(inTime);
+        go.SetActive(false);
     }
 
     private void EnemyWonDuel()

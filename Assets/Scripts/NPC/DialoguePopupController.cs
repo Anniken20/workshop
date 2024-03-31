@@ -74,10 +74,13 @@ public class DialoguePopupController : MonoBehaviour, IInteractable
             if(!onlyOnce || !spokenTo)
             {
                 // Choose a random popup sound
-                AudioClip popupSound = popupSounds[UnityEngine.Random.Range(0, popupSounds.Length)];
+                if (popupSounds.Length > 0)
+                {
+                    AudioClip popupSound = popupSounds[UnityEngine.Random.Range(0, popupSounds.Length)];
 
-                // Play the chosen popup sound
-                audioSource.PlayOneShot(popupSound);
+                    // Play the chosen popup sound
+                    audioSource.PlayOneShot(popupSound);
+                }
                 BeginSpeaking();
                 inDialogue = true;
                 spokenTo = true;
@@ -100,11 +103,14 @@ public class DialoguePopupController : MonoBehaviour, IInteractable
         } else
         {
             DisplayDialoguePiece(dialogueIndex);
-            // Choose a random popup sound
-            AudioClip popupSound = popupSounds[UnityEngine.Random.Range(0, popupSounds.Length)];
+            if (popupSounds.Length > 0)
+            {
+                // Choose a random popup sound
+                AudioClip popupSound = popupSounds[UnityEngine.Random.Range(0, popupSounds.Length)];
 
-            // Play the chosen popup sound
-            audioSource.PlayOneShot(popupSound);
+                // Play the chosen popup sound
+                audioSource.PlayOneShot(popupSound);
+            }
         }
     }
 
@@ -156,15 +162,18 @@ public class DialoguePopupController : MonoBehaviour, IInteractable
             DialogueManager.Main.characterText.text += msg[i];
             if(i % 5 == 0)
             {
-                // Choose a random popup sound
-                AudioClip keyType = keyTypes[UnityEngine.Random.Range(0, keyTypes.Length)];
+                if (keyTypes.Length > 0)
+                {
+                    // Choose a random popup sound
+                    AudioClip keyType = keyTypes[UnityEngine.Random.Range(0, keyTypes.Length)];
 
-                // Play the chosen popup sound
-                audioSource.PlayOneShot(keyType);
+                    // Play the chosen popup sound
+                    audioSource.PlayOneShot(keyType);
+                }
             }
             i++;
         }
-        audioSource.PlayOneShot(keyFinish);
+        if(keyFinish != null) audioSource.PlayOneShot(keyFinish);
         writing = false;
     }
 

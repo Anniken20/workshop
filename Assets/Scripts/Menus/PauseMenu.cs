@@ -141,6 +141,7 @@ public class PauseMenu : MonoBehaviour
 
     public void Settings()
     {
+        Debug.Log("Settings active");
         settingsPanel.SetActive(true);
         PausePanel.SetActive(false);
         controlsPanel.SetActive(false);
@@ -160,6 +161,7 @@ public class PauseMenu : MonoBehaviour
 
     public void ShowControls()
     {
+        Debug.Log("Showing Controls");
         controlsPanel.SetActive(true);
         settingsPanel.SetActive(false);
     }
@@ -204,6 +206,7 @@ public class PauseMenu : MonoBehaviour
 
     public void LeaveSettings()
     {
+        Debug.Log("left settings");
         settingsPanel.SetActive(false);
         if (PausePanel != null) PausePanel.SetActive(true);
     }
