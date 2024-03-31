@@ -170,13 +170,14 @@ public class LassoDetection : MonoBehaviour
             var xScale = otherObject.transform.localScale.x -0.25f;//+ xVariaton; //+ .15f;
             var zScale = otherObject.transform.localScale.z -0.6f;//+ zVariation; //+ .15f;
             var scaleRatio = Mathf.Abs(xScale / zScale);
-            if(scaleRatio <= 1){
+            if(scaleRatio <= 4.070){
+                Debug.Log("Below Cutoff Scale: " +scaleRatio);
                 transform.localScale = new Vector3(xScale, transform.localScale.y, zScale);
                 Vector3 heldPos = new Vector3(otherObject.transform.position.x, otherObject.transform.position.y + otherExtents.y, otherObject.transform.position.z);
                 transform.position = heldPos;
             }
             else{
-                //Debug.Log("Else Scale: " +scaleRatio);
+                Debug.Log("Else Scale: " +scaleRatio);
                 transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y, transform.localScale.z);
                 //this.transform.position = new Vector3(transform.position.x, transform.position.y - 1.4f, transform.position.z);
                 transform.position = otherObject.transform.position;
