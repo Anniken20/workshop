@@ -55,6 +55,7 @@ public class LassoWrangle : MonoBehaviour, ILassoable
     }
     public virtual void Update(){
         if(wrangling){
+        
         currentAmount = Mathf.Clamp(currentAmount, 0, barCapacity);
             if(lasso.triggered ){
                 currentAmount += barIncrement;
@@ -74,9 +75,12 @@ public class LassoWrangle : MonoBehaviour, ILassoable
     }
     private void FixedUpdate(){
         if(wrangling){
-            barParent.SetActive(true);
             currentAmount -= barDepleteRate * Time.fixedDeltaTime;
             wrangleBar.fillAmount = currentAmount / barCapacity;
+            if(!barParent.active){
+                Debug.Log("Wrangling and bar not active, enabling now");
+                barParent.SetActive(true);
+            }
             
         }
     }
