@@ -7,9 +7,11 @@ using UnityEngine.Events;
 
 public class Grant : Enemy
 {
+    public bool shootsInsteadOfThrows = false;
     [HideInInspector] public EnemyPacingState pacingState;
     [HideInInspector] public EnemyThrowState throwState;
     [HideInInspector] public KnockbackState knockbackState;
+    [HideInInspector] public EnemyShootState shootState;
 
     private void Awake()
     {
@@ -26,6 +28,9 @@ public class Grant : Enemy
 
         knockbackState = gameObject.AddComponent<KnockbackState>();
         knockbackState.Initialize(this, stateMachine);
+
+        shootState = gameObject.AddComponent<EnemyShootState>();
+        shootState.Initialize(this, stateMachine);
 
         duelState = gameObject.AddComponent<DuelState>();
         duelState.Initialize(this, stateMachine);
@@ -46,17 +51,34 @@ public class Grant : Enemy
 
     public void BeginBattle()
     {
-        stateMachine.ChangeState(throwState);
+        if (shootsInsteadOfThrows)
+        {
+            stateMachine.ChangeState(shootState);
+        }
+        else
+        {
+            stateMachine.ChangeState(throwState);
+        }
+        
     }
 
     public void KnockawayPlayer()
     {
+        
         stateMachine.ChangeState(knockbackState);
     }
 
     public void ResumeThrowing()
     {
-        stateMachine.ChangeState(throwState);
+        if (shootsInsteadOfThrows)
+        {
+            stateMachine.ChangeState(shootState);
+        }
+        else
+        {
+            stateMachine.ChangeState(throwState);
+        }
+        
     }
 
 }
