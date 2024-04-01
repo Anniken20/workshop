@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPro.Examples;
 
-public class SceneTeleport : MonoBehaviour
+public class SceneTeleport : MonoBehaviour, IDataPersistence
 {
     public GameObject LoadingScreen;
     public Image LoadingBarFill;
@@ -23,10 +23,15 @@ public class SceneTeleport : MonoBehaviour
         } 
     }
     public int levelCompleted;
+    public void LoadData(GameData data){
+        //levelCompleted = data.levelComplete;
+    }
+    public void SaveData(ref GameData data){
+        data.levelComplete = levelCompleted;
+    }
 
     public void LoadScene(string scene_name)
     {
-        DataManager.levelCompleted = levelCompleted;
         StartCoroutine(LoadSceneAsync(scene_name));
     }
 
