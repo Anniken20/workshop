@@ -51,7 +51,6 @@ public class DialoguePopupController : MonoBehaviour, IInteractable
     private readonly float lockoutTime = 1f;
 
     private Coroutine inputRoutine;
-    public AudioClip[] popupSounds;
     public AudioClip[] keyTypes;
     public AudioClip keyFinish;
     private AudioSource audioSource;
@@ -73,14 +72,6 @@ public class DialoguePopupController : MonoBehaviour, IInteractable
         {
             if(!onlyOnce || !spokenTo)
             {
-                // Choose a random popup sound
-                if (popupSounds.Length > 0)
-                {
-                    AudioClip popupSound = popupSounds[UnityEngine.Random.Range(0, popupSounds.Length)];
-
-                    // Play the chosen popup sound
-                    audioSource.PlayOneShot(popupSound);
-                }
                 BeginSpeaking();
                 inDialogue = true;
                 spokenTo = true;
@@ -103,14 +94,6 @@ public class DialoguePopupController : MonoBehaviour, IInteractable
         } else
         {
             DisplayDialoguePiece(dialogueIndex);
-            if (popupSounds.Length > 0)
-            {
-                // Choose a random popup sound
-                AudioClip popupSound = popupSounds[UnityEngine.Random.Range(0, popupSounds.Length)];
-
-                // Play the chosen popup sound
-                audioSource.PlayOneShot(popupSound);
-            }
         }
     }
 
@@ -164,10 +147,10 @@ public class DialoguePopupController : MonoBehaviour, IInteractable
             {
                 if (keyTypes.Length > 0)
                 {
-                    // Choose a random popup sound
+                    // Choose a random key sound
                     AudioClip keyType = keyTypes[UnityEngine.Random.Range(0, keyTypes.Length)];
 
-                    // Play the chosen popup sound
+                    // Play the chosen key sound
                     audioSource.PlayOneShot(keyType);
                 }
             }
