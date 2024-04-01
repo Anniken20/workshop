@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using TMPro.Examples;
 
 public class SceneTeleport : MonoBehaviour
 {
@@ -21,9 +22,11 @@ public class SceneTeleport : MonoBehaviour
             LoadScene(scene_name);
         } 
     }
+    public int levelCompleted;
 
     public void LoadScene(string scene_name)
     {
+        DataManager.levelCompleted = levelCompleted;
         StartCoroutine(LoadSceneAsync(scene_name));
     }
 
