@@ -564,6 +564,12 @@ namespace StarterAssets
             return transform.position + new Vector3(0, 1.5f, 0);
         }
 
+        public void InstantTeleport(Vector3 toPos)
+        {
+            transform.position = toPos;
+            Camera.main.GetComponent<CameraController>().RecomposeCamera();
+        }
+
     }
     
 
