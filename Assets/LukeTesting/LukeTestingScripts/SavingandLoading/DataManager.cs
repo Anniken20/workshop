@@ -11,7 +11,6 @@ public class DataManager : MonoBehaviour
     private List<IDataPersistence> dataPersistenceObjects;
     private SaveDataHandler saveHandler;
     public static DataManager instance { get; private set; }
-    public static int levelCompleted; // temporary to track level
 
     private void Awake(){
         if(instance != null){
