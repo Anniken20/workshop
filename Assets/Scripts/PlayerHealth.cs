@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.InputSystem;
+using StarterAssets;
 
 public class PlayerHealth : MonoBehaviour, IDataPersistence
 {
@@ -115,6 +116,7 @@ public class PlayerHealth : MonoBehaviour, IDataPersistence
         currentHealth = maxHealth;
         UpdateHealthUI();
         GetComponent<PlayerRespawn>().Die();
+        GetComponent<ThirdPersonController>().Death();
     }
 
     public void LoadData(GameData data)

@@ -7,6 +7,10 @@ public class Salesman : Enemy
     [HideInInspector] public SalesmanBulletState bulletState;
     [HideInInspector] public SalesmanChasePlayerState chaseState;
     [HideInInspector] public EnemyPacingState pacingState;
+    public bool canDoStuff = false;
+    public void FinishedDialogue(){
+        canDoStuff = true;
+    }
     private void Awake()
     {
         base.MyAwake();

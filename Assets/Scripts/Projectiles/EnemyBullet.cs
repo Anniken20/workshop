@@ -14,6 +14,7 @@ public class EnemyBullet : MonoBehaviour
     private float currDmg;
     [SerializeField] private float dmgMultiplier;
     private GunAudioController gunAudioController;
+    public bool ignoresWalls;
 
     private void Start()
     {
@@ -99,7 +100,7 @@ public class EnemyBullet : MonoBehaviour
             TryToApplyShootable(hitData.collider.gameObject);
 
             //destroy bullet if object is non-ricochetable
-            if (LayerManager.main.IsNoRicochetLayer(hitData.collider.gameObject))
+            if (!ignoresWalls && LayerManager.main.IsNoRicochetLayer(hitData.collider.gameObject))
             {
                 transform.position = hitData.point;
                 gunAudioController.PlayCollision();
@@ -117,7 +118,7 @@ public class EnemyBullet : MonoBehaviour
                 }
             }
             */
-            Bounce(hitData);
+            if (!ignoresWalls) Bounce(hitData);
         }
     }
 

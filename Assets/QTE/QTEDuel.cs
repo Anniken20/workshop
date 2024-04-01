@@ -35,6 +35,8 @@ public class QTEDuel : MonoBehaviour
     public CanvasGroup timeMeterCG;
     public ParticleSystem hitSparkSystem;
     public AudioSource gunShotAudio;
+    public AudioSource duelAudioSource;
+    public AudioClip quickDrawSFX;
     public int enemyPhaseLevel;
     public UnityEvent nextPhaseEvent;
 
@@ -75,6 +77,8 @@ public class QTEDuel : MonoBehaviour
 
     private int phase = 1;
 
+    private Vector3 popupTextStartPos;
+
     //input
     public CharacterMovement iaControls;
     private InputAction shootInput;
@@ -96,6 +100,8 @@ public class QTEDuel : MonoBehaviour
         iaControls = new CharacterMovement();
         shootInput = iaControls.CharacterControls.Shoot;
         shootInput.Enable();
+
+        Invoke(nameof(DeathSubscription), 0.1f);
     }
 
     private void OnDisable()
@@ -106,7 +112,14 @@ public class QTEDuel : MonoBehaviour
             duelEnemy.damageDelegate -= CheckEnemyHealth;
         }
 
+        ThirdPersonController.Main.deathDelegate -= PlayerDied;
+
         shootInput.Disable();
+    }
+
+    private void DeathSubscription()
+    {
+        ThirdPersonController.Main.deathDelegate += PlayerDied;
     }
 
     public void CheckEnemyHealth()
@@ -139,6 +152,12 @@ public class QTEDuel : MonoBehaviour
 
         generatedWaitTime = Random.Range(lowBoundTimeToPopup, highBoundTimeToPopup);
         ThirdPersonController.Main.ForceStartConversation();
+
+        Vector3 lookPos = duelEnemy.transform.position;
+        lookPos.y = ThirdPersonController.Main.transform.position.y;
+        ThirdPersonController.Main.transform.LookAt(lookPos);
+        ThirdPersonController.Main.StartDuelAnim();
+
         ShowPopupText(readyString);
         StartCoroutine(WaitForPopupRoutine(generatedWaitTime));
     }
@@ -177,6 +196,8 @@ public class QTEDuel : MonoBehaviour
         timeMeterFG.gameObject.SetActive(true);
         PopupText.transform.DOShakePosition(0.3f, 15f).SetUpdate(true);
         timeMeter.DOFillAmount(1f, generatedShootTime - 0.1f).SetUpdate(true);
+        duelAudioSource.Stop();
+        duelAudioSource.PlayOneShot(quickDrawSFX);
 
         while (endTime > Time.realtimeSinceStartup)
         {
@@ -226,8 +247,8 @@ public class QTEDuel : MonoBehaviour
     private IEnumerator Failed()
     {
         gunShotAudio.Play();
-        EnemyWonDuel();
         EndDuel();
+        EnemyWonDuel();
         yield break;
     }
 
@@ -237,8 +258,10 @@ public class QTEDuel : MonoBehaviour
         DOTween.To(() => postProcessVolume.weight, x => postProcessVolume.weight = x, 0f, postTransitionDuration);
 
         //fix time
+        Debug.Log("duel ended");
         timeTween.Kill();
         Time.timeScale = 1f;
+        StartCoroutine(ForceTimeScaleNormal(0.5f));
 
         PopupText.transform.DOShakePosition(0.3f, 15f).SetUpdate(true);
 
@@ -249,7 +272,7 @@ public class QTEDuel : MonoBehaviour
         inDuel = false;
         AudioManager.main.SetMusicLowPassFilter();
 
-        DOTween.To(() => timeMeterCG.alpha, x => timeMeterCG.alpha = x, 0f, postTransitionDuration*2);
+        //DOTween.To(() => timeMeterCG.alpha, x => timeMeterCG.alpha = x, 0f, postTransitionDuration*2);
 
         //duel canvas
         Invoke(nameof(TurnoffDuelCanvas), postTransitionDuration);
@@ -295,12 +318,21 @@ public class QTEDuel : MonoBehaviour
         topBarTween.SetUpdate(true);
         bottomBarTween.SetUpdate(true);
 
+        if (popupTextStartPos == null || popupTextStartPos == Vector3.zero)
+        {
+            popupTextStartPos = PopupText.transform.position;
+        }
+        PopupText.transform.position = popupTextStartPos;
+        timeMeterCG.transform.position = popupTextStartPos;
         PopupText.transform.DOMoveX(PopupText.transform.position.x - 200f, highBoundTimeToPopup + 3f).SetUpdate(true);
         timeMeterCG.transform.DOMoveX(PopupText.transform.position.x - 200f, highBoundTimeToPopup + 3f).SetUpdate(true);
+
+        duelAudioSource.Play();
     }
 
     private void TurnoffDuelCanvas()
     {
+        timeMeterCG.alpha = 1f;
         textCanvas.gameObject.SetActive(false);
     }
 
@@ -323,12 +355,24 @@ public class QTEDuel : MonoBehaviour
             duelEnemy.gameObject.SetActive(false);
             nextQTEDuel.gameObject.SetActive(true);
 
-            gameObject.SetActive(false);
+            ThirdPersonController.Main.deathDelegate -= PlayerDied;
+            TurnOff(gameObject, 1.5f);
         } else
         {
             duelEnemy.Die();
         }
         //duelEnemy.PlayerWonDuel();
+    }
+
+    private void TurnOff(GameObject go, float inTime)
+    {
+        StartCoroutine(TurnOffRoutine(go, inTime));
+    }
+
+    private IEnumerator TurnOffRoutine(GameObject go, float inTime)
+    {
+        yield return new WaitForSeconds(inTime);
+        go.SetActive(false);
     }
 
     private void EnemyWonDuel()
@@ -344,5 +388,24 @@ public class QTEDuel : MonoBehaviour
     private void FreePlayer()
     {
         ThirdPersonController.Main.ForceStopConversation();
+    }
+
+    public void PlayerDied()
+    {
+        if (inDuel)
+        {
+            Debug.Log("kicked out of duel");
+            EndDuel();
+        }
+    }
+
+    private IEnumerator ForceTimeScaleNormal(float duration)
+    {
+        float stopTime = Time.timeSinceLevelLoad + duration;
+        while (Time.timeSinceLevelLoad < stopTime)
+        {
+            Time.timeScale = 1f;
+            yield return null;
+        }
     }
 }

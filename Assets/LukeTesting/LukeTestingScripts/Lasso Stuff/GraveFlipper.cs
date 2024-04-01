@@ -2,33 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GraveFlipper : LassoWrangle
+public class GraveFlipper : MonoBehaviour
 {
     private Quaternion startRotation;
     private Quaternion targetRotation;
     [SerializeField] float rotateSpeed;
     [SerializeField] float holdRotateAngle;
     private bool isRotating;
-     public override void WinMiniGame()
-    {
-        StopCoroutine(lossRoutine);
-        StartCoroutine(EnableDelay());
-        wrangling = false;
-        barParent.SetActive(false);
-        var lassoObject = player.gameObject.GetComponent<LassoController>().projectile;
-        lassoObject.GetComponent<LassoDetection>().recall = true;
-        controller._manipulatingLasso = false;
-        FlipGrave();
-    }
-    public override void LoseMiniGame()
-    {
-        StartCoroutine(EnableDelay());
-        wrangling = false;
-        barParent.SetActive(false);
-        var lassoObject = player.gameObject.GetComponent<LassoController>().projectile;
-        lassoObject.GetComponent<LassoDetection>().recall = true;
-    }
-    private void FlipGrave(){
+    public void FlipGrave(){
+        Debug.Log("Flippin");
         startRotation = transform.rotation;
         targetRotation = Quaternion.Euler(transform.forward*90) * startRotation;
         StartCoroutine(Rotate());
@@ -40,7 +22,6 @@ public class GraveFlipper : LassoWrangle
             transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotateSpeed * Time.deltaTime);
             yield return null;
         }
-        player.canLasso = true;
         transform.rotation = targetRotation;
         yield return new WaitForSeconds(holdRotateAngle);
         while (Quaternion.Angle(transform.rotation, startRotation) > 0.01f){

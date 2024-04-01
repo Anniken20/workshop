@@ -66,6 +66,7 @@ public class PauseMenu : MonoBehaviour
     }
     public void Pause()
     {
+        Debug.Log("paused");
         paused = true;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
@@ -78,7 +79,7 @@ public class PauseMenu : MonoBehaviour
     }
     public void Continue()
     {
-        Debug.Log("Continue method called"); // Check if the method is being called
+        Debug.Log("Resume"); // Check if the method is being called
 
         paused = false;
         Cursor.lockState = CursorLockMode.Locked;
@@ -140,6 +141,7 @@ public class PauseMenu : MonoBehaviour
 
     public void Settings()
     {
+        Debug.Log("Settings active");
         settingsPanel.SetActive(true);
         PausePanel.SetActive(false);
         controlsPanel.SetActive(false);
@@ -159,6 +161,7 @@ public class PauseMenu : MonoBehaviour
 
     public void ShowControls()
     {
+        Debug.Log("Showing Controls");
         controlsPanel.SetActive(true);
         settingsPanel.SetActive(false);
     }
@@ -203,6 +206,7 @@ public class PauseMenu : MonoBehaviour
 
     public void LeaveSettings()
     {
+        Debug.Log("left settings");
         settingsPanel.SetActive(false);
         if (PausePanel != null) PausePanel.SetActive(true);
     }

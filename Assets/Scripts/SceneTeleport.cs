@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using TMPro.Examples;
 
-public class SceneTeleport : MonoBehaviour
+public class SceneTeleport : MonoBehaviour, IDataPersistence
 {
     public GameObject LoadingScreen;
     public Image LoadingBarFill;
@@ -20,6 +21,13 @@ public class SceneTeleport : MonoBehaviour
             }
             LoadScene(scene_name);
         } 
+    }
+    public int levelCompleted;
+    public void LoadData(GameData data){
+        //levelCompleted = data.levelComplete;
+    }
+    public void SaveData(ref GameData data){
+        data.levelComplete = levelCompleted;
     }
 
     public void LoadScene(string scene_name)
