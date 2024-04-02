@@ -732,6 +732,7 @@ GameObject:
   - component: {fileID: 7789003970039887323}
   - component: {fileID: 6175260484928161311}
   - component: {fileID: 6525757020617240071}
+  - component: {fileID: 4778048034542273380}
   m_Layer: 0
   m_Name: QTEDUEL
   m_TagString: Untagged
@@ -751,11 +752,11 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 3629760449590083027}
+  - {fileID: 1721241292123930877}
   - {fileID: 6687557399074887045}
   - {fileID: 2534511424184096948}
   m_Father: {fileID: 0}
-  m_RootOrder: 45
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: -11.388, z: 0}
 --- !u!114 &6175260484928161311
 MonoBehaviour:
@@ -776,6 +777,9 @@ MonoBehaviour:
   cinematicBar_Bottom: {fileID: 5477775963071701065}
   cinematicBarToPos_Bottom: {fileID: 8488794610440058565}
   duelEnemy: {fileID: 0}
+  nextEnemy: {fileID: 0}
+  inheritPosition: 0
+  nextQTEDuel: {fileID: 0}
   shoulderCamera: {fileID: 0}
   postProcessVolume: {fileID: 6902787407374737330}
   duelCameraController: {fileID: 0}
@@ -783,8 +787,14 @@ MonoBehaviour:
   timeMeterBG: {fileID: 7235029017446951610}
   timeMeterFG: {fileID: 4489252568663014915}
   timeMeterCG: {fileID: 3584354595456306112}
-  hitSparkSystem: {fileID: 5303290316494457162}
+  hitSparkSystem: {fileID: 7792773552087233636}
   gunShotAudio: {fileID: 6525757020617240071}
+  duelAudioSource: {fileID: 4778048034542273380}
+  quickDrawSFX: {fileID: 8300000, guid: 5b028298025ba5548b74ab8b06e9aa71, type: 3}
+  enemyPhaseLevel: 0
+  nextPhaseEvent:
+    m_PersistentCalls:
+      m_Calls: []
   lowBoundTimeToShoot: 1
   highBoundTimeToShoot: 2
   lowBoundTimeToPopup: 4
@@ -813,6 +823,103 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: -6514915561845674498, guid: e62c89e87d63cf447a63b2b55d9915e8,
     type: 2}
   m_audioClip: {fileID: 8300000, guid: c8b58b4d5133a1c45b52bb778d7ff37d, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!82 &4778048034542273380
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7964203115428371032}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: -6514915561845674498, guid: e62c89e87d63cf447a63b2b55d9915e8,
+    type: 2}
+  m_audioClip: {fileID: 8300000, guid: 87099ad230dc9c74ead212264cd429ab, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -1072,13 +1179,13 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9ad3ef372f2821047bd5c6381f220eae, type: 3}
---- !u!4 &3629760449590083027 stripped
+--- !u!4 &1721241292123930877 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7282999534542634497, guid: 9ad3ef372f2821047bd5c6381f220eae,
     type: 3}
   m_PrefabInstance: {fileID: 8282536054745448188}
   m_PrefabAsset: {fileID: 0}
---- !u!198 &5303290316494457162 stripped
+--- !u!198 &7792773552087233636 stripped
 ParticleSystem:
   m_CorrespondingSourceObject: {fileID: 2221405916270447256, guid: 9ad3ef372f2821047bd5c6381f220eae,
     type: 3}

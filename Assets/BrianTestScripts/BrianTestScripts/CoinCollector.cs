@@ -124,5 +124,18 @@ public class CoinCollector : MonoBehaviour, IDataPersistence
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
+    public void LoseCoinsOnDeath(int amount)
+    {   
+        coinsCollected -= amount;
+        if (coinsCollected < 0) // Prevents coins from going into negative
+        {
+            coinsCollected = 0;
+        }
+        UpdateCoinsText(); 
+        ShowCoinsUI(); 
+
+        if (moveHUDRoutine != null) StopCoroutine(moveHUDRoutine);
+        moveHUDRoutine = StartCoroutine(HideCoinsUIAfterDelay(5f));
+        }
 }
 

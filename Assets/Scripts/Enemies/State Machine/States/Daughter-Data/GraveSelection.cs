@@ -31,7 +31,7 @@ public class GraveSelection : MonoBehaviour
     {
         //poppy.transform.position = daughterStandbyPOS.position;
         d = poppy.GetComponentInChildren<Daughter>();
-        poppyModel.SetActive(false);
+        //poppyModel.SetActive(false);
     }
     private GameObject SelectGrave()
     {

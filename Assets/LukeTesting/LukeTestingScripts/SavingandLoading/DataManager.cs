@@ -38,7 +38,7 @@ public class DataManager : MonoBehaviour
         saveHandler.Save(gameData);
     }
     private void Start(){
-        this.saveHandler = new SaveDataHandler(Application.persistentDataPath, fileName+PlayerPrefs.GetInt("SelectedProfileIndex"));
+        this.saveHandler = new SaveDataHandler(Application.persistentDataPath, fileName+PlayerPrefs.GetInt("profIndex"));
         this.dataPersistenceObjects = FindAllDataPersistenceObjects();
         LoadGame();
     }

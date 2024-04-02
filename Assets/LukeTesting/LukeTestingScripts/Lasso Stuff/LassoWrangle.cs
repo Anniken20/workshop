@@ -55,10 +55,16 @@ public class LassoWrangle : MonoBehaviour, ILassoable
     }
     public virtual void Update(){
         if(wrangling){
+        
         currentAmount = Mathf.Clamp(currentAmount, 0, barCapacity);
             if(lasso.triggered ){
                 currentAmount += barIncrement;
+                if (currentAmount >= barCapacity)
+                {
+                    WinMiniGame();
+                }
             }
+
             /*currentAmount -= barDepleteRate;
             wrangleBar.fillAmount = currentAmount / barCapacity;
             if(currentAmount >= barCapacity){
@@ -69,11 +75,13 @@ public class LassoWrangle : MonoBehaviour, ILassoable
     }
     private void FixedUpdate(){
         if(wrangling){
-            currentAmount -= barDepleteRate * Time.deltaTime;
+            currentAmount -= barDepleteRate * Time.fixedDeltaTime;
             wrangleBar.fillAmount = currentAmount / barCapacity;
-            if(currentAmount >= barCapacity){
-                WinMiniGame();
+            if(!barParent.active){
+                Debug.Log("Wrangling and bar not active, enabling now");
+                barParent.SetActive(true);
             }
+            
         }
     }
 
@@ -114,7 +122,7 @@ public class LassoWrangle : MonoBehaviour, ILassoable
 
     public IEnumerator EnableDelay(){
         //Debug.Log("Timer started");
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.1f);
         //Debug.Log("ENDED!!");
         player.canLasso = true;
         controller._manipulatingLasso = false;

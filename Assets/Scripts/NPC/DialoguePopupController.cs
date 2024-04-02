@@ -18,6 +18,7 @@ public struct DialogueFrame
     [Tooltip("The time it takes between each character")]
     public float writeWaitTime;
     public UnityEvent onWriteEvent;
+    public AudioClip chirp;
 }
 
 public class DialoguePopupController : MonoBehaviour, IInteractable
@@ -50,11 +51,15 @@ public class DialoguePopupController : MonoBehaviour, IInteractable
     private readonly float lockoutTime = 1f;
 
     private Coroutine inputRoutine;
+    public AudioClip[] keyTypes;
+    public AudioClip keyFinish;
+    private AudioSource audioSource;
 
 
     private void Start()
     {
         HUDScaler = GameObject.FindGameObjectWithTag("HUD").GetComponentInChildren<Scale>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     public void Interacted()
@@ -121,6 +126,7 @@ public class DialoguePopupController : MonoBehaviour, IInteractable
 
     private void DisplayDialoguePiece(int i)
     {
+        audioSource.PlayOneShot(dialogues[i].chirp);
         dialogues[i].onWriteEvent.Invoke();
         DialogueManager.Main.characterNameText.text = dialogues[i].name;
         DialogueManager.Main.characterPortrait.sprite = dialogues[i].portrait;
@@ -137,8 +143,20 @@ public class DialoguePopupController : MonoBehaviour, IInteractable
         {
             yield return new WaitForSeconds(waitTime);
             DialogueManager.Main.characterText.text += msg[i];
+            if(i % 5 == 0)
+            {
+                if (keyTypes.Length > 0)
+                {
+                    // Choose a random key sound
+                    AudioClip keyType = keyTypes[UnityEngine.Random.Range(0, keyTypes.Length)];
+
+                    // Play the chosen key sound
+                    audioSource.PlayOneShot(keyType);
+                }
+            }
             i++;
         }
+        if(keyFinish != null) audioSource.PlayOneShot(keyFinish);
         writing = false;
     }
 

@@ -14,17 +14,21 @@ public class BreakController : MonoBehaviour
     public float disableRigidbodyDelay = 30f; // Time before disabling rigidbodies
     public float enableRigidbodyDelay = 30f; // Time to enable rigidbodies again if not motionless
     public AudioClip breakSound;
+    public float clipLength;
     public int maxFragmentsToSpawn = 5;
+    [SerializeField] private float spawnDistance = 3f;
 
     private Rigidbody[] fragmentRigidbodies;
     private Vector3[] initialFragmentPositions;
     private bool rigidbodiesDisabled = false;
     private float lastMovementTime;
     private AudioSource audioSource;
+    private Collider c;
 
     private void Start()
     {
          audioSource = GetComponent<AudioSource>();
+        c = GetComponent<Collider>();
         // Check if there are fragments assigned
         if (fragments != null && fragments.Length > 0)
         {
@@ -93,51 +97,8 @@ public class BreakController : MonoBehaviour
 
     public void BreakIntoPieces()
     {
+        StartCoroutine(BreakWithSFX(clipLength));
         Debug.Log("BreakIntoPieces called.");
-
-        if (fragments != null && fragments.Length > 0)
-        {
-        Vector3 originalPosition = transform.position;
-        // Use Mathf.Min to ensure we don't attempt to spawn more fragments than we have available or exceed our maxFragmentsToSpawn
-        int fragmentsToSpawn = Mathf.Min(maxFragmentsToSpawn, fragments.Length);
-
-        Debug.Log($"Spawning {fragmentsToSpawn} fragments.");
-
-        for (int i = 0; i < fragmentsToSpawn; i++)
-        {
-            // Randomize position around the original object within a specified range
-            Vector3 spawnOffset = Random.insideUnitSphere * explosionRadius; // Adjust radius as needed
-            Vector3 fragmentPosition = originalPosition + spawnOffset;
-
-            // Choose a random fragment from the available prefabs
-            GameObject fragmentPrefab = fragments[Random.Range(0, fragments.Length)];
-            GameObject fragment = Instantiate(fragmentPrefab, fragmentPosition, Quaternion.identity);
-            Debug.Log($"Spawned fragment at {fragmentPosition}.");
-
-            // Apply an explosion force to the fragment
-            Rigidbody rb = fragment.GetComponent<Rigidbody>();
-            if (rb != null)
-            {
-                Vector3 randomDirection = Random.onUnitSphere;
-                rb.AddForce(randomDirection * explosionForce, ForceMode.Impulse);
-            }
-        }
-
-        PlayBreakSound();
-        
-        int coinsToSpawn = Random.Range(minCoins, maxCoins + 1);
-        for (int i = 0; i < coinsToSpawn; i++)
-        {
-            SpawnCoin();
-        }
-
-        // Destroy the original object
-        Destroy(gameObject);
-        }
-        else
-        {
-        Debug.LogError("Fragments not assigned in the Inspector.");
-        }
     }
 
     private void SpawnCoin()
@@ -167,7 +128,7 @@ private Vector3 GetValidSpawnPosition()
 {
     int attempts = 20; // Increase the number of attempts
     float spawnRadius = 0.4f; // Reduce the radius for checking clear space
-    float spawnDistance = 3f; // Distance from the object center to attempt spawning
+   
 
     for (int i = 0; i < attempts; i++)
     {
@@ -190,13 +151,75 @@ private Vector3 GetValidSpawnPosition()
 
     private void PlayBreakSound()
     {
-        if (audioSource != null && breakSound != null)
+        MeshRenderer meshRenderer = GetComponent<MeshRenderer>();
+        
+        if(meshRenderer != null)
         {
-            audioSource.PlayOneShot(breakSound); 
+            meshRenderer.enabled = false;
+            c.enabled = false;
+            if (audioSource != null && breakSound != null)
+            {
+                audioSource.PlayOneShot(breakSound);
+            }
+            else
+            {
+                Debug.LogError("AudioSource or breakSound not set.");
+            }
         }
         else
         {
-            Debug.LogError("AudioSource or breakSound not set.");
+            return;
         }
+
+    }
+
+    IEnumerator BreakWithSFX(float clipLength)
+    {
+        if (fragments != null && fragments.Length > 0)
+        {
+        Vector3 originalPosition = transform.position;
+        // Use Mathf.Min to ensure we don't attempt to spawn more fragments than we have available or exceed our maxFragmentsToSpawn
+        int fragmentsToSpawn = Mathf.Min(maxFragmentsToSpawn, fragments.Length);
+
+        Debug.Log($"Spawning {fragmentsToSpawn} fragments.");
+
+        for (int i = 0; i < fragmentsToSpawn; i++)
+        {
+            // Randomize position around the original object within a specified range
+            Vector3 spawnOffset = Random.insideUnitSphere * explosionRadius; // Adjust radius as needed
+            Vector3 fragmentPosition = originalPosition + spawnOffset;
+
+            // Choose a random fragment from the available prefabs
+            GameObject fragmentPrefab = fragments[Random.Range(0, fragments.Length)];
+            GameObject fragment = Instantiate(fragmentPrefab, fragmentPosition, Quaternion.identity);
+            Debug.Log($"Spawned fragment at {fragmentPosition}.");
+
+            // Apply an explosion force to the fragment
+            Rigidbody rb = fragment.GetComponent<Rigidbody>();
+            if (rb != null)
+            {
+                Vector3 randomDirection = Random.onUnitSphere;
+                rb.AddForce(randomDirection * explosionForce, ForceMode.Impulse);
+            }
+        }
+        
+        int coinsToSpawn = Random.Range(minCoins, maxCoins + 1);
+        for (int i = 0; i < coinsToSpawn; i++)
+        {
+            SpawnCoin();
+        }
+
+
+        PlayBreakSound();
+        yield return new WaitForSeconds(clipLength);
+
+        // Destroy the original object
+        Destroy(gameObject);
+        }
+        else
+        {
+        Debug.LogError("Fragments not assigned in the Inspector.");
+        }
+        yield return null;
     }
 }

@@ -13,7 +13,7 @@ using UnityEngine.UI;
  */
 
 [RequireComponent(typeof(Rigidbody))]
-public class DamageController : MonoBehaviour
+public class DamageController : MonoBehaviour, IShootable
 {
     [Tooltip("Once the object reaches this level of damage, it is destroyed.")]
     public float dmgTilBreak;
@@ -132,5 +132,15 @@ public class DamageController : MonoBehaviour
          public IEnumerator Regenerate(float dmg){
         yield return new WaitForSeconds(regenTimer);
         currDmg -= dmg;
+    }
+
+    public void OnShot(BulletController bullet)
+    {
+        //added this interface just so that the line renderer turns red.
+        //dont feel like refactoring it so it actually uses OnShot
+        //because then the bullets might try to apply both the shootable and DamageController
+        //interactions.
+
+        //teehee! - Caden
     }
 }
