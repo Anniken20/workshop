@@ -9,7 +9,7 @@ public class DoorController : MonoBehaviour
     public bool isDoorOpen = false;
     Vector3 doorClosedPos;
     Vector3 doorOpenPos;
-    float doorSpeed = 10f;
+    float doorSpeed = 20f;
 
     //Sets door position to starting and highest opening point
     void Awake ()
