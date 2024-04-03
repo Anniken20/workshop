@@ -17,15 +17,20 @@ public class VideoController : MonoBehaviour, IDataPersistence
     public RawImage rawImage; 
     private bool canSkip = false; 
     public bool isIntro;
+    public bool introCompleted;
+    public DataManager dataManager;
+    bool triggeredOnce = true;
 
     void Start()
     {
+ 
+
+
         // Subscribe to the videoPlayer loopPointReached event
         videoPlayer.loopPointReached += EndReached;
 
         // Play the video
         videoPlayer.Play();
-
         // Enable skipping after a short delay
         StartCoroutine(EnableSkippingDelay());
     }
@@ -43,10 +48,23 @@ public class VideoController : MonoBehaviour, IDataPersistence
         {
             SkipVideo();
         }
+        if(isIntro && introCompleted && triggeredOnce){
+            triggeredOnce = false;
+            SkipVideo();
+
+        }
     }
 
     void EndReached(VideoPlayer vp)
     {
+        if(isIntro){
+            introCompleted = true;
+            Debug.Log(introCompleted);
+            if(dataManager != null)
+                {
+                    dataManager.SaveGame();
+                }
+        }
         // Load the next scene when the video ends
         LoadScene(nextSceneName);
     }
@@ -74,7 +92,16 @@ public class VideoController : MonoBehaviour, IDataPersistence
 
     void SkipVideo()
     {
-        // Load the next scene when skipping
+        if(isIntro){
+            // Load the next scene when skipping
+            introCompleted = true;
+            Debug.Log(introCompleted);
+            if(dataManager != null)
+                {
+                    dataManager.SaveGame();
+                }
+        }
+    
         LoadScene(nextSceneName);
     }
 
@@ -100,6 +127,7 @@ public class VideoController : MonoBehaviour, IDataPersistence
         shoot.Disable();
     }*/
     public void LoadData(GameData data){
+        introCompleted = data.introCompleted;
         if(data.checkpointScene != "" && isIntro || data.checkpointScene != null && isIntro){
             this.nextSceneName = data.checkpointScene;
             //Debug.Log("next scene set to: " +data.checkpointScene +" Confirmation: " +nextSceneName);
@@ -110,6 +138,7 @@ public class VideoController : MonoBehaviour, IDataPersistence
         }
     }
     public void SaveData(ref GameData data){
-
+        //Debug.Log("Saving Data");
+        data.introCompleted = introCompleted;
     }
 }
