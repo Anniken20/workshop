@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 5854898088540212204}
   - component: {fileID: 8157856134481077754}
   - component: {fileID: 5481970369341847135}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Hint Text Hitbox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -149,8 +149,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2008538374012910123}
   m_LocalRotation: {x: -0, y: 0.70710576, z: -0, w: 0.70710784}
-  m_LocalPosition: {x: -3.6972523, y: 0.125, z: 0}
-  m_LocalScale: {x: 1.0806751, y: 0.5, z: 7.03125}
+  m_LocalPosition: {x: -2.13, y: 0.125, z: -0}
+  m_LocalScale: {x: 1.0806751, y: 0.5, z: 3.515625}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8432818168333702705}
@@ -192,10 +192,10 @@ MonoBehaviour:
   onTriggerEnterEvent:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 5481970369341847135}
+        m_TargetAssemblyTypeName: HintTextController, Assembly-CSharp
+        m_MethodName: FillText
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -207,10 +207,10 @@ MonoBehaviour:
   onTriggerExitEvent:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 5481970369341847135}
+        m_TargetAssemblyTypeName: HintTextController, Assembly-CSharp
+        m_MethodName: HideText
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -219,7 +219,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  multiTrigger: 0
+  multiTrigger: 1
   playerOnly: 1
 --- !u!114 &5481970369341847135
 MonoBehaviour:
@@ -234,6 +234,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textBox: 
+  requiredItem: 0
 --- !u!1 &2586852123208389736
 GameObject:
   m_ObjectHideFlags: 0
@@ -483,7 +484,7 @@ GameObject:
   - component: {fileID: 1424056695297247428}
   - component: {fileID: 4493879564971235268}
   - component: {fileID: 2111903978363221812}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Hint Text - Note Version
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -498,8 +499,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8279701636020033038}
   m_LocalRotation: {x: -0, y: 0.70710576, z: -0, w: 0.70710784}
-  m_LocalPosition: {x: -3.6972523, y: 0.125, z: 0}
-  m_LocalScale: {x: 1.0806751, y: 0.5, z: 7.03125}
+  m_LocalPosition: {x: -2.13, y: 0.125, z: -0}
+  m_LocalScale: {x: 1.0806751, y: 0.5, z: 3.515625}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3020246182578607576}
@@ -569,22 +570,22 @@ PrefabInstance:
     - target: {fileID: 559617508183861497, guid: ea786078a8a57450ebea66f01b9810db,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.14222223
+      value: 0.28444445
       objectReference: {fileID: 0}
     - target: {fileID: 559617508183861497, guid: ea786078a8a57450ebea66f01b9810db,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.027398154
+      value: 0.027396597
       objectReference: {fileID: 0}
     - target: {fileID: 559617508183861497, guid: ea786078a8a57450ebea66f01b9810db,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.16999996
+      value: 0.17000002
       objectReference: {fileID: 0}
     - target: {fileID: 559617508183861497, guid: ea786078a8a57450ebea66f01b9810db,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.42770043
+      value: 0.40960482
       objectReference: {fileID: 0}
     - target: {fileID: 559617508183861497, guid: ea786078a8a57450ebea66f01b9810db,
         type: 3}
