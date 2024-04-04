@@ -218,7 +218,11 @@ public class BulletController : MonoBehaviour
         currBounces++;
 
         //show dmg numbers
-        ShowBounceDmgText();
+        if(hitData.collider.gameObject.GetComponent<DamageController>() != null
+            || hitData.collider.gameObject.GetComponent<Enemy>() != null)
+        {
+            ShowBounceDmgText();
+        }
 
         //multiply dmg
         currDmg *= bounceDmgMultiplier;
