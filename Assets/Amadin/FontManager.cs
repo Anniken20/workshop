@@ -61,17 +61,17 @@ public class FontManager : MonoBehaviour
         }
     }
 
-    private void UpdateAllTextUI()
+    public void UpdateAllTextUI()
     {
         // Update TextMeshPro components
-        TMP_Text[] allTMPTextComponents = Resources.FindObjectsOfTypeAll<TMP_Text>();
+        TMP_Text[] allTMPTextComponents = FindObjectsOfType<TMP_Text>(true);
         foreach (TMP_Text textComponent in allTMPTextComponents)
         {
             UpdateTextComponent(textComponent);
         }
 
         // Update standard Unity UI Text components
-        Text[] allTextComponents = Resources.FindObjectsOfTypeAll<Text>();
+        Text[] allTextComponents = FindObjectsOfType<Text>(true);
         foreach (Text textComponent in allTextComponents)
         {
             UpdateTextComponent(textComponent);
@@ -84,6 +84,7 @@ public class FontManager : MonoBehaviour
         if (fontAsset != null)
         {
             textComponent.font = fontAsset;
+            Debug.Log(textComponent.gameObject);
         }
     }
 
