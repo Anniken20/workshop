@@ -37,6 +37,9 @@ public class TeleportController : MonoBehaviour
     private Vector3 teleportDestination;
     private Vector3 intermediatePosition;
 
+    [Header("Invincibility")]
+    public float invincibilityDuration = 5.0f;
+
     private void OnTriggerEnter(Collider other)
     {
         if (!active) return;
@@ -153,6 +156,7 @@ public class TeleportController : MonoBehaviour
 
         // Wait for a very short moment to avoid jitter
         yield return new WaitForSeconds(0.1f);
+
 
         // Re-enable character control
         characterController.enabled = true;
