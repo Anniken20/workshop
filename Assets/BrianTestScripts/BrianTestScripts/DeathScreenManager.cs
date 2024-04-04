@@ -6,6 +6,7 @@ using TMPro;
 using DG.Tweening;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class DeathScreenManager : MonoBehaviour
 {
@@ -73,8 +74,7 @@ public class DeathScreenManager : MonoBehaviour
         respawner = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerRespawn>();
         respawner.RestartFromCheckpoint();
         HideDeathScreen();
-        
-        //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        //Scene scene = SceneManager.GetActiveScene(); SceneManager.LoadScene(scene.name);
     }
 
     public void QuitToMainMenu()
