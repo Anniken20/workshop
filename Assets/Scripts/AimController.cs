@@ -118,6 +118,11 @@ public class AimController : MonoBehaviour
         float yClamp = Mathf.Clamp(aimCursor.transform.position.y, 0, Screen.height);
         aimCursor.transform.position = new Vector3(xClamp, yClamp, 0f);
     }
+    // SENS
+    public void SetCursorSensitivity(float sensitivity)
+    {
+        cursorSensitivity = sensitivity;
+    }
 
     private void UpdateAim()
     {
