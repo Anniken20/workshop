@@ -14,11 +14,6 @@ public class ProfilesMenu : MonoBehaviour, IDataPersistence
     public DataManager dataManager;
 
     private int selectedProfileIndex;
-    /// <summary>
-    /// WHY THE FUCK DONT YOU FUCKING WORK YOU STUPID PIECE OF SHIT
-    /// MAN FUCK YOU JUST WORK
-    /// idiotic this entire god damn player prefs bs
-    /// </summary>
     private void Start()
     {
         // Load the selected profile index if it's stored in PlayerPrefs
