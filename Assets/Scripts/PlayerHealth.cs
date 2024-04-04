@@ -23,6 +23,9 @@ public class PlayerHealth : MonoBehaviour, IDataPersistence
     [Header("Time Stats")]
     [SerializeField] private float _damageDisplayTime = 5.0f;
     [SerializeField] private float _damageFadeOutTime = 0.5f;
+    [SerializeField] private float _invulnerabilityDuration = 2.0f; 
+
+    private float _invulnerabilityTimer = 0f;
 
     [Header("References")]
     [SerializeField] private ScriptableRendererFeature _fullScreenDamage;
@@ -41,6 +44,16 @@ public class PlayerHealth : MonoBehaviour, IDataPersistence
         UpdateHealthUI();
         _fullScreenDamage.SetActive(false); // Set it inactive initially
     }
+
+     void Update()
+    {
+        // If invulnerability is active, count down the timer
+        if (_invulnerabilityTimer > 0)
+        {
+            _invulnerabilityTimer -= Time.deltaTime;
+        }
+    }
+
     public void UpdateHealthUI()
     {
     if (healthBarImage != null)
@@ -53,7 +66,7 @@ public class PlayerHealth : MonoBehaviour, IDataPersistence
     public void TakeDamage(int damage)
     {
         // Check if god mode is enabled, if so, exit early
-        if (godModeEnabled)
+        if (godModeEnabled || _invulnerabilityTimer > 0)
             return;
 
         // Check if the player is already dead
@@ -75,32 +88,36 @@ public class PlayerHealth : MonoBehaviour, IDataPersistence
             // Play damage effects and sounds
             AudioManager.main.Play(AudioManager.AudioSourceChannel.SFX, hurt);
             StartCoroutine(Damage());
+            _invulnerabilityTimer = _invulnerabilityDuration;
         }
     }
 
     private IEnumerator Damage()
     {
-        _fullScreenDamage.SetActive(true);
-        _material.SetFloat(_voronoIntensity, _voronoIntensityStat);
-        _material.SetFloat(_vignetteIntensity, _vignetteIntensityStat);
-
-        yield return new WaitForSeconds(_damageDisplayTime);
-
-        float elapsedTime = 0f;
-        while (elapsedTime < _damageFadeOutTime)
+       if (_invulnerabilityTimer < _invulnerabilityDuration)
         {
-            elapsedTime += Time.deltaTime;
+            _fullScreenDamage.SetActive(true);
+            _material.SetFloat(_voronoIntensity, _voronoIntensityStat);
+            _material.SetFloat(_vignetteIntensity, _vignetteIntensityStat);
 
-            float lerpedVoronoi = Mathf.Lerp(_voronoIntensityStat, 0f, (elapsedTime / _damageFadeOutTime));
-            float lerpedVignette = Mathf.Lerp(_vignetteIntensityStat, 0f, (elapsedTime / _damageFadeOutTime));
+            yield return new WaitForSeconds(_damageDisplayTime);
 
-            _material.SetFloat(_voronoIntensity, lerpedVoronoi);
-            _material.SetFloat(_vignetteIntensity, lerpedVignette);
+            float elapsedTime = 0f;
+            while (elapsedTime < _damageFadeOutTime)
+            {
+                elapsedTime += Time.deltaTime;
 
-            yield return null;
+                float lerpedVoronoi = Mathf.Lerp(_voronoIntensityStat, 0f, (elapsedTime / _damageFadeOutTime));
+                float lerpedVignette = Mathf.Lerp(_vignetteIntensityStat, 0f, (elapsedTime / _damageFadeOutTime));
+
+                _material.SetFloat(_voronoIntensity, lerpedVoronoi);
+                _material.SetFloat(_vignetteIntensity, lerpedVignette);
+
+                yield return null;
+            }
+
+            _fullScreenDamage.SetActive(false);
         }
-
-        _fullScreenDamage.SetActive(false);
     }
 
     // DEBUG TOGGLE
