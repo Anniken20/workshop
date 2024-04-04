@@ -4,41 +4,43 @@ using UnityEngine.UI;
 public class CursorSensitivityController : MonoBehaviour
 {
     public Slider sensitivitySlider;
-    public Button clearButton; // Reference to the clear button in the UI
+    public Button clearButton;
 
     private const string SensitivityKey = "CursorSensitivity";
-
-    private AimController aimController;
+    private const float DefaultSensitivity = 25f;
+    public float cursorSensitivity; 
 
     private void Start()
     {
         // Load sensitivity from player prefs or use default if not set
-        float sensitivity = PlayerPrefs.GetFloat(SensitivityKey, 10f);
-        sensitivitySlider.value = sensitivity;
-        OnSensitivityChanged(sensitivity);
+        cursorSensitivity = PlayerPrefs.GetFloat(SensitivityKey, DefaultSensitivity);
+        sensitivitySlider.value = cursorSensitivity;
 
-        // Find the AimController in the scene if available
-        aimController = FindObjectOfType<AimController>();
+        // Subscribe to the slider's value changed event
+        sensitivitySlider.onValueChanged.AddListener(OnSliderValueChanged);
 
         // Subscribe to the clear button's click event
         clearButton.onClick.AddListener(OnClearButtonClicked);
+
+        Debug.Log("Start - Sensitivity loaded: " + cursorSensitivity);
     }
 
-    private void OnSensitivityChanged(float sensitivity)
+    private void OnSliderValueChanged(float sensitivity)
     {
-        // If AimController is present, update cursor sensitivity
-        if (aimController != null)
-        {
-            aimController.SetCursorSensitivity(sensitivity);
-        }
-        else
-        {
-            Debug.LogWarning("AimController not found in the scene. Cursor sensitivity not updated.");
-        }
+        // Call SetCursorSensitivity function
+        SetCursorSensitivity(sensitivity);
 
         // Save sensitivity to player prefs
         PlayerPrefs.SetFloat(SensitivityKey, sensitivity);
         PlayerPrefs.Save();
+
+        Debug.Log("Sensitivity changed: " + sensitivity);
+    }
+
+    private void SetCursorSensitivity(float sensitivity)
+    {
+        // This function sets the cursor sensitivity
+        cursorSensitivity = sensitivity;
     }
 
     private void OnClearButtonClicked()
@@ -47,13 +49,12 @@ public class CursorSensitivityController : MonoBehaviour
         PlayerPrefs.DeleteKey(SensitivityKey);
         PlayerPrefs.Save();
 
-        // Reset slider value
-        sensitivitySlider.value = 10f;
+        // Reset slider value to default sensitivity
+        sensitivitySlider.value = DefaultSensitivity;
 
-        // If AimController is present, reset cursor sensitivity to default
-        if (aimController != null)
-        {
-            aimController.SetCursorSensitivity(10f);
-        }
+        // Reset cursor sensitivity to default
+        cursorSensitivity = DefaultSensitivity;
+
+        Debug.Log("Sensitivity cleared. Slider reset to default: " + DefaultSensitivity);
     }
 }

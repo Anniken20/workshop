@@ -18,6 +18,7 @@ public class NPCController : MonoBehaviour
     private Vector3 endPointWorldPosition;
     public Transform defaultLookAtTarget;
     private bool isFacingPlayer = false;
+    public AudioSource ambientSound;
     public Animator anim;
 
     public enum MovementAxis
@@ -87,6 +88,26 @@ public class NPCController : MonoBehaviour
             {
                 // When idle and not facing the player, look towards the default target
                 FaceTarget(defaultLookAtTarget.position);
+            }
+        }
+
+        if (ambientSound != null)
+        {
+            if (!isFacingPlayer)
+            {
+                // If the sound is not already playing, start playing it
+                if (!ambientSound.isPlaying)
+                {
+                    ambientSound.Play();
+                }
+            }
+            else
+            {
+                // If the boolean condition is met, stop the sound if it's playing
+                if (ambientSound.isPlaying)
+                {
+                    ambientSound.Stop();
+                }
             }
         }
     }
