@@ -10,15 +10,15 @@ GameObject:
   m_Component:
   - component: {fileID: 4784250359334231751}
   - component: {fileID: 9025498104418390241}
-  - component: {fileID: 8881932326306248953}
   - component: {fileID: 6320136218436170756}
+  - component: {fileID: 2972477823104660478}
   m_Layer: 0
   m_Name: Prompt Trigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &4784250359334231751
 Transform:
   m_ObjectHideFlags: 0
@@ -55,49 +55,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &8881932326306248953
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4393281786011249941}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 73be614d7632a304db5e7f58dfa71754, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  onlyOnce: 0
-  clickToContinue: 0
-  dontUnlock: 0
-  fixHudAftewards: 1
-  dialogueData: {fileID: 11400000, guid: 78b015554fcd8844a89a77bc31db199d, type: 2}
-  onFinishedChatting:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 4393281786011249941}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  dialogues:
-  - name: Mysterious Voice
-    portrait: {fileID: 21300000, guid: 459a91f40cde94e4583336df3f3592f7, type: 3}
-    message: You must defeat the ghost residing in the BARN to proceed further
-    writeWaitTime: 0
-    onWriteEvent:
-      m_PersistentCalls:
-        m_Calls: []
-    chirp: {fileID: 0}
-  keyTypes: []
-  keyFinish: {fileID: 0}
 --- !u!114 &6320136218436170756
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -113,9 +70,9 @@ MonoBehaviour:
   onTriggerEnterEvent:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8881932326306248953}
-        m_TargetAssemblyTypeName: DialoguePopupController, Assembly-CSharp
-        m_MethodName: BeginSpeaking
+      - m_Target: {fileID: 2972477823104660478}
+        m_TargetAssemblyTypeName: HintTextController, Assembly-CSharp
+        m_MethodName: FillText
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -127,9 +84,35 @@ MonoBehaviour:
         m_CallState: 2
   onTriggerExitEvent:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2972477823104660478}
+        m_TargetAssemblyTypeName: HintTextController, Assembly-CSharp
+        m_MethodName: HideText
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   multiTrigger: 0
   playerOnly: 1
+--- !u!114 &2972477823104660478
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4393281786011249941}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c0b7f55243fc93439647b2007d623d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textBox: Must Defeat
+  requiredItem: 9
 --- !u!1 &7368285756873197333
 GameObject:
   m_ObjectHideFlags: 0
