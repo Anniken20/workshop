@@ -165,7 +165,6 @@ public class AimController : MonoBehaviour
         if (inLuna)
         {
             //find center point of camera
-            Debug.Log("in luna");
             Ray ray2 = cam.ScreenPointToRay(new Vector2(Screen.width/2, Screen.height/2));
             RaycastHit hit2;
             Physics.Raycast(ray2, out hit2, Mathf.Infinity, aimLayer);
