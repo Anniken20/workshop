@@ -9,6 +9,7 @@ public class BountyBoard : MonoBehaviour
     public Button level1Button;
     public Button level2Button;
     public Button level3Button;
+    public Button backButton;
     public GameObject particleEffect;
     public ClearSaveData clearSaveDataScript;
 
@@ -23,6 +24,8 @@ public class BountyBoard : MonoBehaviour
     private string santanaDefeatedKey = "SantanaDefeated";
     private string dianaDefeatedKey = "DianaDefeated";
 
+    private bool popupActivated = false;
+
     private void Start()
     {
         // Load playerEnteredOnce state from PlayerPrefs
@@ -32,6 +35,7 @@ public class BountyBoard : MonoBehaviour
         level1Button.onClick.AddListener(StartLevel1);
         level2Button.onClick.AddListener(StartLevel2);
         level3Button.onClick.AddListener(StartLevel3);
+        backButton.onClick.AddListener(BackButtonClicked);
 
         // Subscribe to onPause event
         PauseMenu.onPause += PauseNoUI;
@@ -67,7 +71,7 @@ public class BountyBoard : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && !popupActivated)
         {
             if (!playerEnteredOnce)
             {
@@ -89,6 +93,8 @@ public class BountyBoard : MonoBehaviour
                 // Disable the particle effect when showing the pop-up
                 particleEffect.SetActive(false);
             }
+
+            popupActivated = true; // Set popupActivated to true to prevent multiple activations
         }
     }
 
@@ -125,6 +131,40 @@ public class BountyBoard : MonoBehaviour
         SceneManager.LoadScene("Level 3");
         Debug.Log("Starting Level 3...");
         UnPauseNoUI(); // Unpause the game when starting Level 3
+    }
+
+    // Method to handle back button click event
+    private void BackButtonClicked()
+    {
+        // Check if the player is still inside the trigger area
+        if (!IsPlayerInsideTriggerArea())
+        {
+            // Deactivate the level select pop-up
+            levelSelectPopup.SetActive(false);
+            UnPauseNoUI(); // Unpause the game when the pop-up is deactivated
+
+            // Unsubscribe from onPause event
+            PauseMenu.onPause -= PauseNoUI;
+        }
+    }
+
+    // Method to check if the player is inside the trigger area
+    private bool IsPlayerInsideTriggerArea()
+    {
+        // Define the center and radius of the trigger area
+        Vector3 center = transform.position;
+        float radius = 2f; // 2-meter radius
+
+        // Check if the player is inside the trigger area
+        Collider[] colliders = Physics.OverlapSphere(center, radius);
+        foreach (Collider collider in colliders)
+        {
+            if (collider.CompareTag("Player"))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void PauseNoUI()
@@ -169,3 +209,4 @@ public class BountyBoard : MonoBehaviour
         PauseMenu.onPause -= PauseNoUI;
     }
 }
+
