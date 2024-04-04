@@ -94,6 +94,7 @@ public class AimController : MonoBehaviour
         if (PauseMenu.paused) return;
         MoveCursor();
         UpdateAim();
+        //Debug.Log("blarky and the chipmunks");
         if (fireOnMouseUp)
         {
 
@@ -128,9 +129,20 @@ public class AimController : MonoBehaviour
     {
         //in case locked during menus or game cutscenes etc.
         //currently referenced by BulletController when redirecting
-        if (PauseMenu.paused || !canAim || inLuna)
+        if (PauseMenu.paused || !canAim)
         {
+            if (inLuna)
+            {
+                //find center point of camera
+                Debug.Log("in luna");
+                Ray ray2 = cam.ScreenPointToRay(new Vector2(0, 0));
+                RaycastHit hit2;
+                Physics.Raycast(ray2, out hit2, Mathf.Infinity, aimLayer);
+                Vector3 centerPoint = new Vector3(hit2.point.x, shootPoint.position.y, hit2.point.z);
+                angle = lookPoint.position - centerPoint;
+            }
             angle = lookPoint.position - shootPoint.position;
+            
             //angle = angle.normalized;
             SnapAngle();
             return;
@@ -149,6 +161,17 @@ public class AimController : MonoBehaviour
 
         //multiplying by 1000 then normalizing so that the angle isn't too small and therefore reduced to 0. 
         angle = (goodPoint - shootPoint.position);
+
+        if (inLuna)
+        {
+            //find center point of camera
+            Debug.Log("in luna");
+            Ray ray2 = cam.ScreenPointToRay(new Vector2(Screen.width/2, Screen.height/2));
+            RaycastHit hit2;
+            Physics.Raycast(ray2, out hit2, Mathf.Infinity, aimLayer);
+            Vector3 centerPoint = new Vector3(hit2.point.x, shootPoint.position.y, hit2.point.z);
+            angle = lookPoint.position - centerPoint;
+        }
         angle = Vector3.ClampMagnitude(angle * 1000f, 10f);
         //angle = angle.normalized;
         SnapAngle();

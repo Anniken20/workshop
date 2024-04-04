@@ -89,11 +89,14 @@ public class BulletController : MonoBehaviour
     public float shakeIntensity;
     public float shakeDuration;
     public AudioSource meowAudio;
+    public AudioClip[] amadinMeows;
+    public AimLineData aimLineData;
 
     [Header("Bullet VFX")]
     public ParticleSystem sparksSystem;
     public ParticleSystem ricochetSparks;
 
+    private AimController aimController;
 
     public void Fire(Transform source, Vector3 dir)
     {
@@ -281,8 +284,9 @@ public class BulletController : MonoBehaviour
             lunaTransform.DOLocalMove(new Vector3(0, lunaTransform.localPosition.y, 0), 0.3f);
         }
 
-        if (meowAudio != null) meowAudio.Play();
-
+        if (meowAudio != null) 
+            if(amadinMeows.Length >0) meowAudio.PlayOneShot(amadinMeows[Random.Range(0, amadinMeows.Length)]);
+            else meowAudio.Play();
         //lock movement
         player.GetComponent<ThirdPersonController>()._lunaLocked = true;
 
@@ -445,6 +449,7 @@ public class BulletController : MonoBehaviour
     private IEnumerator DrawLunaLineRoutine()
     {
         gameObject.transform.forward = direction;
+        aimController = ThirdPersonController.Main.gameObject.GetComponent<AimController>();
         while (inLunaMode)
         {
             //uses mouse to change Luna's angle
@@ -453,9 +458,41 @@ public class BulletController : MonoBehaviour
             aimLineRenderer.SetPosition(0, gameObject.transform.position);
             aimLineRenderer.SetPosition(1, gameObject.transform.position + gameObject.transform.forward * 1000f);
 
+            //adjust color of line
+            AdjustLineColor();
+
             //wait a frame before continuing loop
             yield return null;
         }
+    }
+
+    private void AdjustLineColor()
+    {
+        RaycastHit hitData;
+        if (Physics.Raycast(transform.position, transform.forward, out hitData, 200f, LayerManager.main.shootableLayers))
+        {
+            if (hitData.collider.gameObject.GetComponent<IShootable>() != null
+                || hitData.collider.gameObject.GetComponent<ShootableController>() != null)
+            {
+                aimLineData.scrollLineMaterial.SetColor(aimLineData.key_albedo, aimLineData.shootableAimColor);
+                aimLineData.scrollLineMaterial.SetFloat(aimLineData.key_scrollSpeed, aimLineData.shootableScrollSpeed);
+            }
+            else if (hitData.collider.gameObject.GetComponent<ILassoable>() != null)
+            {
+                aimLineData.scrollLineMaterial.SetColor(aimLineData.key_albedo, aimLineData.lassoableAimColor);
+                aimLineData.scrollLineMaterial.SetFloat(aimLineData.key_scrollSpeed, aimLineData.lassoableScrollSpeed);
+            }
+            else
+            {
+                aimLineData.scrollLineMaterial.SetColor(aimLineData.key_albedo, aimLineData.normalAimColor);
+                aimLineData.scrollLineMaterial.SetFloat(aimLineData.key_scrollSpeed, aimLineData.normalScrollSpeed);
+            }
+        }
+        else
+        {
+            aimLineData.scrollLineMaterial.SetColor(aimLineData.key_albedo, aimLineData.normalAimColor);
+            aimLineData.scrollLineMaterial.SetFloat(aimLineData.key_scrollSpeed, aimLineData.normalScrollSpeed);
+        } 
     }
 
     private IEnumerator RedirectWindowRoutine()
@@ -469,17 +506,7 @@ public class BulletController : MonoBehaviour
     {
         if (PauseMenu.paused) return;
 
-        //capture input from mouse
-        var looking = look.ReadValue<Vector2>();
-        float xDelta = looking.x;
-        float yDelta = looking.y;
-
-        //apply sensitivity
-        xDelta *=  3f;
-        yDelta *= 3f;
-
-        //rotate horizontal
-        gameObject.transform.Rotate(new Vector3(0f, xDelta, 0f));
+        transform.LookAt(transform.position + (aimController.GetAimAngle() * 1));
     }
 
     private void DestroyBullet()
