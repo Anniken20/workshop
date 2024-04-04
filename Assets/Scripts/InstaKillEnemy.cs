@@ -15,11 +15,10 @@ public class InstaKillEnemy : MonoBehaviour
         Salesman s = other.gameObject.GetComponent<Salesman>();
         if (s != null)
         {
-            Debug.Log("Jordan hit death trigger");
-            s.TakeDamage(damage);
-            onJordanHit?.Invoke();
             anim.SetBool("Walking", false);
             anim.SetBool("Dead", true);
+            s.TakeDamage(damage);
+            onJordanHit?.Invoke();
         }
     }
 }
