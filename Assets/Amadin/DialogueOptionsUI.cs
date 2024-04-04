@@ -83,7 +83,7 @@ public class DialogueOptionsMenu : MonoBehaviour
         dyslexiaToggle.onValueChanged.RemoveListener(OnDyslexiaToggleChanged);
     }
 
-    private void LoadPlayerPrefs()
+    public void LoadPlayerPrefs()
     {
         if (PlayerPrefs.HasKey(TextSizeKey))
         {
@@ -129,7 +129,7 @@ public class DialogueOptionsMenu : MonoBehaviour
 
     private void ApplyFontToAllText(TMP_FontAsset font)
     {
-        TMP_Text[] textComponents = FindObjectsOfType<TMP_Text>();
+        TMP_Text[] textComponents = FindObjectsOfType<TMP_Text>(true);
         foreach (TMP_Text textComponent in textComponents)
         {
             textComponent.font = font;
