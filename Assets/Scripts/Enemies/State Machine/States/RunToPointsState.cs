@@ -6,6 +6,7 @@ public class RunToPointsState : EnemyState
 {
     public RunToPointsData runToPointsData;
     private Vector3 targetPoint;
+    private Coroutine waitRoutine;
 
     public RunToPointsState(Enemy enemy, EnemyStateMachine enemyStateMachine) : base(enemy, enemyStateMachine)
     {
@@ -23,7 +24,7 @@ public class RunToPointsState : EnemyState
     public override void FrameUpdate()
     {
         if (ReachedDestination()) {
-            Debug.Log("reached destination");
+            waitRoutine = StartCoroutine(WaitRoutine());
             if (runToPointsData.cryAfterReachingDestination)
             {
                 ((ICryable)enemy).StartCrying();
@@ -40,6 +41,7 @@ public class RunToPointsState : EnemyState
 
     private void PickNextPoint()
     {
+        if(waitRoutine != null) StopCoroutine(waitRoutine);
         targetPoint = runToPointsData.points[Random.Range(0, runToPointsData.points.Length)];
         //loop til u find a new point
         while (ReachedDestination())
@@ -55,5 +57,11 @@ public class RunToPointsState : EnemyState
         if(Vector3.Distance(transform.position, targetPoint) <= runToPointsData.distanceTolerance)
             return true;
         else return false;
+    }
+
+    private IEnumerator WaitRoutine()
+    {
+        yield return new WaitForSeconds(runToPointsData.maxTimeAtPoint);
+        PickNextPoint();
     }
 }

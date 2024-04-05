@@ -31,6 +31,8 @@ public class GhostController : MonoBehaviour
     public AudioClip duringAudioClip;
     public AudioClip exitAudioClip;
     public AudioSource audioSource;
+    [SerializeField] private AudioClip notAllowedBuzz;
+    [SerializeField] private AudioClip rechargedDing;
 
     [Header("Post Processing")]
     public bool usePostProcessingFX;
@@ -105,7 +107,10 @@ public class GhostController : MonoBehaviour
             {
                 TurnPhaseOn();
                 StartCoroutine(InputWaitRoutine());
-            }    
+            } else
+            {
+                audioSource.PlayOneShot(notAllowedBuzz);
+            }
         }
     }
 
@@ -233,6 +238,11 @@ public class GhostController : MonoBehaviour
         {
             inAnObject = false;
         }
+    }
+
+    public void ExhaustOver()
+    {
+        audioSource.PlayOneShot(rechargedDing);
     }
 
     private void OnEnable()
