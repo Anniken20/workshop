@@ -157,6 +157,11 @@ public class TeleportController : MonoBehaviour
         // Wait for a very short moment to avoid jitter
         yield return new WaitForSeconds(0.1f);
 
+        PlayerHealth playerHealth = player.GetComponent<PlayerHealth>();
+        if (playerHealth != null)
+        {
+            playerHealth.SetInvincibility(invincibilityDuration);
+        }
 
         // Re-enable character control
         characterController.enabled = true;

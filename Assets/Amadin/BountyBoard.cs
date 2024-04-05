@@ -24,7 +24,9 @@ public class BountyBoard : MonoBehaviour
     private string santanaDefeatedKey = "SantanaDefeated";
     private string dianaDefeatedKey = "DianaDefeated";
 
-    private bool popupActivated = false;
+    public bool popupActivated = false;
+
+    public Collider collider1;
 
     private void Start()
     {
@@ -69,9 +71,9 @@ public class BountyBoard : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider collider1)
     {
-        if (other.CompareTag("Player") && !popupActivated)
+        if (collider1.CompareTag("Player") && !popupActivated)
         {
             if (!playerEnteredOnce)
             {
@@ -98,13 +100,14 @@ public class BountyBoard : MonoBehaviour
         }
     }
 
-    private void OnTriggerExit(Collider other)
+    private void OnTriggerExit(Collider collider1)
     {
-        if (other.CompareTag("Player"))
+        if (collider1.CompareTag("Player"))
         {
             // Player exited proximity, hide the level select pop-up
             levelSelectPopup.SetActive(false);
             UnPauseNoUI(); // Unpause the game when the pop-up is deactivated
+            popupActivated = false;
         }
     }
 
