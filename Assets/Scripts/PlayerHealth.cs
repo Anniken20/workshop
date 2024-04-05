@@ -136,6 +136,17 @@ public class PlayerHealth : MonoBehaviour, IDataPersistence
         GetComponent<ThirdPersonController>().Death();
     }
 
+    public void SetInvincibility(float duration)
+    {
+        StartCoroutine(ActivateInvincibility(duration));
+    }
+
+    private IEnumerator ActivateInvincibility(float duration)
+    {
+         _invulnerabilityTimer = duration;
+        yield return new WaitForSeconds(duration);
+    }
+
     public void LoadData(GameData data)
     {
         currentHealth = data.playerHealth;
