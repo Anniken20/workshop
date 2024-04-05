@@ -60,4 +60,16 @@ public class ClearSaveData : MonoBehaviour
         // Hide confirmation panel without deletion
         confirmationPanel.SetActive(false);
     }
+    public void DeleteIndividual(int profNum){
+        string filePath = Path.Combine(Application.persistentDataPath, fileName+profNum);
+        if(File.Exists(filePath)){
+            File.Delete(filePath);
+            Debug.Log("Deleting file: '" +filePath +"'");
+        }
+        else{
+                Debug.Log("Cannot Delete File: '" +filePath +"' " +"As it does not exist");
+        }
+        confirmationPanel.SetActive(false);
+    }
+    
 }
