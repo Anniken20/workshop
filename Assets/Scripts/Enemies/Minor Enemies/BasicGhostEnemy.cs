@@ -12,16 +12,18 @@ public class GhostEnemy : MonoBehaviour, IShootable
     public float attackCooldown = 2f; // Cooldown time between attacks
 
     private GameObject player; // Who ghost attacks and deals damage to
-    private GameObject target; //where ghsot looks at and matches Y value with
+    private GameObject target; // Where ghost looks at and matches Y value with
     public int currentHealth; // Ghost health
     private bool canAttack = true; // Whether ghost can attack or not
 
-    public AggroScript aggroScript; // ref to aggro script 
+    public AggroScript aggroScript; // Reference to the aggro script 
     public float lookAtOffset = 1.4f;
     public AudioClip[] deathSounds;
     private AudioSource audioSource;
 
     private VisualEffect _visualEffectController;
+
+    public float minDistanceBetweenEnemies = 2f; // Minimum distance between enemies
 
     public void OnShot(BulletController bullet)
     {
@@ -32,49 +34,65 @@ public class GhostEnemy : MonoBehaviour, IShootable
     {
         aggroScript = GetComponentInChildren<AggroScript>();
         _visualEffectController = GetComponentInChildren<VisualEffect>();
-
-    }
-    void Start()
-    {
-        currentHealth = maxHealth;
         audioSource = GetComponent<AudioSource>();
     }
 
     void Update()
     {
-
         if (aggroScript.target == null) // If the player is not found, do nothing
             return;
 
-        // Calculate direction towards the player's position
-        //set the Y to the shootpoint's Y, so it doesn't look at Val's feet, also negates need for float height by doing it automatically, and always being at shoot height
         Vector3 targetPosition = new Vector3(aggroScript.target.transform.position.x, aggroScript.target.transform.position.y + lookAtOffset, aggroScript.target.transform.position.z);
         Vector3 direction = targetPosition - transform.position;
         direction.Normalize();
 
-        // Move towards the player's absolute position
+        // Move towards the player's position
         transform.Translate(direction * movementSpeed * Time.deltaTime, Space.World);
 
-        // Ethan - look at target position
-        this.gameObject.transform.LookAt(targetPosition);
+        // Look at the target position
+        transform.LookAt(targetPosition);
 
         // Check if the player is within attack range and the enemy can attack
-        //Since it's a trigger now, just set it to ontriggerstay so it isnt checking every frame, kept the code in case haunted objs need it later
+        if (Vector3.Distance(transform.position, targetPosition) < attackRange && canAttack)
+        {
+            AttackPlayer();
+        }
+    }
 
-        /*
-         * if (Vector3.Distance(transform.position, player.transform.position) < attackRange && canAttack)
-            {
-                // Attack the player
-                PlayerHealth playerHealth = player.GetComponent<PlayerHealth>();
-                if (playerHealth != null)
-                {
-                    playerHealth.TakeDamage(damage);
-                    canAttack = false;
-                    Invoke("ResetAttackCooldown", attackCooldown);
-                }
-            }
-         */
+    void AttackPlayer()
+    {
+        PlayerHealth playerHealth = aggroScript.target.GetComponent<PlayerHealth>();
+        if (playerHealth != null)
+        {
+            playerHealth.TakeDamage(damage);
+            canAttack = false;
+            Invoke("ResetAttackCooldown", attackCooldown);
+        }
+    }
 
+    void ResetAttackCooldown()
+    {
+        canAttack = true;
+    }
+
+    public void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject.CompareTag("Ghost"))
+        {
+            AvoidCollision(other.transform.position);
+        }
+    }
+
+    void AvoidCollision(Vector3 otherPosition)
+    {
+        float distanceToEnemy = Vector3.Distance(transform.position, otherPosition);
+
+        // If the distance is less than the minimum distance, move away from the other enemy
+        if (distanceToEnemy < minDistanceBetweenEnemies)
+        {
+            Vector3 moveDirection = transform.position - otherPosition;
+            transform.Translate(moveDirection.normalized * (minDistanceBetweenEnemies - distanceToEnemy) * Time.deltaTime, Space.World);
+        }
     }
 
     public void TakeDamage(int damageAmount)
@@ -92,30 +110,6 @@ public class GhostEnemy : MonoBehaviour, IShootable
         StartCoroutine(DoEffectDeath(1.2f));
     }
 
-    void ResetAttackCooldown()
-    {
-        canAttack = true;
-    }
-
-    public void OnTriggerStay(Collider other)
-    {
-        if (other.gameObject.CompareTag("Player"))
-        {
-            if (canAttack)
-            {
-                // Attack the player
-                PlayerHealth playerHealth = aggroScript.target.GetComponent<PlayerHealth>();
-                if (playerHealth != null)
-                {
-                    playerHealth.TakeDamage(damage);
-                    canAttack = false;
-                    Invoke("ResetAttackCooldown", attackCooldown);
-                }
-            }
-        }
-
-    }
-
     IEnumerator DoEffectDeath(float deathTime)
     {
         // Check if there are death sounds available
@@ -131,12 +125,11 @@ public class GhostEnemy : MonoBehaviour, IShootable
         float currentTime = 0;
         while (currentTime < deathTime)
         {
-            _visualEffectController.SetFloat("TimeDissolve",  currentTime / deathTime);
+            _visualEffectController.SetFloat("TimeDissolve", currentTime / deathTime);
             currentTime += Time.deltaTime;
             yield return null;
         }
-        
-        Destroy(gameObject);
 
+        Destroy(gameObject);
     }
 }

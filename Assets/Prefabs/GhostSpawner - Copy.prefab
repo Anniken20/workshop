@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 7486825504063350466}
   m_Layer: 12
   m_Name: GhostSpawner - Copy
-  m_TagString: Untagged
+  m_TagString: Ghost
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -111,8 +111,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ghostPrefab: {fileID: 3104299516950262754, guid: b78625838667fb941b33a7a2dce9dae4,
     type: 3}
-  spawnCooldown: 1
+  spawnCooldown: 2
   maxEnemies: 2
-  spawnRadius: 1
+  spawnRadius: 2
   spawnPoint: {fileID: 0}
-  spawnHeight: 1
+  spawnHeight: 2
+  minDistanceBetweenGhosts: 2
