@@ -2385,7 +2385,7 @@ MonoBehaviour:
   interactionDistance: 3
   startPoint: {fileID: 205688720}
   endPoint: {fileID: 710365606}
-  defaultLookAtTarget: {fileID: 0}
+  postInteractionDirection: {x: 0, y: 0, z: 1}
   ambientSound: {fileID: 0}
   anim: {fileID: 103656985}
   movementAxis: 0
@@ -3333,7 +3333,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: -24.374998}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &130975956
@@ -3379,7 +3379,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 130975957}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 224068504}
+        m_TargetAssemblyTypeName: BountyBoard, Assembly-CSharp
+        m_MethodName: StartLevel2
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &130975957
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4512,7 +4524,7 @@ MonoBehaviour:
   interactionDistance: 3
   startPoint: {fileID: 1100836110}
   endPoint: {fileID: 1100836110}
-  defaultLookAtTarget: {fileID: 1863157277}
+  postInteractionDirection: {x: 0, y: 0, z: 1}
   ambientSound: {fileID: 0}
   anim: {fileID: 174347560}
   movementAxis: 0
@@ -5881,6 +5893,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   levelSelectPopup: {fileID: 810483092}
+  levelManager: {fileID: 1688156244}
   level1Button: {fileID: 648943542}
   level2Button: {fileID: 130975956}
   level3Button: {fileID: 971527626}
@@ -8802,7 +8815,7 @@ MonoBehaviour:
   interactionDistance: 3
   startPoint: {fileID: 910950001}
   endPoint: {fileID: 1382112361}
-  defaultLookAtTarget: {fileID: 0}
+  postInteractionDirection: {x: 0, y: 0, z: 1}
   ambientSound: {fileID: 0}
   anim: {fileID: 350250421}
   movementAxis: 1
@@ -12038,7 +12051,7 @@ MonoBehaviour:
   interactionDistance: 3
   startPoint: {fileID: 1452735358}
   endPoint: {fileID: 1745008269}
-  defaultLookAtTarget: {fileID: 0}
+  postInteractionDirection: {x: 0, y: 0, z: 1}
   ambientSound: {fileID: 2098333141}
   anim: {fileID: 490229327}
   movementAxis: 1
@@ -13141,7 +13154,7 @@ MonoBehaviour:
   interactionDistance: 3
   startPoint: {fileID: 695144477}
   endPoint: {fileID: 33057771}
-  defaultLookAtTarget: {fileID: 0}
+  postInteractionDirection: {x: 0, y: 0, z: 1}
   ambientSound: {fileID: 0}
   anim: {fileID: 518812870}
   movementAxis: 0
@@ -15573,7 +15586,7 @@ MonoBehaviour:
   interactionDistance: 3
   startPoint: {fileID: 1935603638}
   endPoint: {fileID: 972731810}
-  defaultLookAtTarget: {fileID: 0}
+  postInteractionDirection: {x: 0, y: 0, z: 1}
   ambientSound: {fileID: 0}
   anim: {fileID: 601242255}
   movementAxis: 0
@@ -16160,7 +16173,7 @@ MonoBehaviour:
   interactionDistance: 3
   startPoint: {fileID: 1833214399}
   endPoint: {fileID: 1833214399}
-  defaultLookAtTarget: {fileID: 85089802}
+  postInteractionDirection: {x: 0, y: 0, z: 1}
   ambientSound: {fileID: 0}
   anim: {fileID: 805488519}
   movementAxis: 0
@@ -16639,7 +16652,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -174.8, y: 0}
+  m_AnchoredPosition: {x: -174.8, y: -24.374998}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &648943542
@@ -16685,7 +16698,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 648943543}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 224068504}
+        m_TargetAssemblyTypeName: BountyBoard, Assembly-CSharp
+        m_MethodName: StartLevel1
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &648943543
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17224,6 +17249,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isDoorOpen: 0
+  doorOpen: {fileID: 0}
 --- !u!65 &673763865
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -22657,7 +22683,7 @@ MonoBehaviour:
   interactionDistance: 3
   startPoint: {fileID: 1966556669}
   endPoint: {fileID: 1966556669}
-  defaultLookAtTarget: {fileID: 1355833492}
+  postInteractionDirection: {x: 0, y: 0, z: 1}
   ambientSound: {fileID: 0}
   anim: {fileID: 826131425}
   movementAxis: 1
@@ -25116,7 +25142,7 @@ MonoBehaviour:
   interactionDistance: 3
   startPoint: {fileID: 412347675}
   endPoint: {fileID: 412347675}
-  defaultLookAtTarget: {fileID: 133428492}
+  postInteractionDirection: {x: 0, y: 0, z: 1}
   ambientSound: {fileID: 0}
   anim: {fileID: 919163324}
   movementAxis: 1
@@ -26675,7 +26701,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 176.8, y: 0}
+  m_AnchoredPosition: {x: 176.8, y: -24.374998}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &971527626
@@ -26721,7 +26747,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 971527627}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 224068504}
+        m_TargetAssemblyTypeName: BountyBoard, Assembly-CSharp
+        m_MethodName: StartLevel3
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &971527627
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -31033,7 +31071,7 @@ MonoBehaviour:
   interactionDistance: 3
   startPoint: {fileID: 430305952}
   endPoint: {fileID: 1228965232}
-  defaultLookAtTarget: {fileID: 0}
+  postInteractionDirection: {x: 0, y: 0, z: 1}
   ambientSound: {fileID: 0}
   anim: {fileID: 1183880699}
   movementAxis: 1
@@ -31705,7 +31743,7 @@ MonoBehaviour:
   interactionDistance: 3
   startPoint: {fileID: 697844199}
   endPoint: {fileID: 697844199}
-  defaultLookAtTarget: {fileID: 1819355531}
+  postInteractionDirection: {x: 0, y: 0, z: 1}
   ambientSound: {fileID: 0}
   anim: {fileID: 1190906769}
   movementAxis: 1
@@ -32642,7 +32680,7 @@ MonoBehaviour:
   interactionDistance: 3
   startPoint: {fileID: 1331171976}
   endPoint: {fileID: 1331171976}
-  defaultLookAtTarget: {fileID: 432112587}
+  postInteractionDirection: {x: 0, y: 0, z: 1}
   ambientSound: {fileID: 0}
   anim: {fileID: 1234823994}
   movementAxis: 1
@@ -34230,7 +34268,7 @@ MonoBehaviour:
   interactionDistance: 3
   startPoint: {fileID: 1287363665}
   endPoint: {fileID: 1722772977}
-  defaultLookAtTarget: {fileID: 0}
+  postInteractionDirection: {x: 0, y: 0, z: 1}
   ambientSound: {fileID: 0}
   anim: {fileID: 1330134407}
   movementAxis: 0
@@ -36829,7 +36867,7 @@ MonoBehaviour:
   interactionDistance: 3
   startPoint: {fileID: 1146406446}
   endPoint: {fileID: 1126697072}
-  defaultLookAtTarget: {fileID: 0}
+  postInteractionDirection: {x: 0, y: 0, z: 1}
   ambientSound: {fileID: 0}
   anim: {fileID: 1475704165}
   movementAxis: 0
@@ -37349,7 +37387,7 @@ MonoBehaviour:
   interactionDistance: 3
   startPoint: {fileID: 1078556689}
   endPoint: {fileID: 983429985}
-  defaultLookAtTarget: {fileID: 0}
+  postInteractionDirection: {x: 0, y: 0, z: 1}
   ambientSound: {fileID: 0}
   anim: {fileID: 1485970477}
   movementAxis: 1
@@ -38615,7 +38653,7 @@ PrefabInstance:
     - target: {fileID: 3403904910980620515, guid: 6cebc20f4d85d6a4f93b8b119157a33c,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.9641732
+      value: -0.96430653
       objectReference: {fileID: 0}
     - target: {fileID: 3403904910980620515, guid: 6cebc20f4d85d6a4f93b8b119157a33c,
         type: 3}
@@ -38625,7 +38663,7 @@ PrefabInstance:
     - target: {fileID: 3403904910980620515, guid: 6cebc20f4d85d6a4f93b8b119157a33c,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1.0273948
+      value: 1.0275115
       objectReference: {fileID: 0}
     - target: {fileID: 3403904910980620515, guid: 6cebc20f4d85d6a4f93b8b119157a33c,
         type: 3}
@@ -42377,7 +42415,7 @@ MonoBehaviour:
   interactionDistance: 3
   startPoint: {fileID: 891544487}
   endPoint: {fileID: 891544487}
-  defaultLookAtTarget: {fileID: 1542626421}
+  postInteractionDirection: {x: 0, y: 0, z: 1}
   ambientSound: {fileID: 0}
   anim: {fileID: 1750645265}
   movementAxis: 1
@@ -44315,7 +44353,7 @@ MonoBehaviour:
   interactionDistance: 3
   startPoint: {fileID: 1418404740}
   endPoint: {fileID: 1799559000}
-  defaultLookAtTarget: {fileID: 0}
+  postInteractionDirection: {x: 0, y: 0, z: 1}
   ambientSound: {fileID: 0}
   anim: {fileID: 1824446425}
   movementAxis: 0
@@ -45871,7 +45909,7 @@ MonoBehaviour:
   interactionDistance: 3
   startPoint: {fileID: 510868444}
   endPoint: {fileID: 510868444}
-  defaultLookAtTarget: {fileID: 390781855}
+  postInteractionDirection: {x: 0, y: 0, z: 1}
   ambientSound: {fileID: 0}
   anim: {fileID: 1884367837}
   movementAxis: 1
@@ -47120,7 +47158,7 @@ MonoBehaviour:
   interactionDistance: 3
   startPoint: {fileID: 381240917}
   endPoint: {fileID: 381240917}
-  defaultLookAtTarget: {fileID: 1505831953}
+  postInteractionDirection: {x: 0, y: 0, z: 1}
   ambientSound: {fileID: 0}
   anim: {fileID: 1945600689}
   movementAxis: 1
@@ -48520,7 +48558,7 @@ MonoBehaviour:
   interactionDistance: 3
   startPoint: {fileID: 242915648}
   endPoint: {fileID: 790752789}
-  defaultLookAtTarget: {fileID: 0}
+  postInteractionDirection: {x: 0, y: 0, z: 1}
   ambientSound: {fileID: 0}
   anim: {fileID: 2019948951}
   movementAxis: 0
@@ -49310,7 +49348,7 @@ MonoBehaviour:
   interactionDistance: 3
   startPoint: {fileID: 2038507338}
   endPoint: {fileID: 2038507338}
-  defaultLookAtTarget: {fileID: 1037034669}
+  postInteractionDirection: {x: 0, y: 0, z: 1}
   ambientSound: {fileID: 0}
   anim: {fileID: 2033881352}
   movementAxis: 1
@@ -52093,6 +52131,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isDoorOpen: 0
+  doorOpen: {fileID: 0}
 --- !u!4 &3852810554272136449
 Transform:
   m_ObjectHideFlags: 0
@@ -52178,6 +52217,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isDoorOpen: 0
+  doorOpen: {fileID: 0}
 --- !u!23 &4195502357825294905
 MeshRenderer:
   m_ObjectHideFlags: 0

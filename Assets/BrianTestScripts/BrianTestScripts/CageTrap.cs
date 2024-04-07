@@ -13,6 +13,9 @@ public class CageTrap : MonoBehaviour
 
     private Coroutine trapRoutine;
 
+    public AudioSource audioSource;
+    public AudioClip clang;
+
     private void Start()
     {
         cage.SetActive(true);
@@ -42,6 +45,7 @@ public class CageTrap : MonoBehaviour
         }
         cage.SetActive(true);
         cage.transform.position = player.transform.position;
+        audioSource.PlayOneShot(clang);
 
         yield return new WaitForSeconds(trapDuration);
 
