@@ -11,10 +11,16 @@ public class GraveShaker : MonoBehaviour
     private string a;
     private Vector3 ogPos;
     public Daughter d;
+    public Animator anim;
+    private bool lerptoOut = false;
+    private Vector3 outPos;
     private void Start()
     {
         ogPos = this.transform.position;
         d = GetComponentInParent<GraveSelection>().poppy.GetComponentInChildren<Daughter>();
+        anim = d.gameObject.GetComponentInChildren<Animator>();
+        this.outPos = this.transform.Find("OutPOS").position;
+        lerptoOut = false;
     }
     public void StartShake(float shakeSpeed, float shakeAmount, float shakeDuration, string axis)
     {
@@ -36,8 +42,8 @@ public class GraveShaker : MonoBehaviour
         }
         start = false;
         GetComponentInParent<GraveSelection>().MovePoppy(this.transform.Find("PeekingPOS").position);
-        d.GetComponent<Animator>().SetBool("Idle", false);
-        d.GetComponent<Animator>().SetBool("Climbing", true);
+        anim.SetBool("Idle", false);
+        anim.SetBool("Climbing", true);
         this.GetComponent<DaughterGraveWrangle>().peeking = true;
         StartCoroutine(PeekingWait());
         //GetComponentInParent<GraveSelection>().SelectNewGrave();
@@ -56,23 +62,44 @@ public class GraveShaker : MonoBehaviour
                 this.transform.position = new Vector3(ogPos.x, ogPos.y, ogPos.z + Mathf.Sin(Time.time * sSpeed) * sAmount);
             }
         }
+        if(this.lerptoOut){
+            d.gameObject.transform.position = Vector3.Lerp(d.gameObject.transform.position, this.outPos, Time.deltaTime);
+            //Debug.Log("Dist: " +Vector3.Distance(anim.gameObject.transform.position, this.outPos));
+            //var outp = this.transform.Find("OutPOS");
+            Debug.Log(Vector3.Distance(d.gameObject.transform.position, this.outPos));
+            if(Vector3.Distance(d.gameObject.transform.position, this.outPos) <= 0.2f){
+                d.gameObject.transform.position = this.outPos;
+                this.lerptoOut = false;
+                Debug.Log("OutReached");
+            }
+        }
     }
+    
     IEnumerator PeekingWait()
     {
         yield return new WaitForSeconds(GetComponentInParent<GraveSelection>().waitTime);
         Debug.Log("Heading to Out POS");
         this.GetComponent<DaughterGraveWrangle>().peeking = false;
-        GetComponentInParent<GraveSelection>().MovePoppy(this.transform.Find("OutPOS").position);
-        d.GetComponent<Animator>().SetBool("Climbing", false);
-        d.GetComponent<Animator>().SetBool("Jumping", true);
+        //GetComponentInParent<GraveSelection>().MovePoppy(this.transform.Find("OutPOS").position);
+        anim.SetBool("Climbing", false);
+        //StartCoroutine(JumpCooldown());
+        anim.SetBool("Jumping", true);
+        //GetComponentInParent<GraveSelection>().LerpToOutPOS(this.transform.Find("OutPOS").position);
+        lerptoOut = true;
         this.GetComponent<DaughterGraveWrangle>().atGrave = false;
         //this.GetComponent<DaughterGraveWrangle>().enabled = false;
         GetComponentInParent<GraveSelection>().PoppyCombat(this.gameObject);
     }
     public void CancelPeek()
     {
+        anim.SetBool("Idle", true);
+        anim.SetBool("Climbing", false);
         StopCoroutine(PeekingWait());
         StopAllCoroutines();
     }
+    /*IEnumerator JumpCooldown(){
+        yield return new WaitForSeconds(4f);
+        GetComponentInParent<GraveSelection>().LerpToOutPOS(this.transform.Find("OutPOS").position);
 
+    }*/
 }
