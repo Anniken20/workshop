@@ -10,33 +10,30 @@ public class NPCController : MonoBehaviour
     public float detectionRadius = 5f; // Radius within which the AI can detect the player
     public float interactionDistance = 3f; // Distance within which the AI stops and faces the player
     private NavMeshAgent agent;
-    private Vector3 wanderTarget = Vector3.zero;
     public Transform startPoint;
     public Transform endPoint;
     private Vector3 currentTarget;
     private Vector3 startPointWorldPosition;
     private Vector3 endPointWorldPosition;
-    public Transform defaultLookAtTarget;
-    private bool isFacingPlayer = false;
+    public Vector3 postInteractionDirection = Vector3.forward; // Direction the NPC faces after interaction
+    private bool isInteractingWithPlayer = false;
     public AudioSource ambientSound;
     public Animator anim;
 
     public enum MovementAxis
     {
-    X,
-    Z
+        X,
+        Z
     }
 
     public MovementAxis movementAxis = MovementAxis.X; // Default to X axis
 
-   void Start()
-   {
+    void Start()
+    {
         agent = GetComponent<NavMeshAgent>();
-        // Store the world positions of the start and end points
         startPointWorldPosition = startPoint.position;
         endPointWorldPosition = endPoint.position;
     
-        // Set the initial target to the world position of the start point
         currentTarget = startPointWorldPosition;
         agent.SetDestination(currentTarget);
         anim.SetBool("Idle", false);
@@ -49,99 +46,68 @@ public class NPCController : MonoBehaviour
 
         if (distanceToPlayer <= interactionDistance)
         {
-            if (!agent.isStopped)
+            if (!isInteractingWithPlayer)
             {
                 agent.isStopped = true;
-                agent.ResetPath(); // Stop moving towards the current target
+                agent.ResetPath();
                 anim.SetBool("Walking", false);
                 anim.SetBool("Idle", true);
+                isInteractingWithPlayer = true;
             }
-            FaceTarget(playerTransform.position);
-            isFacingPlayer = true;
+            FaceTarget(playerTransform.position); // Face the player during interaction
         }
         else
         {
-            if (agent.isStopped || !agent.hasPath)
+            if (isInteractingWithPlayer)
             {
+                // Once player exits the interaction range, NPC faces the predetermined direction
+                isInteractingWithPlayer = false;
+                FaceDirection(postInteractionDirection);
                 agent.isStopped = false;
                 agent.SetDestination(currentTarget);
                 anim.SetBool("Idle", false);
                 anim.SetBool("Walking", true);
-                isFacingPlayer = false;
             }
 
-            // Movement and target switching logic with world positions
             if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
             {
-                if (currentTarget == startPointWorldPosition)
-                {
-                    currentTarget = endPointWorldPosition;
-                }
-                else
-                {
-                    currentTarget = startPointWorldPosition;
-                }
-
-                agent.SetDestination(currentTarget);
-            }
-            else if (!isFacingPlayer && defaultLookAtTarget != null)
-            {
-                // When idle and not facing the player, look towards the default target
-                FaceTarget(defaultLookAtTarget.position);
+                SwitchCurrentTarget();
             }
         }
 
-        if (ambientSound != null)
-        {
-            if (!isFacingPlayer)
-            {
-                // If the sound is not already playing, start playing it
-                if (!ambientSound.isPlaying)
-                {
-                    ambientSound.Play();
-                }
-            }
-            else
-            {
-                // If the boolean condition is met, stop the sound if it's playing
-                if (ambientSound.isPlaying)
-                {
-                    ambientSound.Stop();
-                }
-            }
-        }
+        HandleAmbientSound(isInteractingWithPlayer);
     }
 
-    void SetNewRandomDestination()
+    void SwitchCurrentTarget()
     {
-        Vector3 currentPos = transform.position;
-    
-        // Depending on the chosen axis, move in a straight line along that axis
-        if (movementAxis == MovementAxis.X)
-        {
-        wanderTarget = new Vector3(currentPos.x + Random.Range(-detectionRadius, detectionRadius), currentPos.y, currentPos.z);
-        }
-        else // MovementAxis.Z
-        {
-        wanderTarget = new Vector3(currentPos.x, currentPos.y, currentPos.z + Random.Range(-detectionRadius, detectionRadius));
-        }
-
-        agent.SetDestination(wanderTarget);
+        currentTarget = currentTarget == startPointWorldPosition ? endPointWorldPosition : startPointWorldPosition;
+        agent.SetDestination(currentTarget);
     }
 
-    Vector3 RandomWanderTarget()
+    void FaceTarget(Vector3 targetPosition)
     {
-        Vector3 randomDirection = Random.insideUnitSphere * detectionRadius;
-        randomDirection += transform.position;
-        NavMeshHit navHit;
-        NavMesh.SamplePosition(randomDirection, out navHit, detectionRadius, -1);
-        return navHit.position;
+        Vector3 direction = (targetPosition - transform.position).normalized;
+        FaceDirection(direction);
     }
 
-    void FaceTarget(Vector3 destination)
+    void FaceDirection(Vector3 direction)
     {
-        Vector3 direction = (destination - transform.position).normalized;
         Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
+    }
+
+    void HandleAmbientSound(bool isInteracting)
+    {
+        if (ambientSound != null)
+        {
+            if (!isInteracting && !ambientSound.isPlaying)
+            {
+                ambientSound.Play();
+            }
+            else if (isInteracting && ambientSound.isPlaying)
+            {
+                ambientSound.Stop();
+            }
+        }
     }
 }
