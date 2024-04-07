@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
-using DG.Tweening; // Import DOTween namespace
+using DG.Tweening;
+using TMPro.Examples; // Import DOTween namespace
 
 public class HealthBarFade : MonoBehaviour
 {

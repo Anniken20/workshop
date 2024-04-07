@@ -10,6 +10,7 @@ public class Enrique : Enemy, ICryable
     [HideInInspector] public CryState cryState;
     [HideInInspector] public RunToPointsState runToPointsState;
     private bool inBattle;
+    public AudioClip crying;
 
     public GhostSpawner[] ghostSpawners;
     private void Awake()
@@ -51,6 +52,7 @@ public class Enrique : Enemy, ICryable
     public void StartCrying()
     {
         stateMachine.ChangeState(cryState);
+        audioSource.PlayOneShot(crying);
         StopSpawning();
     }
 
@@ -62,6 +64,7 @@ public class Enrique : Enemy, ICryable
         {
             TakeDamage((int)bullet.currDmg);
             stateMachine.ChangeState(runToPointsState);
+            audioSource.Stop();
             SpawnGhosts();
         }
     }
