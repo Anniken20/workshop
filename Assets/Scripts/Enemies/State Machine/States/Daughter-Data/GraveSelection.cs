@@ -27,15 +27,20 @@ public class GraveSelection : MonoBehaviour
     public GameObject poppy;
     [SerializeField] GameObject[] graves;
     private Daughter d;
+    public Animator anim;
     private void Start()
     {
         //poppy.transform.position = daughterStandbyPOS.position;
         d = poppy.GetComponentInChildren<Daughter>();
+        anim = d.gameObject.GetComponentInChildren<Animator>();
+
         //poppyModel.SetActive(false);
     }
     private GameObject SelectGrave()
     {
+        
         poppyModel.SetActive(false);
+        poppyModel.transform.position = d.gameObject.transform.position;
         if (graves == null || graves.Length == 0)
         {
             Debug.LogWarning("The graves list is empty or null because of the implication...");
@@ -66,7 +71,7 @@ public class GraveSelection : MonoBehaviour
     public void MovePoppy(Vector3 destination)
     {
         poppyModel.SetActive(true);
-        poppy.transform.position = destination;
+        poppy.transform.position = new Vector3(destination.x, destination.y, destination.z);
     }
     public void SelectNewGrave()
     {
@@ -111,7 +116,7 @@ public class GraveSelection : MonoBehaviour
     }
     public void Death(){
         StopAllCoroutines();
-        d.GetComponent<Animator>().SetBool("Idle", true);
+        anim.SetBool("Idle", true);
         foreach (var grave in graves)
         {
             grave.GetComponent<GraveShaker>().CancelPeek();
@@ -119,7 +124,11 @@ public class GraveSelection : MonoBehaviour
     }
     public IEnumerator ShootDelay(){
         yield return new WaitForSeconds(1.5f);
-        d.GetComponent<Animator>().SetBool("Jumping", false);
-        d.GetComponent<Animator>().SetBool("Shooting", true);
+        anim.SetBool("Jumping", false);
+        anim.SetBool("Shooting", true);
+    }
+    public void RotatePoppy(){
+        //poppyModel.transform.rotation = Quaternion.Euler(0, 0, 0);
+        d.gameObject.transform.eulerAngles = new Vector3(0, 0, 0);
     }
 }
