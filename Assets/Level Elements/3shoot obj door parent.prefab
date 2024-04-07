@@ -104,6 +104,9 @@ MonoBehaviour:
   fullHealthBar: {fileID: 0}
   healthBarMask: {fileID: 0}
   healthBarFadeTime: 1
+  regen: 0
+  regenDMG: 0
+  regenTimer: 0
   breakController: {fileID: 0}
 --- !u!114 &1147531574274526878
 MonoBehaviour:
@@ -130,6 +133,9 @@ MonoBehaviour:
   disableRigidbodyDelay: 30
   enableRigidbodyDelay: 30
   breakSound: {fileID: 0}
+  clipLength: 0
+  maxFragmentsToSpawn: 5
+  spawnDistance: 3
 --- !u!1 &2019767710995998044
 GameObject:
   m_ObjectHideFlags: 0
@@ -745,3 +751,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isDoorOpen: 0
+  doorOpen: {fileID: 8300000, guid: 27e84b1f39bbe3245a86cf8b6d9253ec, type: 3}
