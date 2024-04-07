@@ -36,6 +36,10 @@ public class TeleportController : MonoBehaviour
     private bool isTransitioning = false;
     private Vector3 teleportDestination;
     private Vector3 intermediatePosition;
+    private GunController gunController;
+
+    [Header("Invincibility")]
+    public float invincibilityDuration = 5.0f;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -72,6 +76,12 @@ public class TeleportController : MonoBehaviour
     IEnumerator TransitionThroughTeleporter(GameObject player)
     {
         isTransitioning = true;
+
+        gunController = player.GetComponent<GunController>();
+        if (gunController != null)
+        {
+            gunController.DisableShooting();
+        }
 
         // Disable character control
         characterController.enabled = false;
@@ -153,6 +163,17 @@ public class TeleportController : MonoBehaviour
 
         // Wait for a very short moment to avoid jitter
         yield return new WaitForSeconds(0.1f);
+
+        PlayerHealth playerHealth = player.GetComponent<PlayerHealth>();
+        if (playerHealth != null)
+        {
+            playerHealth.SetInvincibility(invincibilityDuration);
+        }
+
+        if (gunController != null)
+        {
+            gunController.ReenableShooting();
+        }
 
         // Re-enable character control
         characterController.enabled = true;

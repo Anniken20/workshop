@@ -8,6 +8,7 @@ public class MainMenu : MonoBehaviour
     public GameObject settingsMenu;
     public GameObject profilesMenu;
     public GameObject controlsMenu;
+    public DialogueOptionsMenu updateFonts;
 
     public void PlayButton()
     {
@@ -35,6 +36,9 @@ public class MainMenu : MonoBehaviour
     {
         Debug.Log("Game Quit");
         Application.Quit();
+    }
+    public void Awake(){
+        updateFonts.LoadPlayerPrefs();
     }
 
 }

@@ -14,6 +14,7 @@ public class GameData
    public List<Enemy.Enemies> deadEnemies;
    public List<string> collectedNotes;
    public int ammoCount;
+   public bool introCompleted;
 
 //These will be the default values when the game is loaded with no save data to pull from.
    public GameData(){
@@ -27,6 +28,7 @@ public class GameData
         this.deadEnemies = new List<Enemy.Enemies>();
         this.collectedNotes = new List<string>();
         this.ammoCount = 0;
+        this.introCompleted = false;
    }
 }
 

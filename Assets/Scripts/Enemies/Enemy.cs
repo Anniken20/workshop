@@ -26,6 +26,9 @@ public abstract class Enemy : MonoBehaviour, IShootable, IDataPersistence
     public Transform firePoint; // The position where the projectiles are spawned
     public float defaultMovementSpeed;
     public Animator animator;
+    public AudioSource audioSource;
+    public AudioClip hurtSFX;
+    public AudioClip movingSFX;
     public bool duelEnemy = false;
 
     [HideInInspector] public EnemyStateMachine stateMachine;
@@ -151,6 +154,7 @@ public abstract class Enemy : MonoBehaviour, IShootable, IDataPersistence
     public virtual void TakeDamage(int delta)
     {
         currentHealth -= delta;
+        audioSource.PlayOneShot(hurtSFX);
         damageDelegate?.Invoke();
         if(regen && delta < regenDMG){
             StartCoroutine(Regenerate(delta));

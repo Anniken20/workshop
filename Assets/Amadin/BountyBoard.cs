@@ -6,9 +6,11 @@ using System;
 public class BountyBoard : MonoBehaviour
 {
     public GameObject levelSelectPopup;
+    public LevelManager levelManager;
     public Button level1Button;
     public Button level2Button;
     public Button level3Button;
+    public Button backButton;
     public GameObject particleEffect;
     public ClearSaveData clearSaveDataScript;
 
@@ -23,15 +25,20 @@ public class BountyBoard : MonoBehaviour
     private string santanaDefeatedKey = "SantanaDefeated";
     private string dianaDefeatedKey = "DianaDefeated";
 
+    public bool popupActivated = false;
+
+    public Collider collider1;
+
     private void Start()
     {
         // Load playerEnteredOnce state from PlayerPrefs
         playerEnteredOnce = PlayerPrefs.GetInt(playerEnteredOnceKey, 0) == 1;
 
         // Buttons to their respective functions
-        level1Button.onClick.AddListener(StartLevel1);
+        /*level1Button.onClick.AddListener(StartLevel1);
         level2Button.onClick.AddListener(StartLevel2);
-        level3Button.onClick.AddListener(StartLevel3);
+        level3Button.onClick.AddListener(StartLevel3);*/
+        backButton.onClick.AddListener(BackButtonClicked);
 
         // Subscribe to onPause event
         PauseMenu.onPause += PauseNoUI;
@@ -43,31 +50,42 @@ public class BountyBoard : MonoBehaviour
         particleEffect.SetActive(true);
 
         // Check if characters are defeated and activate/deactivate level buttons accordingly
-        bool carilloDefeated = PlayerPrefs.GetInt(carilloDefeatedKey, 0) == 1;
+        /*bool carilloDefeated = PlayerPrefs.GetInt(carilloDefeatedKey, 0) == 1;
         bool santanaDefeated = PlayerPrefs.GetInt(santanaDefeatedKey, 0) == 1;
-        bool dianaDefeated = PlayerPrefs.GetInt(dianaDefeatedKey, 0) == 1;
+        bool dianaDefeated = PlayerPrefs.GetInt(dianaDefeatedKey, 0) == 1;*/
 
         // Enable level 2 button if Carillo is defeated
-        level2Button.interactable = carilloDefeated;
+        //level2Button.interactable = carilloDefeated;
 
         // Enable level 3 button if Santana is defeated
-        level3Button.interactable = santanaDefeated;
+        //level3Button.interactable = santanaDefeated;
 
         // Disable level 2 and level 3 buttons if Carillo and Santana are not defeated respectively
-        if (!carilloDefeated)
+        if (levelManager.level < 1)
         {
             level2Button.interactable = false;
+            level3Button.interactable = false;
         }
-
-        if (!santanaDefeated)
+        else if (levelManager.level < 2)
         {
             level3Button.interactable = false;
         }
+
+        if (levelManager.level == 1)
+        {
+            level2Button.interactable = true;
+            level3Button.interactable = false;
+        }
+        else if (levelManager.level == 2)
+        {
+            level2Button.interactable = true;
+            level3Button.interactable = true;
+        }
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider collider1)
     {
-        if (other.CompareTag("Player"))
+        if (collider1.CompareTag("Player") && !popupActivated)
         {
             if (!playerEnteredOnce)
             {
@@ -89,16 +107,19 @@ public class BountyBoard : MonoBehaviour
                 // Disable the particle effect when showing the pop-up
                 particleEffect.SetActive(false);
             }
+
+            popupActivated = true; // Set popupActivated to true to prevent multiple activations
         }
     }
 
-    private void OnTriggerExit(Collider other)
+    private void OnTriggerExit(Collider collider1)
     {
-        if (other.CompareTag("Player"))
+        if (collider1.CompareTag("Player"))
         {
             // Player exited proximity, hide the level select pop-up
             levelSelectPopup.SetActive(false);
             UnPauseNoUI(); // Unpause the game when the pop-up is deactivated
+            popupActivated = false;
         }
     }
 
@@ -125,6 +146,40 @@ public class BountyBoard : MonoBehaviour
         SceneManager.LoadScene("Level 3");
         Debug.Log("Starting Level 3...");
         UnPauseNoUI(); // Unpause the game when starting Level 3
+    }
+
+    // Method to handle back button click event
+    private void BackButtonClicked()
+    {
+        // Check if the player is still inside the trigger area
+        if (!IsPlayerInsideTriggerArea())
+        {
+            // Deactivate the level select pop-up
+            levelSelectPopup.SetActive(false);
+            UnPauseNoUI(); // Unpause the game when the pop-up is deactivated
+
+            // Unsubscribe from onPause event
+            PauseMenu.onPause -= PauseNoUI;
+        }
+    }
+
+    // Method to check if the player is inside the trigger area
+    private bool IsPlayerInsideTriggerArea()
+    {
+        // Define the center and radius of the trigger area
+        Vector3 center = transform.position;
+        float radius = 2f; // 2-meter radius
+
+        // Check if the player is inside the trigger area
+        Collider[] colliders = Physics.OverlapSphere(center, radius);
+        foreach (Collider collider in colliders)
+        {
+            if (collider.CompareTag("Player"))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void PauseNoUI()
@@ -169,3 +224,4 @@ public class BountyBoard : MonoBehaviour
         PauseMenu.onPause -= PauseNoUI;
     }
 }
+

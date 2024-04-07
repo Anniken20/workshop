@@ -25,12 +25,12 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 777840897677070866}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 9.484545, y: -2.19644, z: 3.6780334}
+  m_LocalRotation: {x: 0, y: -0.000000029802315, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.00096131756}
+  m_LocalScale: {x: 0.9849772, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2553574672445914389}
+  m_Father: {fileID: 3414513569513434300}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -104,7 +104,6 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 3172397787386910352}
   - {fileID: 3414513569513434300}
   m_Father: {fileID: 5188530565724595550}
   m_RootOrder: -1
@@ -125,7 +124,7 @@ GameObject:
   - component: {fileID: 3414513569513434300}
   - component: {fileID: 6297433385783588820}
   - component: {fileID: 7300618882620754070}
-  - component: {fileID: 6298163546124505218}
+  - component: {fileID: 6391415368492930041}
   m_Layer: 0
   m_Name: HealthBarMask
   m_TagString: Untagged
@@ -144,7 +143,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 9.629203, y: -2.19644, z: 3.678033}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 3172397787386910352}
   m_Father: {fileID: 2553574672445914389}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -181,67 +181,29 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 23b63f85a2e074e83952d6ab83293132, type: 3}
-  m_Type: 0
+  m_Sprite: {fileID: 21300000, guid: bd7f78435b39baf4e853f4c34bd5749e, type: 3}
+  m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
-  m_FillMethod: 4
+  m_FillMethod: 0
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!331 &6298163546124505218
-SpriteMask:
+--- !u!114 &6391415368492930041
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5457438176085699422}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 0
-  m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 10758, guid: 0000000000000000f000000000000000, type: 0}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 23b63f85a2e074e83952d6ab83293132, type: 3}
-  m_MaskAlphaCutoff: 0.202
-  m_FrontSortingLayerID: 0
-  m_BackSortingLayerID: 0
-  m_FrontSortingLayer: 0
-  m_BackSortingLayer: 0
-  m_FrontSortingOrder: 0
-  m_BackSortingOrder: 0
-  m_IsCustomRangeActive: 0
-  m_SpriteSortPoint: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31a19414c41e5ae4aae2af33fee712f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ShowMaskGraphic: 1
 --- !u!1 &7040648120728367924
 GameObject:
   m_ObjectHideFlags: 0
@@ -423,6 +385,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: e71aead5d6eb73540b3d5a44607c3701,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 32dcb59a61de30841906a544d2130571, type: 2}
     - target: {fileID: 919132149155446097, guid: e71aead5d6eb73540b3d5a44607c3701,
         type: 3}
       propertyPath: m_Name
@@ -566,6 +533,7 @@ MonoBehaviour:
   breakSound: {fileID: 8300000, guid: e7131229cebc64b4ab3adaa9125b4cb8, type: 3}
   clipLength: 0.5
   maxFragmentsToSpawn: 5
+  spawnDistance: 3
 --- !u!65 &557493312222062310
 BoxCollider:
   m_ObjectHideFlags: 0

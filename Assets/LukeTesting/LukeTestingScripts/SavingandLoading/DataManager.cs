@@ -50,4 +50,10 @@ public class DataManager : MonoBehaviour
     private void OnApplicationQuit(){
         SaveGame();
     }
+    public void SelectedProfileLoad(int num){
+        this.saveHandler = new SaveDataHandler(Application.persistentDataPath, fileName+num);
+        //Debug.Log(fileName+num);
+        this.dataPersistenceObjects = FindAllDataPersistenceObjects();
+        LoadGame();
+    }
 }

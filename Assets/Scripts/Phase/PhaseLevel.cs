@@ -25,6 +25,7 @@ public class PhaseLevel : MonoBehaviour
     private float currLevel;
     private Coroutine rechargeRoutine;
     private Coroutine useRoutine;
+    private Coroutine exhaustRoutine;
     private bool canPhase;
 
     private void Start()
@@ -93,7 +94,10 @@ public class PhaseLevel : MonoBehaviour
             yield return null;
         }
         currLevel = Mathf.Clamp(currLevel, 0, maxLevel);
+        if(!canPhase)
+            _ghostController.ExhaustOver();
         canPhase = true;
+        if (exhaustRoutine != null) StopCoroutine(exhaustRoutine);
     }
 
     private IEnumerator UseRoutine()
@@ -108,11 +112,63 @@ public class PhaseLevel : MonoBehaviour
         }
         canPhase = false;
         currLevel = Mathf.Clamp(currLevel, 0, maxLevel);
+        exhaustRoutine = StartCoroutine(ExhaustRoutine(false));
         _ghostController.ForceOutOfPhase();
     }
 
     private void UpdateMeter()
     {
         abilityDurationBar.fillAmount = currLevel / maxLevel;
+    }
+
+    private IEnumerator ExhaustRoutine(bool up)
+    {
+        if (up)
+        {
+            while (abilityDurationBar.color.a < 0.8f)
+            {
+                abilityDurationBar.color =
+                    new Color(abilityDurationBar.color.r,
+                    abilityDurationBar.color.g,
+                    abilityDurationBar.color.b,
+                    abilityDurationBar.color.a + (Time.deltaTime * 2f));
+
+                yield return null;
+            }
+            abilityDurationBar.color =
+                new Color(abilityDurationBar.color.r,
+                abilityDurationBar.color.g,
+                abilityDurationBar.color.b,
+                0.8f);
+        } else
+        {
+            while (abilityDurationBar.color.a > 0.2f)
+            {
+                abilityDurationBar.color =
+                    new Color(abilityDurationBar.color.r,
+                    abilityDurationBar.color.g,
+                    abilityDurationBar.color.b,
+                    abilityDurationBar.color.a - (Time.deltaTime * 2f));
+
+                yield return null;
+            }
+            abilityDurationBar.color =
+                new Color(abilityDurationBar.color.r,
+                abilityDurationBar.color.g,
+                abilityDurationBar.color.b,
+                0.2f);
+        }
+
+        if (AtFullMeter())
+        {
+            abilityDurationBar.color =
+                new Color(abilityDurationBar.color.r,
+                abilityDurationBar.color.g,
+                abilityDurationBar.color.b,
+                1f);
+        } else
+        {
+            exhaustRoutine = StartCoroutine(ExhaustRoutine(!up));
+        }
     }
 }

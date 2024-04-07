@@ -202,7 +202,7 @@ public class LassoDetection : MonoBehaviour
             rotation.x = 0;
             rotation.z = 0;
             transform.rotation = rotation;
-            if(otherObject != null){
+            if(otherObject != null && otherObject.GetComponent<LassoWrangle>() == null){
                 if(!pickupScript.manipulateObject && player.GetComponent<LassoGrappleScript>().grapple != true && player.GetComponent<LassoGrappleScript>().canLasso == true){
                     otherObject.transform.rotation = transform.rotation;
                 }

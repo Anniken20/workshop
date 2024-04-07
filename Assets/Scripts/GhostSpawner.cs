@@ -16,6 +16,7 @@ public class GhostSpawner : MonoBehaviour
     private int numEnemiesAlive; // In case we want max enemies alive spawn
     private bool playerInsideTrigger; // Flag to track if the player is inside the trigger zone
     private Coroutine spawnCoroutine; // Reference to the spawning coroutine
+    public float minDistanceBetweenGhosts = 2f; // Minimum distance between spawn positions
 
     void OnTriggerEnter(Collider other)
     {
@@ -37,16 +38,32 @@ public class GhostSpawner : MonoBehaviour
 
     IEnumerator SpawnGhosts()
     {
+        Debug.Log("Should Spawn Ghost");
         while (numEnemiesSpawned < maxEnemies && playerInsideTrigger)
         {
             if (numEnemiesAlive < maxEnemies)
             {
-                // Randomize X and Z coordinates within spawn radius, keep Y-coordinate constant
-                Vector3 spawnPosition = spawnPoint.position + new Vector3(Random.Range(-spawnRadius, spawnRadius), spawnHeight, Random.Range(-spawnRadius, spawnRadius));
-                Instantiate(ghostPrefab, spawnPosition, Quaternion.identity);
-                numEnemiesSpawned++;
-                numEnemiesAlive++;
-                yield return new WaitForSeconds(spawnCooldown);
+                // Get all potential spawn positions within the spawn radius
+                List<Vector3> potentialSpawnPositions = GetPotentialSpawnPositions();
+
+                // Check if there are potential spawn positions
+                if (potentialSpawnPositions.Count > 0)
+                {
+                    // Randomly select one of the potential spawn positions
+                    Vector3 spawnPosition = potentialSpawnPositions[Random.Range(0, potentialSpawnPositions.Count)];
+
+                    // Instantiate the ghost at the selected spawn position
+                    Instantiate(ghostPrefab, spawnPosition, Quaternion.identity);
+                    numEnemiesSpawned++;
+                    numEnemiesAlive++;
+
+                    yield return new WaitForSeconds(spawnCooldown);
+                }
+                else
+                {
+                    // If no suitable spawn positions are found, wait and try again
+                    yield return null;
+                }
             }
             else
             {
@@ -54,6 +71,39 @@ public class GhostSpawner : MonoBehaviour
             }
         }
         spawnCoroutine = null; // Reset coroutine reference when spawning is finished
+    }
+
+    List<Vector3> GetPotentialSpawnPositions()
+    {
+        List<Vector3> potentialSpawnPositions = new List<Vector3>();
+
+        // Generate random points within the spawn radius and check if they are too close to existing ghosts
+        int maxAttempts = 10; // Maximum number of attempts to find a suitable spawn position
+        for (int i = 0; i < maxAttempts; i++)
+        {
+            Vector3 randomPoint = spawnPoint.position + Random.insideUnitSphere * spawnRadius;
+            randomPoint.y = spawnHeight;
+
+            if (!IsSpawnPositionTooClose(randomPoint))
+            {
+                potentialSpawnPositions.Add(randomPoint);
+            }
+        }
+
+        return potentialSpawnPositions;
+    }
+
+    bool IsSpawnPositionTooClose(Vector3 spawnPosition)
+    {
+        // Check if the spawn position is too close to any existing spawn positions
+        foreach (GameObject ghost in GameObject.FindGameObjectsWithTag("Ghost"))
+        {
+            if (Vector3.Distance(ghost.transform.position, spawnPosition) < minDistanceBetweenGhosts)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void RegisterEnemyDestroyed()
