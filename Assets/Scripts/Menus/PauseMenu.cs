@@ -9,7 +9,7 @@ public class PauseMenu : MonoBehaviour
 {
     public GameObject PausePanel;
     public GameObject settingsPanel;
-    public GameObject controlsPanel;
+    //public GameObject controlsPanel;
     public GameObject mainMenu;
     public GameObject HUD;
 
@@ -36,6 +36,12 @@ public class PauseMenu : MonoBehaviour
 
     //singleton
     public static PauseMenu main;
+
+    // New panels
+    public GameObject AccessibilityPanel;
+    public GameObject PcPanel;
+    public GameObject ControllerPanel;
+    public GameObject ResolutionPanel;
 
     private void Awake()
     {
@@ -144,8 +150,53 @@ public class PauseMenu : MonoBehaviour
         Debug.Log("Settings active");
         settingsPanel.SetActive(true);
         PausePanel.SetActive(false);
-        controlsPanel.SetActive(false);
+        AccessibilityPanel.SetActive(false);
+        PcPanel.SetActive(false);
+        ControllerPanel.SetActive(false);
+        ResolutionPanel.SetActive(false);
+        //controlsPanel.SetActive(false);
     }
+
+    public void ActivateAccessibilityPanel()
+    {
+        AccessibilityPanel.SetActive(true);
+        PcPanel.SetActive(false);
+        ControllerPanel.SetActive(false);
+        ResolutionPanel.SetActive(false);
+        settingsPanel.SetActive(false);
+        PausePanel.SetActive(false);
+    }
+
+    public void ActivatePcPanel()
+    {
+        AccessibilityPanel.SetActive(false);
+        PcPanel.SetActive(true);
+        ControllerPanel.SetActive(false);
+        ResolutionPanel.SetActive(false);
+        settingsPanel.SetActive(false);
+        PausePanel.SetActive(false);
+    }
+
+    public void ActivateControllerPanel()
+    {
+        AccessibilityPanel.SetActive(false);
+        PcPanel.SetActive(false);
+        ControllerPanel.SetActive(true);
+        ResolutionPanel.SetActive(false);
+        settingsPanel.SetActive(false);
+        PausePanel.SetActive(false);
+    }
+
+    public void ActivateResolutionPanel()
+    {
+        AccessibilityPanel.SetActive(false);
+        PcPanel.SetActive(false);
+        ControllerPanel.SetActive(false);
+        ResolutionPanel.SetActive(true);
+        settingsPanel.SetActive(false);
+        PausePanel.SetActive(false);
+    }
+
 
     public void QuitGame()
     {
@@ -159,7 +210,7 @@ public class PauseMenu : MonoBehaviour
         SceneManager.LoadScene(mainMenuScene);
     }
 
-    public void ShowControls()
+    /*public void ShowControls()
     {
         Debug.Log("Showing Controls");
         controlsPanel.SetActive(true);
@@ -170,7 +221,7 @@ public class PauseMenu : MonoBehaviour
     {
         controlsPanel.SetActive(false);
         settingsPanel.SetActive(true);
-    }
+    }*/
 
     private IEnumerator FadeOutImage()
     {
@@ -204,12 +255,12 @@ public class PauseMenu : MonoBehaviour
         if (PausePanel != null) PausePanel.SetActive(false);
     }
 
-    public void LeaveSettings()
+    /*public void LeaveSettings()
     {
         Debug.Log("left settings");
         settingsPanel.SetActive(false);
         if (PausePanel != null) PausePanel.SetActive(true);
-    }
+    }*/
 
     private void OnEnable()
     {
