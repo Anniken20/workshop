@@ -4,7 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI; 
 
-public class Shop : Interactable
+public class Shop : Interactable, IDataPersistence
 {
     [SerializeField]
     private GameObject shopMenu;
@@ -24,6 +24,8 @@ public class Shop : Interactable
     private GameObject secretKeyMenu; // Assign in the Inspector
     //[SerializeField]
    // private GameObject ammoMenu; // Assign in the Inspector
+     public bool fixHudAftewards;
+     private Scale HUDScaler;
 
 
     protected override void Awake()
@@ -33,6 +35,10 @@ public class Shop : Interactable
        // ammoMenu.SetActive(false);
     }
 
+    private void start()
+    {
+        HUDScaler = GameObject.FindGameObjectWithTag("HUD").GetComponentInChildren<Scale>();
+    }
 
     private void Update()
     {
@@ -66,11 +72,13 @@ public class Shop : Interactable
         if (show)
         {
             SwitchGameControls(false);
+            if(fixHudAftewards) HUDScaler.ScaleTo(3f);
             CoinCollector.Instance.ShowCoinsUIInstant(); 
         }
         else
         {
             SwitchGameControls(true);
+            if(fixHudAftewards) HUDScaler.ScaleTo(1f);
             CoinCollector.Instance.HideCoinsUIInstant();
         }
     }
@@ -127,6 +135,7 @@ public class Shop : Interactable
              if (gunController != null)
              {
                 SpendCoin(ammoCost);
+                gunController.GhostAmmo++;
                 gunController.RestoreBullet(); // Adds one bullet. Adjust quantity as needed.
                 Debug.Log("Ammo Purchased!");
              }
@@ -161,4 +170,28 @@ public class Shop : Interactable
     {
         ammoMenu.SetActive(false);
     }*/
+
+    public void LoadData(GameData data){
+        GunController gunController = FindObjectOfType<GunController>(); // Find the GunController in the scene
+        if (gunController != null)
+        {
+            gunController.GhostAmmo = data.ammoCount; // Load the saved ammo count into the GunController
+        }
+        else
+        {
+             Debug.LogError("GunController not found in the scene.");
+        }
+    }
+
+    public void SaveData(ref GameData data){
+        GunController gunController = FindObjectOfType<GunController>(); // Find the GunController in the scene
+        if (gunController != null)
+        {
+            data.ammoCount = gunController.GhostAmmo; // Save the GunController's ammo count into the GameData
+        }
+        else
+        {
+             Debug.LogError("GunController not found in the scene.");
+        }
+    }
 }

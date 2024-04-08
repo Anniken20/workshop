@@ -11,11 +11,20 @@ public class Horse : Enemy
     [HideInInspector] public bool isCharging;
     private Animator anim;
     private Vector3 startPOS;
+
+    public AudioClip snortSFX;
+    public AudioClip crashSFX;
     //public GameObject stunnedText;
     //public GameObject chargingText;
 
     [HideInInspector] public bool isStunned;
-
+    
+    private void Update()
+    {
+        if (isCharging == false)
+            audioSource.Stop();
+    }
+    
     private void Awake(){
 
         base.MyAwake();
@@ -52,15 +61,20 @@ public class Horse : Enemy
         this.GetComponent<Rigidbody>().velocity = Vector3.zero;
         isCharging = true;
         stateMachine.ChangeState(chargeState);
+        StartCoroutine(ChargeDelay());
     }
     public void StopCharge(){
         isCharging = false;
         stateMachine.ChangeState(pacingState);
+        audioSource.Stop();
     }
     public void Stunned(){
         isStunned = true;
         //Debug.Log("Petah the horse is stunned");
         stateMachine.ChangeState(stunnedState);
+        audioSource.Stop();
+        audioSource.PlayOneShot(crashSFX);
+        audioSource.PlayOneShot(snortSFX);
     }
     public void ExitStuned(){
         isStunned = false;
@@ -97,5 +111,11 @@ public class Horse : Enemy
         this.transform.position = startPOS;
         //if(this.animator != null) this.animator.SetBool("BeingWrangled", false);
         GetComponentInChildren<HorseWrangling>().gameObject.SetActive(false);
+    }
+
+    public IEnumerator ChargeDelay()
+    {
+        yield return new WaitForSeconds(0.75f);
+        audioSource.PlayOneShot(movingSFX);
     }
 }

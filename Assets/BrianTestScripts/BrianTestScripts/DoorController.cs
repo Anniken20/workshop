@@ -10,8 +10,17 @@ public class DoorController : MonoBehaviour
     Vector3 doorClosedPos;
     Vector3 doorOpenPos;
     float doorSpeed = 20f;
+    private AudioSource audioSource;
+    private bool playedOpen;
+
+    public AudioClip doorOpen;
 
     //Sets door position to starting and highest opening point
+    void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
+    
     void Awake ()
     {
         doorClosedPos = transform.position;
@@ -36,6 +45,11 @@ public class DoorController : MonoBehaviour
         if (transform.position != doorOpenPos)
         {
             transform.position = Vector3.MoveTowards(transform.position, doorOpenPos, doorSpeed * Time.deltaTime);
+            if (audioSource != null && doorOpen != null && playedOpen == false)
+            {
+                audioSource.PlayOneShot(doorOpen);
+                playedOpen = true;
+            }
         }
     }
 
@@ -46,6 +60,7 @@ public class DoorController : MonoBehaviour
         if (transform.position != doorClosedPos)
         {
             transform.position = Vector3.MoveTowards(transform.position, doorClosedPos, doorSpeed * Time.deltaTime);
+            playedOpen = false;
         }
     }
 }

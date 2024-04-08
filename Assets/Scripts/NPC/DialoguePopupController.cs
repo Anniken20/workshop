@@ -176,6 +176,7 @@ public class DialoguePopupController : MonoBehaviour, IInteractable
 
     private void FinishLine()
     {
+        if(keyFinish != null) audioSource.PlayOneShot(keyFinish);
         if (writeRoutine != null) StopCoroutine(writeRoutine);
         DialogueManager.Main.characterText.text = dialogues[dialogueIndex].message;
         writing = false;

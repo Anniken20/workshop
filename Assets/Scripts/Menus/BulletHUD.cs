@@ -11,41 +11,54 @@ using UnityEngine;
 
 public class BulletHUD : MonoBehaviour
 {
-   private GameObject singleBullet;
+    private GameObject singleBullet;
     private float offset = 25f;
     private int totalAmmo;
     private int currentAmmo;
     private List<GameObject> bulletsList = new List<GameObject>();
 
-    public void DrawBullets()
+    private void ClearBullets()
     {
-        currentAmmo = totalAmmo;
-        singleBullet = transform.GetChild(0).gameObject;
-        singleBullet.SetActive(true); // Ensure the initial bullet is active.
-
-        bulletsList.Clear(); // Clear the list before redrawing.
-        bulletsList.Add(singleBullet); // Add the first bullet to the list.
-
-        for (int i = 1; i < totalAmmo; ++i)
+        foreach (var bullet in bulletsList)
         {
+            Destroy(bullet);
+        }
+        bulletsList.Clear();
+    }
+
+    public void UpdateBulletHUD(int currentAmmo)
+    {
+        ClearBullets(); // Remove all current bullets from the HUD
+
+        if (bulletsList.Count == 0)
+        {
+            // Ensure the prototype bullet is set up
+            singleBullet = transform.GetChild(0).gameObject;
+            singleBullet.SetActive(false); // Hide the prototype after capturing it
+        }
+
+        for (int i = 0; i < currentAmmo; ++i)
+        {
+            // Instantiate and position each bullet
             GameObject sb = Instantiate(singleBullet, transform, false);
-            sb.transform.localPosition = singleBullet.transform.localPosition + new Vector3(offset * i, 0, 0);
+            sb.SetActive(true); // Make sure new bullets are visible
+            sb.transform.localPosition = new Vector3(offset * i, 0, 0);
             bulletsList.Add(sb);
         }
     }
 
     public void StartBulletHUD(int ammo)
     {
-        totalAmmo = ammo;
-        DrawBullets();
+        UpdateBulletHUD(ammo);
     }
 
     public void SubtractBulletHUD()
     {
-        if (currentAmmo > 0)
+        if (bulletsList.Count > 0)
         {
-            currentAmmo--;
-            bulletsList[currentAmmo].SetActive(false);
+        GameObject lastBullet = bulletsList[bulletsList.Count - 1];
+        bulletsList.RemoveAt(bulletsList.Count - 1);
+        Destroy(lastBullet);
         }
     }
 
@@ -56,7 +69,7 @@ public class BulletHUD : MonoBehaviour
             bulletsList[currentAmmo].SetActive(true);
             currentAmmo++;
         }
-        else if (currentAmmo == totalAmmo)
+        else 
         {
             GameObject newBullet = Instantiate(singleBullet, transform, false);
             newBullet.transform.localPosition = singleBullet.transform.localPosition + new Vector3(offset * totalAmmo, 0, 0);

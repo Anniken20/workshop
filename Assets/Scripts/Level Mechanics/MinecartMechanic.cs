@@ -77,8 +77,9 @@ public class MinecartMechanic : MonoBehaviour
         if (spl == null) Debug.LogWarning("No spline component on " + newTrack.name);
         else
         {
-            splineAnimator.Container = spl;
-            splineAnimator.NormalizedTime = 0;
+            SwitchTracks(spl);
+            //splineAnimator.Container = spl;
+            //splineAnimator.NormalizedTime = 0;
             /*
             float theTime;
             SplineUtility.GetNearestPoint<Spline>(splineAnimator.Container.Spline,
@@ -96,7 +97,11 @@ public class MinecartMechanic : MonoBehaviour
         if (spl == null) { }
         else
         {
+            float newDuration = spl.CalculateLength() /
+             splineAnimator.Container.CalculateLength() * splineAnimator.Duration;
+
             splineAnimator.Container = spl;
+            splineAnimator.Duration = newDuration;
             splineAnimator.NormalizedTime = 0;
         }
     }

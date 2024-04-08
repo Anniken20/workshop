@@ -6,6 +6,7 @@ using System;
 public class BountyBoard : MonoBehaviour
 {
     public GameObject levelSelectPopup;
+    public LevelManager levelManager;
     public Button level1Button;
     public Button level2Button;
     public Button level3Button;
@@ -34,9 +35,9 @@ public class BountyBoard : MonoBehaviour
         playerEnteredOnce = PlayerPrefs.GetInt(playerEnteredOnceKey, 0) == 1;
 
         // Buttons to their respective functions
-        level1Button.onClick.AddListener(StartLevel1);
+        /*level1Button.onClick.AddListener(StartLevel1);
         level2Button.onClick.AddListener(StartLevel2);
-        level3Button.onClick.AddListener(StartLevel3);
+        level3Button.onClick.AddListener(StartLevel3);*/
         backButton.onClick.AddListener(BackButtonClicked);
 
         // Subscribe to onPause event
@@ -49,25 +50,36 @@ public class BountyBoard : MonoBehaviour
         particleEffect.SetActive(true);
 
         // Check if characters are defeated and activate/deactivate level buttons accordingly
-        bool carilloDefeated = PlayerPrefs.GetInt(carilloDefeatedKey, 0) == 1;
+        /*bool carilloDefeated = PlayerPrefs.GetInt(carilloDefeatedKey, 0) == 1;
         bool santanaDefeated = PlayerPrefs.GetInt(santanaDefeatedKey, 0) == 1;
-        bool dianaDefeated = PlayerPrefs.GetInt(dianaDefeatedKey, 0) == 1;
+        bool dianaDefeated = PlayerPrefs.GetInt(dianaDefeatedKey, 0) == 1;*/
 
         // Enable level 2 button if Carillo is defeated
-        level2Button.interactable = carilloDefeated;
+        //level2Button.interactable = carilloDefeated;
 
         // Enable level 3 button if Santana is defeated
-        level3Button.interactable = santanaDefeated;
+        //level3Button.interactable = santanaDefeated;
 
         // Disable level 2 and level 3 buttons if Carillo and Santana are not defeated respectively
-        if (!carilloDefeated)
+        if (levelManager.level < 1)
         {
             level2Button.interactable = false;
+            level3Button.interactable = false;
         }
-
-        if (!santanaDefeated)
+        else if (levelManager.level < 2)
         {
             level3Button.interactable = false;
+        }
+
+        if (levelManager.level == 1)
+        {
+            level2Button.interactable = true;
+            level3Button.interactable = false;
+        }
+        else if (levelManager.level == 2)
+        {
+            level2Button.interactable = true;
+            level3Button.interactable = true;
         }
     }
 
