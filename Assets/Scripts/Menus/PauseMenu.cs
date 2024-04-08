@@ -159,6 +159,7 @@ public class PauseMenu : MonoBehaviour
 
     public void ActivateAccessibilityPanel()
     {
+        Debug.Log("Showing Accessibility Controls");
         AccessibilityPanel.SetActive(true);
         PcPanel.SetActive(false);
         ControllerPanel.SetActive(false);
@@ -169,6 +170,7 @@ public class PauseMenu : MonoBehaviour
 
     public void ActivatePcPanel()
     {
+        Debug.Log("Showing PC Controls");
         AccessibilityPanel.SetActive(false);
         PcPanel.SetActive(true);
         ControllerPanel.SetActive(false);
@@ -179,6 +181,7 @@ public class PauseMenu : MonoBehaviour
 
     public void ActivateControllerPanel()
     {
+        Debug.Log("Showing Controller Controls");
         AccessibilityPanel.SetActive(false);
         PcPanel.SetActive(false);
         ControllerPanel.SetActive(true);
@@ -189,6 +192,7 @@ public class PauseMenu : MonoBehaviour
 
     public void ActivateResolutionPanel()
     {
+        Debug.Log("Showing Resolution Controls");
         AccessibilityPanel.SetActive(false);
         PcPanel.SetActive(false);
         ControllerPanel.SetActive(false);
