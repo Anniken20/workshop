@@ -77,12 +77,11 @@ public class GhostSpawner : MonoBehaviour
     {
         List<Vector3> potentialSpawnPositions = new List<Vector3>();
 
-        // Generate random points within the spawn radius and check if they are too close to existing ghosts
+        // Generate random points within the spawn area and check if they are too close to existing ghosts
         int maxAttempts = 10; // Maximum number of attempts to find a suitable spawn position
         for (int i = 0; i < maxAttempts; i++)
         {
-            Vector3 randomPoint = spawnPoint.position + Random.insideUnitSphere * spawnRadius;
-            randomPoint.y = spawnHeight;
+            Vector3 randomPoint = spawnPoint.position + new Vector3(Random.Range(0f, 2f), spawnHeight, Random.Range(0f, 2f));
 
             if (!IsSpawnPositionTooClose(randomPoint))
             {
