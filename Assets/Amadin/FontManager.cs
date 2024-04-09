@@ -84,7 +84,7 @@ public class FontManager : MonoBehaviour
         if (fontAsset != null)
         {
             textComponent.font = fontAsset;
-            Debug.Log(textComponent.gameObject);
+            //Debug.Log(textComponent.gameObject);
         }
     }
 
