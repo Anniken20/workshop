@@ -10,6 +10,8 @@ public class EthanDoors : MonoBehaviour
 
     [SerializeField] bool isDoorOpenSwitch;
     [SerializeField] bool isDoorCloseSwitch;
+    private AudioSource audioSource;
+    public AudioClip pressurePlateClick;
 
     float switchSizeY;
     Vector3 switchUpPos;
@@ -28,6 +30,11 @@ public class EthanDoors : MonoBehaviour
     int objectsOnPlate = 0;
 
 
+    void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
+    
     void Awake()
     {
         switchSizeY = transform.localScale.y / 2;
@@ -90,6 +97,7 @@ public class EthanDoors : MonoBehaviour
     {
         if (collision.CompareTag("Player") || collision.CompareTag("Lassoable"))
         {
+            audioSource.PlayOneShot(pressurePlateClick);
             objectsOnPlate++; // Increment the counter
 
             if (objectsOnPlate == 1) // If it's the first object on the plate
@@ -107,6 +115,7 @@ public class EthanDoors : MonoBehaviour
     {
         if (collision.CompareTag("Player") || collision.CompareTag("Lassoable"))
         {
+            audioSource.PlayOneShot(pressurePlateClick);
             objectsOnPlate--; // Decrement the counter
 
             if (objectsOnPlate == 0) // If no objects remain on the plate
