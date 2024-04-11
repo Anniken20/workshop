@@ -15,10 +15,12 @@ public class HorseChargeTrigger : MonoBehaviour
     private float internalStunDuration;
     private bool resetStunDuration;
     [HideInInspector] public bool wrangling;
+    private Animator anim;
 
     void Start(){
         h = GetComponentInParent<Horse>();
         sState = GetComponentInParent<HorseStunnedState>();
+        anim = h.GetComponent<Animator>();
     }
     void OnTriggerEnter(Collider other){
         if (other.gameObject.CompareTag("Player") && canTrigger && sState.isStunned == false){
@@ -53,6 +55,9 @@ public class HorseChargeTrigger : MonoBehaviour
             if (horseStunned == true)
             {
                 stunnedText.SetActive(true);
+                anim.SetBool("Running", false);
+                anim.SetBool("Stunned", true);
+                anim.SetBool("Idle", false);
                 //stunnedText.transform.LookAt(Camera.main.transform);
                 stunnedText.transform.rotation = Quaternion.identity;
                 startStunnedCountdown = true;
@@ -65,6 +70,7 @@ public class HorseChargeTrigger : MonoBehaviour
             else
             {
                 stunnedText.SetActive(false);
+                anim.SetBool("Stunned", false);
                 startStunnedCountdown = false;
                 resetStunDuration = true;
             }
