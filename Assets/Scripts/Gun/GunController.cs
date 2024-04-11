@@ -79,7 +79,14 @@ public class GunController : MonoBehaviour
         get { return ghostAmmo; }
         set { 
             ghostAmmo = value; 
-            bulletHUD.UpdateBulletHUD(ghostAmmo); 
+            if(bulletHUD == null)
+            {
+                bulletHUD = FindObjectOfType<BulletHUD>();
+                bulletHUD.UpdateBulletHUD(ghostAmmo);
+            } else
+            {
+                bulletHUD.UpdateBulletHUD(ghostAmmo);
+            }
         }
     }
 
@@ -101,8 +108,11 @@ public class GunController : MonoBehaviour
 
         ghostAmmo = maxGhostAmmo;
 
-        bulletHUD = FindObjectOfType<BulletHUD>();
-        bulletHUD.StartBulletHUD(ghostAmmo);
+        if(bulletHUD == null)
+        {
+            bulletHUD = FindObjectOfType<BulletHUD>();
+            bulletHUD.UpdateBulletHUD(ghostAmmo);
+        }
 
         if (fireOnMouseUp) aimController.fireOnMouseUp = true;
     }

@@ -19,8 +19,9 @@ public class BulletHUD : MonoBehaviour
     private GameObject[] bulletsArray;
 
 
-    public void DrawBullets()
+    private void DrawBullets()
     {
+        Debug.Log("total ammo: " + totalAmmo);
         currentAmmo = totalAmmo;
         singleBullet = transform.GetChild(0).gameObject;
         bulletsArray = new GameObject[totalAmmo];
@@ -28,16 +29,10 @@ public class BulletHUD : MonoBehaviour
 
         for (int i = 1; i < totalAmmo; ++i)
         {
-            GameObject sb = Instantiate(singleBullet, singleBullet.transform);
+            GameObject sb = Instantiate(singleBullet, singleBullet.transform.parent);
             sb.transform.localPosition += new Vector3(offset * i, 0);
             bulletsArray[i] = sb;
         }
-    }
-
-    public void StartBulletHUD(int totalAmmo)
-    {
-        this.totalAmmo = totalAmmo;
-        DrawBullets();
     }
 
     public void SubtractBulletHUD()
@@ -48,95 +43,36 @@ public class BulletHUD : MonoBehaviour
 
     public void AddBulletHUD()
     {
-        bulletsArray[currentAmmo].SetActive(true);
-        currentAmmo++;
+        if(currentAmmo >= bulletsArray.Length)
+        {
+            UpdateBulletHUD(currentAmmo);
+        } else
+        {
+            Debug.Log("current ammo: " + currentAmmo);
+            bulletsArray[currentAmmo].SetActive(true);
+            currentAmmo++;
+        }
     }
 
-    public void UpdateBulletHUD(int currentAmmo)
+    public void UpdateBulletHUD(int newAmmo)
     {
-        ClearBullets();
-        StartBulletHUD(currentAmmo);
+        Debug.Log("new ammo: " + newAmmo);
+        if (newAmmo != totalAmmo)
+        {
+            ClearBullets();
+            totalAmmo = newAmmo;
+            DrawBullets();
+        }
     }
 
     private void ClearBullets()
     {
         for (int i = 1; i < totalAmmo; ++i)
         {
+            if (bulletsArray[i] == null) return;
+            Debug.Log("destroyed: " + bulletsArray[i].name);
             Destroy(bulletsArray[i]);
         }
         Array.Resize(ref bulletsArray, 1);
     }
 }
-/*
-public class BulletHUD : MonoBehaviour
-{
-    private GameObject singleBullet;
-    private float offset = 25f;
-    private int totalAmmo;
-    private int currentAmmo;
-    private List<GameObject> bulletsList = new List<GameObject>();
-
-    private void ClearBullets()
-    {
-        foreach (var bullet in bulletsList)
-        {
-            Destroy(bullet);
-        }
-        bulletsList.Clear();
-    }
-
-    public void UpdateBulletHUD(int currentAmmo)
-    {
-        ClearBullets(); // Remove all current bullets from the HUD
-
-        if (bulletsList.Count == 0)
-        {
-            // Ensure the prototype bullet is set up
-            singleBullet = transform.GetChild(0).gameObject;
-            singleBullet.SetActive(false); // Hide the prototype after capturing it
-        }
-
-        for (int i = 0; i < currentAmmo; ++i)
-        {
-            // Instantiate and position each bullet
-            GameObject sb = Instantiate(singleBullet, transform, false);
-            sb.SetActive(true); // Make sure new bullets are visible
-            sb.transform.localPosition = new Vector3(offset * i, 0, 0);
-            bulletsList.Add(sb);
-        }
-    }
-
-    public void StartBulletHUD(int ammo)
-    {
-        UpdateBulletHUD(ammo);
-    }
-
-    public void SubtractBulletHUD()
-    {
-        if (bulletsList.Count > 0)
-        {
-            GameObject lastBullet = bulletsList[bulletsList.Count - 1];
-            bulletsList.RemoveAt(bulletsList.Count - 1);
-            Destroy(lastBullet);
-        }
-    }
-
-    public void AddBulletHUD()
-    {
-        if (currentAmmo < totalAmmo)
-        {
-            bulletsList[currentAmmo].SetActive(true);
-            currentAmmo++;
-        }
-        else 
-        {
-            GameObject newBullet = Instantiate(singleBullet, transform, false);
-            newBullet.transform.localPosition = singleBullet.transform.localPosition + new Vector3(offset * totalAmmo, 0, 0);
-            newBullet.SetActive(true);
-            bulletsList.Add(newBullet);
-            currentAmmo++;
-            totalAmmo++;
-        }
-    }
-}
-*/
