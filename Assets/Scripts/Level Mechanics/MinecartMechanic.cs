@@ -22,6 +22,7 @@ public class MinecartMechanic : MonoBehaviour
     {
         splineAnimator.Play();
         rideRoutine = StartCoroutine(RideRoutine());
+        //ThirdPersonController.Main.GetComponent<GunController>().EnterMinecartMode();
     }
 
     private IEnumerator RideRoutine()
@@ -64,6 +65,7 @@ public class MinecartMechanic : MonoBehaviour
         splineAnimator.Pause();
         characterController = ThirdPersonController.Main.GetComponent<CharacterController>();
         characterController.enabled = true;
+        //ThirdPersonController.Main.GetComponent<GunController>().ExitMinecartMode();
     }
 
     public void OnEnd()

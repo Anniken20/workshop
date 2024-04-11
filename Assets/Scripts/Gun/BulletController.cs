@@ -14,6 +14,7 @@ public class BulletController : MonoBehaviour
     private InputAction look;
     [HideInInspector] public Vector3 position;
     [HideInInspector] public Vector3 direction;
+    [HideInInspector] public Vector3 pushDirection;
     [HideInInspector] public float distanceTraveled;
     [HideInInspector] public int currBounces;
     [HideInInspector] public float currDmg;
@@ -129,10 +130,20 @@ public class BulletController : MonoBehaviour
             //while (inLunaMode) yield return null;
 
             //move bullet in its fired direction
-            position = Vector3.MoveTowards(
+            if(pushDirection != Vector3.zero)
+            {
+                position = Vector3.MoveTowards(
+                    position,
+                    position + direction + pushDirection,
+                    speed * Time.deltaTime);
+            } else
+            {
+                position = Vector3.MoveTowards(
                     position,
                     position + direction,
                     speed * Time.deltaTime);
+            }
+            
 
             //track how far bullet has traveled so we know when to kill it
             distanceTraveled += speed * Time.deltaTime;
