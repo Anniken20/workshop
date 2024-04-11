@@ -64,6 +64,7 @@ public class SwitchController : MonoBehaviour
         if (transform.position != switchUpPos)
         {
             transform.position = Vector3.MoveTowards(transform.position, switchUpPos, switchSpeed * Time.deltaTime);
+            clickPlayed = false;
         }
     }
 
