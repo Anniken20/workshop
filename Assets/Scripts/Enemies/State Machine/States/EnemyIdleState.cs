@@ -17,7 +17,7 @@ public class EnemyIdleState : EnemyState
 
     public override void EnterState()
     {
-        if(nav.isOnNavMesh && nav.isActiveAndEnabled) nav.isStopped = true;
+        nav.isStopped = true;
         if (enemy.animator != null) enemy.animator.SetBool("Idle", true);
     }
 

@@ -171,7 +171,7 @@ public class LassoDetection : MonoBehaviour
             var zScale = otherObject.transform.localScale.z -0.6f;//+ zVariation; //+ .15f;
             var scaleRatio = Mathf.Abs(xScale / zScale);
             if(scaleRatio <= 4.070){
-                //Debug.Log("Below Cutoff Scale: " +scaleRatio);
+                Debug.Log("Below Cutoff Scale: " +scaleRatio);
                 transform.localScale = new Vector3(xScale, transform.localScale.y, zScale);
                 Vector3 heldPos = new Vector3(otherObject.transform.position.x, otherObject.transform.position.y + otherExtents.y, otherObject.transform.position.z);
                 transform.position = heldPos;

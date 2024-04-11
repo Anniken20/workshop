@@ -83,10 +83,6 @@ public class GunController : MonoBehaviour
         }
     }
 
-    private bool minecartMode;
-    private Vector3 playerVelocity;
-    private Vector3 lastFramePosition;
-
     private void Start()
     {
         animator = GetComponent<Animator>();
@@ -110,7 +106,6 @@ public class GunController : MonoBehaviour
     private void Update()
     {
         GetInput();
-        if (minecartMode) CalculatePlayerVelocity();
     }
 
     private void GetInput()
@@ -212,16 +207,7 @@ public class GunController : MonoBehaviour
         bulletController.playerCamRoot = playerCamRoot;
         
         bulletController.player = gameObject;
-        if (minecartMode)
-        {
-            //Debug.Log("player velocity: " + playerVelocity);
-            bulletController.Fire(gameObject.transform, aimAngle);
-            bulletController.pushDirection = playerVelocity;
-        } else
-        {
-            bulletController.Fire(gameObject.transform, aimAngle);
-        }
-        
+        bulletController.Fire(gameObject.transform, aimAngle);
 
         //store this so we know which bullet to redirect
         mostRecentBullet = bullet;
@@ -361,24 +347,5 @@ public class GunController : MonoBehaviour
     private void OnDisable(){
         shoot.Disable();
         redirect.Disable();
-    }
-
-    public void EnterMinecartMode()
-    {
-        minecartMode = true;
-    }
-
-    public void ExitMinecartMode()
-    {
-        minecartMode = false;
-    }
-
-    private void CalculatePlayerVelocity()
-    {
-        //Debug.Log("last pos: " + lastFramePosition + ", this pos: " + transform.position);
-        if (lastFramePosition == Vector3.zero)
-            lastFramePosition = transform.position;
-        playerVelocity = (transform.position - lastFramePosition) / Time.deltaTime;
-        lastFramePosition = transform.position;
     }
 }
