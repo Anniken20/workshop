@@ -11,7 +11,7 @@ public class MinecartEnemyDamageWall : MonoBehaviour
     {
         if(other.gameObject.GetComponent<Enemy>() != null)
         {
-            Debug.Log("blingus blongus");
+            Debug.Log("HIT ENEMY RIDER FOR " + damage + " DAMAGE");
             other.gameObject.GetComponent<Enemy>().TakeDamage(damage);
             onEnemyHit?.Invoke();
         }

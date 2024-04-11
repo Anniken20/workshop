@@ -159,7 +159,7 @@ public abstract class Enemy : MonoBehaviour, IShootable, IDataPersistence
         if(regen && delta < regenDMG){
             StartCoroutine(Regenerate(delta));
         }
-        if(currentHealth < 0 && !duelEnemy)
+        if(currentHealth <= 0 && !duelEnemy)
         {
             Die();
         }
