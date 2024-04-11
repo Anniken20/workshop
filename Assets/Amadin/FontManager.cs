@@ -67,14 +67,24 @@ public class FontManager : MonoBehaviour
         TMP_Text[] allTMPTextComponents = FindObjectsOfType<TMP_Text>(true);
         foreach (TMP_Text textComponent in allTMPTextComponents)
         {
-            UpdateTextComponent(textComponent);
+            if(textComponent.font != dialogueData.defaultFont){
+                //Debug.Log(textComponent.gameObject.name + ": Does not Contain Font: " + dialogueData.defaultFont.name);
+                UpdateTextComponent(textComponent);
+            }
+            else{
+               // Debug.Log(textComponent.gameObject.name + ": Contains Font: " + dialogueData.defaultFont.name + " Skipping for now");
+            }
+            
         }
 
         // Update standard Unity UI Text components
         Text[] allTextComponents = FindObjectsOfType<Text>(true);
         foreach (Text textComponent in allTextComponents)
         {
-            UpdateTextComponent(textComponent);
+            if(textComponent.font != dialogueData.defaultFont){
+                UpdateTextComponent(textComponent);
+                //Debug.Log(textComponent.gameObject.name + ": Does not Contain Font: " + dialogueData.defaultFont.name);
+            }
         }
     }
 
