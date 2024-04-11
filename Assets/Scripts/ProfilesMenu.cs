@@ -27,7 +27,7 @@ public class ProfilesMenu : MonoBehaviour, IDataPersistence
     {
         if(dataManager != null){
             dataManager.LoadGame();
-            Debug.Log("Force loading");
+            //Debug.Log("Force loading");
 
         }
         selectedProfileIndex = profileIndex;
@@ -36,7 +36,7 @@ public class ProfilesMenu : MonoBehaviour, IDataPersistence
         //if (PlayerPrefs.HasKey("SelectedProfileIndex"))
         if(introCompleted)
         {
-            SceneManager.LoadScene(savedScene);
+            SceneManager.LoadScene("HUB");
 
             // Check if the player has previously visited a scene
             /*if (PlayerPrefs.HasKey("LastVisitedScene_" + selectedProfileIndex))
@@ -81,7 +81,7 @@ public class ProfilesMenu : MonoBehaviour, IDataPersistence
         introCompleted = data.introCompleted;
         //savedCheckpoint = data.savedCheckpoint;
         savedScene = data.checkpointScene;
-        Debug.Log("Is Completed: " +introCompleted);
+        //Debug.Log("Is Completed: " +introCompleted);
     }
 
     public void SaveData(ref GameData data){
