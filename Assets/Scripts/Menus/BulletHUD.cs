@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 /* Script for the bullets on HUD. Referenced by GunController. 
  * Works dynamically depending on bullet count 8)
@@ -9,6 +10,64 @@ using UnityEngine;
  * 12/2/2023
  */
 
+public class BulletHUD : MonoBehaviour
+{
+    private GameObject singleBullet;
+    private float offset = 25f;
+    private int totalAmmo;
+    private int currentAmmo;
+    private GameObject[] bulletsArray;
+
+
+    public void DrawBullets()
+    {
+        currentAmmo = totalAmmo;
+        singleBullet = transform.GetChild(0).gameObject;
+        bulletsArray = new GameObject[totalAmmo];
+        bulletsArray[0] = singleBullet;
+
+        for (int i = 1; i < totalAmmo; ++i)
+        {
+            GameObject sb = Instantiate(singleBullet, singleBullet.transform);
+            sb.transform.localPosition += new Vector3(offset * i, 0);
+            bulletsArray[i] = sb;
+        }
+    }
+
+    public void StartBulletHUD(int totalAmmo)
+    {
+        this.totalAmmo = totalAmmo;
+        DrawBullets();
+    }
+
+    public void SubtractBulletHUD()
+    {
+        currentAmmo--;
+        bulletsArray[currentAmmo].SetActive(false);
+    }
+
+    public void AddBulletHUD()
+    {
+        bulletsArray[currentAmmo].SetActive(true);
+        currentAmmo++;
+    }
+
+    public void UpdateBulletHUD(int currentAmmo)
+    {
+        ClearBullets();
+        StartBulletHUD(currentAmmo);
+    }
+
+    private void ClearBullets()
+    {
+        for (int i = 1; i < totalAmmo; ++i)
+        {
+            Destroy(bulletsArray[i]);
+        }
+        Array.Resize(ref bulletsArray, 1);
+    }
+}
+/*
 public class BulletHUD : MonoBehaviour
 {
     private GameObject singleBullet;
@@ -56,9 +115,9 @@ public class BulletHUD : MonoBehaviour
     {
         if (bulletsList.Count > 0)
         {
-        GameObject lastBullet = bulletsList[bulletsList.Count - 1];
-        bulletsList.RemoveAt(bulletsList.Count - 1);
-        Destroy(lastBullet);
+            GameObject lastBullet = bulletsList[bulletsList.Count - 1];
+            bulletsList.RemoveAt(bulletsList.Count - 1);
+            Destroy(lastBullet);
         }
     }
 
@@ -80,3 +139,4 @@ public class BulletHUD : MonoBehaviour
         }
     }
 }
+*/
