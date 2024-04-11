@@ -58,6 +58,6 @@ public class DialogueData : ScriptableObject
         if (useDyslexicFont && dyslexicFont != null)
             return dyslexicFont;
         else
-            return defaultFont; // Use default font if dyslexia mode is off or dyslexicFont is not set
+            return additionalDefaultFont; // Use default font if dyslexia mode is off or dyslexicFont is not set
     }
 }
