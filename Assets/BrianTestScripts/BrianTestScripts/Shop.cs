@@ -22,10 +22,10 @@ public class Shop : Interactable, IDataPersistence
     private AudioSource audioSource; // Ensure this is set up in the inspector
     [SerializeField]
     private GameObject secretKeyMenu; // Assign in the Inspector
-    //[SerializeField]
-   // private GameObject ammoMenu; // Assign in the Inspector
-     public bool fixHudAftewards;
-     private Scale HUDScaler;
+    [SerializeField]
+    private GameObject ammoMenu; // Assign in the Inspector
+    [SerializeField]
+    private GameObject hudGameObject;
 
 
     protected override void Awake()
@@ -33,11 +33,6 @@ public class Shop : Interactable, IDataPersistence
         shopMenu.SetActive(false);
         secretKeyMenu.SetActive(false);
        // ammoMenu.SetActive(false);
-    }
-
-    private void start()
-    {
-        HUDScaler = GameObject.FindGameObjectWithTag("HUD").GetComponentInChildren<Scale>();
     }
 
     private void Update()
@@ -72,14 +67,14 @@ public class Shop : Interactable, IDataPersistence
         if (show)
         {
             SwitchGameControls(false);
-            if(fixHudAftewards) HUDScaler.ScaleTo(3f);
             CoinCollector.Instance.ShowCoinsUIInstant(); 
+            hudGameObject.SetActive(false);
         }
         else
         {
             SwitchGameControls(true);
-            if(fixHudAftewards) HUDScaler.ScaleTo(1f);
             CoinCollector.Instance.HideCoinsUIInstant();
+            hudGameObject.SetActive(true);
         }
     }
 
@@ -170,6 +165,7 @@ public class Shop : Interactable, IDataPersistence
     {
         ammoMenu.SetActive(false);
     }*/
+
 
     public void LoadData(GameData data){
         GunController gunController = FindObjectOfType<GunController>(); // Find the GunController in the scene

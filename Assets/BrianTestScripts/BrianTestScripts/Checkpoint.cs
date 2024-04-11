@@ -10,19 +10,26 @@ public class Checkpoint : MonoBehaviour, IDataPersistence
     private static Checkpoint activeCheckpoint;
     private string checkpointScene;
     private Vector3 savedCheckpoint;
+    private DataManager dm;
 
     private void Start()
     {
         checkpoints.Add(this);
+        dm =  FindObjectOfType<DataManager>();
+        LoadToCheckpoint();
     }
+
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            // Set this checkpoint as the active checkpoint
-            activeCheckpoint = this;
-            checkpointScene = SceneManager.GetActiveScene().name;
+            if(SceneManager.GetActiveScene().name != "HUB" && SceneManager.GetActiveScene().name != "Tutorial 1"){
+                // Set this checkpoint as the active checkpoint
+                activeCheckpoint = this;
+                checkpointScene = SceneManager.GetActiveScene().name;
+                dm.SaveGame();
+            }
         }
     }
 
@@ -36,10 +43,14 @@ public class Checkpoint : MonoBehaviour, IDataPersistence
         return checkpoints;
     }
     public void LoadData(GameData data){
+        //Debug.Log("Loading Data...");
         this.savedCheckpoint = data.savedCheckpoint;
         this.checkpointScene = data.checkpointScene;
         CoinCollector.coinsCollected = data.coins;
-        LoadToCheckpoint();
+        if(data.checkpointScene != "HUB" && data.checkpointScene != "Tutorial 1"){
+            LoadToCheckpoint();
+        }
+        
     }
     public void SaveData(ref GameData data){
         if(activeCheckpoint != null){
@@ -49,10 +60,12 @@ public class Checkpoint : MonoBehaviour, IDataPersistence
         }
     }
     private void LoadToCheckpoint(){
+        //Debug.Log("Loading to checkpoint");
         if(savedCheckpoint != Vector3.zero && SceneManager.GetActiveScene().name == checkpointScene){
             //Debug.Log("Checkpoint exists and scene matches");
             ThirdPersonController.Main.gameObject.transform.position = savedCheckpoint;
             Camera.main.GetComponent<CameraController>().RecomposeCamera();
+            //Debug.Log("Loading to checkpoint in scene: " + checkpointScene + "Currently current scene: " + SceneManager.GetActiveScene().name);
         }
         else{
             //Debug.LogWarning("Something went wrong");

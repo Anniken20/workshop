@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System;
 
-public class BountyBoard : MonoBehaviour
+public class BountyBoard : MonoBehaviour, IDataPersistence
 {
     public GameObject levelSelectPopup;
     public LevelManager levelManager;
@@ -12,15 +12,20 @@ public class BountyBoard : MonoBehaviour
     public Button level3Button;
     public Button backButton;
     public GameObject particleEffect;
-    public ClearSaveData clearSaveDataScript;
+    // public ClearSaveData clearSaveDataScript;
 
     private bool playerEnteredOnce = false;
-    private string playerEnteredOnceKey = "PlayerEnteredOnce";
+    // private string playerEnteredOnceKey = "PlayerEnteredOnce";
+
     private bool paused = false;
     private float prevTimeScale = 1f;
     public static event Action onPause;
 
-    // Save data keys for defeating characters
+    // Save and load 
+    public bool calltoactionCompleted = false;
+
+    // Commented out as no need for it to run
+   //Save data keys for defeating characters
     private string carilloDefeatedKey = "CarilloDefeated";
     private string santanaDefeatedKey = "SantanaDefeated";
     private string dianaDefeatedKey = "DianaDefeated";
@@ -28,12 +33,14 @@ public class BountyBoard : MonoBehaviour
     public bool popupActivated = false;
 
     public Collider collider1;
+    private int levelCompleted;
 
     private void Start()
     {
+        // Don't use player prefs
         // Load playerEnteredOnce state from PlayerPrefs
-        playerEnteredOnce = PlayerPrefs.GetInt(playerEnteredOnceKey, 0) == 1;
-
+        // playerEnteredOnce = PlayerPrefs.GetInt(playerEnteredOnceKey, 0) == 1;
+        //playerEnteredOnce = false;
         // Buttons to their respective functions
         /*level1Button.onClick.AddListener(StartLevel1);
         level2Button.onClick.AddListener(StartLevel2);
@@ -50,9 +57,9 @@ public class BountyBoard : MonoBehaviour
         particleEffect.SetActive(true);
 
         // Check if characters are defeated and activate/deactivate level buttons accordingly
-        /*bool carilloDefeated = PlayerPrefs.GetInt(carilloDefeatedKey, 0) == 1;
+        bool carilloDefeated = PlayerPrefs.GetInt(carilloDefeatedKey, 0) == 1;
         bool santanaDefeated = PlayerPrefs.GetInt(santanaDefeatedKey, 0) == 1;
-        bool dianaDefeated = PlayerPrefs.GetInt(dianaDefeatedKey, 0) == 1;*/
+        bool dianaDefeated = PlayerPrefs.GetInt(dianaDefeatedKey, 0) == 1;
 
         // Enable level 2 button if Carillo is defeated
         //level2Button.interactable = carilloDefeated;
@@ -61,22 +68,23 @@ public class BountyBoard : MonoBehaviour
         //level3Button.interactable = santanaDefeated;
 
         // Disable level 2 and level 3 buttons if Carillo and Santana are not defeated respectively
-        if (levelManager.level < 1)
+        Debug.Log(levelCompleted);
+        if (levelCompleted == 0)
         {
             level2Button.interactable = false;
             level3Button.interactable = false;
         }
-        else if (levelManager.level < 2)
+        else if (levelCompleted < 2)
         {
             level3Button.interactable = false;
         }
 
-        if (levelManager.level == 1)
+        if (levelCompleted == 1)
         {
             level2Button.interactable = true;
             level3Button.interactable = false;
         }
-        else if (levelManager.level == 2)
+        else if (levelCompleted == 2)
         {
             level2Button.interactable = true;
             level3Button.interactable = true;
@@ -89,17 +97,21 @@ public class BountyBoard : MonoBehaviour
         {
             if (!playerEnteredOnce)
             {
+                //calltoactionCompleted = false;
                 // First time player enters the trigger, move to CallToActionCutscene_MP4 scene
+                playerEnteredOnce = true;
+                FindObjectOfType<DataManager>().SaveGame();
                 SceneManager.LoadScene("CallToActionCutscene_MP4");
                 playerEnteredOnce = true;
-                PlayerPrefs.SetInt(playerEnteredOnceKey, 1); // Save playerEnteredOnce state to PlayerPrefs
-                PauseNoUI(); // Pause the game when the scene loads
-
+                //PlayerPrefs.SetInt(playerEnteredOnceKey, 1); // Save playerEnteredOnce state to PlayerPrefs
+                UnPauseNoUI(); // Pause the game when the scene loads
+                playerEnteredOnce = true;
                 // Disable the particle effect when transitioning to the next scene
                 particleEffect.SetActive(false);
             }
             else
             {
+                //calltoactionCompleted = true;
                 // Player has already entered once, show the level select pop-up
                 levelSelectPopup.SetActive(true);
                 PauseNoUI(); // Pause the game when the pop-up is active
@@ -209,19 +221,32 @@ public class BountyBoard : MonoBehaviour
         }
     }
 
-    // Method to clear player's data
+    /* Method to clear player's data
     public void ClearPlayerData()
     {
         if (clearSaveDataScript != null)
         {
             clearSaveDataScript.Pressed();
         }
-    }
+    }*/
 
     private void OnDestroy()
     {
         // Unsubscribe from onPause event
         PauseMenu.onPause -= PauseNoUI;
     }
-}
 
+    public void LoadData(GameData data)
+    {
+        //this.calltoactionCompleted = data.calltoactionCompleted;
+        //Debug.Log("Loading");
+        this.playerEnteredOnce = data.calltoactionCompleted;
+        levelCompleted = data.levelComplete;
+    }
+
+    public void SaveData(ref GameData data)
+    {
+        //data.calltoactionCompleted = this.calltoactionCompleted;
+        data.calltoactionCompleted = this.playerEnteredOnce;
+    }
+}

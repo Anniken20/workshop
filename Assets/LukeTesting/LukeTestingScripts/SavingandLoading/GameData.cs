@@ -15,9 +15,11 @@ public class GameData
    public List<string> collectedNotes;
    public int ammoCount;
    public bool introCompleted;
+   //internal bool playerEnteredOnce;
+   public bool calltoactionCompleted;
 
-//These will be the default values when the game is loaded with no save data to pull from.
-   public GameData(){
+    //These will be the default values when the game is loaded with no save data to pull from.
+    public GameData(){
         this.coins = 0;
         this.levelComplete = 0;
         this.testingSave = 0;
@@ -29,6 +31,7 @@ public class GameData
         this.collectedNotes = new List<string>();
         this.ammoCount = 0;
         this.introCompleted = false;
+        this.calltoactionCompleted = false;
    }
 }
 

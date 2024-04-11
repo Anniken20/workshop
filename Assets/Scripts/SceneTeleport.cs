@@ -11,6 +11,8 @@ public class SceneTeleport : MonoBehaviour, IDataPersistence
     public Image LoadingBarFill;
     public string scene_name;
     public DataManager dataManager;
+    public int levelCompleted;
+    private int savedComplete;
     public void OnTriggerEnter(Collider other)
     {
         if(other.CompareTag("Player"))
@@ -22,12 +24,15 @@ public class SceneTeleport : MonoBehaviour, IDataPersistence
             LoadScene(scene_name);
         } 
     }
-    public int levelCompleted;
+    
     public void LoadData(GameData data){
-        //levelCompleted = data.levelComplete;
+        savedComplete = data.levelComplete;
     }
     public void SaveData(ref GameData data){
-        data.levelComplete = levelCompleted;
+        //Debug.Log("Saving");
+        if(this.levelCompleted > savedComplete){
+            data.levelComplete = this.levelCompleted;
+        }
     }
 
     public void LoadScene(string scene_name)
