@@ -5,6 +5,7 @@ using UnityEngine.VFX;
 
 public class GhostEnemy : MonoBehaviour, IShootable
 {
+    public bool propGhost = false;
     public float movementSpeed = 2f; // Speed at which the ghost moves towards the player
     public float attackRange = 1.5f; // Range within which the ghost attacks the player
     public int damage = 1; // Damage inflicted to the player when in attack range
@@ -127,7 +128,7 @@ public class GhostEnemy : MonoBehaviour, IShootable
         currentHealth -= damageAmount;
         if (currentHealth <= 0)
         {
-            if (canAttack)
+            /*if (canAttack)
             {
                 // Attack the player
                 PlayerHealth playerHealth = aggroScript.target.GetComponent<PlayerHealth>();
@@ -137,7 +138,7 @@ public class GhostEnemy : MonoBehaviour, IShootable
                     canAttack = false;
                     Invoke("ResetAttackCooldown", attackCooldown);
                 }
-            }
+            }*/
             Die();
         }
     }
@@ -145,7 +146,10 @@ public class GhostEnemy : MonoBehaviour, IShootable
     void Die()
     {
         // Perform death-related action
-        StartCoroutine(DoEffectDeath(1.2f));
+        if (propGhost == true)
+            StartCoroutine(DoEffectDeath(0f));
+        else if (propGhost == false)
+            StartCoroutine(DoEffectDeath(1.2f));
     }
 
     IEnumerator DoEffectDeath(float deathTime)
