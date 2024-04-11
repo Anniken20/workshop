@@ -261,25 +261,30 @@ public class BulletController : MonoBehaviour
 
     private void TryToApplyShootable(GameObject obj)
     {
-        ShootableController shootableController;
-        if (obj.TryGetComponent<ShootableController>(out shootableController))
+        try
         {
-            shootableController.OnShot();
-        }
-
-        IShootable[] shootables = obj.GetComponents<IShootable>();
-        foreach (IShootable s in shootables){
-            s.OnShot(this);
-        }
-
-        if (hasBeenLunaRedirected)
-        {
-            ILunaShootable[] lShootables = obj.GetComponents<ILunaShootable>();
-            foreach (ILunaShootable s in lShootables)
+            ShootableController shootableController;
+            if (obj.TryGetComponent<ShootableController>(out shootableController))
             {
-                s.OnLunaShot(this);
+                shootableController.OnShot();
+            }
+
+            IShootable[] shootables = obj.GetComponents<IShootable>();
+            foreach (IShootable s in shootables)
+            {
+                s.OnShot(this);
+            }
+
+            if (hasBeenLunaRedirected)
+            {
+                ILunaShootable[] lShootables = obj.GetComponents<ILunaShootable>();
+                foreach (ILunaShootable s in lShootables)
+                {
+                    s.OnLunaShot(this);
+                }
             }
         }
+        catch { }
     }
 
     public void EnterLunaMode()
