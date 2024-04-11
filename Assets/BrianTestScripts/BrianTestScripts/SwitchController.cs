@@ -10,6 +10,9 @@ public class SwitchController : MonoBehaviour
 
     [SerializeField] bool isDoorOpenSwitch;
     [SerializeField] bool isDoorCloseSwitch;
+    private AudioSource audioSource;
+    public AudioClip pressurePlateClick;
+    private bool clickPlayed = false;
 
     float switchSizeY;
     Vector3 switchUpPos;
@@ -20,6 +23,11 @@ public class SwitchController : MonoBehaviour
 
 
 
+    void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
+    
     void Awake ()
     {
         switchSizeY = transform.localScale.y / 2;
@@ -56,6 +64,7 @@ public class SwitchController : MonoBehaviour
         if (transform.position != switchUpPos)
         {
             transform.position = Vector3.MoveTowards(transform.position, switchUpPos, switchSpeed * Time.deltaTime);
+            clickPlayed = false;
         }
     }
 
@@ -65,6 +74,11 @@ public class SwitchController : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             isPressingSwitch = !isPressingSwitch;
+            if (clickPlayed == false)
+            {
+                audioSource.PlayOneShot(pressurePlateClick);
+                clickPlayed = true;
+            }
 
             if(HasRequiredItem(requiredItem))
             {

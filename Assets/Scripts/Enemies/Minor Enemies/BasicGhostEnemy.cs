@@ -5,6 +5,7 @@ using UnityEngine.VFX;
 
 public class GhostEnemy : MonoBehaviour, IShootable
 {
+    public bool propGhost = false;
     public float movementSpeed = 2f; // Speed at which the ghost moves towards the player
     public float attackRange = 1.5f; // Range within which the ghost attacks the player
     public int damage = 1; // Damage inflicted to the player when in attack range
@@ -37,20 +38,46 @@ public class GhostEnemy : MonoBehaviour, IShootable
         audioSource = GetComponent<AudioSource>();
     }
 
+    void Start()
+    {
+        currentHealth = maxHealth;
+        audioSource = GetComponent<AudioSource> ();
+    }
+
     void Update()
     {
         if (aggroScript.target == null) // If the player is not found, do nothing
             return;
 
+        // Calculate direction towards the player's position
+        //set the Y to the shootpoint's Y, so it doesn't look at Val's feet, also negates need for float height by doing it automatically, and always being at shoot height
         Vector3 targetPosition = new Vector3(aggroScript.target.transform.position.x, aggroScript.target.transform.position.y + lookAtOffset, aggroScript.target.transform.position.z);
         Vector3 direction = targetPosition - transform.position;
         direction.Normalize();
 
-        // Move towards the player's position
+        // Move towards the player's absolute position
         transform.Translate(direction * movementSpeed * Time.deltaTime, Space.World);
 
+        // Ethan - look at target position
+        this.gameObject.transform.LookAt(targetPosition);
         // Look at the target position
         transform.LookAt(targetPosition);
+
+        //Since it's a trigger now, just set it to ontriggerstay so it isnt checking every frame, kept the code in case haunted objs need it later
+
+        /*
+         * if (Vector3.Distance(transform.position, player.transform.position) < attackRange && canAttack)
+            {
+                // Attack the player
+                PlayerHealth playerHealth = player.GetComponent<PlayerHealth>();
+                if (playerHealth != null)
+                {
+                    playerHealth.TakeDamage(damage);
+                    canAttack = false;
+                    Invoke("ResetAttackCooldown", attackCooldown);
+                }
+            }
+         */
 
         // Check if the player is within attack range and the enemy can attack
         if (Vector3.Distance(transform.position, targetPosition) < attackRange && canAttack)
@@ -77,10 +104,11 @@ public class GhostEnemy : MonoBehaviour, IShootable
 
     public void OnTriggerStay(Collider other)
     {
-        if (other.gameObject.CompareTag("Ghost"))
-        {
-            AvoidCollision(other.transform.position);
-        }
+        if (other.gameObject.CompareTag("Player"))
+            if (other.gameObject.CompareTag("Ghost"))
+            {
+                AvoidCollision(other.transform.position);
+            }
     }
 
     void AvoidCollision(Vector3 otherPosition)
@@ -100,14 +128,28 @@ public class GhostEnemy : MonoBehaviour, IShootable
         currentHealth -= damageAmount;
         if (currentHealth <= 0)
         {
+            /*if (canAttack)
+            {
+                // Attack the player
+                PlayerHealth playerHealth = aggroScript.target.GetComponent<PlayerHealth>();
+                if (playerHealth != null)
+                {
+                    playerHealth.TakeDamage(damage);
+                    canAttack = false;
+                    Invoke("ResetAttackCooldown", attackCooldown);
+                }
+            }*/
             Die();
         }
     }
 
     void Die()
     {
-        // Perform death-related actions (e.g., play death animation, drop items, etc.)
-        StartCoroutine(DoEffectDeath(1.2f));
+        // Perform death-related action
+        if (propGhost == true)
+            StartCoroutine(DoEffectDeath(0f));
+        else if (propGhost == false)
+            StartCoroutine(DoEffectDeath(1.2f));
     }
 
     IEnumerator DoEffectDeath(float deathTime)
@@ -125,6 +167,7 @@ public class GhostEnemy : MonoBehaviour, IShootable
         float currentTime = 0;
         while (currentTime < deathTime)
         {
+            _visualEffectController.SetFloat("TimeDissolve", currentTime / deathTime);
             _visualEffectController.SetFloat("TimeDissolve", currentTime / deathTime);
             currentTime += Time.deltaTime;
             yield return null;

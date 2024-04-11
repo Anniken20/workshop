@@ -157,7 +157,7 @@ Transform:
   - {fileID: 362793093950929514}
   - {fileID: 5133825161244942485}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: -180, z: 0}
 --- !u!33 &1977837992126316869
 MeshFilter:
@@ -230,7 +230,7 @@ MonoBehaviour:
   aggroScript: {fileID: 0}
   lookAtOffset: 1.4
   deathSounds: []
-  minDistanceBetweenEnemies: 2
+  minDistanceBetweenEnemies: 6
 --- !u!136 &3357452862823820697
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -250,10 +250,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 1.5899513
+  m_Radius: 0.59142303
+  m_Height: 2.3148332
   m_Direction: 1
-  m_Center: {x: 0, y: -0.0038391352, z: 0}
+  m_Center: {x: 0.0033825636, y: -0.36628008, z: 2.38145e-16}
 --- !u!108 &3900187548296124899
 Light:
   m_ObjectHideFlags: 0
@@ -347,20 +347,25 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 362793093950929514}
     m_Modifications:
+    - target: {fileID: 332456225503204784, guid: 3880f6e1f8fb39b4f8600923e789f76d,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 669538247378100816, guid: 3880f6e1f8fb39b4f8600923e789f76d,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 1.7300777
+      value: 1.2713302
       objectReference: {fileID: 0}
     - target: {fileID: 669538247378100816, guid: 3880f6e1f8fb39b4f8600923e789f76d,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 1.7300777
+      value: 1.2713302
       objectReference: {fileID: 0}
     - target: {fileID: 669538247378100816, guid: 3880f6e1f8fb39b4f8600923e789f76d,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 1.7300777
+      value: 1.2713302
       objectReference: {fileID: 0}
     - target: {fileID: 669538247378100816, guid: 3880f6e1f8fb39b4f8600923e789f76d,
         type: 3}
@@ -471,6 +476,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: vfxflame_graph_container
+      objectReference: {fileID: 0}
+    - target: {fileID: 6749266282546656328, guid: 3880f6e1f8fb39b4f8600923e789f76d,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -588,6 +598,14 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 9167461048260006980}
+    - targetCorrespondingSourceObject: {fileID: 3051928965768018776, guid: 7b846d8f536f007498c941069487ce81,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6222215604312914634}
+    - targetCorrespondingSourceObject: {fileID: 3051928965768018776, guid: 7b846d8f536f007498c941069487ce81,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1757536852427938351}
   m_SourcePrefab: {fileID: 100100000, guid: 7b846d8f536f007498c941069487ce81, type: 3}
 --- !u!4 &5133825161244942485 stripped
 Transform:
@@ -652,3 +670,54 @@ MonoBehaviour:
   regenDMG: 0
   regenTimer: 0
   breakController: {fileID: 0}
+--- !u!114 &6222215604312914634
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5509259571795327535}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6349bbb559e03540b2536dfebe5ca1b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lockInWrangle: 1
+  player: {fileID: 0}
+  wrangling: 0
+  controller: {fileID: 0}
+  barCapacity: 0
+  barIncrement: 0
+  barDepleteRate: 0
+  barParent: {fileID: 0}
+  wrangleBar: {fileID: 0}
+  lossTimer: 0
+  breaker: {fileID: 1757536852427938351}
+  wrangleComplete:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &1757536852427938351
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5509259571795327535}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa7bdcb355a9f42bc958224320bf6f61, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fragments: []
+  coinPrefab: {fileID: 0}
+  minCoins: 1
+  maxCoins: 5
+  coinForce: 5
+  explosionForce: 10
+  explosionRadius: 5
+  disableRigidbodyDelay: 30
+  enableRigidbodyDelay: 30
+  breakSound: {fileID: 0}
+  clipLength: 0
+  maxFragmentsToSpawn: 5
+  spawnDistance: 3

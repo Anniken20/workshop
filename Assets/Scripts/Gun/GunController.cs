@@ -74,6 +74,15 @@ public class GunController : MonoBehaviour
     private bool canShootAfterRedirect = true;
     // DEBUG
     private bool isInfiniteBulletsEnabled = false;
+
+    public int GhostAmmo {
+        get { return ghostAmmo; }
+        set { 
+            ghostAmmo = value; 
+            bulletHUD.UpdateBulletHUD(ghostAmmo); 
+        }
+    }
+
     private void Start()
     {
         animator = GetComponent<Animator>();

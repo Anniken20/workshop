@@ -22,6 +22,7 @@ public class Daughter : Enemy
     }
     public void EnterWAM()
     {
+        Debug.Log("WAM");
         stateMachine.ChangeState(wamState);
     }
     public void ExitWAM()
