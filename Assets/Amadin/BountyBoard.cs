@@ -49,10 +49,10 @@ public class BountyBoard : MonoBehaviour
         // Enable the particle effect when the scene starts
         particleEffect.SetActive(true);
 
-        // Check if characters are defeated and activate/deactivate level buttons accordingly
-        /*bool carilloDefeated = PlayerPrefs.GetInt(carilloDefeatedKey, 0) == 1;
+        //Check if characters are defeated and activate/deactivate level buttons accordingly
+        bool carilloDefeated = PlayerPrefs.GetInt(carilloDefeatedKey, 0) == 1;
         bool santanaDefeated = PlayerPrefs.GetInt(santanaDefeatedKey, 0) == 1;
-        bool dianaDefeated = PlayerPrefs.GetInt(dianaDefeatedKey, 0) == 1;*/
+        bool dianaDefeated = PlayerPrefs.GetInt(dianaDefeatedKey, 0) == 1;
 
         // Enable level 2 button if Carillo is defeated
         //level2Button.interactable = carilloDefeated;
@@ -93,7 +93,7 @@ public class BountyBoard : MonoBehaviour
                 SceneManager.LoadScene("CallToActionCutscene_MP4");
                 playerEnteredOnce = true;
                 PlayerPrefs.SetInt(playerEnteredOnceKey, 1); // Save playerEnteredOnce state to PlayerPrefs
-                PauseNoUI(); // Pause the game when the scene loads
+                UnPauseNoUI(); // Pause the game when the scene loads
 
                 // Disable the particle effect when transitioning to the next scene
                 particleEffect.SetActive(false);
