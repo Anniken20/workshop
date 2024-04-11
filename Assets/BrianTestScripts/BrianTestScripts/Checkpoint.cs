@@ -24,7 +24,7 @@ public class Checkpoint : MonoBehaviour, IDataPersistence
     {
         if (other.CompareTag("Player"))
         {
-            if(SceneManager.GetActiveScene().name != "HUB" || SceneManager.GetActiveScene().name != "Tutorial 1"){
+            if(SceneManager.GetActiveScene().name != "HUB" && SceneManager.GetActiveScene().name != "Tutorial 1"){
                 // Set this checkpoint as the active checkpoint
                 activeCheckpoint = this;
                 checkpointScene = SceneManager.GetActiveScene().name;
@@ -47,7 +47,10 @@ public class Checkpoint : MonoBehaviour, IDataPersistence
         this.savedCheckpoint = data.savedCheckpoint;
         this.checkpointScene = data.checkpointScene;
         CoinCollector.coinsCollected = data.coins;
-        LoadToCheckpoint();
+        if(data.checkpointScene != "HUB" && data.checkpointScene != "Tutorial 1"){
+            LoadToCheckpoint();
+        }
+        
     }
     public void SaveData(ref GameData data){
         if(activeCheckpoint != null){

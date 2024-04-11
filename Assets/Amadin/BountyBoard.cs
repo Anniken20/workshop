@@ -33,13 +33,14 @@ public class BountyBoard : MonoBehaviour, IDataPersistence
     public bool popupActivated = false;
 
     public Collider collider1;
+    private int levelCompleted;
 
     private void Start()
     {
         // Don't use player prefs
         // Load playerEnteredOnce state from PlayerPrefs
         // playerEnteredOnce = PlayerPrefs.GetInt(playerEnteredOnceKey, 0) == 1;
-        playerEnteredOnce = false;
+        //playerEnteredOnce = false;
         // Buttons to their respective functions
         /*level1Button.onClick.AddListener(StartLevel1);
         level2Button.onClick.AddListener(StartLevel2);
@@ -67,22 +68,23 @@ public class BountyBoard : MonoBehaviour, IDataPersistence
         //level3Button.interactable = santanaDefeated;
 
         // Disable level 2 and level 3 buttons if Carillo and Santana are not defeated respectively
-        if (levelManager.level < 1)
+        Debug.Log(levelCompleted);
+        if (levelCompleted == 0)
         {
             level2Button.interactable = false;
             level3Button.interactable = false;
         }
-        else if (levelManager.level < 2)
+        else if (levelCompleted < 2)
         {
             level3Button.interactable = false;
         }
 
-        if (levelManager.level == 1)
+        if (levelCompleted == 1)
         {
             level2Button.interactable = true;
             level3Button.interactable = false;
         }
-        else if (levelManager.level == 2)
+        else if (levelCompleted == 2)
         {
             level2Button.interactable = true;
             level3Button.interactable = true;
@@ -95,8 +97,10 @@ public class BountyBoard : MonoBehaviour, IDataPersistence
         {
             if (!playerEnteredOnce)
             {
-                calltoactionCompleted = false;
+                //calltoactionCompleted = false;
                 // First time player enters the trigger, move to CallToActionCutscene_MP4 scene
+                playerEnteredOnce = true;
+                FindObjectOfType<DataManager>().SaveGame();
                 SceneManager.LoadScene("CallToActionCutscene_MP4");
                 playerEnteredOnce = true;
                 //PlayerPrefs.SetInt(playerEnteredOnceKey, 1); // Save playerEnteredOnce state to PlayerPrefs
@@ -107,7 +111,7 @@ public class BountyBoard : MonoBehaviour, IDataPersistence
             }
             else
             {
-                calltoactionCompleted = true;
+                //calltoactionCompleted = true;
                 // Player has already entered once, show the level select pop-up
                 levelSelectPopup.SetActive(true);
                 PauseNoUI(); // Pause the game when the pop-up is active
@@ -234,13 +238,15 @@ public class BountyBoard : MonoBehaviour, IDataPersistence
 
     public void LoadData(GameData data)
     {
-        this.calltoactionCompleted = data.calltoactionCompleted;
-        this.playerEnteredOnce = data.playerEnteredOnce;
+        //this.calltoactionCompleted = data.calltoactionCompleted;
+        //Debug.Log("Loading");
+        this.playerEnteredOnce = data.calltoactionCompleted;
+        levelCompleted = data.levelComplete;
     }
 
     public void SaveData(ref GameData data)
     {
-        data.calltoactionCompleted = this.calltoactionCompleted;
-        data.playerEnteredOnce = this.playerEnteredOnce;
+        //data.calltoactionCompleted = this.calltoactionCompleted;
+        data.calltoactionCompleted = this.playerEnteredOnce;
     }
 }
