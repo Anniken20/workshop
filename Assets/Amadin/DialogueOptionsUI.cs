@@ -123,7 +123,7 @@ public class DialogueOptionsMenu : MonoBehaviour
         dialogueData.useDyslexicFont = isEnabled;
         PlayerPrefs.SetInt(DyslexiaModeKey, isEnabled ? 1 : 0);
 
-        TMP_FontAsset font = isEnabled ? dialogueData.dyslexicFont : dialogueData.defaultFont;
+        TMP_FontAsset font = isEnabled ? dialogueData.dyslexicFont : dialogueData.additionalDefaultFont;
         ApplyFontToAllText(font);
     }
 
@@ -132,7 +132,13 @@ public class DialogueOptionsMenu : MonoBehaviour
         TMP_Text[] textComponents = FindObjectsOfType<TMP_Text>(true);
         foreach (TMP_Text textComponent in textComponents)
         {
+            if(textComponent.font != dialogueData.defaultFont){
+                //Debug.Log(textComponent.gameObject.name + ": Does not Contain Font: " + dialogueData.defaultFont.name);
             textComponent.font = font;
+            }
+            else{
+                //Debug.Log(textComponent.gameObject.name + ": Contains Font: " + dialogueData.defaultFont.name + " Skipping for now");
+            }
         }
     }
 
