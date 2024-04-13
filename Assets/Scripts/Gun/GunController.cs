@@ -76,16 +76,17 @@ public class GunController : MonoBehaviour
     private bool isInfiniteBulletsEnabled = false;
 
     public int GhostAmmo {
-        get { return ghostAmmo; }
-        set { 
-            ghostAmmo = value; 
+        get { return maxGhostAmmo; }
+        set {
+            maxGhostAmmo = value;
+            ghostAmmo = maxGhostAmmo;
             if(bulletHUD == null)
             {
                 bulletHUD = FindObjectOfType<BulletHUD>();
-                bulletHUD.UpdateBulletHUD(ghostAmmo);
+                bulletHUD.UpdateBulletHUD(maxGhostAmmo);
             } else
             {
-                bulletHUD.UpdateBulletHUD(ghostAmmo);
+                bulletHUD.UpdateBulletHUD(maxGhostAmmo);
             }
         }
     }
@@ -111,7 +112,7 @@ public class GunController : MonoBehaviour
         if(bulletHUD == null)
         {
             bulletHUD = FindObjectOfType<BulletHUD>();
-            bulletHUD.UpdateBulletHUD(ghostAmmo);
+            bulletHUD.UpdateBulletHUD(maxGhostAmmo);
         }
 
         if (fireOnMouseUp) aimController.fireOnMouseUp = true;
@@ -199,7 +200,7 @@ public class GunController : MonoBehaviour
 
     private void FireGun()
     {
-        if (!HasAmmo() && !isInfiniteBulletsEnabled) 
+        if (!HasAmmo()) 
         {
             Misfire();
             return;
@@ -326,7 +327,7 @@ public class GunController : MonoBehaviour
 
     private bool HasAmmo()
     {
-        return ghostAmmo > 0 || isInfiniteBulletsEnabled;
+        return ghostAmmo > 0;
     }
 
     private void Recoil()

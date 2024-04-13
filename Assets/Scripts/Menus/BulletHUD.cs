@@ -21,7 +21,6 @@ public class BulletHUD : MonoBehaviour
 
     private void DrawBullets()
     {
-        Debug.Log("total ammo: " + totalAmmo);
         currentAmmo = totalAmmo;
         singleBullet = transform.GetChild(0).gameObject;
         bulletsArray = new GameObject[totalAmmo];
@@ -70,7 +69,7 @@ public class BulletHUD : MonoBehaviour
         for (int i = 1; i < totalAmmo; ++i)
         {
             if (bulletsArray[i] == null) return;
-            Debug.Log("destroyed: " + bulletsArray[i].name);
+            //Debug.Log("destroyed: " + bulletsArray[i].name);
             Destroy(bulletsArray[i]);
         }
         Array.Resize(ref bulletsArray, 1);
