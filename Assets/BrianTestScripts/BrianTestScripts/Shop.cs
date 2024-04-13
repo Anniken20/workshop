@@ -130,8 +130,7 @@ public class Shop : Interactable, IDataPersistence
              if (gunController != null)
              {
                 SpendCoin(ammoCost);
-                gunController.GhostAmmo++;
-                gunController.RestoreBullet(); // Adds one bullet. Adjust quantity as needed.
+                gunController.GhostAmmo = gunController.GhostAmmo + 1;
                 Debug.Log("Ammo Purchased!");
              }
         }
@@ -171,6 +170,8 @@ public class Shop : Interactable, IDataPersistence
         GunController gunController = FindObjectOfType<GunController>(); // Find the GunController in the scene
         if (gunController != null)
         {
+            if (data.ammoCount < 6) data.ammoCount = 6;
+            Debug.Log("ammoCount: " + data.ammoCount);
             gunController.GhostAmmo = data.ammoCount; // Load the saved ammo count into the GunController
         }
         else
