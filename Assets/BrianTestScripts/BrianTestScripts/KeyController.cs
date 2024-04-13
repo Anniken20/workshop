@@ -5,7 +5,8 @@ using UnityEngine;
 public class KeyController : MonoBehaviour
 {
     [SerializeField] InventoryManager.AllItems itemType;
-     [SerializeField] GameObject collectedItemImage;
+    [SerializeField] GameObject collectedItemImage;
+    public AudioClip pickupSound;
 
     //pickup key
     private void OnTriggerEnter(Collider collision)
@@ -13,6 +14,7 @@ public class KeyController : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             InventoryManager.Instance.AddItem(itemType);
+            AudioManager.main.Play(AudioManager.AudioSourceChannel.SFX, pickupSound);
             Destroy(gameObject);
              ShowCollectedItemImage(); 
              Invoke("HideCollectedItemImage", 60f);
