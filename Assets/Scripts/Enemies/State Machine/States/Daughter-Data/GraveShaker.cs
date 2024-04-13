@@ -66,19 +66,19 @@ public class GraveShaker : MonoBehaviour
             d.gameObject.transform.position = Vector3.Lerp(d.gameObject.transform.position, this.outPos, Time.deltaTime);
             //Debug.Log("Dist: " +Vector3.Distance(anim.gameObject.transform.position, this.outPos));
             //var outp = this.transform.Find("OutPOS");
-            Debug.Log(Vector3.Distance(d.gameObject.transform.position, this.outPos));
+            //Debug.Log(Vector3.Distance(d.gameObject.transform.position, this.outPos));
             if(Vector3.Distance(d.gameObject.transform.position, this.outPos) <= 0.2f){
                 d.gameObject.transform.position = this.outPos;
                 this.lerptoOut = false;
-                Debug.Log("OutReached");
+                //Debug.Log("OutReached");
             }
         }
     }
     
     IEnumerator PeekingWait()
     {
-        yield return new WaitForSeconds(GetComponentInParent<GraveSelection>().waitTime);
-        Debug.Log("Heading to Out POS");
+        yield return new WaitForSeconds(2f);
+       // Debug.Log("Heading to Out POS");
         this.GetComponent<DaughterGraveWrangle>().peeking = false;
         //GetComponentInParent<GraveSelection>().MovePoppy(this.transform.Find("OutPOS").position);
         anim.SetBool("Climbing", false);
@@ -89,6 +89,7 @@ public class GraveShaker : MonoBehaviour
         this.GetComponent<DaughterGraveWrangle>().atGrave = false;
         //this.GetComponent<DaughterGraveWrangle>().enabled = false;
         GetComponentInParent<GraveSelection>().PoppyCombat(this.gameObject);
+        //Debug.Log("Leaving");
     }
     public void CancelPeek()
     {
