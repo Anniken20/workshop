@@ -8,9 +8,11 @@ public class Wrangle_Break : LassoWrangle
     public BreakController breaker;
     public UnityEvent wrangleComplete;
     private Collider c;
+    public AudioClip breakSound;
     private void Start()
     {
        c = GetComponent<Collider>();
+
     }
     public override void WinMiniGame()
     {
@@ -25,6 +27,7 @@ public class Wrangle_Break : LassoWrangle
         lassoObject.GetComponent<LassoDetection>().recall = true;
         player.canLasso = true;
         controller._manipulatingLasso = false;
+        AudioManager.main.Play(AudioManager.AudioSourceChannel.SFX, breakSound);
         breaker.BreakIntoPieces();
         
     }

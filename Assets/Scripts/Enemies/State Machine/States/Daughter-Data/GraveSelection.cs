@@ -123,7 +123,7 @@ public class GraveSelection : MonoBehaviour
         }
     }
     public IEnumerator ShootDelay(){
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(2f);
         anim.SetBool("Jumping", false);
         anim.SetBool("Shooting", true);
     }
