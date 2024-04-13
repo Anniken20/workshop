@@ -10,10 +10,22 @@ using UnityEngine;
 public class ChangeMusic : MonoBehaviour
 {
     public bool onStart = true;
+    public bool stopMusic = false;
     public AudioClip audioClip;
+
+    private AudioSource musicSource;
 
     private void Start()
     {
+        if(stopMusic)
+        {
+            musicSource = AudioManager.main.gameObject.transform.GetChild(0).gameObject.GetComponent<AudioSource>();
+            musicSource.Stop();
+        } else
+        {
+            musicSource = AudioManager.main.gameObject.transform.GetChild(0).gameObject.GetComponent<AudioSource>();
+            musicSource.Play();
+        }
         if (onStart)
         {
             Change();
@@ -23,6 +35,10 @@ public class ChangeMusic : MonoBehaviour
     public void Change()
     {
         //new record longest single unity line
-        AudioManager.main.gameObject.transform.GetChild(0).gameObject.GetComponent<AudioSource>().clip = audioClip;
+        //old line: AudioManager.main.gameObject.transform.GetChild(0).gameObject.GetComponent<AudioSource>().clip = audioClip;
+        musicSource = AudioManager.main.gameObject.transform.GetChild(0).gameObject.GetComponent<AudioSource>();
+        if (musicSource.clip != audioClip && audioClip != null) musicSource.clip = audioClip;
+
+
     }
 }
