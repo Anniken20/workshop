@@ -47,7 +47,6 @@ public class BulletHUD : MonoBehaviour
             UpdateBulletHUD(currentAmmo);
         } else
         {
-            Debug.Log("current ammo: " + currentAmmo);
             bulletsArray[currentAmmo].SetActive(true);
             currentAmmo++;
         }
@@ -55,7 +54,6 @@ public class BulletHUD : MonoBehaviour
 
     public void UpdateBulletHUD(int newAmmo)
     {
-        Debug.Log("new ammo: " + newAmmo);
         if (newAmmo != totalAmmo)
         {
             ClearBullets();
@@ -69,7 +67,6 @@ public class BulletHUD : MonoBehaviour
         for (int i = 1; i < totalAmmo; ++i)
         {
             if (bulletsArray[i] == null) return;
-            //Debug.Log("destroyed: " + bulletsArray[i].name);
             Destroy(bulletsArray[i]);
         }
         Array.Resize(ref bulletsArray, 1);
