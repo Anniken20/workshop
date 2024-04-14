@@ -170,6 +170,8 @@ public class PauseMenu : MonoBehaviour
         ResolutionPanel.SetActive(false);
         settingsPanel.SetActive(false);
         PausePanel.SetActive(false);
+
+        activePanel = AccessibilityPanel;
     }
 
     public void ActivatePcPanel()
