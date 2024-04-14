@@ -5,13 +5,14 @@ using StarterAssets;
 
 public class KnockbackZone : MonoBehaviour 
 {
-   public float knockbackStrength = 10f;
+    public float knockbackStrength = 10f;
     public float knockbackCooldown = 2f; // Cooldown in seconds
     private float lastKnockbackTime = -Mathf.Infinity;
 
     public Vector3 pushDirection = new Vector3(0, 0, 1);
 
     public float initialDelay = 1f; // Initial delay in seconds before applying knockback
+     private MonoBehaviour movementComponent; 
 
     private void OnCollisionEnter(Collision col)
     {
@@ -32,9 +33,20 @@ public class KnockbackZone : MonoBehaviour
     private IEnumerator DelayedKnockback(Collision col)
     {
         yield return new WaitForSeconds(initialDelay); // Wait for the specified delay
+         movementComponent = col.gameObject.GetComponent<ThirdPersonController>();
+
+         if (movementComponent != null)
+            movementComponent.enabled = false;
 
         
-        if (Time.time - lastKnockbackTime < knockbackCooldown) yield break;
+        if (Time.time - lastKnockbackTime < knockbackCooldown) 
+        {
+            if (movementComponent != null)
+            {
+            movementComponent.enabled = true;
+            }
+            yield break;
+        }
 
         ThirdPersonController controller = col.gameObject.GetComponent<ThirdPersonController>();
         if (controller != null)
@@ -43,6 +55,12 @@ public class KnockbackZone : MonoBehaviour
             controller.Push(direction * knockbackStrength);
 
             lastKnockbackTime = Time.time; // Update last knockback time
+
+            yield return new WaitForSeconds(0.5f);
+            if (movementComponent != null)
+            {
+            movementComponent.enabled = true;
+            }
         }
     }
-}
+}   
