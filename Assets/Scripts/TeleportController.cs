@@ -20,6 +20,9 @@ public class TeleportController : MonoBehaviour
     public float moveAfterTeleportDuration = 2.0f; // Duration to move after teleporting
     public float initialDelay = 0.1f; // Adjust this delay to reduce the stutter
 
+    private MonoBehaviour shootingComponent;  
+    private MonoBehaviour movementComponent; 
+
     [Header("Fade")]
     public CanvasGroup fadeCanvasGroup;
     public float fadeDuration = 1.0f;
@@ -47,6 +50,8 @@ public class TeleportController : MonoBehaviour
         if (other.gameObject.CompareTag("Player") && !isTransitioning)
         {
             characterController = other.gameObject.GetComponent<CharacterController>();
+            shootingComponent = other.GetComponent<GunController>();  
+            movementComponent = other.GetComponent<ThirdPersonController>();
             StartCoroutine(TransitionThroughTeleporter(other.gameObject));
         }
     }
@@ -77,11 +82,11 @@ public class TeleportController : MonoBehaviour
     {
         isTransitioning = true;
 
-        gunController = player.GetComponent<GunController>();
-        if (gunController != null)
-        {
-            gunController.DisableShooting();
-        }
+        if (shootingComponent != null)
+            shootingComponent.enabled = false;
+
+        if (movementComponent != null)
+            movementComponent.enabled = false;
 
         // Disable character control
         characterController.enabled = false;
@@ -170,10 +175,11 @@ public class TeleportController : MonoBehaviour
             playerHealth.SetInvincibility(invincibilityDuration);
         }
 
-        if (gunController != null)
-        {
-            gunController.ReenableShooting();
-        }
+       if (shootingComponent != null)
+            shootingComponent.enabled = true;
+
+        if (movementComponent != null)
+            movementComponent.enabled = true;
 
         // Re-enable character control
         characterController.enabled = true;
