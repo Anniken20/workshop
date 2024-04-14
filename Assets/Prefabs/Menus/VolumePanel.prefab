@@ -473,18 +473,23 @@ MonoBehaviour:
   master:
     label: {fileID: 7107349021958029834}
     slider: {fileID: 6346907522303315007}
+    muteBox: {fileID: 0}
   music:
     label: {fileID: 1154185922784421428}
     slider: {fileID: 3076701263886411777}
+    muteBox: {fileID: 0}
   sfx:
     label: {fileID: 1719066392894490592}
     slider: {fileID: 3273421223457606101}
+    muteBox: {fileID: 0}
   dialogue:
     label: {fileID: 7955132431464236047}
     slider: {fileID: 6111543335589907002}
+    muteBox: {fileID: 0}
   ambience:
     label: {fileID: 7898616106228146234}
     slider: {fileID: 6281215239586049551}
+    muteBox: {fileID: 0}
 --- !u!1001 &215545748543580631
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -493,6 +498,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3639874082691475745}
     m_Modifications:
+    - target: {fileID: 1367326598752849891, guid: 61845cc3f2efe444a89156bda3a511aa,
+        type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2383835410699155117, guid: 61845cc3f2efe444a89156bda3a511aa,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -632,6 +642,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_text
       value: Music Volume
+      objectReference: {fileID: 0}
+    - target: {fileID: 6307055933471255158, guid: 61845cc3f2efe444a89156bda3a511aa,
+        type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6862919108104056713, guid: 61845cc3f2efe444a89156bda3a511aa,
         type: 3}
@@ -833,6 +848,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6307055933471255158, guid: 61845cc3f2efe444a89156bda3a511aa,
         type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6307055933471255158, guid: 61845cc3f2efe444a89156bda3a511aa,
+        type: 3}
       propertyPath: m_enableWordWrapping
       value: 0
       objectReference: {fileID: 0}
@@ -894,6 +914,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3639874082691475745}
     m_Modifications:
+    - target: {fileID: 1367326598752849891, guid: 61845cc3f2efe444a89156bda3a511aa,
+        type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2383835410699155117, guid: 61845cc3f2efe444a89156bda3a511aa,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -1009,6 +1034,11 @@ PrefabInstance:
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 8301070805485465964}
+    - target: {fileID: 6307055933471255158, guid: 61845cc3f2efe444a89156bda3a511aa,
+        type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6862919108104056713, guid: 61845cc3f2efe444a89156bda3a511aa,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -1062,6 +1092,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3639874082691475745}
     m_Modifications:
+    - target: {fileID: 1367326598752849891, guid: 61845cc3f2efe444a89156bda3a511aa,
+        type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2383835410699155117, guid: 61845cc3f2efe444a89156bda3a511aa,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -1202,6 +1237,11 @@ PrefabInstance:
       propertyPath: m_text
       value: Dialogue Volume
       objectReference: {fileID: 0}
+    - target: {fileID: 6307055933471255158, guid: 61845cc3f2efe444a89156bda3a511aa,
+        type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6862919108104056713, guid: 61845cc3f2efe444a89156bda3a511aa,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -1260,6 +1300,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3639874082691475745}
     m_Modifications:
+    - target: {fileID: 1367326598752849891, guid: 61845cc3f2efe444a89156bda3a511aa,
+        type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2383835410699155117, guid: 61845cc3f2efe444a89156bda3a511aa,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -1399,6 +1444,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_text
       value: Ambience Volume
+      objectReference: {fileID: 0}
+    - target: {fileID: 6307055933471255158, guid: 61845cc3f2efe444a89156bda3a511aa,
+        type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6862919108104056713, guid: 61845cc3f2efe444a89156bda3a511aa,
         type: 3}
