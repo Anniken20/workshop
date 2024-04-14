@@ -78,7 +78,7 @@ public class Shop : Interactable, IDataPersistence
         }
     }
 
-    /*public void ToggleAmmoMenu(bool show)
+    public void ToggleAmmoMenu(bool show)
     {
         ammoMenu.SetActive(show); // Toggle visibility
 
@@ -93,7 +93,7 @@ public class Shop : Interactable, IDataPersistence
             CloseAmmoMenu();
             CoinCollector.Instance.HideCoinsUIInstant();
         }
-    }*/
+    }
 
 
     public void SpendCoin(int cost)
@@ -160,10 +160,10 @@ public class Shop : Interactable, IDataPersistence
         shopMenu.SetActive(false);
     }
 
-    /*public void CloseAmmoMenu()
+    public void CloseAmmoMenu()
     {
         ammoMenu.SetActive(false);
-    }*/
+    }
 
 
     public void LoadData(GameData data){
