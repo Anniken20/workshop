@@ -41,6 +41,7 @@ public class CursorSensitivityController : MonoBehaviour
     {
         // This function sets the cursor sensitivity
         cursorSensitivity = sensitivity;
+        //Cursor.sensitivity = sensitivity;
     }
 
     private void OnClearButtonClicked()
@@ -56,5 +57,11 @@ public class CursorSensitivityController : MonoBehaviour
         cursorSensitivity = DefaultSensitivity;
 
         Debug.Log("Sensitivity cleared. Slider reset to default: " + DefaultSensitivity);
+    }
+
+    private void Update()
+    {
+        float mouseX = Input.GetAxis("Mouse X") * cursorSensitivity * Time.deltaTime;
+        float mouseY = Input.GetAxis("Mouse Y") * cursorSensitivity * Time.deltaTime;
     }
 }
