@@ -63,8 +63,9 @@ public class Checkpoint : MonoBehaviour, IDataPersistence
         //Debug.Log("Loading to checkpoint");
         if(savedCheckpoint != Vector3.zero && SceneManager.GetActiveScene().name == checkpointScene){
             //Debug.Log("Checkpoint exists and scene matches");
-            ThirdPersonController.Main.gameObject.transform.position = savedCheckpoint;
-            Camera.main.GetComponent<CameraController>().RecomposeCamera();
+            //ThirdPersonController.Main.gameObject.transform.position = savedCheckpoint;
+            //Camera.main.GetComponent<CameraController>().RecomposeCamera();
+            ThirdPersonController.Main.InstantTeleport(savedCheckpoint);
             //Debug.Log("Loading to checkpoint in scene: " + checkpointScene + "Currently current scene: " + SceneManager.GetActiveScene().name);
         }
         else{

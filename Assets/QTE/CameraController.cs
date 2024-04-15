@@ -26,7 +26,8 @@ public class CameraController : MonoBehaviour
 
     private void Start()
     {
-        cameraOffset = mainCam.transform.position - playerObject.transform.position;
+        //cameraOffset = mainCam.transform.position - playerObject.transform.position;
+        cameraOffset = baseCameraOffset;
     }
 
     public void SwitchCameraView(bool switchToIsometric)
@@ -57,7 +58,8 @@ public class CameraController : MonoBehaviour
 
     public void ResetCamera()
     {
-        mainCam.transform.position = playerObject.transform.position + baseCameraOffset;
+        //mainCam.transform.position = playerObject.transform.position + baseCameraOffset;
+        RecomposeCamera();
     }
 
     private IEnumerator ForceResetRoutine()
