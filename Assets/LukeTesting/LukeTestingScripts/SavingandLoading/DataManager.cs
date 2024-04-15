@@ -17,6 +17,9 @@ public class DataManager : MonoBehaviour
             Debug.LogError("Multiple data managers in the scene, only use one.");
         }
         instance = this;
+        this.saveHandler = new SaveDataHandler(Application.persistentDataPath, fileName + PlayerPrefs.GetInt("profIndex"));
+        this.dataPersistenceObjects = FindAllDataPersistenceObjects();
+        LoadGame();
     }
 
     public void NewGame(){
@@ -38,9 +41,12 @@ public class DataManager : MonoBehaviour
         saveHandler.Save(gameData);
     }
     private void Start(){
+        //moved to awake to prevent race condition errors depending on which Start was called first -- Caden
+        /*
         this.saveHandler = new SaveDataHandler(Application.persistentDataPath, fileName+PlayerPrefs.GetInt("profIndex"));
         this.dataPersistenceObjects = FindAllDataPersistenceObjects();
         LoadGame();
+        */
     }
     private List<IDataPersistence> FindAllDataPersistenceObjects(){
         IEnumerable<IDataPersistence> dataPersistenceObjects = FindObjectsOfType<MonoBehaviour>().OfType<IDataPersistence>();

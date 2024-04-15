@@ -11,6 +11,7 @@ public class HorseChargeCollision : MonoBehaviour
         h = GetComponentInParent<Horse>();
     }
     void OnTriggerEnter(Collider other){
+        if (h == null) return;
         if(h.isCharging){
             if (other.gameObject.CompareTag("Player")){
                 LaunchPlayer(other);

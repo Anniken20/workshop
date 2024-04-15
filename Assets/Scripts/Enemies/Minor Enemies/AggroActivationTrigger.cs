@@ -11,10 +11,12 @@ public class AggroActivationTrigger : MonoBehaviour
 
     private void Start()
     {
-            foreach (GameObject aggro in aggroArray)
-            {
+        if (aggroArray.Length <= 0) return;
+        foreach (GameObject aggro in aggroArray)
+        {
+            if(aggro != null)
                 aggro.SetActive(false);
-            }
+        }
 
     }
     private void OnTriggerEnter(Collider other)
