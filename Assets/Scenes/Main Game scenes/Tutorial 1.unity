@@ -2858,7 +2858,8 @@ GameObject:
   - component: {fileID: 111837873}
   - component: {fileID: 111837872}
   - component: {fileID: 111837871}
-  m_Layer: 0
+  - component: {fileID: 111837874}
+  m_Layer: 4
   m_Name: water
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2930,6 +2931,27 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 121
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 90}
+--- !u!65 &111837874
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 111837869}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.9861328, y: 1, z: 0.8923777}
+  m_Center: {x: -0.0069339583, y: -5.44567e-16, z: -0.44618496}
 --- !u!1001 &119500635
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9064,7 +9086,8 @@ GameObject:
   - component: {fileID: 381878095}
   - component: {fileID: 381878094}
   - component: {fileID: 381878093}
-  m_Layer: 0
+  - component: {fileID: 381878096}
+  m_Layer: 4
   m_Name: water_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9136,6 +9159,27 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 123
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!65 &381878096
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 381878091}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 0.5159014}
+  m_Center: {x: 2.6236574e-17, y: 1.1233981e-16, z: -0.2579507}
 --- !u!1001 &382111508
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14640,7 +14684,8 @@ GameObject:
   - component: {fileID: 618948292}
   - component: {fileID: 618948291}
   - component: {fileID: 618948290}
-  m_Layer: 0
+  - component: {fileID: 618948293}
+  m_Layer: 4
   m_Name: water_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14712,6 +14757,27 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 122
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 90}
+--- !u!65 &618948293
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 618948288}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.0000008, y: 1, z: 0.42559242}
+  m_Center: {x: -1.1477092e-20, y: 1.8671677e-17, z: -0.21279243}
 --- !u!1001 &619660359
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -20415,7 +20481,7 @@ MonoBehaviour:
   disableRigidbodyDelay: 30
   enableRigidbodyDelay: 30
   breakSound: {fileID: 8300000, guid: 4cc6e3688d75541489d3ffb40e157242, type: 3}
-  clipLength: 0
+  clipLength: 1
   maxFragmentsToSpawn: 5
   spawnDistance: 3
 --- !u!114 &837922796
@@ -42171,6 +42237,76 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6759554797538577283, guid: 6cebc20f4d85d6a4f93b8b119157a33c,
+        type: 3}
+      propertyPath: waterLayer.m_Bits
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 6759554797538577283, guid: 6cebc20f4d85d6a4f93b8b119157a33c,
+        type: 3}
+      propertyPath: WaterLandingAudioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 4d6a9de6d63c45744b2abfe33c7a84db, type: 3}
+    - target: {fileID: 6759554797538577283, guid: 6cebc20f4d85d6a4f93b8b119157a33c,
+        type: 3}
+      propertyPath: WaterFootstepAudioClip.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6759554797538577283, guid: 6cebc20f4d85d6a4f93b8b119157a33c,
+        type: 3}
+      propertyPath: WaterFootstepAudioClips.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6759554797538577283, guid: 6cebc20f4d85d6a4f93b8b119157a33c,
+        type: 3}
+      propertyPath: WaterFootstepAudioClip.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: 8f157243ddb0ed743899c9059d86ba4c, type: 3}
+    - target: {fileID: 6759554797538577283, guid: 6cebc20f4d85d6a4f93b8b119157a33c,
+        type: 3}
+      propertyPath: WaterFootstepAudioClip.Array.data[1]
+      value: 
+      objectReference: {fileID: 8300000, guid: aab8b93d40e642e4d8c9698b3a701afb, type: 3}
+    - target: {fileID: 6759554797538577283, guid: 6cebc20f4d85d6a4f93b8b119157a33c,
+        type: 3}
+      propertyPath: WaterFootstepAudioClip.Array.data[2]
+      value: 
+      objectReference: {fileID: 8300000, guid: 287817677f5b46f48865d23949ff05a7, type: 3}
+    - target: {fileID: 6759554797538577283, guid: 6cebc20f4d85d6a4f93b8b119157a33c,
+        type: 3}
+      propertyPath: WaterFootstepAudioClip.Array.data[3]
+      value: 
+      objectReference: {fileID: 8300000, guid: b027de7b230013e41bdeeef3876810b1, type: 3}
+    - target: {fileID: 6759554797538577283, guid: 6cebc20f4d85d6a4f93b8b119157a33c,
+        type: 3}
+      propertyPath: WaterFootstepAudioClip.Array.data[4]
+      value: 
+      objectReference: {fileID: 8300000, guid: 414bd581011e9b84b9dadce0707920ba, type: 3}
+    - target: {fileID: 6759554797538577283, guid: 6cebc20f4d85d6a4f93b8b119157a33c,
+        type: 3}
+      propertyPath: WaterFootstepAudioClips.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: 8f157243ddb0ed743899c9059d86ba4c, type: 3}
+    - target: {fileID: 6759554797538577283, guid: 6cebc20f4d85d6a4f93b8b119157a33c,
+        type: 3}
+      propertyPath: WaterFootstepAudioClips.Array.data[1]
+      value: 
+      objectReference: {fileID: 8300000, guid: aab8b93d40e642e4d8c9698b3a701afb, type: 3}
+    - target: {fileID: 6759554797538577283, guid: 6cebc20f4d85d6a4f93b8b119157a33c,
+        type: 3}
+      propertyPath: WaterFootstepAudioClips.Array.data[2]
+      value: 
+      objectReference: {fileID: 8300000, guid: 287817677f5b46f48865d23949ff05a7, type: 3}
+    - target: {fileID: 6759554797538577283, guid: 6cebc20f4d85d6a4f93b8b119157a33c,
+        type: 3}
+      propertyPath: WaterFootstepAudioClips.Array.data[3]
+      value: 
+      objectReference: {fileID: 8300000, guid: b027de7b230013e41bdeeef3876810b1, type: 3}
+    - target: {fileID: 6759554797538577283, guid: 6cebc20f4d85d6a4f93b8b119157a33c,
+        type: 3}
+      propertyPath: WaterFootstepAudioClips.Array.data[4]
+      value: 
+      objectReference: {fileID: 8300000, guid: 414bd581011e9b84b9dadce0707920ba, type: 3}
     - target: {fileID: 6759554797538577288, guid: 6cebc20f4d85d6a4f93b8b119157a33c,
         type: 3}
       propertyPath: m_Name
