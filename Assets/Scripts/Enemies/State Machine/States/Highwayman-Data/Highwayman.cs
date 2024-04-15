@@ -12,7 +12,7 @@ public class Highwayman : Enemy
     private void Awake(){
         base.MyAwake();
         highwayData = (HighwaymanData)FindData("HighwayData");
-        tiles = FindObjectOfType<TileContainer>().GetComponent<TileContainer>();
+        //tiles = FindObjectOfType<TileContainer>().GetComponent<TileContainer>();
         selectTileState = gameObject.AddComponent<HighwaymanSelectTileState>();
         selectTileState.Initialize(this, stateMachine);
         teleportState = gameObject.AddComponent<HighwaymanTeleportState>();
