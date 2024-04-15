@@ -12,7 +12,7 @@ public class InteractPopup : MonoBehaviour
         Main = this;
         textMesh = GetComponent<TextMeshProUGUI>();
         if (textMesh == null) Debug.Log("No text mesh set on interact popup");
-        else Debug.Log("Interact popup set");
+        //else Debug.Log("Interact popup set");
         gameObject.SetActive(false);
     }
 }

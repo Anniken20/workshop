@@ -60,6 +60,9 @@ public class CameraController : MonoBehaviour
     {
         //mainCam.transform.position = playerObject.transform.position + baseCameraOffset;
         RecomposeCamera();
+#if UNITY_EDITOR
+        mainCam.transform.position = playerObject.transform.position + baseCameraOffset;
+#endif
     }
 
     private IEnumerator ForceResetRoutine()
