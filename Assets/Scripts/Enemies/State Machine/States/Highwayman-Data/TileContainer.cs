@@ -6,4 +6,7 @@ public class TileContainer : MonoBehaviour
 {
     public GameObject[] tileObjs;
     public Highwayman highwayman;
+    private void Start(){
+        highwayman.tiles = this;
+    }
 }
