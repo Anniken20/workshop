@@ -40,7 +40,7 @@ public class Shop : Interactable, IDataPersistence
         interactionPrompt.text = "";
         shopMenu.SetActive(false);
         secretKeyMenu.SetActive(false);
-       // ammoMenu.SetActive(false);
+        ammoMenu.SetActive(false);
     }
 
     private void Update()
@@ -76,13 +76,11 @@ public class Shop : Interactable, IDataPersistence
         {
             SwitchGameControls(false);
             CoinCollector.Instance.ShowCoinsUIInstant(); 
-            hudGameObject.SetActive(false);
         }
         else
         {
             SwitchGameControls(true);
             CoinCollector.Instance.HideCoinsUIInstant();
-            hudGameObject.SetActive(true);
         }
     }
 
