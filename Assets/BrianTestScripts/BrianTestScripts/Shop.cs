@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-using UnityEngine.UI; 
+using UnityEngine.UI;
+using StarterAssets;
 
 public class Shop : Interactable, IDataPersistence
 {
@@ -30,7 +31,13 @@ public class Shop : Interactable, IDataPersistence
 
     protected override void Start()
     {
-        base.Start();
+        interactionPrompt = InteractPopup.textMesh;
+
+        if (interactionPrompt == null)
+        {
+            Debug.LogError("InteractionPrompt not set on " + gameObject.name);
+        }
+        interactionPrompt.text = "";
         shopMenu.SetActive(false);
         secretKeyMenu.SetActive(false);
        // ammoMenu.SetActive(false);
