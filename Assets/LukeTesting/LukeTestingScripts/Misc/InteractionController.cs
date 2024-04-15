@@ -11,6 +11,7 @@ public class InteractionController : MonoBehaviour
     private AimController aimController;
     private Transform rayLaunchPoint;
     private Vector3 rayAngle;
+    private Interactable interactable;
     private void Awake(){
         iaControls = new CharacterMovement();
     }
@@ -26,7 +27,8 @@ public class InteractionController : MonoBehaviour
     void Update()
     {
         if(interact.triggered){
-            ShootInteractRay();
+            //ShootInteractRay();
+            TryInteraction();
         }
     }
 
@@ -39,6 +41,7 @@ public class InteractionController : MonoBehaviour
         interact.Disable();
     }
     private void ShootInteractRay(){
+        /*
         RaycastHit hit;
         if(Physics.Raycast(rayLaunchPoint.position, rayAngle, out hit, interactionRange)){
             IInteractable interactable = hit.transform.gameObject.GetComponent<IInteractable>();
@@ -46,5 +49,23 @@ public class InteractionController : MonoBehaviour
                 interactable.Interacted();
             }
         }
+        */
+
+
+    }
+
+    private void TryInteraction()
+    {
+        if(interactable != null)
+        {
+            IInteractable[] inters = interactable.gameObject.GetComponents<IInteractable>();
+            foreach (IInteractable i in inters)
+                i.Interacted();
+        }
+    }
+
+    public void SendInteractable(Interactable inter)
+    {
+        interactable = inter;
     }
 }
