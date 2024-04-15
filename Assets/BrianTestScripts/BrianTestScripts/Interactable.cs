@@ -3,27 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class Interactable : MonoBehaviour
+public class Interactable : MonoBehaviour, IInteractable
 {
     [SerializeField]
     public TextMeshProUGUI interactionPrompt; 
     protected bool isPlayerInRange = false;
+    private InteractionController interactionController;
 
     protected virtual void Awake()
     {
+        interactionController = FindObjectOfType<InteractionController>();
         if (interactionPrompt == null)
         {
             Debug.LogError("InteractionPrompt not set on " + gameObject.name);
         }
-        interactionPrompt.text = ""; 
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.E) && isPlayerInRange)
-        {
-            HidePrompt();
-        }
+        interactionPrompt.text = "";
+        HidePrompt();
     }
 
     public void OnTriggerEnter(Collider other)
@@ -32,11 +27,7 @@ public class Interactable : MonoBehaviour
         {
             isPlayerInRange = true;
             ShowPrompt();
-
-            if(Input.GetKeyDown(KeyCode.E))
-            {
-                HidePrompt();
-            }
+            interactionController.SendInteractable(this);
         }
     }
 
@@ -47,18 +38,23 @@ public class Interactable : MonoBehaviour
         {
             isPlayerInRange = false;
             HidePrompt();
+            interactionController.SendInteractable(null);
         }
     }
 
     protected virtual void ShowPrompt()
     {
-        interactionPrompt.text = "Hover Cursor Over Target & Press 'E' to interact"; // Set prompt text
+        interactionPrompt.text = "'E' to interact"; // Set prompt text
         interactionPrompt.gameObject.SetActive(true); // Make sure the prompt is visible
     }
 
     protected virtual void HidePrompt()
     {
-        interactionPrompt.text = ""; // Clear prompt text
         interactionPrompt.gameObject.SetActive(false); // Hide the prompt
+    }
+
+    public void Interacted()
+    {
+        HidePrompt();
     }
 }
