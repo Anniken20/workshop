@@ -28,8 +28,9 @@ public class Shop : Interactable, IDataPersistence
     private GameObject hudGameObject;
 
 
-    protected override void Awake()
+    protected override void Start()
     {
+        base.Start();
         shopMenu.SetActive(false);
         secretKeyMenu.SetActive(false);
        // ammoMenu.SetActive(false);

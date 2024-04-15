@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using StarterAssets;
 
 public class Interactable : MonoBehaviour, IInteractable
 {
@@ -10,9 +11,13 @@ public class Interactable : MonoBehaviour, IInteractable
     protected bool isPlayerInRange = false;
     private InteractionController interactionController;
 
-    protected virtual void Awake()
+    protected virtual void Start()
     {
-        interactionController = FindObjectOfType<InteractionController>();
+        interactionController = 
+            ThirdPersonController.Main.gameObject.GetComponent<InteractionController>();
+
+        interactionPrompt = InteractPopup.textMesh;
+
         if (interactionPrompt == null)
         {
             Debug.LogError("InteractionPrompt not set on " + gameObject.name);
