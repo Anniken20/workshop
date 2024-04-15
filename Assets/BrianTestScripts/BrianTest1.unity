@@ -3616,18 +3616,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 184bf3debdf50479ab231bb8a12c689f, type: 3}
---- !u!114 &672857292 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7924153610257242084, guid: 46fe5ebe0569e8c498636345420fbd93,
-    type: 3}
-  m_PrefabInstance: {fileID: 1761979331}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &688997893
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4301,18 +4289,6 @@ MonoBehaviour:
   launchForce: 1
   lassoActive: 0
   lassoedObject: {fileID: 0}
---- !u!114 &786414318 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6311904942345128368, guid: e657aada90c4560449224a09b4bffe17,
-    type: 3}
-  m_PrefabInstance: {fileID: 6434447864635694076}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8070c7d7354b4ab8a451112312b5400, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &809119504
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7021,7 +6997,7 @@ PrefabInstance:
         type: 3}
       propertyPath: deathScreenManager
       value: 
-      objectReference: {fileID: 786414318}
+      objectReference: {fileID: 0}
     - target: {fileID: 819145771077943787, guid: 6cebc20f4d85d6a4f93b8b119157a33c,
         type: 3}
       propertyPath: playerObject
@@ -7041,7 +7017,7 @@ PrefabInstance:
         type: 3}
       propertyPath: deathScreenManager
       value: 
-      objectReference: {fileID: 786414318}
+      objectReference: {fileID: 0}
     - target: {fileID: 2043966649410738990, guid: 6cebc20f4d85d6a4f93b8b119157a33c,
         type: 3}
       propertyPath: _invulnerabilityDuration
@@ -8808,18 +8784,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 184bf3debdf50479ab231bb8a12c689f, type: 3}
---- !u!114 &1704491261 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6118255397491954651, guid: 46fe5ebe0569e8c498636345420fbd93,
-    type: 3}
-  m_PrefabInstance: {fileID: 1761979331}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1712159474
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9567,12 +9531,12 @@ PrefabInstance:
         type: 3}
       propertyPath: fullHealthBar
       value: 
-      objectReference: {fileID: 672857292}
+      objectReference: {fileID: 0}
     - target: {fileID: 3973546866354395580, guid: 46fe5ebe0569e8c498636345420fbd93,
         type: 3}
       propertyPath: healthBarMask
       value: 
-      objectReference: {fileID: 1704491261}
+      objectReference: {fileID: 0}
     - target: {fileID: 3973546866354395580, guid: 46fe5ebe0569e8c498636345420fbd93,
         type: 3}
       propertyPath: knockbackFactor
@@ -9851,6 +9815,18 @@ MonoBehaviour:
       - m_Target: {fileID: 1960648313}
         m_TargetAssemblyTypeName: Shop, Assembly-CSharp
         m_MethodName: ToggleSecretKeyMenu
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 1450988494}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
         m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -13207,7 +13183,7 @@ PrefabInstance:
     - target: {fileID: 6894782141518572710, guid: 8051fe056a2a14df18b7f2c5498bbbbd,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
