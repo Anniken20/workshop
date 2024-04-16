@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -31,11 +32,12 @@ public class NPCController : MonoBehaviour
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
+        if (agent == null) Debug.LogWarning("No NavMeshAgent attached to " + gameObject.name);
         startPointWorldPosition = startPoint.position;
         endPointWorldPosition = endPoint.position;
     
         currentTarget = startPointWorldPosition;
-        agent.SetDestination(currentTarget);
+        if(agent.isOnNavMesh) agent.SetDestination(currentTarget);
         anim.SetBool("Idle", false);
         anim.SetBool("Walking", true);
     }
@@ -46,7 +48,7 @@ public class NPCController : MonoBehaviour
 
         if (distanceToPlayer <= interactionDistance)
         {
-            if (!isInteractingWithPlayer)
+            if (!isInteractingWithPlayer && agent.isOnNavMesh)
             {
                 agent.isStopped = true;
                 agent.ResetPath();
@@ -69,10 +71,11 @@ public class NPCController : MonoBehaviour
                 anim.SetBool("Walking", true);
             }
 
-            if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
+            if (agent.isOnNavMesh && !agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
             {
                 SwitchCurrentTarget();
             }
+
         }
 
         HandleAmbientSound(isInteractingWithPlayer);
