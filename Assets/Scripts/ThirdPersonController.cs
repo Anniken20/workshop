@@ -49,6 +49,7 @@ namespace StarterAssets
         public AudioClip WaterLandingAudioClip;
         public AudioClip[] FootstepAudioClips;
         public AudioClip[] WaterFootstepAudioClips;
+        private AudioSource audioSource;
         [Range(0, 1)] public float FootstepAudioVolume = 0.5f;
 
         [Tooltip("Higher values means the player slows down more quickly from extra forces")]
@@ -163,6 +164,7 @@ namespace StarterAssets
 
         private void Start()
         {
+            audioSource = GetComponent<AudioSource> ();
             _hasAnimator = TryGetComponent(out _animator);
             _controller = GetComponent<CharacterController>();
             _input = GetComponent<StarterAssetsInputs>();
@@ -409,7 +411,7 @@ namespace StarterAssets
                     if (WaterFootstepAudioClips.Length > 0)
                     {
                         var index = Random.Range(0, WaterFootstepAudioClips.Length);
-                        AudioSource.PlayClipAtPoint(WaterFootstepAudioClips[index], transform.TransformPoint(_controller.center), FootstepAudioVolume);
+                        audioSource.PlayOneShot(WaterFootstepAudioClips[index]);
                     }
                 }
                 else
@@ -417,7 +419,7 @@ namespace StarterAssets
                     if (FootstepAudioClips.Length > 0)
                     {
                         var index = Random.Range(0, FootstepAudioClips.Length);
-                        AudioSource.PlayClipAtPoint(FootstepAudioClips[index], transform.TransformPoint(_controller.center), FootstepAudioVolume);
+                        audioSource.PlayOneShot(FootstepAudioClips[index]);
                     }
                 }
             }
@@ -446,9 +448,9 @@ namespace StarterAssets
             if (animationEvent.animatorClipInfo.weight > 0.5f)
             {
                 if (isInWater)
-                    AudioSource.PlayClipAtPoint(WaterLandingAudioClip, transform.TransformPoint(_controller.center), FootstepAudioVolume);
+                    audioSource.PlayOneShot(WaterLandingAudioClip);
                 else
-                    AudioSource.PlayClipAtPoint(LandingAudioClip, transform.TransformPoint(_controller.center), FootstepAudioVolume);
+                    audioSource.PlayOneShot(LandingAudioClip);
             }
         }
 
