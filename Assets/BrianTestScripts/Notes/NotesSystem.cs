@@ -80,17 +80,23 @@ public class NotesSystem : MonoBehaviour
     public GameObject HUD;
 
     //input
-    public CharacterMovement iaControls;
+    //public CharacterMovement iaControls;
+    public PlayerInput _playerInput;
     private InputAction lassoPrev;
     private InputAction shootNext;
+    private InputAction openN;
 
     private void OnEnable()
     {
-        iaControls = new CharacterMovement();
+        //iaControls = new CharacterMovement();
+        _playerInput = GameObject.Find("_iaManager").GetComponent<PlayerInput>();
         A_Display += DisplayNote;
 
-        shootNext = iaControls.CharacterControls.Shoot;
-        lassoPrev = iaControls.CharacterControls.Lasso;
+        //shootNext = iaControls.CharacterControls.Shoot;
+        //lassoPrev = iaControls.CharacterControls.Lasso;
+        shootNext = _playerInput.actions["Shoot"];
+        lassoPrev = _playerInput.actions["Lasso"];
+        openN = _playerInput.actions["Notes"];
 
         shootNext.Enable();
         lassoPrev.Enable();
@@ -116,7 +122,7 @@ public class NotesSystem : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.N))
+        if (openN.triggered)
         {
             usingNotesSystem = !usingNotesSystem;
             switch(usingNotesSystem)

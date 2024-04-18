@@ -7,7 +7,8 @@ public class LassoController : MonoBehaviour
 
 {
     public GameObject player;
-    public CharacterMovement iaControls;
+    //public CharacterMovement iaControls;
+    public PlayerInput _playerInput;
     private InputAction lasso;
     private InputAction look;
     private InputAction cancel;
@@ -86,7 +87,8 @@ public class LassoController : MonoBehaviour
                 lassoAimMask |= 1 << i;
             }
         }
-        iaControls = new CharacterMovement();
+        //iaControls = new CharacterMovement();
+        _playerInput = GameObject.Find("_iaManager").GetComponent<PlayerInput>();
         lassoAimMask &= ~(1<<LayerMask.NameToLayer("AimLayer"));
         lassoAimMask &= ~(1<<LayerMask.NameToLayer("BulletPassThrough"));
     }
@@ -98,6 +100,7 @@ public class LassoController : MonoBehaviour
             
         }
         if(cancel.triggered && holdingItem == false){
+            animator.SetBool("isLassoing", false);
             CancelAiming();
         }
         if(spinningLasso != null){
@@ -244,9 +247,12 @@ public class LassoController : MonoBehaviour
     }
 
     private void OnEnable(){
-        look = iaControls.CharacterControls.Look;
-        lasso = iaControls.CharacterControls.Lasso;
-        cancel = iaControls.CharacterControls.CancelAim;
+        //look = iaControls.CharacterControls.Look;
+        //lasso = iaControls.CharacterControls.Lasso;
+        //cancel = iaControls.CharacterControls.CancelAim;
+        look = _playerInput.actions["Look"];
+        lasso = _playerInput.actions["Lasso"];
+        cancel = _playerInput.actions["CancelAim"];
 
         look.Enable();
         lasso.Enable();
@@ -259,7 +265,7 @@ public class LassoController : MonoBehaviour
     }
 
     private void OnLassoDown(InputAction.CallbackContext context){
-        if(holdingItem == false && GetComponent<LassoGrappleScript>().canLasso == true){
+        if(holdingItem == false && GetComponent<LassoGrappleScript>().canLasso == true && cancelAim == false){
             lassoActive = true;  
             spinning = true;
             cancelAim = false;
@@ -278,11 +284,17 @@ public class LassoController : MonoBehaviour
                 Destroy(child.gameObject);
             }
         }
+        cancelAim = false;
     }
     private void FixedUpdate(){
-
-        iaControls.CharacterControls.Lasso.started += OnLassoDown;
-        iaControls.CharacterControls.Lasso.canceled += OnLassoRelease;
+        if(cancelAim){
+            animator.SetBool("isThrowing", false);
+            animator.SetBool("isLassoing", false);
+        }
+        //iaControls.CharacterControls.Lasso.started += OnLassoDown;
+       // iaControls.CharacterControls.Lasso.canceled += OnLassoRelease;
+       lasso.started += OnLassoDown;
+       lasso.canceled += OnLassoRelease;
         
         /*if(inCombat){
             lassoCombatAiming.SetActive(true);
@@ -350,7 +362,10 @@ public class LassoController : MonoBehaviour
     }
 
     private void CancelAiming(){
+        animator.SetBool("isThrowing", false);
         animator.SetBool("isLassoing", false);
+        lassoActive = false;  
+        spinning = false;
         drawToLasso = false;
         lineRend.enabled = false;
         drawToLassoLine.enabled = false;
