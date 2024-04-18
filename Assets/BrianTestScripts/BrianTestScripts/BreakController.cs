@@ -226,7 +226,7 @@ private Vector3 GetValidSpawnPosition()
             if(!deadEnemy) Destroy(gameObject);
             else
             {
-                transform.DOMoveY(transform.position.y - 2f, 5f);
+                transform.DOMoveY(transform.position.y - 5f, 15f);
             }
         }
         else
