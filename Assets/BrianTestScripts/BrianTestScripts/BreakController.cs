@@ -102,8 +102,9 @@ public class BreakController : MonoBehaviour
     public void BreakIntoPieces()
     {
         StartCoroutine(BreakWithSFX(clipLength));
-        Debug.Log("BreakIntoPieces called.");
         dissolver.InitAndDissolve();
+
+        Debug.Log("BreakIntoPieces and dissolve called called.");
 
     }
 
@@ -123,8 +124,6 @@ public class BreakController : MonoBehaviour
                 coinRb.AddForce(forceDirection * coinForce, ForceMode.Impulse);
             }
         }
-        
-      //  dissolver.InitAndDissolve();
     }
     else
     {

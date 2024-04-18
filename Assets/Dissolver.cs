@@ -20,24 +20,25 @@ public class Dissolver : MonoBehaviour
     }
 
     private void InitializeMaterials()
-    {
-        _childRenderers = GetComponentsInChildren<Renderer>();
+    { Debug.Log("initmats called");
+        _childRenderers = GetComponentsInChildren<Renderer>(true);
         _childMaterials = new Material[_childRenderers.Length];
 
         for (int i = 0; i < _childRenderers.Length; i++)
-        {
+        { Debug.Log("im in loop assigning childs");
             Material mat = _childRenderers[i].material;
             
             // check if the material has the desired shader
-            if (mat.shader.name == "ShaderGraph/GhostUnlitURPShader") 
+            if (mat.shader.name == "Shader Graphs/GhostUnlitURPShader") 
             {
                 _childMaterials[i] = mat;
+                Debug.Log("children assigned");
             }
         }
     }
 
     IEnumerator DissolveMaterials()
-    {
+    { Debug.Log("dissolving");
         float elapsedTime = 0f;
 
         while (elapsedTime < duration)
