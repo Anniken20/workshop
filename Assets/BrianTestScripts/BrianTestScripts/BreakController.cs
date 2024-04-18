@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class BreakController : MonoBehaviour
 {
@@ -26,6 +27,7 @@ public class BreakController : MonoBehaviour
     private Collider c;
 
     public Dissolver dissolver;
+    public bool deadEnemy = false;
 
     private void Start()
     {
@@ -104,7 +106,7 @@ public class BreakController : MonoBehaviour
         StartCoroutine(BreakWithSFX(clipLength));
         dissolver.InitAndDissolve();
 
-        Debug.Log("BreakIntoPieces and dissolve called called.");
+        //Debug.Log("BreakIntoPieces and dissolve called called.");
 
     }
 
@@ -147,12 +149,12 @@ private Vector3 GetValidSpawnPosition()
         // Check if the position is clear of other colliders
         if (!Physics.CheckSphere(spawnPosition, spawnRadius))
         {
-            Debug.Log("Valid spawn position found: " + spawnPosition); // Add a debug statement
+            //Debug.Log("Valid spawn position found: " + spawnPosition); // Add a debug statement
             return spawnPosition;
         }
     }
 
-    Debug.LogWarning("No valid spawn position found, using fallback."); // Fallback warning
+    //Debug.LogWarning("No valid spawn position found, using fallback."); // Fallback warning
     return transform.position; // Fallback to the object's position
 }
 
@@ -184,11 +186,11 @@ private Vector3 GetValidSpawnPosition()
     {
         if (fragments != null && fragments.Length > 0)
         {
-        Vector3 originalPosition = transform.position;
-        // Use Mathf.Min to ensure we don't attempt to spawn more fragments than we have available or exceed our maxFragmentsToSpawn
-        int fragmentsToSpawn = Mathf.Min(maxFragmentsToSpawn, fragments.Length);
+            Vector3 originalPosition = transform.position;
+            // Use Mathf.Min to ensure we don't attempt to spawn more fragments than we have available or exceed our maxFragmentsToSpawn
+            int fragmentsToSpawn = Mathf.Min(maxFragmentsToSpawn, fragments.Length);
 
-        Debug.Log($"Spawning {fragmentsToSpawn} fragments.");
+            Debug.Log($"Spawning {fragmentsToSpawn} fragments.");
 
         for (int i = 0; i < fragmentsToSpawn; i++)
         {
@@ -210,23 +212,27 @@ private Vector3 GetValidSpawnPosition()
             }
         }
         
-        int coinsToSpawn = Random.Range(minCoins, maxCoins + 1);
-        for (int i = 0; i < coinsToSpawn; i++)
-        {
-            SpawnCoin();
-        }
+            int coinsToSpawn = Random.Range(minCoins, maxCoins + 1);
+            for (int i = 0; i < coinsToSpawn; i++)
+            {
+                SpawnCoin();
+            }
 
 
-        PlayBreakSound();
-        yield return new WaitForSeconds(clipLength);
+            PlayBreakSound();
+            yield return new WaitForSeconds(clipLength);
 
-        // Destroy the original object
-        Destroy(gameObject);
+            // Destroy the original object
+            if(!deadEnemy) Destroy(gameObject);
+            else
+            {
+                transform.DOMoveY(transform.position.y - 2f, 5f);
+            }
         }
         else
         {
-        Debug.LogError("Fragments not assigned in the Inspector.");
+            Debug.LogError("Fragments not assigned in the Inspector.");
         }
-        yield return null;
+            yield return null;
     }
 }
