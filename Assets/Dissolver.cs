@@ -3,28 +3,40 @@ using UnityEngine;
 
 public class Dissolver : MonoBehaviour
 {
-    private Renderer[] childRenderers;
-    private Material[] childMaterials;
-    public float duration = 3.0f; 
+    private Renderer[] _childRenderers;
+    private Material[] _childMaterials;
+    public float duration = 3.0f;
+    private static readonly int Dissolve = Shader.PropertyToID("Dissolve");
 
     private void Start()
     {
-        childRenderers = GetComponentsInChildren<Renderer>();
-        childMaterials = new Material[childRenderers.Length];
+        InitializeMaterials();
+    }
 
-        for (int i = 0; i < childRenderers.Length; i++)
+    public void InitAndDissolve()
+    {
+        InitializeMaterials();
+        StartCoroutine(DissolveMaterials());
+    }
+
+    private void InitializeMaterials()
+    {
+    _childRenderers = GetComponentsInChildren<Renderer>();
+        _childMaterials = new Material[_childRenderers.Length];
+
+        for (int i = 0; i < _childRenderers.Length; i++)
         {
-            Material mat = childRenderers[i].material;
+            Material mat = _childRenderers[i].material;
 
             if (mat.shader.name == "ShaderGraph/GhostUnlitURPShader") 
             {
-                childMaterials[i] = mat;
+                _childMaterials[i] = mat;
             }
         }
         StartCoroutine(DissolveMaterials());
     }
 
-    private IEnumerator DissolveMaterials()
+     IEnumerator DissolveMaterials()
     {
         float elapsedTime = 0f;
 
@@ -32,11 +44,11 @@ public class Dissolver : MonoBehaviour
         {
             float dissolveValue = Mathf.Lerp(1f, 0f, elapsedTime / duration);
 
-            for (int i = 0; i < childMaterials.Length; i++)
+            for (int i = 0; i < _childMaterials.Length; i++)
             {
-                if (childMaterials[i] != null)
+                if (_childMaterials[i] != null)
                 {
-                    childMaterials[i].SetFloat("Dissolve", dissolveValue); 
+                    _childMaterials[i].SetFloat(Dissolve, dissolveValue); 
                 }
             }
 
@@ -44,11 +56,11 @@ public class Dissolver : MonoBehaviour
             yield return null;
         }
 
-        for (int i = 0; i < childMaterials.Length; i++)
+        for (int i = 0; i < _childMaterials.Length; i++)
         {
-            if (childMaterials[i] != null)
+            if (_childMaterials[i] != null)
             {
-                childMaterials[i].SetFloat("Dissolve", 0f); 
+                _childMaterials[i].SetFloat(Dissolve, 0f); 
             }
         }
     }
