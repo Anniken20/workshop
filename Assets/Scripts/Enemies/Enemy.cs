@@ -27,7 +27,7 @@ public abstract class Enemy : MonoBehaviour, IShootable, IDataPersistence
     public float defaultMovementSpeed;
     public Animator animator;
     public AudioSource audioSource;
-    public AudioClip hurtSFX;
+    public AudioClip[] hurtSFX;
     public AudioClip movingSFX;
     public bool duelEnemy = false;
 
@@ -154,7 +154,14 @@ public abstract class Enemy : MonoBehaviour, IShootable, IDataPersistence
     public virtual void TakeDamage(int delta)
     {
         currentHealth -= delta;
-        audioSource.PlayOneShot(hurtSFX);
+        if (hurtSFX.Length > 0)
+        {
+            // Choose a random death sound
+            AudioClip randomHurtSound = hurtSFX[Random.Range(0, hurtSFX.Length)];
+
+            //Play random SFX
+            audioSource.PlayOneShot(randomHurtSound);
+        }
         damageDelegate?.Invoke();
         if(regen && delta < regenDMG){
             StartCoroutine(Regenerate(delta));
