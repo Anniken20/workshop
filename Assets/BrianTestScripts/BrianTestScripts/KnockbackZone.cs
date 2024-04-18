@@ -5,7 +5,7 @@ using StarterAssets;
 
 public class KnockbackZone : MonoBehaviour 
 {
-   public float knockbackStrength = 10f;
+    public float knockbackStrength = 10f;
     public float knockbackCooldown = 2f; // Cooldown in seconds
     private float lastKnockbackTime = -Mathf.Infinity;
 

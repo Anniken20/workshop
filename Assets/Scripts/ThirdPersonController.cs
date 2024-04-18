@@ -43,8 +43,13 @@ namespace StarterAssets
         public float SpeedChangeRate = 10.0f;
         public float AirborneSpeedChangeRate;
 
+        public LayerMask waterLayer;
+        private bool isInWater = false;
         public AudioClip LandingAudioClip;
+        public AudioClip WaterLandingAudioClip;
         public AudioClip[] FootstepAudioClips;
+        public AudioClip[] WaterFootstepAudioClips;
+        private AudioSource audioSource;
         [Range(0, 1)] public float FootstepAudioVolume = 0.5f;
 
         [Tooltip("Higher values means the player slows down more quickly from extra forces")]
@@ -159,6 +164,7 @@ namespace StarterAssets
 
         private void Start()
         {
+            audioSource = GetComponent<AudioSource> ();
             _hasAnimator = TryGetComponent(out _animator);
             _controller = GetComponent<CharacterController>();
             _input = GetComponent<StarterAssetsInputs>();
@@ -400,19 +406,51 @@ namespace StarterAssets
         {
             if (animationEvent.animatorClipInfo.weight > 0.5f)
             {
-                if (FootstepAudioClips.Length > 0)
+                if (isInWater == true)
                 {
-                    var index = Random.Range(0, FootstepAudioClips.Length);
-                    AudioSource.PlayClipAtPoint(FootstepAudioClips[index], transform.TransformPoint(_controller.center), FootstepAudioVolume);
+                    if (WaterFootstepAudioClips.Length > 0)
+                    {
+                        var index = Random.Range(0, WaterFootstepAudioClips.Length);
+                        audioSource.PlayOneShot(WaterFootstepAudioClips[index]);
+                    }
+                }
+                else
+                {
+                    if (FootstepAudioClips.Length > 0)
+                    {
+                        var index = Random.Range(0, FootstepAudioClips.Length);
+                        audioSource.PlayOneShot(FootstepAudioClips[index]);
+                    }
                 }
             }
         }
 
+        private void OnTriggerEnter(Collider other)
+        {
+            if (((1 << other.gameObject.layer) & waterLayer) != 0)
+            {
+                isInWater = true;
+                Debug.Log("I'm swimming!");
+            }
+        }
+
+        private void OnTriggerExit(Collider other)
+        {
+            if (((1 << other.gameObject.layer) & waterLayer) != 0)
+            {
+                isInWater = false;
+                Debug.Log("I'm not swimming!");
+            }
+        }
+        
         private void OnLand(AnimationEvent animationEvent)
         {
             if (animationEvent.animatorClipInfo.weight > 0.5f)
             {
-                AudioSource.PlayClipAtPoint(LandingAudioClip, transform.TransformPoint(_controller.center), FootstepAudioVolume);
+                if (isInWater)
+                    audioSource.PlayOneShot(WaterLandingAudioClip);
+                else
+                    audioSource.PlayOneShot(LandingAudioClip);
             }
         }
 

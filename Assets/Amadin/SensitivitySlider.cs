@@ -8,7 +8,9 @@ public class CursorSensitivityController : MonoBehaviour
 
     private const string SensitivityKey = "CursorSensitivity";
     private const float DefaultSensitivity = 25f;
-    public float cursorSensitivity; 
+    public float cursorSensitivity;
+
+    private AimController aimController;
 
     private void Start()
     {
@@ -22,7 +24,9 @@ public class CursorSensitivityController : MonoBehaviour
         // Subscribe to the clear button's click event
         clearButton.onClick.AddListener(OnClearButtonClicked);
 
-        Debug.Log("Start - Sensitivity loaded: " + cursorSensitivity);
+        aimController = FindObjectOfType<AimController>();
+
+        //Debug.Log("Start - Sensitivity loaded: " + cursorSensitivity);
     }
 
     private void OnSliderValueChanged(float sensitivity)
@@ -34,13 +38,15 @@ public class CursorSensitivityController : MonoBehaviour
         PlayerPrefs.SetFloat(SensitivityKey, sensitivity);
         PlayerPrefs.Save();
 
-        Debug.Log("Sensitivity changed: " + sensitivity);
+        //Debug.Log("Sensitivity changed: " + sensitivity);
     }
 
     private void SetCursorSensitivity(float sensitivity)
     {
         // This function sets the cursor sensitivity
         cursorSensitivity = sensitivity;
+        aimController.SetCursorSensitivity(cursorSensitivity);
+        //Cursor.sensitivity = sensitivity;
     }
 
     private void OnClearButtonClicked()
@@ -56,5 +62,11 @@ public class CursorSensitivityController : MonoBehaviour
         cursorSensitivity = DefaultSensitivity;
 
         Debug.Log("Sensitivity cleared. Slider reset to default: " + DefaultSensitivity);
+    }
+
+    private void Update()
+    {
+        float mouseX = Input.GetAxis("Mouse X") * cursorSensitivity * Time.deltaTime;
+        float mouseY = Input.GetAxis("Mouse Y") * cursorSensitivity * Time.deltaTime;
     }
 }

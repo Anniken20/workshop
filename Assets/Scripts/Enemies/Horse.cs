@@ -108,9 +108,9 @@ public class Horse : Enemy
         anim.SetBool("Idle", false);
         anim.SetBool("Running", false);
         anim.SetBool("Stunned", false);
-        this.transform.position = startPOS;
+        //this.transform.position = startPOS;
         //if(this.animator != null) this.animator.SetBool("BeingWrangled", false);
-        GetComponentInChildren<HorseWrangling>().gameObject.SetActive(false);
+        //GetComponentInChildren<HorseWrangling>().gameObject.SetActive(false);
     }
 
     public IEnumerator ChargeDelay()

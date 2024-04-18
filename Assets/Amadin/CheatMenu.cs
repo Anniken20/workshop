@@ -32,10 +32,16 @@ public class CheatMenu : MonoBehaviour
             teleportDropdown.ClearOptions();
 
             // Populate dropdown with teleporter names
-            foreach (Transform teleporter in teleporters)
+
+            //try-catch is a lazy but easy way to catch errors -- Caden
+            try
             {
-                teleportDropdown.options.Add(new TMP_Dropdown.OptionData(teleporter.gameObject.name));
+                foreach (Transform teleporter in teleporters)
+                {
+                    teleportDropdown.options.Add(new TMP_Dropdown.OptionData(teleporter.gameObject.name));
+                }
             }
+            catch { }
 
             // Add listener for dropdown value change
             teleportDropdown.onValueChanged.AddListener(TeleportDropdownValueChanged);

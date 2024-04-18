@@ -24,9 +24,10 @@ public class CameraController : MonoBehaviour
     public Vector3 baseCameraOffset;
     private Vector3 cameraOffset;
 
-    private void Start()
+    private void Awake()
     {
-        cameraOffset = mainCam.transform.position - playerObject.transform.position;
+        //cameraOffset = mainCam.transform.position - playerObject.transform.position;
+        cameraOffset = baseCameraOffset;
     }
 
     public void SwitchCameraView(bool switchToIsometric)
@@ -50,8 +51,7 @@ public class CameraController : MonoBehaviour
 
     public void RecomposeCamera()
     {
-        //Debug.Log("Camera recomposed by offset: " + cameraOffset);
-        
+        StopAllCoroutines();
         StartCoroutine(ForceResetRoutine());
     }
 
@@ -69,11 +69,8 @@ public class CameraController : MonoBehaviour
             mainCam.transform.position = playerObject.transform.position + cameraOffset;
             if (Time.time > endTime) yield break;
             yield return null;
+            Debug.Log("camera local offset: " + cameraOffset);
         }
     }
 
-    public void SwitchToTeleportMode(bool yes = true)
-    {
-        
-    }
 }

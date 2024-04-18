@@ -84,7 +84,7 @@ public class GraveSelection : MonoBehaviour
     IEnumerator Waiting()
     {
         yield return new WaitForSeconds(waitTime);
-        Debug.Log("Done Waiting");
+        //Debug.Log("Done Waiting hehe haha");
         poppyModel.SetActive(false);
         ActivateGrave();
     }
@@ -96,17 +96,20 @@ public class GraveSelection : MonoBehaviour
     public void PoppyCombat(GameObject grave)
     {
         //poppy.GameObject.GetComponent<NavMeshAgent>().SetActive(true);
-        poppy.GetComponent<Daughter>().Shooting();
+        //poppy.GetComponent<Daughter>().Shooting();
         StartCoroutine(ShootDelay());
         StartCoroutine(WrangleCooldown(grave));
     }
     IEnumerator WrangleCooldown(GameObject grave)
     {
+        grave.layer = LayerMask.NameToLayer("BulletPassThrough");
         yield return new WaitForSeconds(GetComponentInParent<GraveSelection>().waitTime);
-        Debug.Log("WrangleCooldown thing");
+        //Debug.Log("WrangleCooldown thing");
         Whacked();
+        Debug.Log("Leaving");
         poppy.GetComponent<Daughter>().Idle();
         grave.GetComponent<DaughterGraveWrangle>().enabled = true;
+        grave.layer = LayerMask.NameToLayer("BulletThrough");
         //poppy.GameObject.GetComponent<NavMeshAgent>().SetActive(false);
     }
     public void ReturnToCenter()
@@ -116,16 +119,17 @@ public class GraveSelection : MonoBehaviour
     }
     public void Death(){
         StopAllCoroutines();
-        anim.SetBool("Idle", true);
+        anim.SetBool("Dead", true);
         foreach (var grave in graves)
         {
             grave.GetComponent<GraveShaker>().CancelPeek();
         }
     }
     public IEnumerator ShootDelay(){
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(1.4f);
         anim.SetBool("Jumping", false);
         anim.SetBool("Shooting", true);
+        poppy.GetComponent<Daughter>().Shooting();
     }
     public void RotatePoppy(){
         //poppyModel.transform.rotation = Quaternion.Euler(0, 0, 0);
