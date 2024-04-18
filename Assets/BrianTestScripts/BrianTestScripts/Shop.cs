@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-using UnityEngine.UI; 
+using UnityEngine.UI;
+using StarterAssets;
 
 public class Shop : Interactable, IDataPersistence
 {
@@ -28,11 +29,18 @@ public class Shop : Interactable, IDataPersistence
     private GameObject hudGameObject;
 
 
-    protected override void Awake()
+    protected override void Start()
     {
+        interactionPrompt = InteractPopup.textMesh;
+
+        if (interactionPrompt == null)
+        {
+            Debug.LogError("InteractionPrompt not set on " + gameObject.name);
+        }
+        interactionPrompt.text = "";
         shopMenu.SetActive(false);
         secretKeyMenu.SetActive(false);
-       // ammoMenu.SetActive(false);
+        ammoMenu.SetActive(false);
     }
 
     private void Update()
@@ -68,17 +76,15 @@ public class Shop : Interactable, IDataPersistence
         {
             SwitchGameControls(false);
             CoinCollector.Instance.ShowCoinsUIInstant(); 
-            hudGameObject.SetActive(false);
         }
         else
         {
             SwitchGameControls(true);
             CoinCollector.Instance.HideCoinsUIInstant();
-            hudGameObject.SetActive(true);
         }
     }
 
-    /*public void ToggleAmmoMenu(bool show)
+    public void ToggleAmmoMenu(bool show)
     {
         ammoMenu.SetActive(show); // Toggle visibility
 
@@ -93,7 +99,7 @@ public class Shop : Interactable, IDataPersistence
             CloseAmmoMenu();
             CoinCollector.Instance.HideCoinsUIInstant();
         }
-    }*/
+    }
 
 
     public void SpendCoin(int cost)
@@ -160,10 +166,10 @@ public class Shop : Interactable, IDataPersistence
         shopMenu.SetActive(false);
     }
 
-    /*public void CloseAmmoMenu()
+    public void CloseAmmoMenu()
     {
         ammoMenu.SetActive(false);
-    }*/
+    }
 
 
     public void LoadData(GameData data){

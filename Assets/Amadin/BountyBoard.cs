@@ -11,7 +11,7 @@ public class BountyBoard : MonoBehaviour, IDataPersistence
     public Button level2Button;
     public Button level3Button;
     public Button backButton;
-    public GameObject particleEffect;
+    //public GameObject particleEffect;
     // public ClearSaveData clearSaveDataScript;
 
     private bool playerEnteredOnce = false;
@@ -54,7 +54,7 @@ public class BountyBoard : MonoBehaviour, IDataPersistence
         levelSelectPopup.SetActive(false);
 
         // Enable the particle effect when the scene starts
-        particleEffect.SetActive(true);
+        //particleEffect.SetActive(true);
 
         // Check if characters are defeated and activate/deactivate level buttons accordingly
         bool carilloDefeated = PlayerPrefs.GetInt(carilloDefeatedKey, 0) == 1;
@@ -68,26 +68,73 @@ public class BountyBoard : MonoBehaviour, IDataPersistence
         //level3Button.interactable = santanaDefeated;
 
         // Disable level 2 and level 3 buttons if Carillo and Santana are not defeated respectively
-        Debug.Log(levelCompleted);
-        if (levelCompleted == 0)
+        /* Debug.Log(levelCompleted);
+         if (levelCompleted == 0)
+         {
+             level2Button.interactable = false;
+             level3Button.interactable = false;
+         }
+         else if (levelCompleted < 2)
+         {
+             level3Button.interactable = false;
+         }
+
+         if (levelCompleted == 1)
+         {
+             level2Button.interactable = true;
+             level3Button.interactable = false;
+         }
+         else if (levelCompleted == 2)
+         {
+             level2Button.interactable = true;
+             level3Button.interactable = true;
+         }*/
+
+        if(levelCompleted == 0)
         {
             level2Button.interactable = false;
             level3Button.interactable = false;
+            level2Button.gameObject.SetActive(false);
+            level3Button.gameObject.SetActive(false);
         }
-        else if (levelCompleted < 2)
+        // Check if level 1 is completed
+        if (levelCompleted >= 1)
         {
-            level3Button.interactable = false;
+            // Enable level 2 button if level 1 is completed
+            level2Button.interactable = true;
+        }
+        else
+        {
+            // If level 1 is not completed, hide level 2 and 3 buttons
+            SetButtonVisibility(level2Button, false);
+            SetButtonVisibility(level3Button, false);
         }
 
-        if (levelCompleted == 1)
+        // Check if level 2 is completed
+        if (levelCompleted >= 2)
         {
-            level2Button.interactable = true;
-            level3Button.interactable = false;
-        }
-        else if (levelCompleted == 2)
-        {
-            level2Button.interactable = true;
+            // Enable level 3 button if level 2 is completed
             level3Button.interactable = true;
+        }
+        else
+        {
+            // If level 2 is not completed, hide level 3 button
+            SetButtonVisibility(level3Button, false);
+        }
+    }
+
+    private void SetButtonVisibility(Button button, bool isVisible)
+    {
+        if (button != null)
+        {
+            button.gameObject.SetActive(isVisible);
+
+            // If the button has an Image component, disable it as well
+            Image buttonImage = button.GetComponent<Image>();
+            if (buttonImage != null)
+            {
+                buttonImage.enabled = isVisible;
+            }
         }
     }
 
@@ -104,10 +151,10 @@ public class BountyBoard : MonoBehaviour, IDataPersistence
                 SceneManager.LoadScene("CallToActionCutscene_MP4");
                 playerEnteredOnce = true;
                 //PlayerPrefs.SetInt(playerEnteredOnceKey, 1); // Save playerEnteredOnce state to PlayerPrefs
-                UnPauseNoUI(); // Pause the game when the scene loads
+                UnPauseNoUI(); // Pause the game when the scene loads needed or else locked in place on load
                 playerEnteredOnce = true;
                 // Disable the particle effect when transitioning to the next scene
-                particleEffect.SetActive(false);
+                //particleEffect.SetActive(false);
             }
             else
             {
@@ -117,9 +164,8 @@ public class BountyBoard : MonoBehaviour, IDataPersistence
                 PauseNoUI(); // Pause the game when the pop-up is active
 
                 // Disable the particle effect when showing the pop-up
-                particleEffect.SetActive(false);
+                //particleEffect.SetActive(false);
             }
-
             popupActivated = true; // Set popupActivated to true to prevent multiple activations
         }
     }

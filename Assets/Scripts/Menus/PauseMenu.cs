@@ -43,6 +43,8 @@ public class PauseMenu : MonoBehaviour
     public GameObject ControllerPanel;
     public GameObject ResolutionPanel;
 
+    private GameObject activePanel;
+
     private void Awake()
     {
         iaControls = new CharacterMovement();
@@ -94,6 +96,8 @@ public class PauseMenu : MonoBehaviour
         HUD.SetActive(true);
         Time.timeScale = prevTimeScale;
         onResume?.Invoke();
+        SubSettingBack();
+        settingsPanel.SetActive(false);
 
         // Enable the canvas containing the fade image
         Canvas canvas = fadeImage.GetComponentInParent<Canvas>();
@@ -166,6 +170,8 @@ public class PauseMenu : MonoBehaviour
         ResolutionPanel.SetActive(false);
         settingsPanel.SetActive(false);
         PausePanel.SetActive(false);
+
+        activePanel = AccessibilityPanel;
     }
 
     public void ActivatePcPanel()
@@ -177,6 +183,8 @@ public class PauseMenu : MonoBehaviour
         ResolutionPanel.SetActive(false);
         settingsPanel.SetActive(false);
         PausePanel.SetActive(false);
+
+        activePanel = PcPanel;
     }
 
     public void ActivateControllerPanel()
@@ -188,7 +196,10 @@ public class PauseMenu : MonoBehaviour
         ResolutionPanel.SetActive(false);
         settingsPanel.SetActive(false);
         PausePanel.SetActive(false);
+
+        activePanel = ControllerPanel;
     }
+
 
     public void ActivateResolutionPanel()
     {
@@ -199,6 +210,15 @@ public class PauseMenu : MonoBehaviour
         ResolutionPanel.SetActive(true);
         settingsPanel.SetActive(false);
         PausePanel.SetActive(false);
+
+        activePanel = ResolutionPanel;
+    }
+
+    public void SubSettingBack()
+    {
+        if(activePanel != null) activePanel.SetActive(false);
+        activePanel = null;
+        settingsPanel.SetActive(true);
     }
 
 

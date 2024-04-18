@@ -116,7 +116,7 @@ public class DamageController : MonoBehaviour, IShootable
     }
 
     // For now, just destroy. Could be something more complicated later
-    private void Break()
+    public void Break()
     {
         if (breakController != null)
         {
