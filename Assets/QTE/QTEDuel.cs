@@ -129,11 +129,11 @@ public class QTEDuel : MonoBehaviour
 
         float healthPercentage = duelEnemy.currentHealth / duelEnemy.maxHealth;
 
-        if (phase == 1 && healthPercentage <= 0.66f)
+        if (phase == 1 && healthPercentage <= 0f)
         {
             StartQTE();
         }
-        else if (phase == 2 && healthPercentage <= 0.33f)
+        else if (phase == 2 && healthPercentage <= 0f)
         {
             StartQTE();
         }
@@ -339,7 +339,7 @@ public class QTEDuel : MonoBehaviour
     private void PlayerWonDuel()
     {
         phase++;
-        duelEnemy.TakeDamage(enemyDamageOnLoss);
+        //duelEnemy.TakeDamage(enemyDamageOnLoss);
 
         if(enemyPhaseLevel < 3 && nextEnemy != null)
         {
@@ -348,7 +348,7 @@ public class QTEDuel : MonoBehaviour
                 nextEnemy.transform.position = duelEnemy.transform.position;
             }
             
-            nextEnemy.currentHealth = duelEnemy.currentHealth;
+            //nextEnemy.currentHealth = duelEnemy.currentHealth;
             nextEnemy.gameObject.SetActive(true);
             nextPhaseEvent?.Invoke();
 
