@@ -25,6 +25,8 @@ public class BreakController : MonoBehaviour
     private AudioSource audioSource;
     private Collider c;
 
+    public Dissolver dissolver;
+
     private void Start()
     {
          audioSource = GetComponent<AudioSource>();
@@ -47,6 +49,8 @@ public class BreakController : MonoBehaviour
         {
             Debug.LogError("Fragments not assigned in the Inspector.");
         }
+
+        dissolver = GetComponent<Dissolver>();
     }
 
     private void Update()
@@ -99,6 +103,8 @@ public class BreakController : MonoBehaviour
     {
         StartCoroutine(BreakWithSFX(clipLength));
         Debug.Log("BreakIntoPieces called.");
+        dissolver.InitAndDissolve();
+
     }
 
     private void SpawnCoin()
@@ -117,6 +123,8 @@ public class BreakController : MonoBehaviour
                 coinRb.AddForce(forceDirection * coinForce, ForceMode.Impulse);
             }
         }
+        
+      //  dissolver.InitAndDissolve();
     }
     else
     {
