@@ -64,7 +64,7 @@ public class Enrique : Enemy, ICryable
         {
             TakeDamage((int)bullet.currDmg);
             stateMachine.ChangeState(runToPointsState);
-            audioSource.Stop();
+            //audioSource.Stop();
             SpawnGhosts();
         }
     }
