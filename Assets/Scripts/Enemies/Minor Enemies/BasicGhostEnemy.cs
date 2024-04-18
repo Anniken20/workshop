@@ -22,6 +22,8 @@ public class GhostEnemy : MonoBehaviour, IShootable
     public AudioClip[] deathSounds;
     private AudioSource audioSource;
 
+    private bool canMove = true; // Flag to control movement
+
     private VisualEffect _visualEffectController;
 
     public float minDistanceBetweenEnemies = 2f; // Minimum distance between enemies
@@ -56,7 +58,8 @@ public class GhostEnemy : MonoBehaviour, IShootable
         direction.Normalize();
 
         // Move towards the player's absolute position
-        transform.Translate(direction * movementSpeed * Time.deltaTime, Space.World);
+        if (canMove)
+            transform.Translate(direction * movementSpeed * Time.deltaTime, Space.World);
 
         // Ethan - look at target position
         this.gameObject.transform.LookAt(targetPosition);
@@ -83,6 +86,32 @@ public class GhostEnemy : MonoBehaviour, IShootable
         if (Vector3.Distance(transform.position, targetPosition) < attackRange && canAttack)
         {
             AttackPlayer();
+        }
+
+        // This creates a swarm like effect without being inside the player
+        // I kinda liked this as once one is close, hits it'll be pushed back
+        // Change the 1f on the bottom of this section to change how far they end up
+        // Around the player (:
+        //Avoid colliding with the player
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, direction, out hit, movementSpeed * Time.deltaTime))
+        {
+            if (hit.collider.CompareTag("Player"))
+            {
+                float distanceToPlayer = Vector3.Distance(transform.position, targetPosition);
+                float minDistance = Mathf.Max(minDistanceBetweenEnemies, attackRange); // Ensure the minimum distance is at least the attack range
+                if (distanceToPlayer < minDistance)
+                {
+                    // Adjust position to maintain minimum distance from the player
+                    float pushBackDistance = minDistance - distanceToPlayer;
+                    transform.position += direction * pushBackDistance;
+                }
+                else
+                {
+                    // Adjust position to not go inside the player
+                    transform.position = hit.point - direction * 1f; // Adjust to how far away
+                }
+            }
         }
     }
 
