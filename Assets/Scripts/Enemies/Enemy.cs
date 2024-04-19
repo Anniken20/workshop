@@ -141,7 +141,7 @@ public abstract class Enemy : MonoBehaviour, IShootable, IDataPersistence
         if (!standWhileDead) transform.DOMove(new Vector3(transform.position.x, transform.position.y -10, transform.position.z), 1f);
 
         //destroy this object
-        if (!standWhileDead) Destroy(gameObject, 3f);
+        //if (!standWhileDead) Destroy(gameObject, 3f);
         if(!enemiesList.Contains(enemy)){
             enemiesList.Add(this.enemy);
         }

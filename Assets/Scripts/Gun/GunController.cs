@@ -23,7 +23,8 @@ using StarterAssets;
 
 public class GunController : MonoBehaviour
 {
-    public CharacterMovement iaControls;
+    //public CharacterMovement iaControls;
+    public PlayerInput _playerInput;
 
     private InputAction shoot;
     private InputAction redirect;
@@ -360,11 +361,14 @@ public class GunController : MonoBehaviour
     }
 
     private void Awake(){
-        iaControls = new CharacterMovement();
+        //iaControls = new CharacterMovement();
+        _playerInput = GameObject.Find("_iaManager").GetComponent<PlayerInput>();
     }
     private void OnEnable(){
-        shoot = iaControls.CharacterControls.Shoot;
-        redirect = iaControls.CharacterControls.Redirect;
+        //shoot = iaControls.CharacterControls.Shoot;
+        //redirect = iaControls.CharacterControls.Redirect;
+        shoot = _playerInput.actions["Shoot"];
+        redirect = _playerInput.actions["Redirect"];
 
         shoot.Enable();
         redirect.Enable();

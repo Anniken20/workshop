@@ -46,7 +46,8 @@ public class GhostController : MonoBehaviour
     [Header("Default Ghost Shader")]
     public Shader theGhostShader;
 
-    private CharacterMovement iaControls;
+    //private CharacterMovement iaControls;
+    public PlayerInput _playerInput;
 
     //--Delegate events--
     public delegate void OnEnterPhase();
@@ -72,8 +73,9 @@ public class GhostController : MonoBehaviour
     private void Awake()
     {
         phaseOn = false;
-        iaControls = new CharacterMovement();
-        phase = iaControls.CharacterControls.Phase;
+        //iaControls = new CharacterMovement();
+        _playerInput = GameObject.Find("_iaManager").GetComponent<PlayerInput>();
+        //phase = iaControls.CharacterControls.Phase;
 
         audioSource = GetComponent<AudioSource>();
         phaseLevel._ghostController = this;
@@ -247,7 +249,8 @@ public class GhostController : MonoBehaviour
 
     private void OnEnable()
     {
-        phase = iaControls.CharacterControls.Phase;
+        //phase = iaControls.CharacterControls.Phase;
+        phase = _playerInput.actions["Phase"];
         phase.Enable();
     }
 

@@ -5,7 +5,8 @@ using UnityEngine.InputSystem;
 
 public class InteractionController : MonoBehaviour
 {
-    public CharacterMovement iaControls;
+    //public CharacterMovement iaControls;
+    public PlayerInput _playerInput;
     private InputAction interact;
     [SerializeField] float interactionRange;
     private AimController aimController;
@@ -13,7 +14,8 @@ public class InteractionController : MonoBehaviour
     private Vector3 rayAngle;
     private Interactable interactable;
     private void Awake(){
-        iaControls = new CharacterMovement();
+        //iaControls = new CharacterMovement();
+        _playerInput = GameObject.Find("_iaManager").GetComponent<PlayerInput>();
     }
 
     private void Start()
@@ -33,7 +35,8 @@ public class InteractionController : MonoBehaviour
     }
 
     private void OnEnable(){
-        interact = iaControls.CharacterControls.Interact;
+        //interact = iaControls.CharacterControls.Interact;
+        interact = _playerInput.actions["Interact"];
 
         interact.Enable();
     }

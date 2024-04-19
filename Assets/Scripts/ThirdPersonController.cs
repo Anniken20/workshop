@@ -23,7 +23,8 @@ namespace StarterAssets
         public delegate void DeathDelegate();
         public DeathDelegate deathDelegate;
 
-        public CharacterMovement iaControls;
+        //public CharacterMovement iaControls;
+        public PlayerInput _playerControls;
         private InputAction sprint;
         private InputAction jump;
         private InputAction move;
@@ -157,7 +158,8 @@ namespace StarterAssets
             //singleton behavior
             Main = this;
 
-            iaControls = new CharacterMovement();
+            //iaControls = new CharacterMovement();
+            _playerControls = GameObject.Find("_iaManager").GetComponent<PlayerInput>();
             _canMove = true;
             _inDialogue = false;
         }
@@ -512,9 +514,12 @@ namespace StarterAssets
         }
 
         private void OnEnable(){
-            sprint = iaControls.CharacterControls.Sprint;
+            /*sprint = iaControls.CharacterControls.Sprint;
             move = iaControls.CharacterControls.Move;
-            jump = iaControls.CharacterControls.Jump;
+            jump = iaControls.CharacterControls.Jump;*/
+            sprint = _playerControls.actions["Sprint"];
+            move = _playerControls.actions["Move"];
+            jump = _playerControls.actions["Jump"];
 
             sprint.Enable();
             move.Enable();
