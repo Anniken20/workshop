@@ -13,6 +13,7 @@ public class SceneTeleport : MonoBehaviour, IDataPersistence
     public DataManager dataManager;
     public int levelCompleted;
     private int savedComplete;
+
     public void OnTriggerEnter(Collider other)
     {
         if(other.CompareTag("Player"))
@@ -22,6 +23,7 @@ public class SceneTeleport : MonoBehaviour, IDataPersistence
                 dataManager.SaveGame();
             }
             LoadScene(scene_name);
+            Debug.Log("loaded scene");
         } 
     }
     
