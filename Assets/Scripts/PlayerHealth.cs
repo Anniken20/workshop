@@ -19,6 +19,7 @@ public class PlayerHealth : MonoBehaviour, IDataPersistence
     // Debug menu
     public bool godModeEnabled = false;
 
+    public GameObject playerModel;
 
     [Header("Time Stats")]
     [SerializeField] private float _damageDisplayTime = 5.0f;
@@ -89,6 +90,7 @@ public class PlayerHealth : MonoBehaviour, IDataPersistence
             AudioManager.main.Play(AudioManager.AudioSourceChannel.SFX, hurt);
             StartCoroutine(Damage());
             _invulnerabilityTimer = _invulnerabilityDuration;
+            StartCoroutine(FlickerEffect(_invulnerabilityDuration, 0.1f));
         }
     }
 
@@ -118,6 +120,25 @@ public class PlayerHealth : MonoBehaviour, IDataPersistence
 
             _fullScreenDamage.SetActive(false);
         }
+    }
+
+    private IEnumerator FlickerEffect(float duration, float interval)
+    {
+        float elapsed = 0f;
+        bool active = true;
+
+        while (elapsed < duration)
+        {
+            playerModel.SetActive(active);
+            active = !active;
+
+            // Wait for the interval duration
+            yield return new WaitForSeconds(interval);
+            elapsed += interval;
+        }
+
+        // Ensure the player model is active after invincibility ends
+        playerModel.SetActive(true);
     }
 
     // DEBUG TOGGLE
