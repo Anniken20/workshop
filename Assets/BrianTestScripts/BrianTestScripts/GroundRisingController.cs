@@ -51,6 +51,13 @@ public class GroundRisingController : MonoBehaviour
         // Instantiate the cube at player's position, emerging from below
         GameObject risingCube = Instantiate(risingCubePrefab, player.position + Vector3.down * 1, Quaternion.identity);
         risingCube.transform.Translate(Vector3.up * 1, Space.World); // Adjust starting point if needed
+        StartCoroutine(HandleCubeLifeTime(risingCube));
+    }
+
+    IEnumerator HandleCubeLifeTime(GameObject risingCube)
+    {
+        yield return new WaitForSeconds(5f);
+        Destroy(risingCube);
     }
 
     void ResetMarkerAndTimer()
