@@ -25,15 +25,14 @@ public class DamageController : MonoBehaviour, IShootable
     public TMP_Text debugText;
 
     [Header("Health Bar")]
-    public bool hasHealthBar = true; // Option to enable or disable the health bar
-    public Image fullHealthBar;
-    public Image healthBarMask;
-    public float healthBarFadeTime = 1f; // Time in seconds for health bar to fade
+    public bool hasHealthBar = true;
+    public Image fullHealthBar; // This is the static background health bar
+    public Image currentHealthBar; // This is the shrinking/growing health bar
+    public float healthBarFadeTime = 1f;
+
     [Header("Regen")]
     public bool regen;
-    [Tooltip("Amount of damage needed to not regen")]
     public int regenDMG;
-    [Tooltip("Time to wait before regen")]
     public float regenTimer;
 
     private float currDmg;
@@ -47,11 +46,9 @@ public class DamageController : MonoBehaviour, IShootable
         currDmg = startingDamage;
         breakController = GetComponent<BreakController>();
         lastDamageTime = Time.time;
-        healthBarVisible = false; 
-
-        if (debugText != null) debugText.text = currDmg + " / " + dmgTilBreak + " DMG";
-
+        healthBarVisible = false;
         SetHealthBarVisible(false);
+        if (debugText != null) debugText.text = currDmg + " / " + dmgTilBreak + " DMG";
     }
 
     private void Update()
@@ -60,33 +57,29 @@ public class DamageController : MonoBehaviour, IShootable
         {
             isTakingDamage = false;
             SetHealthBarVisible(false);
-            healthBarVisible = false; 
+            healthBarVisible = false;
         }
     }
 
-    // Apply damage, apply knockback, destroy if broken
     public void ApplyDamage(float dmg, Vector3 direction)
     {
         currDmg += dmg;
 
-        if (!healthBarVisible && (fullHealthBar != null && healthBarMask != null))
+        if (!healthBarVisible)
         {
             SetHealthBarVisible(true);
-            healthBarVisible = true; // Update visibility flag
+            healthBarVisible = true;
         }
 
-        if (fullHealthBar != null && healthBarMask != null)
+        // Update health bar
+        if (currentHealthBar != null)
         {
-            // Update health bar
             float healthPercentage = 1 - (currDmg / dmgTilBreak);
-            healthBarMask.fillAmount = Mathf.Clamp01(healthPercentage);
+            currentHealthBar.fillAmount = Mathf.Clamp01(healthPercentage);
+        }
 
-            lastDamageTime = Time.time;
-            isTakingDamage = true;
-        }
-        if(regen && dmg < regenDMG){
-            StartCoroutine(Regenerate(dmg));
-        }
+        lastDamageTime = Time.time;
+        isTakingDamage = true;
 
         if (currDmg >= dmgTilBreak)
         {
@@ -95,27 +88,28 @@ public class DamageController : MonoBehaviour, IShootable
         }
 
         if (debugText != null) debugText.text = currDmg + " / " + dmgTilBreak + " DMG";
-
         Knockback(dmg, direction);
+
+        if(regen && dmg < regenDMG){
+            StartCoroutine(Regenerate(dmg));
+        }
     }
 
     private void SetHealthBarVisible(bool isVisible)
     {
         if (fullHealthBar != null) fullHealthBar.enabled = isVisible;
-        if (healthBarMask != null) healthBarMask.enabled = isVisible;
+        if (currentHealthBar != null) currentHealthBar.enabled = isVisible;
     }
 
-    // Apply force to rigidbody to knockback
     public void Knockback(float dmg, Vector3 direction)
     {
         Rigidbody rb;
         if (TryGetComponent<Rigidbody>(out rb))
         {
-            rb.AddForce(direction * dmg * knockbackFactor);
+            rb.AddForce(direction * dmg * knockbackFactor, ForceMode.Impulse);
         }
     }
 
-    // For now, just destroy. Could be something more complicated later
     public void Break()
     {
         if (breakController != null)
@@ -125,11 +119,12 @@ public class DamageController : MonoBehaviour, IShootable
         else
         {
             Debug.LogError("BreakController component not found.");
-            // If BreakController is not found, destroy the object
             Destroy(gameObject);
         }
     }
-         public IEnumerator Regenerate(float dmg){
+
+    public IEnumerator Regenerate(float dmg)
+    {
         yield return new WaitForSeconds(regenTimer);
         currDmg -= dmg;
     }
