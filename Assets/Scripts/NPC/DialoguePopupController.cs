@@ -106,6 +106,13 @@ public class DialoguePopupController : MonoBehaviour, IInteractable
         DialogueManager.Main.dialogueBackdrop.enabled = true;
         DisplayDialoguePiece(dialogueIndex);
 
+        //accessibility settings
+        DialogueManager.Main.characterNameText.color = dialogueData.textColor;
+        DialogueManager.Main.characterText.color = dialogueData.textColor;
+
+        DialogueManager.Main.characterNameText.fontSize = dialogueData.textSize;
+        DialogueManager.Main.characterText.fontSize = dialogueData.textSize;
+
         //GameObject[] objs = GameObject.FindGameObjectsWithTag("UI");
         //Array.Find(objs, element => element.name == "HUD");
         HUDScaler.ScaleTo(3f);
