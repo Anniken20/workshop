@@ -133,12 +133,14 @@ public abstract class Enemy : MonoBehaviour, IShootable, IDataPersistence
         //turn off components so it stops moving
         animator.enabled = false;
         nav.enabled = false;
+        if (!standWhileDead)
+        {
+            yield return new WaitForSeconds(0.5f);
+            transform.DORotate(new Vector3(-88, 0, 0), 1.5f, RotateMode.WorldAxisAdd).SetEase(Ease.OutBounce);
 
-        yield return new WaitForSeconds(0.5f);
-        if(!standWhileDead) transform.DORotate(new Vector3(-88, 0, 0), 1.5f, RotateMode.WorldAxisAdd).SetEase(Ease.OutBounce);
-
-        yield return new WaitForSeconds(2f);
-        if (!standWhileDead) transform.DOMove(new Vector3(transform.position.x, transform.position.y -10, transform.position.z), 1f);
+            yield return new WaitForSeconds(2f);
+            if (!standWhileDead) transform.DOMove(new Vector3(transform.position.x, transform.position.y - 10, transform.position.z), 1f);
+        }
 
         //destroy this object
         //if (!standWhileDead) Destroy(gameObject, 3f);
@@ -148,7 +150,7 @@ public abstract class Enemy : MonoBehaviour, IShootable, IDataPersistence
         onDeath?.Invoke();
 
         //destroy this script
-        if (!standWhileDead) Destroy(this);
+        Destroy(this);
     }
 
     public virtual void TakeDamage(int delta)
