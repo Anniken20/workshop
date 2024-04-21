@@ -193,4 +193,14 @@ public class DialogueOptionsMenu : MonoBehaviour
         dialogueText.color = dialogueData.textColor;
         PlayerPrefs.SetInt(ColorIndexKey, index);
     }
+
+    private void OnEnable()
+    {
+        colorDropdown.value = PlayerPrefs.GetInt(ColorIndexKey, 0);
+
+        int newSize = PlayerPrefs.GetInt(TextSizeKey, 64);
+        dialogueData.textSize = newSize;
+        dialogueText.fontSize = newSize;
+        textSizeDisplay.text = newSize.ToString();
+    }
 }
