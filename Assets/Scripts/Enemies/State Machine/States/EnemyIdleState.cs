@@ -17,13 +17,13 @@ public class EnemyIdleState : EnemyState
 
     public override void EnterState()
     {
-        if(nav.isOnNavMesh && nav.isActiveAndEnabled) nav.isStopped = true;
+        if(nav != null && nav.isOnNavMesh && nav.isActiveAndEnabled) nav.isStopped = true;
         if (enemy.animator != null) enemy.animator.SetBool("Idle", true);
     }
 
     public override void ExitState()
     {
-        nav.isStopped = false;
+        if(nav.isOnNavMesh) nav.isStopped = false;
         if (enemy.animator != null) enemy.animator.SetBool("Idle", false);
     }
 

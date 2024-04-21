@@ -14,7 +14,10 @@ public class DuelState : EnemyState
         base.EnterState();
         nav.updateRotation = false;
         nav.updatePosition = false;
-        transform.LookAt(ThirdPersonController.Main.transform);
+        Vector3 lookVector = new Vector3(ThirdPersonController.Main.transform.position.x, 
+            transform.position.y, 
+            ThirdPersonController.Main.transform.position.z);
+        transform.LookAt(lookVector);
         if (enemy.animator != null) enemy.animator.SetBool("HighNoonDuel", true);
     }
 
