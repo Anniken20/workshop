@@ -80,6 +80,7 @@ public class EthanDoors : MonoBehaviour
         if (transform.position != switchDownPos)
         {
             transform.position = Vector3.MoveTowards(transform.position, switchDownPos, switchSpeed * Time.deltaTime);
+            audioSource.PlayOneShot(pressurePlateClick);
         }
     }
 
@@ -97,7 +98,6 @@ public class EthanDoors : MonoBehaviour
     {
         if (collision.CompareTag("Player") || collision.CompareTag("Lassoable"))
         {
-            audioSource.PlayOneShot(pressurePlateClick);
             objectsOnPlate++; // Increment the counter
 
             if (objectsOnPlate == 1) // If it's the first object on the plate
@@ -115,7 +115,6 @@ public class EthanDoors : MonoBehaviour
     {
         if (collision.CompareTag("Player") || collision.CompareTag("Lassoable"))
         {
-            audioSource.PlayOneShot(pressurePlateClick);
             objectsOnPlate--; // Decrement the counter
 
             if (objectsOnPlate == 0) // If no objects remain on the plate
