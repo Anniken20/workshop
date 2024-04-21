@@ -6,9 +6,12 @@ using DG.Tweening;
 public class Coin : Pickup
 {
     public float hoverHeight;
+    public float magnetSpeed = 3f;
 
+    private float collectRange = 1f;
     private float timeUntilHover = 1f;
     private bool hit;
+    private GameObject moveTarget;
 
     protected override void PickupAction()
     {
@@ -16,9 +19,48 @@ public class Coin : Pickup
         CoinCollector.Instance.CollectCoin();
     }
 
+    protected internal override void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player")) {
+            moveTarget = other.gameObject;
+            StartCoroutine(MagnetRoutine());
+            /*
+            PickupAction();
+            PlayPickupSound();
+            Destroy(gameObject);
+            */
+        }
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
         if (!hit) StartCoroutine(HitGround());
+    }
+
+    private void ActualPickup()
+    {
+        PickupAction();
+        //PlayPickupSound();
+        Destroy(gameObject);
+    }
+
+    private IEnumerator MagnetRoutine()
+    {
+        Destroy(GetComponent<Rigidbody>());
+        while (true)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, moveTarget.transform.position, Time.deltaTime * magnetSpeed);
+            
+            //comparing 2D distance because y-value shouldnt matter
+            if(Vector2.Distance(new Vector2(transform.position.x,
+                transform.position.z), new Vector2(moveTarget.transform.position.x,
+                moveTarget.transform.position.z)) < collectRange)
+            {
+                ActualPickup();
+                yield break;
+            }
+            yield return null;
+        }
     }
 
     private IEnumerator HitGround()

@@ -26,8 +26,7 @@ public class DialoguePopupController : MonoBehaviour, IInteractable
 
     [Header("Settings")]
     public bool onlyOnce;
-    [Tooltip("Allow the player to use the SHOOT button to continue speaking")]
-    public bool clickToContinue;
+    private readonly bool clickToContinue = true;
     [Tooltip("Useful for keeping the player locked even after dialogue.")]
     public bool dontUnlock;
     public bool fixHudAftewards;

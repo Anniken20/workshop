@@ -63,9 +63,14 @@ public class MinecartMechanic : MonoBehaviour
     {
         OnEnd();
         splineAnimator.Pause();
+        //ThirdPersonController.Main.GetComponent<GunController>().ExitMinecartMode();
+    }
+
+    public void KickOffPlayer()
+    {
+        OnEnd();
         characterController = ThirdPersonController.Main.GetComponent<CharacterController>();
         characterController.enabled = true;
-        //ThirdPersonController.Main.GetComponent<GunController>().ExitMinecartMode();
     }
 
     public void OnEnd()

@@ -252,11 +252,15 @@ public class BulletController : MonoBehaviour
 
     private void TryToApplyDamage(GameObject obj)
     {
-        DamageController damageController;
-        if (obj.TryGetComponent<DamageController>(out damageController))
+        try
         {
-            damageController.ApplyDamage(currDmg, direction);
+            DamageController damageController;
+            if (obj.TryGetComponent<DamageController>(out damageController))
+            {
+                damageController.ApplyDamage(currDmg, direction);
+            }
         }
+        catch { }
     }
 
     private void TryToApplyShootable(GameObject obj)
