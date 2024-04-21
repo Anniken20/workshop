@@ -121,6 +121,7 @@ public class Shop : Interactable, IDataPersistence
             Debug.Log("Secret Key Purchased!");
 
              ToggleSecretKeyMenu(false);
+                ToggleAmmoMenu(false);
         }
          else
         {
