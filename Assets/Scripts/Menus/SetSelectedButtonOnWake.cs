@@ -15,7 +15,7 @@ public class SetSelectedButtonOnWake : MonoBehaviour
     }
     private IEnumerator Wait(){
         yield return new WaitForSecondsRealtime(0.01f);
-        Debug.Log("I am actually doing something");
+        //Debug.Log("I am actually doing something");
         EventSystem.current.SetSelectedGameObject(null);
         EventSystem.current.SetSelectedGameObject(button);
         FindObjectOfType<MenuManager>().currentHovered = button;
