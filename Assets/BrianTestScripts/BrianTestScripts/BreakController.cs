@@ -190,7 +190,7 @@ private Vector3 GetValidSpawnPosition()
             // Use Mathf.Min to ensure we don't attempt to spawn more fragments than we have available or exceed our maxFragmentsToSpawn
             int fragmentsToSpawn = Mathf.Min(maxFragmentsToSpawn, fragments.Length);
 
-            Debug.Log($"Spawning {fragmentsToSpawn} fragments.");
+            //Debug.Log($"Spawning {fragmentsToSpawn} fragments.");
 
         for (int i = 0; i < fragmentsToSpawn; i++)
         {
@@ -201,7 +201,7 @@ private Vector3 GetValidSpawnPosition()
             // Choose a random fragment from the available prefabs
             GameObject fragmentPrefab = fragments[Random.Range(0, fragments.Length)];
             GameObject fragment = Instantiate(fragmentPrefab, fragmentPosition, Quaternion.identity);
-            Debug.Log($"Spawned fragment at {fragmentPosition}.");
+            //Debug.Log($"Spawned fragment at {fragmentPosition}.");
 
             // Apply an explosion force to the fragment
             Rigidbody rb = fragment.GetComponent<Rigidbody>();
