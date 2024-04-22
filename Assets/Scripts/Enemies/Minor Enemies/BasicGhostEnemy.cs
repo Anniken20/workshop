@@ -97,7 +97,7 @@ public class GhostEnemy : MonoBehaviour, IShootable
         RaycastHit hit;
         if (Physics.Raycast(transform.position, direction, out hit, movementSpeed * Time.deltaTime))
         {
-            if (hit.collider.CompareTag("Player"))
+            /*if (hit.collider.CompareTag("Player"))
             {
                 float distanceToPlayer = Vector3.Distance(transform.position, targetPosition);
                 float minDistance = Mathf.Max(minDistanceBetweenEnemies, attackRange); // Ensure the minimum distance is at least the attack range
@@ -112,7 +112,7 @@ public class GhostEnemy : MonoBehaviour, IShootable
                     // Adjust position to not go inside the player
                     transform.position = hit.point - direction * 1f; // Adjust to how far away
                 }
-            }
+            }*/
         }
     }
 
