@@ -15,8 +15,8 @@ public class DialogueOptionsMenu : MonoBehaviour
     public TMP_Text textSizeDisplay;
     public Slider textSizeSlider;
 
-    [Header("Subtitle toggle")]
-    public Toggle subtitlesToggle;
+    /*[Header("Subtitle toggle")]
+    public Toggle subtitlesToggle;*/
 
     [Header("Colour dropdown menu")]
     public TMP_Dropdown colorDropdown;
@@ -29,7 +29,7 @@ public class DialogueOptionsMenu : MonoBehaviour
     private const string ColorIndexKey = "ColorIndex";
     private const string DyslexiaModeKey = "DyslexiaMode";
 
-    private const int DefaultTextSize = 24;
+    private const int DefaultTextSize = 64;
     private const int DefaultTextColorIndex = 0;
 
     private Dictionary<string, Color> colorNameToValue = new Dictionary<string, Color>();
@@ -61,7 +61,7 @@ public class DialogueOptionsMenu : MonoBehaviour
         dialogueText.color = dialogueData.textColor;
 
         // Enable all options except dyslexia mode
-        subtitlesToggle.isOn = true;
+        //subtitlesToggle.isOn = true;
         colorDropdown.value = DefaultTextColorIndex;
         dyslexiaToggle.isOn = false; // Dyslexia mode is off by default
 
@@ -70,7 +70,7 @@ public class DialogueOptionsMenu : MonoBehaviour
 
         // Add listeners
         textSizeSlider.onValueChanged.AddListener(OnTextSizeChanged);
-        subtitlesToggle.onValueChanged.AddListener(OnSubtitlesToggleChanged);
+        //subtitlesToggle.onValueChanged.AddListener(OnSubtitlesToggleChanged);
         colorDropdown.onValueChanged.AddListener(OnColorDropdownChanged);
         dyslexiaToggle.onValueChanged.AddListener(OnDyslexiaToggleChanged);
     }
@@ -78,7 +78,7 @@ public class DialogueOptionsMenu : MonoBehaviour
     private void OnDestroy()
     {
         textSizeSlider.onValueChanged.RemoveListener(OnTextSizeChanged);
-        subtitlesToggle.onValueChanged.RemoveListener(OnSubtitlesToggleChanged);
+        //subtitlesToggle.onValueChanged.RemoveListener(OnSubtitlesToggleChanged);
         colorDropdown.onValueChanged.RemoveListener(OnColorDropdownChanged);
         dyslexiaToggle.onValueChanged.RemoveListener(OnDyslexiaToggleChanged);
     }
@@ -97,11 +97,11 @@ public class DialogueOptionsMenu : MonoBehaviour
             textSizeDisplay.text = DefaultTextSize.ToString();
         }
 
-        if (PlayerPrefs.HasKey(SubtitlesKey))
+        /*if (PlayerPrefs.HasKey(SubtitlesKey))
         {
             dialogueData.subtitlesOn = PlayerPrefs.GetInt(SubtitlesKey) == 1;
             subtitlesToggle.isOn = dialogueData.subtitlesOn;
-        }
+        }*/
 
         if (PlayerPrefs.HasKey(ColorIndexKey))
         {
