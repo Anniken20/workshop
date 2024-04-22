@@ -38,6 +38,7 @@ public class GhostEnemy : MonoBehaviour, IShootable
         aggroScript = GetComponentInChildren<AggroScript>();
         _visualEffectController = GetComponentInChildren<VisualEffect>();
         audioSource = GetComponent<AudioSource>();
+        GetComponent<Collider>().enabled = true;
     }
 
     void Start()
@@ -174,11 +175,13 @@ public class GhostEnemy : MonoBehaviour, IShootable
 
     void Die()
     {
+        GetComponent<Collider>().enabled = false;
+
         // Perform death-related action
         if (propGhost == true)
             StartCoroutine(DoEffectDeath(0f));
         else if (propGhost == false)
-            StartCoroutine(DoEffectDeath(1.2f));
+            StartCoroutine(DoEffectDeath(0.8f));
     }
 
     IEnumerator DoEffectDeath(float deathTime)

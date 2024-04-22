@@ -18,6 +18,8 @@ public class RunToPointsState : EnemyState
         nav.speed = enemy.defaultMovementSpeed;
         runToPointsData = (RunToPointsData)enemy.FindData("RunToPointsData");
         PickNextPoint();
+        enemy.animator.SetBool("Idle", false);
+        enemy.animator.SetBool("Crying", false);
         enemy.animator.SetBool("Running", true);
     }
 
@@ -43,6 +45,9 @@ public class RunToPointsState : EnemyState
     {
         if(waitRoutine != null) StopCoroutine(waitRoutine);
         targetPoint = runToPointsData.points[Random.Range(0, runToPointsData.points.Length)];
+        enemy.animator.SetBool("Idle", false);
+        enemy.animator.SetBool("Running", false);
+        enemy.animator.SetBool("Crying", true);
         //loop til u find a new point
         while (ReachedDestination())
         {
@@ -50,6 +55,9 @@ public class RunToPointsState : EnemyState
         }
 
         nav.SetDestination(targetPoint);
+        enemy.animator.SetBool("Idle", false);
+        enemy.animator.SetBool("Crying", false);
+        enemy.animator.SetBool("Running", true);
     }
 
     private bool ReachedDestination()
