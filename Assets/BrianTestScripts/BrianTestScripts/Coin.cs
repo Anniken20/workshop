@@ -15,7 +15,6 @@ public class Coin : Pickup
 
     protected override void PickupAction()
     {
-        base.PickupAction();
         CoinCollector.Instance.CollectCoin();
     }
 
@@ -39,6 +38,7 @@ public class Coin : Pickup
 
     private void ActualPickup()
     {
+        StopAllCoroutines();
         PickupAction();
         //PlayPickupSound();
         Destroy(gameObject);
