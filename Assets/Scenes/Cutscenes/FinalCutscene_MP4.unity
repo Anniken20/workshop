@@ -278,8 +278,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 20
+  m_fontSizeBase: 20
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -314,7 +314,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -68.57416, y: 0, z: -16.398224, w: 0}
+  m_margin: {x: 57.21605, y: 19.35233, z: -16.398224, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -480,10 +480,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6511c67f08a764ad884dc20d8cdf9c49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LoadingScreen: {fileID: 0}
+  LoadingBarFill: {fileID: 0}
   nextSceneName: Credits
   videoPlayer: {fileID: 1924967135}
   rawImage: {fileID: 482828743}
   isIntro: 0
+  introCompleted: 0
+  dataManager: {fileID: 0}
 --- !u!4 &368451745
 Transform:
   m_ObjectHideFlags: 0

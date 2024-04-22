@@ -15,4 +15,13 @@ public class EnriqueDiedYouDoToo : MonoBehaviour
     {
         
     }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Ghost")) 
+        {
+            // Destroy the GameObject with the "Ghost" tag
+            Destroy(other.gameObject);
+        }
+    }
 }
