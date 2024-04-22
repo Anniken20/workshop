@@ -16,6 +16,7 @@ public class Horse : Enemy
     public AudioClip crashSFX;
     //public GameObject stunnedText;
     //public GameObject chargingText;
+    private RunningParticleEmitter particles;
 
     [HideInInspector] public bool isStunned;
     
@@ -49,6 +50,9 @@ public class Horse : Enemy
         duelState.Initialize(this, stateMachine);
 
         stateMachine.Initialize(idleState);
+        if(transform.FindChild("RunningParticles") != null){
+            particles = transform.FindChild("RunningParticles").GetComponent<RunningParticleEmitter>();
+        }
     }
 
     public void ChargeAfterXSeconds(int x)
@@ -62,11 +66,14 @@ public class Horse : Enemy
         isCharging = true;
         stateMachine.ChangeState(chargeState);
         StartCoroutine(ChargeDelay());
+        ToggleParticles(true);
+        
     }
     public void StopCharge(){
         isCharging = false;
         stateMachine.ChangeState(pacingState);
         audioSource.Stop();
+        ToggleParticles(false);
     }
     public void Stunned(){
         isStunned = true;
@@ -75,6 +82,7 @@ public class Horse : Enemy
         audioSource.Stop();
         audioSource.PlayOneShot(crashSFX);
         audioSource.PlayOneShot(snortSFX);
+        ToggleParticles(false);
     }
     public void ExitStuned(){
         isStunned = false;
@@ -83,6 +91,7 @@ public class Horse : Enemy
     public void Idle(){
         if(this.animator != null) this.animator.SetBool("Idle", true);
         stateMachine.ChangeState(idleState);
+        ToggleParticles(false);
     }
     public void StopIdle(){
         stateMachine.ChangeState(pacingState);
@@ -96,6 +105,7 @@ public class Horse : Enemy
     }
     public void Freeze(){
         stateMachine.ChangeState(freezeState);
+        ToggleParticles(false);
     }
     public void StopFreeze(){
         stateMachine.ChangeState(idleState);
@@ -117,5 +127,10 @@ public class Horse : Enemy
     {
         yield return new WaitForSeconds(0.75f);
         audioSource.PlayOneShot(movingSFX);
+    }
+    private void ToggleParticles(bool toggle){
+        if(particles != null){
+            particles.ToggleParticles(toggle);
+        }
     }
 }
