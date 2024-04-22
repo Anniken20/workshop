@@ -47,21 +47,19 @@ public class DialoguePopupController : MonoBehaviour, IInteractable
 
     //to lock the player out of being stuck inside the dialogue by retriggering it immediately
     private bool canSpeak = true;
-    private readonly float lockoutTime = 2f;
+    private readonly float lockoutTime = 1f;
 
     private Coroutine inputRoutine;
     public AudioClip[] keyTypes;
     public AudioClip keyFinish;
     private AudioSource audioSource;
 
-    private readonly float lockoutAfterTime;
+    private readonly float lockoutAfterTime = 0.5f;
 
     private void Start()
     {
         HUDScaler = GameObject.FindGameObjectWithTag("HUD").GetComponentInChildren<Scale>();
         audioSource = GetComponent<AudioSource>();
-
-
     }
 
     public void Interacted()
@@ -201,7 +199,6 @@ public class DialoguePopupController : MonoBehaviour, IInteractable
     private IEnumerator UnlockRoutine()
     {
         yield return new WaitForSeconds(lockoutAfterTime);
-        Debug.Log("released from dialogue");
         ThirdPersonController.Main._inDialogue = false;
     }
 

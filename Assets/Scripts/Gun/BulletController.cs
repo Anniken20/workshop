@@ -218,6 +218,9 @@ public class BulletController : MonoBehaviour
 
     private void Bounce(RaycastHit hitData)
     {
+        //debugbing
+        Debug.Log("hit: " + hitData.collider.gameObject.name);
+
         //teleport to point to prevent inconsistency from sometimes bouncing early
         position = hitData.point;
 

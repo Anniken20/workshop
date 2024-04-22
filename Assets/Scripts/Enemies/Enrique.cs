@@ -80,6 +80,12 @@ public class Enrique : Enemy, ICryable
         if(i<4)
         {
             ghostSpawners[i].gameObject.SetActive(true);
+            if(i==0)
+            {
+                ghostSpawners[4].gameObject.SetActive(true);
+                ghostSpawners[5].gameObject.SetActive(true);
+                ghostSpawners[6].gameObject.SetActive(true);
+            }
         }
         i++;
     }

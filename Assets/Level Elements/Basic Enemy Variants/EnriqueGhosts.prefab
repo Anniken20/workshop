@@ -216,7 +216,6 @@ GameObject:
   - component: {fileID: 2087223925440128718}
   - component: {fileID: 3277663789753852688}
   - component: {fileID: 7890332208324179191}
-  - component: {fileID: 8010277522573603301}
   - component: {fileID: 3236768445005279599}
   - component: {fileID: 4428444813408417706}
   - component: {fileID: 8728472121220990434}
@@ -297,35 +296,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &8010277522573603301
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3104299516950262754}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5fdf48a2b4e0e0e4c9d4012eca52c821, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  propGhost: 0
-  movementSpeed: 2
-  attackRange: 1.5
-  damage: 20
-  maxHealth: 10
-  attackCooldown: 2
-  currentHealth: 0
-  aggroScript: {fileID: 0}
-  lookAtOffset: 1.4
-  deathSounds:
-  - {fileID: 8300000, guid: bff0a3ad61f7db74dbd1d54193bfd422, type: 3}
-  - {fileID: 8300000, guid: 32613007201e07843aa2d6630f3f83ff, type: 3}
-  - {fileID: 8300000, guid: fe88c596211b7174b928ed6a12d57d25, type: 3}
-  - {fileID: 8300000, guid: e3ff93461c42c5c4591d5ed74068c5ff, type: 3}
-  - {fileID: 8300000, guid: 8a2c7789ec2b02340948cc59735b4235, type: 3}
-  - {fileID: 8300000, guid: 4d86e66316a4a814792651928fa0905f, type: 3}
-  minDistanceBetweenEnemies: 6
 --- !u!136 &3236768445005279599
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -562,7 +532,7 @@ MonoBehaviour:
   maxHealth: 10
   attackCooldown: 2
   currentHealth: 0
-  aggroScript: {fileID: 0}
+  aggroScript: {fileID: 5561833807381859458}
   lookAtOffset: 1.4
   deathSounds:
   - {fileID: 8300000, guid: bff0a3ad61f7db74dbd1d54193bfd422, type: 3}
