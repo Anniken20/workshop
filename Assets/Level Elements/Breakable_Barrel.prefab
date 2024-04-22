@@ -128,12 +128,13 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5006848348182727147}
-  m_LocalRotation: {x: 0, y: -0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.00090166833}
-  m_LocalScale: {x: 0.984977, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.0033163656}
+  m_LocalScale: {x: 9.484544, y: -2.19644, z: 3.6780334}
   m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 7108326214345965571}
+  m_Children:
+  - {fileID: 7108326214345965571}
+  m_Father: {fileID: 589519598299003979}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -162,7 +163,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.9528302, g: 0, b: 0, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -190,9 +191,8 @@ GameObject:
   - component: {fileID: 7108326214345965571}
   - component: {fileID: 826282842243424446}
   - component: {fileID: 7647129132828864721}
-  - component: {fileID: 6408866777484779650}
   m_Layer: 0
-  m_Name: HealthBarMask
+  m_Name: CurrentHealthBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -205,13 +205,12 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5171666257611024233}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: -0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 9.629203, y: -2.19644, z: 3.678033}
+  m_LocalScale: {x: 1.0152522, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1055283791169077369}
-  m_Father: {fileID: 589519598299003979}
+  m_Children: []
+  m_Father: {fileID: 1055283791169077369}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -257,19 +256,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &6408866777484779650
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5171666257611024233}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 31a19414c41e5ae4aae2af33fee712f6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_ShowMaskGraphic: 1
 --- !u!1 &5463133811564281636
 GameObject:
   m_ObjectHideFlags: 0
@@ -298,7 +284,7 @@ RectTransform:
   m_LocalScale: {x: 0.47851, y: 0.47851, z: 0.47851}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 7108326214345965571}
+  - {fileID: 1055283791169077369}
   m_Father: {fileID: 4914694516332781462}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -495,8 +481,8 @@ MonoBehaviour:
   startingDamage: 0
   debugText: {fileID: 0}
   hasHealthBar: 1
-  fullHealthBar: {fileID: 0}
-  healthBarMask: {fileID: 0}
+  fullHealthBar: {fileID: 8471415683461822554}
+  currentHealthBar: {fileID: 7647129132828864721}
   healthBarFadeTime: 1
   regen: 0
   regenDMG: 0
@@ -538,6 +524,8 @@ MonoBehaviour:
   clipLength: 1
   maxFragmentsToSpawn: 5
   spawnDistance: 3
+  dissolver: {fileID: 0}
+  deadEnemy: 0
 --- !u!136 &5087052621430113486
 CapsuleCollider:
   m_ObjectHideFlags: 0

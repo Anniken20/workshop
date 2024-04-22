@@ -9880,7 +9880,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   onlyOnce: 1
-  clickToContinue: 1
   dontUnlock: 0
   fixHudAftewards: 1
   dialogueData: {fileID: 11400000, guid: 78b015554fcd8844a89a77bc31db199d, type: 2}
@@ -9908,7 +9907,6 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 7db0a075bdaeffd44b92c34d6610b3aa, type: 3}
   - {fileID: 8300000, guid: 6f543e7de00bfe94e822b643eb464b43, type: 3}
   keyFinish: {fileID: 8300000, guid: 5ed0064032429ed419537431b422d0ea, type: 3}
-  dialogueMixerGroup: {fileID: 0}
 --- !u!65 &391133703
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -10118,7 +10116,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   onlyOnce: 0
-  clickToContinue: 1
   dontUnlock: 0
   fixHudAftewards: 1
   dialogueData: {fileID: 11400000, guid: 78b015554fcd8844a89a77bc31db199d, type: 2}
@@ -10167,7 +10164,6 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 7db0a075bdaeffd44b92c34d6610b3aa, type: 3}
   - {fileID: 8300000, guid: 6f543e7de00bfe94e822b643eb464b43, type: 3}
   keyFinish: {fileID: 8300000, guid: 5ed0064032429ed419537431b422d0ea, type: 3}
-  dialogueMixerGroup: {fileID: 0}
 --- !u!65 &402260505
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -20736,7 +20732,7 @@ MonoBehaviour:
   debugText: {fileID: 0}
   hasHealthBar: 1
   fullHealthBar: {fileID: 0}
-  healthBarMask: {fileID: 0}
+  currentHealthBar: {fileID: 0}
   healthBarFadeTime: 1
   regen: 0
   regenDMG: 0
@@ -28310,8 +28306,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 17.976542, y: 1, z: 1}
+  m_Center: {x: 0.82927924, y: 0, z: 0}
 --- !u!4 &960407328
 Transform:
   m_ObjectHideFlags: 0
@@ -36988,7 +36984,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   onlyOnce: 0
-  clickToContinue: 1
   dontUnlock: 0
   fixHudAftewards: 1
   dialogueData: {fileID: 11400000, guid: 78b015554fcd8844a89a77bc31db199d, type: 2}
@@ -37038,7 +37033,6 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 7db0a075bdaeffd44b92c34d6610b3aa, type: 3}
   - {fileID: 8300000, guid: 6f543e7de00bfe94e822b643eb464b43, type: 3}
   keyFinish: {fileID: 8300000, guid: 5ed0064032429ed419537431b422d0ea, type: 3}
-  dialogueMixerGroup: {fileID: 0}
 --- !u!65 &1382769969
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -37687,7 +37681,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   onlyOnce: 1
-  clickToContinue: 1
   dontUnlock: 0
   fixHudAftewards: 0
   dialogueData: {fileID: 11400000, guid: 78b015554fcd8844a89a77bc31db199d, type: 2}
@@ -37727,7 +37720,6 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 7db0a075bdaeffd44b92c34d6610b3aa, type: 3}
   - {fileID: 8300000, guid: 6f543e7de00bfe94e822b643eb464b43, type: 3}
   keyFinish: {fileID: 8300000, guid: 5ed0064032429ed419537431b422d0ea, type: 3}
-  dialogueMixerGroup: {fileID: 0}
 --- !u!82 &1406504024
 AudioSource:
   m_ObjectHideFlags: 0
@@ -42655,37 +42647,37 @@ PrefabInstance:
     - target: {fileID: 7169721200175234842, guid: 6cebc20f4d85d6a4f93b8b119157a33c,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.093781255
+      value: -0.093847945
       objectReference: {fileID: 0}
     - target: {fileID: 7169721200175234842, guid: 6cebc20f4d85d6a4f93b8b119157a33c,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 16.49755
+      value: 16.49759
       objectReference: {fileID: 0}
     - target: {fileID: 7169721200175234842, guid: 6cebc20f4d85d6a4f93b8b119157a33c,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -29.081367
+      value: -29.081335
       objectReference: {fileID: 0}
     - target: {fileID: 7169721200175234842, guid: 6cebc20f4d85d6a4f93b8b119157a33c,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.97139335
+      value: 0.97139317
       objectReference: {fileID: 0}
     - target: {fileID: 7169721200175234842, guid: 6cebc20f4d85d6a4f93b8b119157a33c,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.23747097
+      value: 0.2374717
       objectReference: {fileID: 0}
     - target: {fileID: 7169721200175234842, guid: 6cebc20f4d85d6a4f93b8b119157a33c,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.0015662785
+      value: 0.0015673902
       objectReference: {fileID: 0}
     - target: {fileID: 7169721200175234842, guid: 6cebc20f4d85d6a4f93b8b119157a33c,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.00038289916
+      value: -0.00038317218
       objectReference: {fileID: 0}
     - target: {fileID: 7888642324954607405, guid: 6cebc20f4d85d6a4f93b8b119157a33c,
         type: 3}
@@ -42735,37 +42727,37 @@ PrefabInstance:
     - target: {fileID: 8764098702666554367, guid: 6cebc20f4d85d6a4f93b8b119157a33c,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.093781255
+      value: -0.093847945
       objectReference: {fileID: 0}
     - target: {fileID: 8764098702666554367, guid: 6cebc20f4d85d6a4f93b8b119157a33c,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 16.49755
+      value: 16.49759
       objectReference: {fileID: 0}
     - target: {fileID: 8764098702666554367, guid: 6cebc20f4d85d6a4f93b8b119157a33c,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -29.081367
+      value: -29.081335
       objectReference: {fileID: 0}
     - target: {fileID: 8764098702666554367, guid: 6cebc20f4d85d6a4f93b8b119157a33c,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.97139335
+      value: 0.97139317
       objectReference: {fileID: 0}
     - target: {fileID: 8764098702666554367, guid: 6cebc20f4d85d6a4f93b8b119157a33c,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.23747097
+      value: 0.2374717
       objectReference: {fileID: 0}
     - target: {fileID: 8764098702666554367, guid: 6cebc20f4d85d6a4f93b8b119157a33c,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.0015662785
+      value: 0.0015673902
       objectReference: {fileID: 0}
     - target: {fileID: 8764098702666554367, guid: 6cebc20f4d85d6a4f93b8b119157a33c,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.00038289916
+      value: -0.00038317218
       objectReference: {fileID: 0}
     - target: {fileID: 9142747722827427783, guid: 6cebc20f4d85d6a4f93b8b119157a33c,
         type: 3}
@@ -44555,7 +44547,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   onlyOnce: 1
-  clickToContinue: 1
   dontUnlock: 0
   fixHudAftewards: 1
   dialogueData: {fileID: 11400000, guid: 78b015554fcd8844a89a77bc31db199d, type: 2}
@@ -44604,7 +44595,6 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 7db0a075bdaeffd44b92c34d6610b3aa, type: 3}
   - {fileID: 8300000, guid: 6f543e7de00bfe94e822b643eb464b43, type: 3}
   keyFinish: {fileID: 8300000, guid: 5ed0064032429ed419537431b422d0ea, type: 3}
-  dialogueMixerGroup: {fileID: 0}
 --- !u!114 &1725526762
 MonoBehaviour:
   m_ObjectHideFlags: 0
