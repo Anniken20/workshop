@@ -15,6 +15,14 @@ public class CoinCollector : MonoBehaviour, IDataPersistence
     private Vector2 uiOffScreenPosition; // Position when the UI is off-screen
     private Vector2 uiOnScreenPosition; // Position when the UI is on-screen
 
+    private bool coinHudVisible; // True if it is on screen
+    private int coinBunch = 0;
+    private float startingPitch = 0.75f;
+    private float pitchIncreaseFactor = 0.1f;
+    private float timeSinceLastCoin = 0f;
+    private float timeIgnoreSound = 0.05f;
+    private AudioSource audioPlayer;
+
     private Coroutine moveHUDRoutine;
 
     private void Awake()
@@ -24,6 +32,7 @@ public class CoinCollector : MonoBehaviour, IDataPersistence
             Instance = this;
             DontDestroyOnLoad(gameObject);
             SceneManager.sceneLoaded += OnSceneLoaded;
+            audioPlayer = GetComponentInChildren<AudioSource>();
         }
         else if (Instance != this)
         {
@@ -60,9 +69,19 @@ public class CoinCollector : MonoBehaviour, IDataPersistence
         UpdateCoinsText();
         ShowCoinsUI();
 
+        //Debug.Log("set pitch to " + (startingPitch + coinBunch * pitchIncreaseFactor) + " at coinBunch " + coinBunch);
+        if(Time.time - timeSinceLastCoin > timeIgnoreSound)
+        {
+            audioPlayer.outputAudioMixerGroup.audioMixer.SetFloat("coinsPitch", startingPitch + coinBunch * pitchIncreaseFactor);
+            audioPlayer.PlayOneShot(audioPlayer.clip);
+            timeSinceLastCoin = Time.time;
+            coinBunch++;
+        }
+        
+
         //kill the previous move routine to reset the time remaining until moving back
         if (moveHUDRoutine != null) StopCoroutine(moveHUDRoutine);
-        moveHUDRoutine = StartCoroutine(HideCoinsUIAfterDelay(5f));;
+        moveHUDRoutine = StartCoroutine(HideCoinsUIAfterDelay(5f));
     }
 
     private void UpdateCoinsText()
@@ -75,12 +94,14 @@ public class CoinCollector : MonoBehaviour, IDataPersistence
 
     private void ShowCoinsUI()
     {
-      coinsRectTransform.DOAnchorPos(uiOnScreenPosition, 0.5f); 
+        coinsRectTransform.DOAnchorPos(uiOnScreenPosition, 0.5f);
+        coinHudVisible = true;
     }
 
     public void ShowCoinsUIInstant()
     {
-    coinsRectTransform.anchoredPosition = uiOnScreenPosition; // Instantly place UI on-screen
+        coinsRectTransform.anchoredPosition = uiOnScreenPosition; // Instantly place UI on-screen
+        coinHudVisible = true;
     }
 
     private IEnumerator HideCoinsUIAfterDelay(float delay)
@@ -92,11 +113,15 @@ public class CoinCollector : MonoBehaviour, IDataPersistence
     private void HideCoinsUI()
     {
         coinsRectTransform.DOAnchorPos(uiOffScreenPosition, 0.5f);
+        coinHudVisible = false;
+        coinBunch = 0;
     }
 
     public void HideCoinsUIInstant()
     {
         coinsRectTransform.anchoredPosition = uiOffScreenPosition; // Instantly place UI off-screen
+        coinHudVisible = false;
+        coinBunch = 0;
     }
 
     public void LoadData(GameData data){

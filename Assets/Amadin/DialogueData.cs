@@ -33,7 +33,7 @@ public class DialogueData : ScriptableObject
     //public string[] dialogueLines;
 
     // Text size and color
-    public int textSize = 24;
+    public int textSize = 64;
     public Color textColor = Color.white;
 
     // Subtitles

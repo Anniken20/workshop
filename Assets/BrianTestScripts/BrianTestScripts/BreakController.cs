@@ -104,7 +104,7 @@ public class BreakController : MonoBehaviour
     public void BreakIntoPieces()
     {
         StartCoroutine(BreakWithSFX(clipLength));
-        dissolver.InitAndDissolve();
+        if(dissolver != null) dissolver.InitAndDissolve();
 
         //Debug.Log("BreakIntoPieces and dissolve called called.");
 

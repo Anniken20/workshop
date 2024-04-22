@@ -5,6 +5,8 @@ using System;
 using TMPro;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
+using UnityEngine.EventSystems;
+using UnityEngine.Events;
 
 [Serializable()]
 public struct UIElements
@@ -85,6 +87,10 @@ public class NotesSystem : MonoBehaviour
     private InputAction lassoPrev;
     private InputAction shootNext;
     private InputAction openN;
+    //public GameObject noteListButton;
+    public GameObject noteViewButton;
+    public UnityEvent notesOpened;
+
 
     private void OnEnable()
     {
@@ -129,9 +135,11 @@ public class NotesSystem : MonoBehaviour
             {
                 case true:
                     Open();
+                    notesOpened.Invoke();
                     break;
                 case false:
                     Close(activeNote != null);
+                    EventSystem.current.SetSelectedGameObject(null);
                     break;
             }
         }
@@ -182,6 +190,8 @@ public class NotesSystem : MonoBehaviour
 
     private void DisplayNote(Note note)
     {
+        EventSystem.current.SetSelectedGameObject(null);
+        EventSystem.current.SetSelectedGameObject(noteViewButton);
         if (note == null) { return; }
 
         SwitchGameControls(false);
@@ -318,6 +328,7 @@ public class NotesSystem : MonoBehaviour
         activeNote = null;
         currentPage = 0;
         readSubscript = false;
+        notesOpened.Invoke();
         if (!usingNotesSystem)
         {
             SwitchGameControls(true);

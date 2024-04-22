@@ -38,6 +38,7 @@ public class GhostEnemy : MonoBehaviour, IShootable
         aggroScript = GetComponentInChildren<AggroScript>();
         _visualEffectController = GetComponentInChildren<VisualEffect>();
         audioSource = GetComponent<AudioSource>();
+        GetComponent<Collider>().enabled = true;
     }
 
     void Start()
@@ -96,7 +97,7 @@ public class GhostEnemy : MonoBehaviour, IShootable
         RaycastHit hit;
         if (Physics.Raycast(transform.position, direction, out hit, movementSpeed * Time.deltaTime))
         {
-            if (hit.collider.CompareTag("Player"))
+            /*if (hit.collider.CompareTag("Player"))
             {
                 float distanceToPlayer = Vector3.Distance(transform.position, targetPosition);
                 float minDistance = Mathf.Max(minDistanceBetweenEnemies, attackRange); // Ensure the minimum distance is at least the attack range
@@ -111,7 +112,7 @@ public class GhostEnemy : MonoBehaviour, IShootable
                     // Adjust position to not go inside the player
                     transform.position = hit.point - direction * 1f; // Adjust to how far away
                 }
-            }
+            }*/
         }
     }
 
@@ -174,11 +175,13 @@ public class GhostEnemy : MonoBehaviour, IShootable
 
     void Die()
     {
+        GetComponent<Collider>().enabled = false;
+
         // Perform death-related action
         if (propGhost == true)
             StartCoroutine(DoEffectDeath(0f));
         else if (propGhost == false)
-            StartCoroutine(DoEffectDeath(1.2f));
+            StartCoroutine(DoEffectDeath(0.8f));
     }
 
     IEnumerator DoEffectDeath(float deathTime)

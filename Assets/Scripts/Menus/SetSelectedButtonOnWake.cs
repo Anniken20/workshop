@@ -10,10 +10,11 @@ public class SetSelectedButtonOnWake : MonoBehaviour
         
     }
     public void OnEnable(){
+        //Debug.Log("Im enabled");
         StartCoroutine(Wait());
     }
     private IEnumerator Wait(){
-        yield return new WaitForSeconds(0.01f);
+        yield return new WaitForSecondsRealtime(0.01f);
         //Debug.Log("I am actually doing something");
         EventSystem.current.SetSelectedGameObject(null);
         EventSystem.current.SetSelectedGameObject(button);

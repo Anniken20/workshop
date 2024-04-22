@@ -11,6 +11,8 @@ public class Enrique : Enemy, ICryable
     [HideInInspector] public RunToPointsState runToPointsState;
     private bool inBattle;
     public AudioClip crying;
+    public Animator anim;
+    private int i = 0;
 
     public GhostSpawner[] ghostSpawners;
     private void Awake()
@@ -31,6 +33,11 @@ public class Enrique : Enemy, ICryable
 
         //set default state
         stateMachine.Initialize(cryState);
+
+        anim.SetBool("Idle", true);
+        anim.SetBool("Crying", false);
+        anim.SetBool("Running", false);
+        anim.SetBool("Dead", false);
     }
 
     private void Update()
@@ -53,7 +60,6 @@ public class Enrique : Enemy, ICryable
     {
         stateMachine.ChangeState(cryState);
         audioSource.PlayOneShot(crying);
-        StopSpawning();
     }
 
     
@@ -71,23 +77,21 @@ public class Enrique : Enemy, ICryable
 
     private void SpawnGhosts()
     {
-        for(int i = 0; i < ghostSpawners.Length; i++)
+        if(i<4)
         {
-            ghostSpawners[i].ForceSpawns();
+            ghostSpawners[i].gameObject.SetActive(true);
+            if(i==0)
+            {
+                ghostSpawners[4].gameObject.SetActive(true);
+                ghostSpawners[5].gameObject.SetActive(true);
+                ghostSpawners[6].gameObject.SetActive(true);
+            }
         }
-    }
-
-    private void StopSpawning()
-    {
-        for (int i = 0; i < ghostSpawners.Length; i++)
-        {
-            ghostSpawners[i].ForceStopSpawns();
-        }
+        i++;
     }
 
     public override void Die()
     {
         base.Die();
-        StopSpawning();
     }
 }

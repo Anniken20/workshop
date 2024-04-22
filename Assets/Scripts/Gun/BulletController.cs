@@ -218,6 +218,9 @@ public class BulletController : MonoBehaviour
 
     private void Bounce(RaycastHit hitData)
     {
+        //debugbing
+        Debug.Log("hit: " + hitData.collider.gameObject.name);
+
         //teleport to point to prevent inconsistency from sometimes bouncing early
         position = hitData.point;
 
@@ -252,11 +255,15 @@ public class BulletController : MonoBehaviour
 
     private void TryToApplyDamage(GameObject obj)
     {
-        DamageController damageController;
-        if (obj.TryGetComponent<DamageController>(out damageController))
+        try
         {
-            damageController.ApplyDamage(currDmg, direction);
+            DamageController damageController;
+            if (obj.TryGetComponent<DamageController>(out damageController))
+            {
+                damageController.ApplyDamage(currDmg, direction);
+            }
         }
+        catch { }
     }
 
     private void TryToApplyShootable(GameObject obj)

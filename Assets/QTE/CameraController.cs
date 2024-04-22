@@ -69,7 +69,7 @@ public class CameraController : MonoBehaviour
             mainCam.transform.position = playerObject.transform.position + cameraOffset;
             if (Time.time > endTime) yield break;
             yield return null;
-            Debug.Log("camera local offset: " + cameraOffset);
+            //Debug.Log("camera local offset: " + cameraOffset);
         }
     }
 

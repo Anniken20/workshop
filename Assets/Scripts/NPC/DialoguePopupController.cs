@@ -26,8 +26,7 @@ public class DialoguePopupController : MonoBehaviour, IInteractable
 
     [Header("Settings")]
     public bool onlyOnce;
-    [Tooltip("Allow the player to use the SHOOT button to continue speaking")]
-    public bool clickToContinue;
+    private readonly bool clickToContinue = true;
     [Tooltip("Useful for keeping the player locked even after dialogue.")]
     public bool dontUnlock;
     public bool fixHudAftewards;
@@ -55,6 +54,7 @@ public class DialoguePopupController : MonoBehaviour, IInteractable
     public AudioClip keyFinish;
     private AudioSource audioSource;
 
+    private readonly float lockoutAfterTime = 0.5f;
 
     private void Start()
     {
@@ -113,8 +113,8 @@ public class DialoguePopupController : MonoBehaviour, IInteractable
     }
     
     public void StopSpeaking()
-    { 
-        if(!dontUnlock) ThirdPersonController.Main._inDialogue = false;
+    {
+        if (!dontUnlock) StartCoroutine(UnlockRoutine());
         DialogueManager.Main.gameObject.SetActive(false);
         if (clickToContinue) StopCoroutine(nameof(InputRoutine));
         inDialogue = false;
@@ -132,6 +132,13 @@ public class DialoguePopupController : MonoBehaviour, IInteractable
         DialogueManager.Main.characterPortrait.sprite = dialogues[i].portrait;
         if (writeRoutine != null) StopCoroutine(writeRoutine);
         writeRoutine = StartCoroutine(WriteRoutine(dialogues[i].message, dialogues[i].writeWaitTime));
+
+        //accessibility settings
+        DialogueManager.Main.characterNameText.color = dialogueData.textColor;
+        DialogueManager.Main.characterText.color = dialogueData.textColor;
+
+        DialogueManager.Main.characterNameText.fontSize = dialogueData.textSize;
+        DialogueManager.Main.characterText.fontSize = dialogueData.textSize;
     }
 
     private IEnumerator WriteRoutine(string msg, float waitTime)
@@ -189,6 +196,12 @@ public class DialoguePopupController : MonoBehaviour, IInteractable
         canSpeak = true;
     }
 
+    private IEnumerator UnlockRoutine()
+    {
+        yield return new WaitForSeconds(lockoutAfterTime);
+        ThirdPersonController.Main._inDialogue = false;
+    }
+
     private void Awake()
     {
         iaControls = new CharacterMovement();
@@ -198,10 +211,24 @@ public class DialoguePopupController : MonoBehaviour, IInteractable
     {
         next = iaControls.CharacterControls.Shoot;
         next.Enable();
+        PauseMenu.onPause += OnPause;
+        PauseMenu.onResume += OnResume;
     }
 
     private void OnDisable()
     {
         next.Disable();
+        PauseMenu.onPause -= OnPause;
+        PauseMenu.onResume -= OnResume;
+    }
+
+    private void OnPause()
+    {
+        next.Disable();
+    }
+
+    private void OnResume()
+    {
+        next.Enable();
     }
 }

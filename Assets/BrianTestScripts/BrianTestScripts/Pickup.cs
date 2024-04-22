@@ -6,7 +6,7 @@ public class Pickup : MonoBehaviour
 {
     public AudioClip pickUpSound;
     
-    protected virtual void OnTriggerEnter(Collider other)
+    protected internal virtual void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
