@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using StarterAssets;
 
 public class PauseMenu : MonoBehaviour
 {
@@ -74,7 +75,7 @@ public class PauseMenu : MonoBehaviour
     }
     public void Pause()
     {
-        Debug.Log("paused");
+        //Debug.Log("paused");
         paused = true;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
@@ -87,7 +88,7 @@ public class PauseMenu : MonoBehaviour
     }
     public void Continue()
     {
-        Debug.Log("Resume"); // Check if the method is being called
+        //Debug.Log("Resume"); // Check if the method is being called
 
         paused = false;
         Cursor.lockState = CursorLockMode.Locked;
@@ -95,6 +96,7 @@ public class PauseMenu : MonoBehaviour
         PausePanel.SetActive(false);
         HUD.SetActive(true);
         Time.timeScale = prevTimeScale;
+
         onResume?.Invoke();
         SubSettingBack();
         settingsPanel.SetActive(false);
@@ -151,7 +153,6 @@ public class PauseMenu : MonoBehaviour
 
     public void Settings()
     {
-        Debug.Log("Settings active");
         settingsPanel.SetActive(true);
         PausePanel.SetActive(false);
         AccessibilityPanel.SetActive(false);
@@ -249,8 +250,6 @@ public class PauseMenu : MonoBehaviour
 
     private IEnumerator FadeOutImage()
     {
-        Debug.Log("Fading out image");
-
         // Ensure fade image is active
         fadeImage.gameObject.SetActive(true);
 
@@ -269,7 +268,6 @@ public class PauseMenu : MonoBehaviour
 
         // Deactivate the fade image when the fade is complete
         fadeImage.gameObject.SetActive(false);
-        Debug.Log("Fade out complete");
     }
 
     //when not in-game but looking at settings

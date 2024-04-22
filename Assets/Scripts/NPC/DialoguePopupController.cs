@@ -60,6 +60,8 @@ public class DialoguePopupController : MonoBehaviour, IInteractable
     {
         HUDScaler = GameObject.FindGameObjectWithTag("HUD").GetComponentInChildren<Scale>();
         audioSource = GetComponent<AudioSource>();
+
+
     }
 
     public void Interacted()
@@ -199,6 +201,7 @@ public class DialoguePopupController : MonoBehaviour, IInteractable
     private IEnumerator UnlockRoutine()
     {
         yield return new WaitForSeconds(lockoutAfterTime);
+        Debug.Log("released from dialogue");
         ThirdPersonController.Main._inDialogue = false;
     }
 
@@ -211,10 +214,24 @@ public class DialoguePopupController : MonoBehaviour, IInteractable
     {
         next = iaControls.CharacterControls.Shoot;
         next.Enable();
+        PauseMenu.onPause += OnPause;
+        PauseMenu.onResume += OnResume;
     }
 
     private void OnDisable()
     {
         next.Disable();
+        PauseMenu.onPause -= OnPause;
+        PauseMenu.onResume -= OnResume;
+    }
+
+    private void OnPause()
+    {
+        next.Disable();
+    }
+
+    private void OnResume()
+    {
+        next.Enable();
     }
 }
