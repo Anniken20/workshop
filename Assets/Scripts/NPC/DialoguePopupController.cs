@@ -47,13 +47,14 @@ public class DialoguePopupController : MonoBehaviour, IInteractable
 
     //to lock the player out of being stuck inside the dialogue by retriggering it immediately
     private bool canSpeak = true;
-    private readonly float lockoutTime = 1f;
+    private readonly float lockoutTime = 2f;
 
     private Coroutine inputRoutine;
     public AudioClip[] keyTypes;
     public AudioClip keyFinish;
     private AudioSource audioSource;
 
+    private readonly float lockoutAfterTime;
 
     private void Start()
     {
@@ -106,21 +107,14 @@ public class DialoguePopupController : MonoBehaviour, IInteractable
         DialogueManager.Main.dialogueBackdrop.enabled = true;
         DisplayDialoguePiece(dialogueIndex);
 
-        //accessibility settings
-        DialogueManager.Main.characterNameText.color = dialogueData.textColor;
-        DialogueManager.Main.characterText.color = dialogueData.textColor;
-
-        DialogueManager.Main.characterNameText.fontSize = dialogueData.textSize;
-        DialogueManager.Main.characterText.fontSize = dialogueData.textSize;
-
         //GameObject[] objs = GameObject.FindGameObjectsWithTag("UI");
         //Array.Find(objs, element => element.name == "HUD");
         HUDScaler.ScaleTo(3f);
     }
     
     public void StopSpeaking()
-    { 
-        if(!dontUnlock) ThirdPersonController.Main._inDialogue = false;
+    {
+        if (!dontUnlock) StartCoroutine(UnlockRoutine());
         DialogueManager.Main.gameObject.SetActive(false);
         if (clickToContinue) StopCoroutine(nameof(InputRoutine));
         inDialogue = false;
@@ -138,6 +132,13 @@ public class DialoguePopupController : MonoBehaviour, IInteractable
         DialogueManager.Main.characterPortrait.sprite = dialogues[i].portrait;
         if (writeRoutine != null) StopCoroutine(writeRoutine);
         writeRoutine = StartCoroutine(WriteRoutine(dialogues[i].message, dialogues[i].writeWaitTime));
+
+        //accessibility settings
+        DialogueManager.Main.characterNameText.color = dialogueData.textColor;
+        DialogueManager.Main.characterText.color = dialogueData.textColor;
+
+        DialogueManager.Main.characterNameText.fontSize = dialogueData.textSize;
+        DialogueManager.Main.characterText.fontSize = dialogueData.textSize;
     }
 
     private IEnumerator WriteRoutine(string msg, float waitTime)
@@ -193,6 +194,12 @@ public class DialoguePopupController : MonoBehaviour, IInteractable
         canSpeak = false;
         yield return new WaitForSeconds(lockoutTime);
         canSpeak = true;
+    }
+
+    private IEnumerator UnlockRoutine()
+    {
+        yield return new WaitForSeconds(lockoutAfterTime);
+        ThirdPersonController.Main._inDialogue = false;
     }
 
     private void Awake()
