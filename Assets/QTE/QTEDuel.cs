@@ -70,6 +70,12 @@ public class QTEDuel : MonoBehaviour
     public string wonDuelString;
     public string tooLateString;
 
+    [Header("Cutscenes")]
+    public VideoController videoController;
+    public GameObject videoCanvas;
+    public float videoLength;
+    public GameObject playerHUD;
+
     //private variables -------------------------
     private bool inDuel;
     private float generatedWaitTime;
@@ -240,8 +246,19 @@ public class QTEDuel : MonoBehaviour
         hitSparkSystem.Play();
         gunShotAudio.Play();
 
-        PlayerWonDuel();
-        EndDuel();
+        if (videoController != null)
+            {
+                playerHUD.SetActive(false);
+                Time.timeScale = 1f;
+                videoCanvas.SetActive(true);
+                videoController.Start();
+                yield return new WaitForSeconds(videoLength);
+            }
+        if (videoController.skipped == false);
+        {
+            PlayerWonDuel();
+            EndDuel();
+        }
         yield break;
     }
     private IEnumerator Failed()
@@ -252,7 +269,7 @@ public class QTEDuel : MonoBehaviour
         yield break;
     }
 
-    private void EndDuel()
+    public void EndDuel()
     {
         //turn on post processing
         DOTween.To(() => postProcessVolume.weight, x => postProcessVolume.weight = x, 0f, postTransitionDuration);
@@ -336,8 +353,9 @@ public class QTEDuel : MonoBehaviour
         textCanvas.gameObject.SetActive(false);
     }
 
-    private void PlayerWonDuel()
+    public void PlayerWonDuel()
     {
+        playerHUD.SetActive(true);
         phase++;
         //duelEnemy.TakeDamage(enemyDamageOnLoss);
 
