@@ -254,7 +254,7 @@ public class QTEDuel : MonoBehaviour
                 videoController.Start();
                 yield return new WaitForSeconds(videoLength);
             }
-        if (videoController.skipped == false);
+        if (videoController != null && videoController.skipped == false);
         {
             PlayerWonDuel();
             EndDuel();
@@ -271,6 +271,10 @@ public class QTEDuel : MonoBehaviour
 
     public void EndDuel()
     {
+        if(videoCanvas != null)
+        {
+            videoCanvas.SetActive(false);
+        }
         //turn on post processing
         DOTween.To(() => postProcessVolume.weight, x => postProcessVolume.weight = x, 0f, postTransitionDuration);
 

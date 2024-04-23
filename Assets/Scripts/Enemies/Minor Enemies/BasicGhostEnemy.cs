@@ -176,7 +176,7 @@ public class GhostEnemy : MonoBehaviour, IShootable
     void Die()
     {
         GetComponent<Collider>().enabled = false;
-
+        canAttack = false;
         // Perform death-related action
         if (propGhost == true)
             StartCoroutine(DoEffectDeath(0f));
