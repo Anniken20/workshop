@@ -303,7 +303,7 @@ AudioSource:
     type: 2}
   m_audioClip: {fileID: 8300000, guid: ecf69e6d58401464b8ca5f969188ef4b, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.8
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -551,7 +551,7 @@ Transform:
   - {fileID: 7623985093454771788}
   - {fileID: 2903267939961594454}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &188417208894138192
 MonoBehaviour:
@@ -570,6 +570,7 @@ MonoBehaviour:
   sfxAudio: {fileID: 3663353615684387847}
   dialogueAudio: {fileID: 7754913213915424477}
   ambienceAudio: {fileID: 5845060915404172924}
+  musicLPFilter: {fileID: 0}
 --- !u!114 &5963525522510672502
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -583,4 +584,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   onStart: 1
+  stopMusic: 0
   audioClip: {fileID: 8300000, guid: ecf69e6d58401464b8ca5f969188ef4b, type: 3}

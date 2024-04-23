@@ -57,7 +57,7 @@ public class QTEDuel : MonoBehaviour
     [Tooltip("The amount of damage the player takes when enemy wins.")]
     public int playerDamageOnLoss;
     [Tooltip("The amount of time before the player is released after a duel.")]
-    public float releaseTime = 2f;
+    public float releaseTime = 0.5f;
 
     [Header("Aesthetics")]
     public float duelTimeScale = 0.5f;
@@ -158,7 +158,7 @@ public class QTEDuel : MonoBehaviour
         duelEnemy.StartDuel();
 
         generatedWaitTime = Random.Range(lowBoundTimeToPopup, highBoundTimeToPopup);
-        ThirdPersonController.Main.ForceStartConversation();
+        ThirdPersonController.Main.ForceStartDuel();
 
         Vector3 lookPos = duelEnemy.transform.position;
         lookPos.y = ThirdPersonController.Main.transform.position.y;
@@ -257,7 +257,7 @@ public class QTEDuel : MonoBehaviour
                 videoController.Start();
                 yield return new WaitForSeconds(videoLength);
             }
-        if (videoController.skipped == false);
+        if (videoController.skipped == false)
         {
             ThirdPersonController.Main.ForceStopConversation();
             AudioManager.main.musicAudio.Play();
@@ -375,7 +375,6 @@ public class QTEDuel : MonoBehaviour
             //nextEnemy.currentHealth = duelEnemy.currentHealth;
             nextEnemy.gameObject.SetActive(true);
             nextPhaseEvent?.Invoke();
-
             duelEnemy.gameObject.SetActive(false);
             nextQTEDuel.gameObject.SetActive(true);
 
@@ -411,7 +410,7 @@ public class QTEDuel : MonoBehaviour
 
     private void FreePlayer()
     {
-        ThirdPersonController.Main.ForceStopConversation();
+        ThirdPersonController.Main.ForceStopDuel();
     }
 
     public void PlayerDied()
