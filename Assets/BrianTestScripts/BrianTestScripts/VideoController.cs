@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.Video;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
+using TMPro.Examples;
 
 public class VideoController : MonoBehaviour, IDataPersistence
 {
@@ -16,16 +17,15 @@ public class VideoController : MonoBehaviour, IDataPersistence
     public VideoPlayer videoPlayer; 
     public RawImage rawImage; 
     private bool canSkip = false; 
+    public bool skipped = false;
     public bool isIntro;
     public bool introCompleted;
     public DataManager dataManager;
     bool triggeredOnce = true;
+    public QTEDuel qteDuel;
 
-    void Start()
+    public void Start()
     {
- 
-
-
         // Subscribe to the videoPlayer loopPointReached event
         videoPlayer.loopPointReached += EndReached;
 
@@ -39,6 +39,7 @@ public class VideoController : MonoBehaviour, IDataPersistence
     {
         yield return new WaitForSeconds(1f); // Adjust the delay time as needed
         canSkip = true;
+        Debug.Log("Can Skip");
     }
 
     void Update()
@@ -46,6 +47,7 @@ public class VideoController : MonoBehaviour, IDataPersistence
         // Check for input to enable skipping
         if (canSkip && Input.GetKeyDown(KeyCode.Space))
         {
+            skipped = true;
             SkipVideo();
         }
         if(isIntro && introCompleted && triggeredOnce){
@@ -66,7 +68,8 @@ public class VideoController : MonoBehaviour, IDataPersistence
                 }
         }
         // Load the next scene when the video ends
-        LoadScene(nextSceneName);
+        if (nextSceneName != null)
+            LoadScene(nextSceneName);
     }
 
     public void LoadScene(string nextSceneName)
@@ -103,6 +106,12 @@ public class VideoController : MonoBehaviour, IDataPersistence
         }
     
         LoadScene(nextSceneName);
+
+        if (qteDuel != null)
+        {
+            qteDuel.PlayerWonDuel();
+            qteDuel.EndDuel();
+        }
     }
 
     void OnDestroy()

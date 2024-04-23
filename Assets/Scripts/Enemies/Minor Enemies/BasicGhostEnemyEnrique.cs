@@ -179,7 +179,7 @@ public class GhostEnemyEnrique : MonoBehaviour, IShootable
 
         // Perform death-related action
         if (propGhost == true)
-            StartCoroutine(DoEffectDeath(0f));
+            StartCoroutine(DoEffectDeath(0.1f));
         else if (propGhost == false)
             StartCoroutine(DoEffectDeath(0.8f));
     }
