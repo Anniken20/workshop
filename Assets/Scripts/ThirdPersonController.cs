@@ -100,13 +100,13 @@ namespace StarterAssets
 
         // GMHN edited fields
         private bool _movementLocked;
-        [HideInInspector] public bool _lunaLocked;
-        [HideInInspector] public bool _paused;
-        [HideInInspector] public bool _stunned;
-        [HideInInspector] public bool _canMove = true; //not to be edited
-        [HideInInspector] public bool _inDialogue;
-        [HideInInspector] public bool _manipulatingLasso;
-        [HideInInspector] public bool _inCinematic;
+        public bool _lunaLocked;
+        public bool _paused;
+        public bool _stunned;
+        public bool _canMove = true; //not to be edited
+        public bool _inDialogue;
+        public bool _manipulatingLasso;
+        public bool _inCinematic;
         private bool _lockedInPlace;
         private Vector3 extraMotion;
 
