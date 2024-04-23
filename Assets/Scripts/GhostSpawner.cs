@@ -38,7 +38,7 @@ public class GhostSpawner : MonoBehaviour
 
     IEnumerator SpawnGhosts()
     {
-        Debug.Log("Should Spawn Ghost");
+        //Debug.Log("Should Spawn Ghost");
         while (numEnemiesSpawned < maxEnemies && playerInsideTrigger)
         {
             if (numEnemiesAlive < maxEnemies)
