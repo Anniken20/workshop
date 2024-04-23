@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using StarterAssets;
+using Unity.VisualScripting;
 
 public class Shop : Interactable, IDataPersistence
 {
@@ -27,6 +28,12 @@ public class Shop : Interactable, IDataPersistence
     private GameObject ammoMenu; // Assign in the Inspector
     [SerializeField]
     private GameObject hudGameObject;
+    [SerializeField]
+    private GameObject purchaseSuccess;
+    [SerializeField]
+    private GameObject notEnoughMoney;
+    [SerializeField]
+    private GameObject notEnoughMoneyOrPurchase;
 
 
     protected override void Start()
@@ -118,14 +125,21 @@ public class Shop : Interactable, IDataPersistence
         {
             SpendCoin(secretKeyCost); 
             InventoryManager.Instance.AddItem(InventoryManager.AllItems.SecretKey); // Adds the secret key to the inventory
-            Debug.Log("Secret Key Purchased!");
+            //Debug.Log("Secret Key Purchased!");
+            purchaseSuccess.SetActive(true);
+            notEnoughMoney.SetActive(false);
+            notEnoughMoneyOrPurchase.SetActive(false);
 
-             ToggleSecretKeyMenu(false);
+
+            ToggleSecretKeyMenu(false);
                 ToggleAmmoMenu(false);
         }
          else
         {
-            Debug.Log("Not enough coins or key already purchased.");
+            //Debug.Log("Not enough coins or key already purchased.");
+            notEnoughMoneyOrPurchase.SetActive(true);
+            purchaseSuccess.SetActive(false);
+            notEnoughMoney.SetActive(false);
         }
     }
 
@@ -138,12 +152,18 @@ public class Shop : Interactable, IDataPersistence
              {
                 SpendCoin(ammoCost);
                 gunController.GhostAmmo = gunController.GhostAmmo + 1;
-                Debug.Log("Ammo Purchased!");
-             }
+                //Debug.Log("Ammo Purchased!");
+                purchaseSuccess.SetActive(true);
+                notEnoughMoney.SetActive(false);
+                notEnoughMoneyOrPurchase.SetActive(false);
+            }
         }
         else
         {
-            Debug.Log("Not enough coins.");
+            //Debug.Log("Not enough coins.");
+            notEnoughMoney.SetActive(true);
+            purchaseSuccess.SetActive(false);
+            notEnoughMoneyOrPurchase.SetActive(false);
         }
     }
 
@@ -165,11 +185,17 @@ public class Shop : Interactable, IDataPersistence
     public void CloseShopMenu()
     {
         shopMenu.SetActive(false);
+        notEnoughMoney.SetActive(false);
+        purchaseSuccess.SetActive(false);
+        notEnoughMoneyOrPurchase.SetActive(false);
     }
 
     public void CloseAmmoMenu()
     {
         ammoMenu.SetActive(false);
+        notEnoughMoney.SetActive(false);
+        purchaseSuccess.SetActive(false);
+        notEnoughMoneyOrPurchase.SetActive(false);
     }
 
 
@@ -197,5 +223,10 @@ public class Shop : Interactable, IDataPersistence
         {
              Debug.LogError("GunController not found in the scene.");
         }
+    }
+
+    public IEnumerator Delay()
+    {
+        yield return new WaitForSeconds(0.5f);
     }
 }

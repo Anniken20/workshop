@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
 using UnityEngine.InputSystem;
+using StarterAssets;
 using TMPro;
 using Cinemachine;
 using StarterAssets;
@@ -69,6 +70,12 @@ public class QTEDuel : MonoBehaviour
     public string tooEarlyString;
     public string wonDuelString;
     public string tooLateString;
+
+    [Header("Cutscenes")]
+    public VideoController videoController;
+    public GameObject videoCanvas;
+    public float videoLength;
+    public GameObject playerHUD;
 
     //private variables -------------------------
     private bool inDuel;
@@ -240,8 +247,23 @@ public class QTEDuel : MonoBehaviour
         hitSparkSystem.Play();
         gunShotAudio.Play();
 
-        PlayerWonDuel();
-        EndDuel();
+        if (videoController != null)
+            {
+                ThirdPersonController.Main.ForceStartConversation();
+                AudioManager.main.musicAudio.Pause();
+                playerHUD.SetActive(false);
+                Time.timeScale = 1f;
+                videoCanvas.SetActive(true);
+                videoController.Start();
+                yield return new WaitForSeconds(videoLength);
+            }
+        if (videoController.skipped == false);
+        {
+            ThirdPersonController.Main.ForceStopConversation();
+            AudioManager.main.musicAudio.Play();
+            PlayerWonDuel();
+            EndDuel();
+        }
         yield break;
     }
     private IEnumerator Failed()
@@ -252,8 +274,9 @@ public class QTEDuel : MonoBehaviour
         yield break;
     }
 
-    private void EndDuel()
+    public void EndDuel()
     {
+        videoCanvas.SetActive(false);
         //turn on post processing
         DOTween.To(() => postProcessVolume.weight, x => postProcessVolume.weight = x, 0f, postTransitionDuration);
 
@@ -336,8 +359,9 @@ public class QTEDuel : MonoBehaviour
         textCanvas.gameObject.SetActive(false);
     }
 
-    private void PlayerWonDuel()
+    public void PlayerWonDuel()
     {
+        playerHUD.SetActive(true);
         phase++;
         //duelEnemy.TakeDamage(enemyDamageOnLoss);
 
