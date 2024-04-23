@@ -11,11 +11,13 @@ public class CryState : EnemyState
     {
         base.EnterState();
         if (enemy.animator != null) enemy.animator.SetBool("Crying", true);
+        Debug.Log("entered cry state");
     }
 
     public override void ExitState()
     {
-        base.ExitState();
         if (enemy.animator != null) enemy.animator.SetBool("Crying", false);
+        Debug.Log("exited cry state");
+        base.ExitState();
     }
 }

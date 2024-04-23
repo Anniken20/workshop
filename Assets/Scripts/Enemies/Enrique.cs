@@ -14,6 +14,8 @@ public class Enrique : Enemy, ICryable
     public Animator anim;
     private int i = 0;
 
+    private bool amCrying = false;
+
     public GhostSpawner[] ghostSpawners;
     private void Awake()
     {
@@ -22,9 +24,6 @@ public class Enrique : Enemy, ICryable
         idleState = gameObject.AddComponent<EnemyIdleState>();
         idleState.Initialize(this, stateMachine);
 
-        cryState = gameObject.AddComponent<CryState>();
-        cryState.Initialize(this, stateMachine);
-
         runToPointsState = gameObject.AddComponent<RunToPointsState>();
         runToPointsState.Initialize(this, stateMachine);
 
@@ -32,12 +31,7 @@ public class Enrique : Enemy, ICryable
         duelState.Initialize(this, stateMachine);
 
         //set default state
-        stateMachine.Initialize(cryState);
-
-        anim.SetBool("Idle", true);
-        anim.SetBool("Crying", false);
-        anim.SetBool("Running", false);
-        anim.SetBool("Dead", false);
+        stateMachine.Initialize(idleState);
     }
 
     private void Update()
@@ -58,7 +52,7 @@ public class Enrique : Enemy, ICryable
 
     public void StartCrying()
     {
-        stateMachine.ChangeState(cryState);
+        amCrying = true;
         audioSource.PlayOneShot(crying);
     }
 
@@ -66,7 +60,8 @@ public class Enrique : Enemy, ICryable
     public override void OnShot(BulletController bullet)
     {
         if (!inBattle) return;
-        if (stateMachine.CurrentEnemyState is CryState)
+        //Debug.Log(stateMachine.CurrentEnemyState);
+        if (amCrying)
         {
             TakeDamage((int)bullet.currDmg);
             stateMachine.ChangeState(runToPointsState);
@@ -93,5 +88,10 @@ public class Enrique : Enemy, ICryable
     public override void Die()
     {
         base.Die();
+    }
+
+    public void StopCrying()
+    {
+        amCrying = false;
     }
 }

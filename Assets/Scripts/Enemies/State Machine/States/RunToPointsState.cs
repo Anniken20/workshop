@@ -7,6 +7,7 @@ public class RunToPointsState : EnemyState
     public RunToPointsData runToPointsData;
     private Vector3 targetPoint;
     private Coroutine waitRoutine;
+    private bool atTarget;
 
     public RunToPointsState(Enemy enemy, EnemyStateMachine enemyStateMachine) : base(enemy, enemyStateMachine)
     {
@@ -17,19 +18,25 @@ public class RunToPointsState : EnemyState
         base.EnterState();
         nav.speed = enemy.defaultMovementSpeed;
         runToPointsData = (RunToPointsData)enemy.FindData("RunToPointsData");
+        atTarget = false;
         PickNextPoint();
-        enemy.animator.SetBool("Idle", false);
-        enemy.animator.SetBool("Crying", false);
         enemy.animator.SetBool("Running", true);
     }
 
     public override void FrameUpdate()
     {
-        if (ReachedDestination()) {
+        if (!atTarget && ReachedDestination()) {
+            atTarget = true;
+            enemy.animator.SetBool("Running", false);
             waitRoutine = StartCoroutine(WaitRoutine());
             if (runToPointsData.cryAfterReachingDestination)
             {
+                //Debug.Log("started crying");
                 ((ICryable)enemy).StartCrying();
+                enemy.animator.SetBool("Crying", true);
+            } else
+            {
+                enemy.animator.SetBool("Idle", true);
             }
         }
     }
@@ -45,19 +52,20 @@ public class RunToPointsState : EnemyState
     {
         if(waitRoutine != null) StopCoroutine(waitRoutine);
         targetPoint = runToPointsData.points[Random.Range(0, runToPointsData.points.Length)];
-        enemy.animator.SetBool("Idle", false);
-        enemy.animator.SetBool("Running", false);
-        enemy.animator.SetBool("Crying", true);
         //loop til u find a new point
         while (ReachedDestination())
         {
             targetPoint = runToPointsData.points[Random.Range(0, runToPointsData.points.Length)];
         }
-
-        nav.SetDestination(targetPoint);
-        enemy.animator.SetBool("Idle", false);
-        enemy.animator.SetBool("Crying", false);
+        if (runToPointsData.cryAfterReachingDestination)
+        {
+            //Debug.Log("stopped crying");
+            ((ICryable)enemy).StopCrying();
+            enemy.animator.SetBool("Crying", false);
+            atTarget = false;
+        }
         enemy.animator.SetBool("Running", true);
+        nav.SetDestination(targetPoint);
     }
 
     private bool ReachedDestination()
