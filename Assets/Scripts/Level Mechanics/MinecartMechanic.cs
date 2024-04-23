@@ -29,6 +29,7 @@ public class MinecartMechanic : MonoBehaviour
     {
         characterController = ThirdPersonController.Main.GetComponent<CharacterController>();
         characterController.enabled = false;
+        ThirdPersonController.Main.EnterMinecart();
         while (true)
         {
             yield return null;
@@ -63,6 +64,7 @@ public class MinecartMechanic : MonoBehaviour
     {
         OnEnd();
         splineAnimator.Pause();
+        ThirdPersonController.Main.LeaveMinecart();
         //ThirdPersonController.Main.GetComponent<GunController>().ExitMinecartMode();
     }
 

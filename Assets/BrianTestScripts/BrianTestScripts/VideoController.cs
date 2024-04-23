@@ -34,6 +34,7 @@ public class VideoController : MonoBehaviour, IDataPersistence
         // Play the video
         videoPlayer.Play();
         ThirdPersonController.Main.ForceStartConversation();
+        ThirdPersonController.Main.gameObject.GetComponent<PlayerHealth>().invulnerable = true;
         // Enable skipping after a short delay
         StartCoroutine(EnableSkippingDelay());
     }
@@ -113,6 +114,7 @@ public class VideoController : MonoBehaviour, IDataPersistence
         if (qteDuel != null)
         {
             ThirdPersonController.Main.ForceStopConversation();
+            ThirdPersonController.Main.gameObject.GetComponent<PlayerHealth>().invulnerable = false;
             AudioManager.main.musicAudio.Play();
             qteDuel.PlayerWonDuel();
             qteDuel.EndDuel();
