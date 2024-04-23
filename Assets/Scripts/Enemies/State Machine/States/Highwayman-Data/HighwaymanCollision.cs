@@ -30,7 +30,7 @@ public class HighwaymanCollision : MonoBehaviour
     }
     public void FixedUpdate(){
         Vector3 player = ThirdPersonController.Main.gameObject.transform.position;
-        player.y = this.transform.position.y;
-        this.transform.LookAt(player);
+        //player.y = this.transform.position.y;
+        //this.transform.LookAt(player);
     }
 }

@@ -13,7 +13,8 @@ public class HighwaymanTeleportState : EnemyState
     public override void EnterState(){
         base.EnterState();
         highwayData = (HighwaymanData)enemy.FindData("HighwayData");
-        this.transform.position = TargetTile.transform.position;
+        //this.transform.position = TargetTile.transform.position;
+        this.transform.position = new Vector3(TargetTile.transform.position.x, 3.84f, TargetTile.transform.position.z);
     }
     public override void ExitState(){
         base.ExitState();
