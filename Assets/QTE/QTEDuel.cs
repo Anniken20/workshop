@@ -4,7 +4,6 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
 using UnityEngine.InputSystem;
-using StarterAssets;
 using TMPro;
 using Cinemachine;
 using StarterAssets;
@@ -57,7 +56,7 @@ public class QTEDuel : MonoBehaviour
     [Tooltip("The amount of damage the player takes when enemy wins.")]
     public int playerDamageOnLoss;
     [Tooltip("The amount of time before the player is released after a duel.")]
-    public float releaseTime = 0.5f;
+    public float releaseTime = 2f;
 
     [Header("Aesthetics")]
     public float duelTimeScale = 0.5f;
@@ -158,7 +157,7 @@ public class QTEDuel : MonoBehaviour
         duelEnemy.StartDuel();
 
         generatedWaitTime = Random.Range(lowBoundTimeToPopup, highBoundTimeToPopup);
-        ThirdPersonController.Main.ForceStartDuel();
+        ThirdPersonController.Main.ForceStartConversation();
 
         Vector3 lookPos = duelEnemy.transform.position;
         lookPos.y = ThirdPersonController.Main.transform.position.y;
@@ -249,18 +248,14 @@ public class QTEDuel : MonoBehaviour
 
         if (videoController != null)
             {
-                ThirdPersonController.Main.ForceStartConversation();
-                AudioManager.main.musicAudio.Pause();
                 playerHUD.SetActive(false);
                 Time.timeScale = 1f;
                 videoCanvas.SetActive(true);
                 videoController.Start();
                 yield return new WaitForSeconds(videoLength);
             }
-        if (videoController.skipped == false)
+        if (videoController != null && videoController.skipped == false);
         {
-            ThirdPersonController.Main.ForceStopConversation();
-            AudioManager.main.musicAudio.Play();
             PlayerWonDuel();
             EndDuel();
         }
@@ -276,7 +271,10 @@ public class QTEDuel : MonoBehaviour
 
     public void EndDuel()
     {
-        videoCanvas.SetActive(false);
+        if(videoCanvas != null)
+        {
+            videoCanvas.SetActive(false);
+        }
         //turn on post processing
         DOTween.To(() => postProcessVolume.weight, x => postProcessVolume.weight = x, 0f, postTransitionDuration);
 
@@ -375,6 +373,7 @@ public class QTEDuel : MonoBehaviour
             //nextEnemy.currentHealth = duelEnemy.currentHealth;
             nextEnemy.gameObject.SetActive(true);
             nextPhaseEvent?.Invoke();
+
             duelEnemy.gameObject.SetActive(false);
             nextQTEDuel.gameObject.SetActive(true);
 
@@ -410,7 +409,7 @@ public class QTEDuel : MonoBehaviour
 
     private void FreePlayer()
     {
-        ThirdPersonController.Main.ForceStopDuel();
+        ThirdPersonController.Main.ForceStopConversation();
     }
 
     public void PlayerDied()
