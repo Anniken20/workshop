@@ -100,13 +100,14 @@ namespace StarterAssets
 
         // GMHN edited fields
         private bool _movementLocked;
-        [HideInInspector] public bool _lunaLocked;
-        [HideInInspector] public bool _paused;
-        [HideInInspector] public bool _stunned;
-        [HideInInspector] public bool _canMove = true; //not to be edited
-        [HideInInspector] public bool _inDialogue;
-        [HideInInspector] public bool _manipulatingLasso;
-        [HideInInspector] public bool _inCinematic;
+        public bool _lunaLocked;
+        public bool _paused;
+        public bool _stunned;
+        public bool _canMove = true; //not to be edited
+        public bool _inDialogue;
+        private bool _inDuel;
+        public bool _manipulatingLasso;
+        public bool _inCinematic;
         private bool _lockedInPlace;
         private Vector3 extraMotion;
 
@@ -478,7 +479,7 @@ namespace StarterAssets
             return _paused 
                 || _lunaLocked || _stunned 
                 || _inDialogue || _manipulatingLasso 
-                || _inCinematic || _lockedInPlace;
+                || _inCinematic || _lockedInPlace || _inDuel;
         }
 
         public void LockPlayerForDuration(float seconds)
@@ -501,6 +502,16 @@ namespace StarterAssets
         public void ForceStopConversation()
         {
             _inDialogue = false;
+        }
+
+        public void ForceStartDuel()
+        {
+            _inDuel = true;
+        }
+
+        public void ForceStopDuel()
+        {
+            _inDuel = false;
         }
 
         public void LockInPlace()
@@ -611,6 +622,31 @@ namespace StarterAssets
         {
             transform.position = toPos;
             Camera.main.GetComponent<CameraController>().RecomposeCamera();
+        }
+
+        public void InstantTeleport(GameObject toObj)
+        {
+            transform.position = toObj.transform.position;
+            Camera.main.GetComponent<CameraController>().RecomposeCamera();
+        }
+
+        public void SetRotation(GameObject toObj)
+        {
+            transform.rotation = toObj.transform.rotation;
+        }
+
+        public void EnterMinecart()
+        {
+            if (_hasAnimator)
+            {
+                _animator.SetBool(_animIDJump, false);
+                _animator.SetBool(_animIDFreeFall, false);
+            }
+        }
+
+        public void LeaveMinecart()
+        {
+
         }
 
     }

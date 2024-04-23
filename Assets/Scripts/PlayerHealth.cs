@@ -15,6 +15,7 @@ public class PlayerHealth : MonoBehaviour, IDataPersistence
 
     public Image healthBarImage; 
     public DeathScreenManager deathScreenManager;
+    public bool invulnerable = false;
 
     // Debug menu
     public bool godModeEnabled = false;
@@ -72,6 +73,9 @@ public class PlayerHealth : MonoBehaviour, IDataPersistence
 
         // Check if the player is already dead
         if (currentHealth <= 0)
+            return;
+
+        if (invulnerable)
             return;
 
         // Reduce player's health
