@@ -50,8 +50,8 @@ public class Horse : Enemy
         duelState.Initialize(this, stateMachine);
 
         stateMachine.Initialize(idleState);
-        if(transform.FindChild("RunningParticles") != null){
-            particles = transform.FindChild("RunningParticles").GetComponent<RunningParticleEmitter>();
+        if(transform.Find("RunningParticles") != null){
+            particles = transform.Find("RunningParticles").GetComponent<RunningParticleEmitter>();
         }
     }
 
