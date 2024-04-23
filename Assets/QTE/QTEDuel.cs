@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
 using UnityEngine.InputSystem;
+using StarterAssets;
 using TMPro;
 using Cinemachine;
 using StarterAssets;
@@ -248,6 +249,8 @@ public class QTEDuel : MonoBehaviour
 
         if (videoController != null)
             {
+                ThirdPersonController.Main.ForceStartConversation();
+                AudioManager.main.musicAudio.Pause();
                 playerHUD.SetActive(false);
                 Time.timeScale = 1f;
                 videoCanvas.SetActive(true);
@@ -256,6 +259,8 @@ public class QTEDuel : MonoBehaviour
             }
         if (videoController.skipped == false);
         {
+            ThirdPersonController.Main.ForceStopConversation();
+            AudioManager.main.musicAudio.Play();
             PlayerWonDuel();
             EndDuel();
         }
@@ -271,6 +276,7 @@ public class QTEDuel : MonoBehaviour
 
     public void EndDuel()
     {
+        videoCanvas.SetActive(false);
         //turn on post processing
         DOTween.To(() => postProcessVolume.weight, x => postProcessVolume.weight = x, 0f, postTransitionDuration);
 
