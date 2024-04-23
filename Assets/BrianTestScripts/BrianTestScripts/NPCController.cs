@@ -7,37 +7,31 @@ using UnityEngine.AI;
 [RequireComponent(typeof(NavMeshAgent))]
 public class NPCController : MonoBehaviour
 {
-    public Transform playerTransform; // Assign the player's transform in the inspector
-    public float detectionRadius = 5f; // Radius within which the AI can detect the player
-    public float interactionDistance = 3f; // Distance within which the AI stops and faces the player
-    private NavMeshAgent agent;
-    public Transform startPoint;
-    public Transform endPoint;
-    private Vector3 currentTarget;
-    private Vector3 startPointWorldPosition;
-    private Vector3 endPointWorldPosition;
-    public Vector3 postInteractionDirection = Vector3.forward; // Direction the NPC faces after interaction
-    private bool isInteractingWithPlayer = false;
-    public AudioSource ambientSound;
-    public Animator anim;
+    public Transform playerTransform; // Player's Transform
+    public float detectionRadius = 5f; // Detection radius for the player
+    public float interactionDistance = 3f; // Distance to stop and interact
+    private NavMeshAgent agent; // NavMeshAgent component
+    public Transform startPoint; // Starting point of the NPC
+    public Transform endPoint; // End point of the NPC
+    private Vector3 currentTarget; // Current navigation target
+    public Vector3 postInteractionDirection = Vector3.forward; // Default facing direction after interaction
+    private bool isInteractingWithPlayer = false; // Interaction flag
+    public AudioSource ambientSound; // Ambient sound source
+    public Animator anim; // Animator for the NPC
 
-    public enum MovementAxis
-    {
-        X,
-        Z
-    }
-
-    public MovementAxis movementAxis = MovementAxis.X; // Default to X axis
+    public enum MovementAxis { X, Z }
+    public MovementAxis movementAxis = MovementAxis.X; // Default movement axis
 
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
-        if (agent == null) Debug.LogWarning("No NavMeshAgent attached to " + gameObject.name);
-        startPointWorldPosition = startPoint.position;
-        endPointWorldPosition = endPoint.position;
-    
-        currentTarget = startPointWorldPosition;
-        if(agent.isOnNavMesh) agent.SetDestination(currentTarget);
+        if (!agent) Debug.LogWarning("No NavMeshAgent attached to " + gameObject.name);
+        
+        // Calculate and cache world positions for start and end points
+        currentTarget = startPoint.position;
+        if (agent.isOnNavMesh) 
+            agent.SetDestination(currentTarget);
+        
         anim.SetBool("Idle", false);
         anim.SetBool("Walking", true);
     }
@@ -46,9 +40,10 @@ public class NPCController : MonoBehaviour
     {
         float distanceToPlayer = Vector3.Distance(transform.position, playerTransform.position);
 
+        // Detect and handle player interaction
         if (distanceToPlayer <= interactionDistance)
         {
-            if (!isInteractingWithPlayer && agent.isOnNavMesh)
+            if (!isInteractingWithPlayer)
             {
                 agent.isStopped = true;
                 agent.ResetPath();
@@ -56,13 +51,13 @@ public class NPCController : MonoBehaviour
                 anim.SetBool("Idle", true);
                 isInteractingWithPlayer = true;
             }
-            FaceTarget(playerTransform.position); // Face the player during interaction
+            FaceTarget(playerTransform.position); // Face the player
         }
         else
         {
             if (isInteractingWithPlayer)
             {
-                // Once player exits the interaction range, NPC faces the predetermined direction
+                // Reset interaction and face default direction
                 isInteractingWithPlayer = false;
                 FaceDirection(postInteractionDirection);
                 agent.isStopped = false;
@@ -71,19 +66,20 @@ public class NPCController : MonoBehaviour
                 anim.SetBool("Walking", true);
             }
 
+            // Check if it's time to switch targets
             if (agent.isOnNavMesh && !agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
             {
                 SwitchCurrentTarget();
             }
-
         }
 
+        // Handle ambient sound based on interaction state
         HandleAmbientSound(isInteractingWithPlayer);
     }
 
     void SwitchCurrentTarget()
     {
-        currentTarget = currentTarget == startPointWorldPosition ? endPointWorldPosition : startPointWorldPosition;
+        currentTarget = currentTarget == startPoint.position ? endPoint.position : startPoint.position;
         agent.SetDestination(currentTarget);
     }
 
@@ -101,7 +97,7 @@ public class NPCController : MonoBehaviour
 
     void HandleAmbientSound(bool isInteracting)
     {
-        if (ambientSound != null)
+        if (ambientSound)
         {
             if (!isInteracting && !ambientSound.isPlaying)
             {
