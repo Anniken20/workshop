@@ -54,6 +54,7 @@ public class EnemyBullet : MonoBehaviour
                     transform.position,
                     transform.position + (direction.normalized * speed),
                     speed * Time.deltaTime);
+        distanceTraveled += speed * Time.deltaTime;
     }
 
     private void TryBounce()
