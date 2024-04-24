@@ -14,7 +14,7 @@ public class BountyBoard : MonoBehaviour, IDataPersistence
     //public GameObject particleEffect;
     // public ClearSaveData clearSaveDataScript;
 
-    private bool playerEnteredOnce = false;
+    public bool playerEnteredOnce = false;
     // private string playerEnteredOnceKey = "PlayerEnteredOnce";
 
     private bool paused = false;
@@ -34,6 +34,12 @@ public class BountyBoard : MonoBehaviour, IDataPersistence
 
     public Collider collider1;
     private int levelCompleted;
+    //Cutscene Stuff
+    public VideoController videoController;
+    public GameObject videoCanvas;
+    public float videoLength;
+    public GameObject playerHUD;
+    public GameObject hubMusic;
 
     private void Start()
     {
@@ -148,7 +154,15 @@ public class BountyBoard : MonoBehaviour, IDataPersistence
                 // First time player enters the trigger, move to CallToActionCutscene_MP4 scene
                 playerEnteredOnce = true;
                 FindObjectOfType<DataManager>().SaveGame();
-                SceneManager.LoadScene("CallToActionCutscene_MP4");
+                //SceneManager.LoadScene("CallToActionCutscene_MP4");
+                if (videoController != null)
+                {
+                    hubMusic.SetActive(false);
+                    playerHUD.SetActive(false);
+                    videoCanvas.SetActive(true);
+                    videoController.Start();
+                    AudioManager.main.musicAudio.Stop();
+                }
                 playerEnteredOnce = true;
                 //PlayerPrefs.SetInt(playerEnteredOnceKey, 1); // Save playerEnteredOnce state to PlayerPrefs
                 UnPauseNoUI(); // Pause the game when the scene loads needed or else locked in place on load
@@ -294,5 +308,14 @@ public class BountyBoard : MonoBehaviour, IDataPersistence
     {
         //data.calltoactionCompleted = this.calltoactionCompleted;
         data.calltoactionCompleted = this.playerEnteredOnce;
+    }
+
+    public void EndVideo()
+    {
+        if(videoCanvas != null)
+        {
+            videoCanvas.SetActive(false);
+            hubMusic.SetActive(true);
+        }
     }
 }
