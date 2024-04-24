@@ -14,6 +14,7 @@ public class GraveShaker : MonoBehaviour
     public Animator anim;
     private bool lerptoOut = false;
     private Vector3 outPos;
+    private GeneralParticleEmitter particles;
     private void Start()
     {
         ogPos = this.transform.position;
@@ -21,6 +22,7 @@ public class GraveShaker : MonoBehaviour
         anim = d.gameObject.GetComponentInChildren<Animator>();
         this.outPos = this.transform.Find("OutPOS").position;
         lerptoOut = false;
+        particles = this.GetComponentInChildren<GeneralParticleEmitter>();
     }
     public void StartShake(float shakeSpeed, float shakeAmount, float shakeDuration, string axis)
     {
@@ -33,6 +35,7 @@ public class GraveShaker : MonoBehaviour
     public IEnumerator Shake()
     {
         float elapsedTime = 0.0f;
+        particles.ToggleParticles(true);
         while (elapsedTime < sDur)
         {
             //Debug.Log(this.gameObject.name +": " +elapsedTime.ToString());
@@ -82,6 +85,7 @@ public class GraveShaker : MonoBehaviour
         this.GetComponent<DaughterGraveWrangle>().peeking = false;
         //GetComponentInParent<GraveSelection>().MovePoppy(this.transform.Find("OutPOS").position);
         anim.SetBool("Climbing", false);
+        particles.ToggleParticles(false);
         //StartCoroutine(JumpCooldown());
         anim.SetBool("Jumping", true);
         //GetComponentInParent<GraveSelection>().LerpToOutPOS(this.transform.Find("OutPOS").position);
