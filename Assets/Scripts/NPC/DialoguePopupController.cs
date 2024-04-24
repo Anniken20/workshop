@@ -8,6 +8,7 @@ using DG.Tweening;
 using StarterAssets;
 using UnityEngine.InputSystem;
 using System;
+using StarterAssets;
 
 [System.Serializable]
 public struct DialogueFrame
@@ -99,6 +100,8 @@ public class DialoguePopupController : MonoBehaviour, IInteractable
 
     public void BeginSpeaking()
     {
+        //Prevent Movement
+        ThirdPersonController.Main.ForceStartConversation();
         dialogueIndex = 0;
         DialogueManager.Main.gameObject.SetActive(true);
         ThirdPersonController.Main._inDialogue = true;
@@ -121,6 +124,8 @@ public class DialoguePopupController : MonoBehaviour, IInteractable
         onFinishedChatting.Invoke();
         if(fixHudAftewards) HUDScaler.ScaleTo(1f);
         StopCoroutine(inputRoutine);
+        //Restore Movement after delay
+        StartCoroutine(EndConvo());
         //if (hidePopupAfterwards) DialogueManager.Main.GetComponent<Scale>().ScaleTo(1f);
     }
 
@@ -230,5 +235,12 @@ public class DialoguePopupController : MonoBehaviour, IInteractable
     private void OnResume()
     {
         next.Enable();
+    }
+
+    //Restore movement after small delay
+    public IEnumerator EndConvo()
+    {
+        yield return new WaitForSeconds(0.25f);
+        ThirdPersonController.Main.ForceStopConversation();
     }
 }
