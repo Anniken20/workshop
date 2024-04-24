@@ -9,6 +9,7 @@ public class VultureKeeper : Enemy
 
     public GameObject[] boxes;
     private float explosionPower = 20000f;
+    public Animator anim;
 
     private void Awake(){
         base.MyAwake();
@@ -40,7 +41,13 @@ public class VultureKeeper : Enemy
             StartCoroutine(YellowDelay());
         } else
         {
-            foreach(GameObject box in boxes)
+            anim.SetBool("Idle", false);
+            anim.SetBool("Scared", false);
+            anim.SetBool("Throw", true);
+            Debug.Log("Set Throwing to true");
+            StartCoroutine(ThrowDelay());
+
+            foreach (GameObject box in boxes)
             {
                 Rigidbody rb = box.GetComponent<Rigidbody>();
                 if (rb != null)
@@ -58,6 +65,16 @@ public class VultureKeeper : Enemy
         yield return new WaitForSeconds(0.5f);
         yellowModel.SetActive(false);
         normalModel.SetActive(true);
+    }
+
+    public IEnumerator ThrowDelay()
+    {
+        Debug.Log("Waiting to go back to idle");
+        yield return new WaitForSeconds(2f);
+        anim.SetBool("Throw", false);
+        anim.SetBool("Scared", false);
+        anim.SetBool("Idle", true);
+        Debug.Log("Back to idle");
     }
 
 
