@@ -36,6 +36,7 @@ public class VideoController : MonoBehaviour, IDataPersistence
         videoPlayer.Play();
         ThirdPersonController.Main.ForceStartConversation();
         ThirdPersonController.Main.gameObject.GetComponent<PlayerHealth>().invulnerable = true;
+        AudioManager.main.musicAudio.Stop();
         // Enable skipping after a short delay
         StartCoroutine(EnableSkippingDelay());
     }
@@ -118,7 +119,6 @@ public class VideoController : MonoBehaviour, IDataPersistence
 
         if (qteDuel != null)
         {
-            ThirdPersonController.Main.ForceStopConversation();
             ThirdPersonController.Main.gameObject.GetComponent<PlayerHealth>().invulnerable = false;
             AudioManager.main.musicAudio.Play();
             qteDuel.PlayerWonDuel();
@@ -126,7 +126,6 @@ public class VideoController : MonoBehaviour, IDataPersistence
         }
         if (bountyBoard != null)
         {
-            ThirdPersonController.Main.ForceStopConversation();
             AudioManager.main.musicAudio.Play();
             bountyBoard.EndVideo();
         }

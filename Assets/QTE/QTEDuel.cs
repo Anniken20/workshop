@@ -75,6 +75,7 @@ public class QTEDuel : MonoBehaviour
     public GameObject videoCanvas;
     public float videoLength;
     public GameObject playerHUD;
+    public bool dialogueAfter = false;
 
     //private variables -------------------------
     private bool inDuel;
@@ -299,7 +300,8 @@ public class QTEDuel : MonoBehaviour
         Invoke(nameof(TurnoffDuelCanvas), postTransitionDuration);
 
         //free player
-        Invoke(nameof(FreePlayer), releaseTime);
+        if (dialogueAfter == false)
+            Invoke(nameof(FreePlayer), releaseTime);
     }
 
     private void StartDuelAesthetics()
