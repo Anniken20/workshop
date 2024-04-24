@@ -23,7 +23,7 @@ public class VultureKeeperAnim : MonoBehaviour
 
     public IEnumerator CowerDelay()
     {
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(2.5f);
         anim.SetBool("Crying", false);
         anim.SetBool("Idle", true);
     }
