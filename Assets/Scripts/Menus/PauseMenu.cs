@@ -117,6 +117,8 @@ public class PauseMenu : MonoBehaviour
 
         // Start the fade effect
         StartCoroutine(FadeOutImage());
+
+        Camera.main.GetComponent<CameraController>().RecomposeCamera();
     }
 
     public void PauseNoUI()
