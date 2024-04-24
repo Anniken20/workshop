@@ -7,6 +7,9 @@ public class VultureKeeper : Enemy
     public GameObject yellowModel;
     public GameObject normalModel;
 
+    public GameObject[] boxes;
+    private float explosionPower = 20000f;
+
     private void Awake(){
         base.MyAwake();
         duelState = gameObject.AddComponent<DuelState>();
@@ -35,6 +38,18 @@ public class VultureKeeper : Enemy
             yellowModel.SetActive(true);
             normalModel.SetActive(false);
             StartCoroutine(YellowDelay());
+        } else
+        {
+            foreach(GameObject box in boxes)
+            {
+                Rigidbody rb = box.GetComponent<Rigidbody>();
+                if (rb != null)
+                {
+                    rb.AddForce((box.transform.position - transform.position).normalized
+                        * explosionPower, ForceMode.Impulse);
+                    Debug.Log("sent " + box + " flying");
+                }
+            }
         }
     }
 

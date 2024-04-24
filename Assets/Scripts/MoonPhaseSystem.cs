@@ -33,6 +33,7 @@ public class MoonPhaseSystem : MonoBehaviour
 
     private IEnumerator PhaseAnimationRoutine()
     {
+        ThirdPersonController.Main.gameObject.GetComponent<PlayerHealth>().invulnerable = true;
         backgroundImage.DOColor(Color.black, 1f);
         yield return new WaitForSeconds(2f);
         moonImage.DOColor(Color.white, 1f);
@@ -55,6 +56,8 @@ public class MoonPhaseSystem : MonoBehaviour
     {
         //may eventually cause enemy to transition to their running state or something
         ThirdPersonController.Main._inDialogue = false;
+        ThirdPersonController.Main.ForceStopConversation();
+        ThirdPersonController.Main.gameObject.GetComponent<PlayerHealth>().invulnerable = false;
         enemyCam.GetComponent<CameraBlender>().DeactivateCamera();
         onFinish?.Invoke();
     }
