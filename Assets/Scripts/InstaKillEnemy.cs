@@ -17,8 +17,15 @@ public class InstaKillEnemy : MonoBehaviour
         {
             anim.SetBool("Walking", false);
             anim.SetBool("Dead", true);
-            s.TakeDamage(damage);
-            onJordanHit?.Invoke();
+            StartCoroutine(TripDelay(s));
         }
+    }
+
+    public IEnumerator TripDelay(Salesman s)
+    {
+        yield return new WaitForSeconds(2f);
+        s.TakeDamage(damage);
+        onJordanHit?.Invoke();
+
     }
 }
