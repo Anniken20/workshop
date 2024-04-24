@@ -75,6 +75,7 @@ public class Coin : Pickup
 
         yield return new WaitForSeconds(timeUntilHover);
         GetComponent<Hover>().StartHovering();
-        GetComponent<RotateOverTime>().StartRotating();
+        if(GetComponent<RotateOverTime>() != null) 
+            GetComponent<RotateOverTime>().StartRotating();
     }
 }

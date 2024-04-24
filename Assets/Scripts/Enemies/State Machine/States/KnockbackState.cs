@@ -56,9 +56,12 @@ public class KnockbackState : EnemyState
         knockbackObj.SetActive(true);
         knockbackObj.transform.position = player.transform.position;
         KnockbackZone kbz = knockbackObj.GetComponent<KnockbackZone>();
+        /*
         kbz.pushDirection = 
             knockbackData.destinationPosition - player.transform.position;
         kbz.knockbackStrength = knockbackData.knockbackPower;
+        */
+        kbz.pushDestination = knockbackData.destinationPosition;
         StartCoroutine(TurnoffKnockbackZoneRoutine());
     }
 
