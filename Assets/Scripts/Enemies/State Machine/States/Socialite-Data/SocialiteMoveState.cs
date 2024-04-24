@@ -82,7 +82,8 @@ public class SocialiteMoveState : EnemyState
     }
     private IEnumerator SpawnMist()
     {
-        if(transform.Find("MistSpawnPOS") != null && this.enemy.currentHealth > 0){
+        if(transform.Find("MistSpawnPOS") != null && this.enemy.isDead == false){
+            Debug.Log("Trying to spawn Mist");
             var mistSpawn = transform.Find("MistSpawnPOS");
             Instantiate(moveData.mistObj, mistSpawn.position, Quaternion.identity);
             yield return new WaitForSeconds(moveData.mistSpawnCD);

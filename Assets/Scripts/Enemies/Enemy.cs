@@ -71,6 +71,7 @@ public abstract class Enemy : MonoBehaviour, IShootable, IDataPersistence
     public int regenDMG;
     [Tooltip("Time to wait before regen")]
     public float regenTimer;
+    [HideInInspector] public bool isDead = false;
 
     protected NavMeshAgent nav;
 
@@ -148,7 +149,7 @@ public abstract class Enemy : MonoBehaviour, IShootable, IDataPersistence
             enemiesList.Add(this.enemy);
         }
         onDeath?.Invoke();
-
+        isDead = true;
         //destroy this script
         Destroy(this);
     }
