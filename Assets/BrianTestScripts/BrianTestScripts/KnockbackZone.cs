@@ -5,9 +5,11 @@ using StarterAssets;
 
 public class KnockbackZone : MonoBehaviour 
 {
+    public float pushDuration = 1.5f;
     public float knockbackStrength = 10f;
     public float knockbackCooldown = 2f; // Cooldown in seconds
     private float lastKnockbackTime = -Mathf.Infinity;
+    public Vector3 pushDestination;
 
     public Vector3 pushDirection = new Vector3(0, 0, 1);
 
@@ -40,7 +42,8 @@ public class KnockbackZone : MonoBehaviour
         if (controller != null)
         {
             Vector3 direction = pushDirection.normalized;
-            controller.Push(direction * knockbackStrength);
+            //controller.Push(direction * knockbackStrength);
+            controller.TweenPush(pushDestination, pushDuration);
 
             lastKnockbackTime = Time.time; // Update last knockback time
         }
