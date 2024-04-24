@@ -19,4 +19,10 @@ public class VultureKeeper : Enemy
     public void ExitIdle(){
 
     }
+
+    public override void OnShot(BulletController bullet)
+    {
+        base.OnShot(bullet);
+        damageDelegate?.Invoke();
+    }
 }
