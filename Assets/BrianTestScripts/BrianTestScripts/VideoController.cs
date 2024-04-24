@@ -25,6 +25,7 @@ public class VideoController : MonoBehaviour, IDataPersistence
     public DataManager dataManager;
     bool triggeredOnce = true;
     public QTEDuel qteDuel;
+    public BountyBoard bountyBoard;
 
     public void Start()
     {
@@ -74,6 +75,10 @@ public class VideoController : MonoBehaviour, IDataPersistence
         // Load the next scene when the video ends
         if (nextSceneName != null)
             LoadScene(nextSceneName);
+        if (bountyBoard != null)
+        {
+            bountyBoard.EndVideo();
+        }
     }
 
     public void LoadScene(string nextSceneName)
@@ -118,6 +123,12 @@ public class VideoController : MonoBehaviour, IDataPersistence
             AudioManager.main.musicAudio.Play();
             qteDuel.PlayerWonDuel();
             qteDuel.EndDuel();
+        }
+        if (bountyBoard != null)
+        {
+            ThirdPersonController.Main.ForceStopConversation();
+            AudioManager.main.musicAudio.Play();
+            bountyBoard.EndVideo();
         }
     }
 
