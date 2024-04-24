@@ -182,4 +182,9 @@ public class PlayerHealth : MonoBehaviour, IDataPersistence
     {
         data.playerHealth = currentHealth;
     }
+
+    public void SetInvulnerability(bool yes)
+    {
+        invulnerable = yes;
+    }
 }
