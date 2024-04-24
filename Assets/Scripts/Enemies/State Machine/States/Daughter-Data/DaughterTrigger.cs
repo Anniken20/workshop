@@ -18,5 +18,8 @@ public class DaughterTrigger : MonoBehaviour
             canTrigger = false;
         }
     }
+    public void StartEncounter(){
+        g.ActivateGrave();
+    }
 
 }

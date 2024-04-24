@@ -97,6 +97,7 @@ public class GraveShaker : MonoBehaviour
     }
     public void CancelPeek()
     {
+        particles.ToggleParticles(false);
         anim.SetBool("Idle", true);
         anim.SetBool("Climbing", false);
         StopCoroutine(PeekingWait());
