@@ -47,7 +47,7 @@ public class VultureKeeper : Enemy
                 {
                     rb.AddForce((box.transform.position - transform.position).normalized
                         * explosionPower, ForceMode.Impulse);
-                    Debug.Log("sent " + box + " flying");
+                    //Debug.Log("sent " + box + " flying");
                 }
             }
         }
