@@ -241,6 +241,6 @@ public class DialoguePopupController : MonoBehaviour, IInteractable
     public IEnumerator EndConvo()
     {
         yield return new WaitForSeconds(0.25f);
-        ThirdPersonController.Main.ForceStopConversation();
+        if(!dontUnlock) ThirdPersonController.Main.ForceStopConversation();
     }
 }
