@@ -27,7 +27,7 @@ public class PlayerHealth : MonoBehaviour, IDataPersistence
     [SerializeField] private float _damageFadeOutTime = 0.5f;
     [SerializeField] private float _invulnerabilityDuration = 2.0f; 
 
-    private float _invulnerabilityTimer = 0f;
+    public float _invulnerabilityTimer = 0f;
 
     [Header("References")]
     [SerializeField] private ScriptableRendererFeature _fullScreenDamage;

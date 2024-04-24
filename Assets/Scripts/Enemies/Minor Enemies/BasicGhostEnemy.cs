@@ -119,7 +119,7 @@ public class GhostEnemy : MonoBehaviour, IShootable
     void AttackPlayer()
     {
         PlayerHealth playerHealth = aggroScript.target.GetComponent<PlayerHealth>();
-        if (playerHealth != null)
+        if (playerHealth != null && !playerHealth.invulnerable && playerHealth._invulnerabilityTimer <= 0)
         {
             playerHealth.TakeDamage(damage);
             canAttack = false;
