@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 #endif
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 
 /* Note: animations are called via the controller for both the character and capsule using animator null checks
  */
@@ -647,6 +648,19 @@ namespace StarterAssets
         public void LeaveMinecart()
         {
 
+        }
+
+        public void TweenPush(Vector3 endPosition, float duration)
+        {
+            StartCoroutine(TweenPushRoutine(endPosition, duration));
+        }
+
+        private IEnumerator TweenPushRoutine(Vector3 endPosition, float duration)
+        {
+            _controller.enabled = false;
+            transform.DOMove(endPosition, duration).SetEase(Ease.OutCubic);
+            yield return new WaitForSeconds(duration);
+            _controller.enabled = true;
         }
 
     }

@@ -211,6 +211,7 @@ public abstract class Enemy : MonoBehaviour, IShootable, IDataPersistence
      public IEnumerator Regenerate(float dmg){
         yield return new WaitForSeconds(regenTimer);
         currentHealth += dmg;
+        damageDelegate?.Invoke();
     }
     public void LoadData(GameData data){
         if(data.deadEnemies.Contains(this.enemy)){
