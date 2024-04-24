@@ -50,7 +50,7 @@ ParticleSystem:
   emitterVelocityMode: 1
   looping: 1
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
@@ -4837,6 +4837,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2255477286101911541}
+  - component: {fileID: 7786688231083982984}
   m_Layer: 0
   m_Name: NewMinecartSparks
   m_TagString: Untagged
@@ -4859,8 +4860,24 @@ Transform:
   - {fileID: 1838715369342239513}
   - {fileID: 3571042039939458876}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7786688231083982984
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 727961770900310185}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 90d0a318b251fc24dbb34220863bf88f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Testingtoggle: 0
+  particles:
+  - {fileID: 679490719504204927}
+  - {fileID: 5630058735473308401}
 --- !u!1 &1062872120608901623
 GameObject:
   m_ObjectHideFlags: 0
@@ -4911,7 +4928,7 @@ ParticleSystem:
   emitterVelocityMode: 1
   looping: 1
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:

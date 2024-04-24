@@ -27,4 +27,10 @@ public class GeneralParticleEmitter : MonoBehaviour
             }
         }
     }
+    public void TurnOnParticles(){
+        ToggleParticles(true);
+    }
+    public void TurnOffParticles(){
+        ToggleParticles(false);
+    }
 }

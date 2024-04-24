@@ -11,15 +11,19 @@ public class MinecartMechanic : MonoBehaviour
     public GameObject riderTransform;
     private CharacterController characterController;
     private Coroutine rideRoutine;
-
+    private GeneralParticleEmitter particles;
     //start and stop for a frame to fix rotation bug
     private void Start()
     {
         splineAnimator = GetComponent<SplineAnimate>();
+        particles = this.GetComponentInChildren<GeneralParticleEmitter>();
     }
 
     public void StartRide()
     {
+        if(particles !=null){
+            particles.ToggleParticles(true);
+        }
         splineAnimator.Play();
         rideRoutine = StartCoroutine(RideRoutine());
         //ThirdPersonController.Main.GetComponent<GunController>().EnterMinecartMode();
@@ -61,7 +65,10 @@ public class MinecartMechanic : MonoBehaviour
     }
 
     public void EndRide()
-    {
+    {        
+        if(particles !=null){
+            particles.ToggleParticles(false);
+        }
         OnEnd();
         splineAnimator.Pause();
         ThirdPersonController.Main.LeaveMinecart();
