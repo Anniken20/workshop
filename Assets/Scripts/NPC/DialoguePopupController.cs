@@ -121,11 +121,11 @@ public class DialoguePopupController : MonoBehaviour, IInteractable
         DialogueManager.Main.gameObject.SetActive(false);
         if (clickToContinue) StopCoroutine(nameof(InputRoutine));
         inDialogue = false;
+        StartCoroutine(EndConvo());
         onFinishedChatting.Invoke();
         if(fixHudAftewards) HUDScaler.ScaleTo(1f);
         StopCoroutine(inputRoutine);
         //Restore Movement after delay
-        StartCoroutine(EndConvo());
         //if (hidePopupAfterwards) DialogueManager.Main.GetComponent<Scale>().ScaleTo(1f);
     }
 
@@ -142,7 +142,7 @@ public class DialoguePopupController : MonoBehaviour, IInteractable
         DialogueManager.Main.characterNameText.color = dialogueData.textColor;
         DialogueManager.Main.characterText.color = dialogueData.textColor;
 
-        DialogueManager.Main.characterNameText.fontSize = dialogueData.textSize;
+       // DialogueManager.Main.characterNameText.fontSize = dialogueData.textSize;
         DialogueManager.Main.characterText.fontSize = dialogueData.textSize;
     }
 
@@ -242,5 +242,10 @@ public class DialoguePopupController : MonoBehaviour, IInteractable
     {
         yield return new WaitForSeconds(0.25f);
         ThirdPersonController.Main.ForceStopConversation();
+    }
+
+    public void FreezePlayer()
+    {
+        ThirdPersonController.Main.ForceStartConversation();
     }
 }
