@@ -15,6 +15,7 @@ public class ShadowController : MonoBehaviour
     public float maxShadowSize = 2f; // Maximum size of the shadow before triggering the cube fall
     private float stillTime = 0f; // Time the player has been still
     public float maxStillTime = 5f; // Maximum time player can be still before triggering the cube fall
+    public GameObject enemy;
 
     private void Start()
     {
@@ -50,6 +51,7 @@ public class ShadowController : MonoBehaviour
     {
         // Instantiate the cube at player's position plus some height
         GameObject fallingCube = Instantiate(fallingCubePrefab, player.position + Vector3.up * 5, Quaternion.identity);
+        enemy.GetComponent<VultureKeeperAnim>().CallBirds();
     }
 
     void ResetShadowAndTimer()
