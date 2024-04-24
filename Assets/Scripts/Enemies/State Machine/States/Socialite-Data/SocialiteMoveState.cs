@@ -82,10 +82,12 @@ public class SocialiteMoveState : EnemyState
     }
     private IEnumerator SpawnMist()
     {
-        var mistSpawn = transform.Find("MistSpawnPOS");
-        Instantiate(moveData.mistObj, mistSpawn.position, Quaternion.identity);
-        yield return new WaitForSeconds(moveData.mistSpawnCD);
-        StartCoroutine(SpawnMist());
+        if(transform.Find("MistSpawnPOS") != null && this.enemy.currentHealth > 0){
+            var mistSpawn = transform.Find("MistSpawnPOS");
+            Instantiate(moveData.mistObj, mistSpawn.position, Quaternion.identity);
+            yield return new WaitForSeconds(moveData.mistSpawnCD);
+            StartCoroutine(SpawnMist());
+        }
 
     }
 }

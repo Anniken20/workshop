@@ -5,6 +5,8 @@ using DG.Tweening;
 using TMPro;
 using UnityEngine.UI;
 using StarterAssets;
+using UnityEngine.Events;
+
 
 public class MoonPhaseSystem : MonoBehaviour
 {
@@ -18,6 +20,7 @@ public class MoonPhaseSystem : MonoBehaviour
     public Enemy enemy;
     public GameObject enemyCam;
     public Scale HUD;
+    public UnityEvent onFinish;
 
     public void PhaseAnimation()
     {
@@ -53,5 +56,6 @@ public class MoonPhaseSystem : MonoBehaviour
         //may eventually cause enemy to transition to their running state or something
         ThirdPersonController.Main._inDialogue = false;
         enemyCam.GetComponent<CameraBlender>().DeactivateCamera();
+        onFinish?.Invoke();
     }
 }
