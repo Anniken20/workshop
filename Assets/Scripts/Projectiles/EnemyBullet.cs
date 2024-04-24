@@ -19,6 +19,7 @@ public class EnemyBullet : MonoBehaviour
     private void Start()
     {
         gunAudioController = GetComponent<GunAudioController>();
+        StartCoroutine(BulletTimer());
     }
 
     //eventually maybe we should rework this so it's by scriptable object data instead of inspector values in an enemy prefab D:
@@ -165,5 +166,11 @@ public class EnemyBullet : MonoBehaviour
         {
             shootableController.OnShot();
         }
+    }
+
+    public IEnumerator BulletTimer()
+    {
+        yield return new WaitForSeconds(10f);
+        Destroy(gameObject);
     }
 }
