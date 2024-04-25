@@ -80,7 +80,7 @@ public class GraveShaker : MonoBehaviour
     
     IEnumerator PeekingWait()
     {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(5f);
        // Debug.Log("Heading to Out POS");
         this.GetComponent<DaughterGraveWrangle>().peeking = false;
         //GetComponentInParent<GraveSelection>().MovePoppy(this.transform.Find("OutPOS").position);
