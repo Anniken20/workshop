@@ -4,11 +4,14 @@ using UnityEngine;
 
 public class ResetScaleOnDisable : MonoBehaviour
 {
-    private Vector3 startSize;
+    /*public Vector3 startSize;
     private void Start(){
-        startSize = transform.localScale;
-    }
+        startSize = this.transform.localScale;
+    }*/
     private void OnDisable(){
-        this.transform.localScale = startSize;
+        this.transform.localScale = new Vector3(1, 1, 1);
+    }
+    private void OnEnable(){
+        this.transform.localScale = new Vector3(1, 1, 1);
     }
 }
