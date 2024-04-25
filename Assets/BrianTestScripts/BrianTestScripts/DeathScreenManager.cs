@@ -80,11 +80,13 @@ public class DeathScreenManager : MonoBehaviour
         if(sceneChanger != null){
             sceneChanger.LoadScene(scene.name);
         }
+        Time.timeScale = 1f;
     }
 
     public void QuitToMainMenu()
     {
         HideDeathScreen();
+        Time.timeScale = 1f;
         SceneManager.LoadScene("MainMenu");
     }
 }
