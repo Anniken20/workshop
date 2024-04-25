@@ -12,7 +12,16 @@ public class SceneTeleport : MonoBehaviour, IDataPersistence
     public string scene_name;
     public DataManager dataManager;
     public int levelCompleted;
-    private int savedComplete;
+    public int savedComplete;
+    public bool isHubTeleport;
+    private bool ranInto;
+    public void Start(){
+        if(dataManager != null)
+            {
+                dataManager.LoadGame();
+
+            }
+    }
 
     public void OnTriggerEnter(Collider other)
     {
@@ -20,20 +29,27 @@ public class SceneTeleport : MonoBehaviour, IDataPersistence
         {
             if(dataManager != null)
             {
+                this.ranInto = true;
                 dataManager.SaveGame();
+                LoadScene(scene_name);
+                Debug.Log("loaded scene");
             }
-            LoadScene(scene_name);
-            Debug.Log("loaded scene");
+
         } 
     }
     
     public void LoadData(GameData data){
         savedComplete = data.levelComplete;
+        Debug.Log("Saved Complete: " +savedComplete);
+        Debug.Log("Stored Data Complete: " +data.levelComplete);
     }
     public void SaveData(ref GameData data){
         //Debug.Log("Saving");
-        if(this.levelCompleted > savedComplete){
+        if(this.levelCompleted >= savedComplete && this.levelCompleted != 0){
+            if(this.isHubTeleport && ranInto == true){
+            Debug.Log("Doing thing");
             data.levelComplete = this.levelCompleted;
+            }
         }
     }
 
