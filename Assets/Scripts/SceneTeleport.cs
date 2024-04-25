@@ -12,7 +12,7 @@ public class SceneTeleport : MonoBehaviour, IDataPersistence
     public string scene_name;
     public DataManager dataManager;
     public int levelCompleted;
-    public int savedComplete;
+    private int savedComplete;
     public bool isHubTeleport;
     private bool ranInto;
     public void Start(){
@@ -40,8 +40,8 @@ public class SceneTeleport : MonoBehaviour, IDataPersistence
     
     public void LoadData(GameData data){
         savedComplete = data.levelComplete;
-        Debug.Log("Saved Complete: " +savedComplete);
-        Debug.Log("Stored Data Complete: " +data.levelComplete);
+        //Debug.Log("Saved Complete: " +savedComplete);
+        //Debug.Log("Stored Data Complete: " +data.levelComplete);
     }
     public void SaveData(ref GameData data){
         //Debug.Log("Saving");
