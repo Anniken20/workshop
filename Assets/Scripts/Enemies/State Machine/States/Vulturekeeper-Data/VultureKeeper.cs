@@ -42,7 +42,7 @@ public class VultureKeeper : Enemy
         } else
         {
             anim.SetBool("Idle", false);
-            anim.SetBool("Scared", false);
+            anim.SetBool("Crying", false);
             anim.SetBool("Throw", true);
             Debug.Log("Set Throwing to true");
             StartCoroutine(ThrowDelay());
@@ -72,7 +72,7 @@ public class VultureKeeper : Enemy
         Debug.Log("Waiting to go back to idle");
         yield return new WaitForSeconds(2f);
         anim.SetBool("Throw", false);
-        anim.SetBool("Scared", false);
+        anim.SetBool("Crying", false);
         anim.SetBool("Idle", true);
         Debug.Log("Back to idle");
     }
