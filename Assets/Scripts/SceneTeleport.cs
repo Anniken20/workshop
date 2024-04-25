@@ -45,13 +45,13 @@ public class SceneTeleport : MonoBehaviour, IDataPersistence
     }
     public void SaveData(ref GameData data){
         //Debug.Log("Saving");
-        if(this.levelCompleted >= savedComplete && this.levelCompleted != 0){
+        /*if(this.levelCompleted >= savedComplete && this.levelCompleted != 0){
             if(this.isHubTeleport && ranInto == true){
                 Debug.Log("Doing thing");
                 Debug.Log("This Objects level complete: " +this.levelCompleted);
                 data.levelComplete = this.levelCompleted;
             }
-        }
+        }*/
     }
 
     public void LoadScene(string scene_name)
