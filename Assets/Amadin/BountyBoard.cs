@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System;
+using StarterAssets;
 
 public class BountyBoard : MonoBehaviour, IDataPersistence
 {
@@ -234,5 +235,13 @@ public class BountyBoard : MonoBehaviour, IDataPersistence
             videoCanvas.SetActive(false);
             hubMusic.SetActive(true);
         }
+        if(PauseMenu.paused) PauseMenu.main.UnPauseNoUI();
+        ThirdPersonController.Main._inDialogue = false;
+    }
+
+    public void BackButton()
+    {
+        PauseMenu.main.UnPauseNoUI();
+        ThirdPersonController.Main._inDialogue = false;
     }
 }
