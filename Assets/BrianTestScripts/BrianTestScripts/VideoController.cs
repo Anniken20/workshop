@@ -1,4 +1,4 @@
-using System.Collections;
+ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -29,6 +29,7 @@ public class VideoController : MonoBehaviour, IDataPersistence
 
     public void Start()
     {
+        canSkip = true;
         // Subscribe to the videoPlayer loopPointReached event
         videoPlayer.loopPointReached += EndReached;
 
@@ -43,9 +44,9 @@ public class VideoController : MonoBehaviour, IDataPersistence
 
     IEnumerator EnableSkippingDelay()
     {
-        yield return new WaitForSeconds(1f); // Adjust the delay time as needed
+        yield return new WaitForSeconds(1f);  // Ensure this wait time is not too long
         canSkip = true;
-        Debug.Log("Can Skip");
+        Debug.Log("Skipping now enabled");
     }
 
     void Update()
