@@ -169,13 +169,15 @@ public class BountyBoard : MonoBehaviour, IDataPersistence
     {
         PauseMenu.main.UnPauseNoUI(); // Unpause the game when starting Level 3
         // Load Level 3
-        SceneManager.LoadScene("Level 3");
+        SceneManager.LoadScene("LowPointCutscene_MP4");
         Debug.Log("Starting Level 3...");
     }
 
     // Method to handle back button click event
     private void BackButtonClicked()
     {
+        PauseMenu.main.UnPauseNoUI();
+        levelSelectPopup.SetActive(false);
         // Check if the player is still inside the trigger area
         if (!IsPlayerInsideTriggerArea())
         {
