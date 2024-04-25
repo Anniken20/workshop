@@ -6,6 +6,8 @@ public class VultureKeeperAnim : MonoBehaviour
 {
     // Start is called before the first frame update
     public Animator anim;
+    public AudioSource audioSource;
+    public AudioClip projectileSFX;
 
     void Start()
     {
@@ -16,6 +18,7 @@ public class VultureKeeperAnim : MonoBehaviour
 
     public void CallBirds()
     {
+        audioSource.PlayOneShot(projectileSFX);
         if (anim.GetBool("Throw") == false)
         {
             anim.SetBool("Idle", false);
