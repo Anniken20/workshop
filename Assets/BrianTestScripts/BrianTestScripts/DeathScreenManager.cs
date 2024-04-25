@@ -75,7 +75,11 @@ public class DeathScreenManager : MonoBehaviour
         respawner.RestartFromCheckpoint();
         HideDeathScreen();
         Scene scene = SceneManager.GetActiveScene();
-        FindObjectOfType<SceneTeleport>().LoadScene(scene.name);
+        //FindObjectOfType<SceneTeleport>().LoadScene(scene.name);
+        var sceneChanger = this.GetComponent<SceneTeleport>();
+        if(sceneChanger != null){
+            sceneChanger.LoadScene(scene.name);
+        }
     }
 
     public void QuitToMainMenu()
