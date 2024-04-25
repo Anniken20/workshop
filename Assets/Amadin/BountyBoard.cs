@@ -17,18 +17,8 @@ public class BountyBoard : MonoBehaviour, IDataPersistence
     public bool playerEnteredOnce = false;
     // private string playerEnteredOnceKey = "PlayerEnteredOnce";
 
-    private bool paused = false;
-    private float prevTimeScale = 1f;
-    public static event Action onPause;
-
     // Save and load 
     public bool calltoactionCompleted = false;
-
-    // Commented out as no need for it to run
-   //Save data keys for defeating characters
-    private string carilloDefeatedKey = "CarilloDefeated";
-    private string santanaDefeatedKey = "SantanaDefeated";
-    private string dianaDefeatedKey = "DianaDefeated";
 
     public bool popupActivated = false;
 
@@ -53,48 +43,11 @@ public class BountyBoard : MonoBehaviour, IDataPersistence
         level3Button.onClick.AddListener(StartLevel3);*/
         backButton.onClick.AddListener(BackButtonClicked);
 
-        // Subscribe to onPause event
-        PauseMenu.onPause += PauseNoUI;
-
         // Deactivate the level select pop-up initially
         levelSelectPopup.SetActive(false);
 
         // Enable the particle effect when the scene starts
         //particleEffect.SetActive(true);
-
-        // Check if characters are defeated and activate/deactivate level buttons accordingly
-        bool carilloDefeated = PlayerPrefs.GetInt(carilloDefeatedKey, 0) == 1;
-        bool santanaDefeated = PlayerPrefs.GetInt(santanaDefeatedKey, 0) == 1;
-        bool dianaDefeated = PlayerPrefs.GetInt(dianaDefeatedKey, 0) == 1;
-
-        // Enable level 2 button if Carillo is defeated
-        //level2Button.interactable = carilloDefeated;
-
-        // Enable level 3 button if Santana is defeated
-        //level3Button.interactable = santanaDefeated;
-
-        // Disable level 2 and level 3 buttons if Carillo and Santana are not defeated respectively
-        /* Debug.Log(levelCompleted);
-         if (levelCompleted == 0)
-         {
-             level2Button.interactable = false;
-             level3Button.interactable = false;
-         }
-         else if (levelCompleted < 2)
-         {
-             level3Button.interactable = false;
-         }
-
-         if (levelCompleted == 1)
-         {
-             level2Button.interactable = true;
-             level3Button.interactable = false;
-         }
-         else if (levelCompleted == 2)
-         {
-             level2Button.interactable = true;
-             level3Button.interactable = true;
-         }*/
 
         if(levelCompleted == 0)
         {
@@ -163,19 +116,18 @@ public class BountyBoard : MonoBehaviour, IDataPersistence
                     videoController.Start();
                     AudioManager.main.musicAudio.Stop();
                 }
-                playerEnteredOnce = true;
+                PauseMenu.main.UnPauseNoUI(); // Unpause the game when the pop-up is deactivated
                 //PlayerPrefs.SetInt(playerEnteredOnceKey, 1); // Save playerEnteredOnce state to PlayerPrefs
-                UnPauseNoUI(); // Pause the game when the scene loads needed or else locked in place on load
                 playerEnteredOnce = true;
                 // Disable the particle effect when transitioning to the next scene
                 //particleEffect.SetActive(false);
             }
             else
             {
+                PauseMenu.main.PauseNoUI(); // Pause the game when the pop-up is active
                 //calltoactionCompleted = true;
                 // Player has already entered once, show the level select pop-up
                 levelSelectPopup.SetActive(true);
-                PauseNoUI(); // Pause the game when the pop-up is active
 
                 // Disable the particle effect when showing the pop-up
                 //particleEffect.SetActive(false);
@@ -188,9 +140,9 @@ public class BountyBoard : MonoBehaviour, IDataPersistence
     {
         if (collider1.CompareTag("Player"))
         {
+            PauseMenu.main.UnPauseNoUI(); // Unpause the game when the pop-up is deactivated
             // Player exited proximity, hide the level select pop-up
             levelSelectPopup.SetActive(false);
-            UnPauseNoUI(); // Unpause the game when the pop-up is deactivated
             popupActivated = false;
         }
     }
@@ -198,26 +150,26 @@ public class BountyBoard : MonoBehaviour, IDataPersistence
     // Functions to start each level
     private void StartLevel1()
     {
+        PauseMenu.main.UnPauseNoUI(); // Unpause the game when starting Level 3
         // Load Level 1
         SceneManager.LoadScene("Level 1");
         Debug.Log("Starting Level 1...");
-        UnPauseNoUI(); // Unpause the game when starting Level 1
     }
 
     private void StartLevel2()
     {
+        PauseMenu.main.UnPauseNoUI(); // Unpause the game when starting Level 3
         // Load Level 2
         SceneManager.LoadScene("Level 2");
         Debug.Log("Starting Level 2...");
-        UnPauseNoUI(); // Unpause the game when starting Level 2
     }
 
     private void StartLevel3()
     {
+        PauseMenu.main.UnPauseNoUI(); // Unpause the game when starting Level 3
         // Load Level 3
         SceneManager.LoadScene("Level 3");
         Debug.Log("Starting Level 3...");
-        UnPauseNoUI(); // Unpause the game when starting Level 3
     }
 
     // Method to handle back button click event
@@ -226,12 +178,9 @@ public class BountyBoard : MonoBehaviour, IDataPersistence
         // Check if the player is still inside the trigger area
         if (!IsPlayerInsideTriggerArea())
         {
+            PauseMenu.main.UnPauseNoUI(); // Unpause the game when the pop-up is deactivated
             // Deactivate the level select pop-up
             levelSelectPopup.SetActive(false);
-            UnPauseNoUI(); // Unpause the game when the pop-up is deactivated
-
-            // Unsubscribe from onPause event
-            PauseMenu.onPause -= PauseNoUI;
         }
     }
 
@@ -254,32 +203,6 @@ public class BountyBoard : MonoBehaviour, IDataPersistence
         return false;
     }
 
-    public void PauseNoUI()
-    {
-        if (!paused)
-        {
-            paused = true;
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-            if (Time.timeScale != 0) prevTimeScale = Time.timeScale;
-
-            Time.timeScale = 0;
-            onPause?.Invoke();
-        }
-    }
-
-    public void UnPauseNoUI()
-    {
-        if (paused)
-        {
-            paused = false;
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-
-            Time.timeScale = prevTimeScale;
-            onPause?.Invoke();
-        }
-    }
 
     /* Method to clear player's data
     public void ClearPlayerData()
@@ -289,12 +212,6 @@ public class BountyBoard : MonoBehaviour, IDataPersistence
             clearSaveDataScript.Pressed();
         }
     }*/
-
-    private void OnDestroy()
-    {
-        // Unsubscribe from onPause event
-        PauseMenu.onPause -= PauseNoUI;
-    }
 
     public void LoadData(GameData data)
     {
