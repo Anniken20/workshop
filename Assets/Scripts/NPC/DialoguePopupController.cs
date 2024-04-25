@@ -131,7 +131,8 @@ public class DialoguePopupController : MonoBehaviour, IInteractable
 
     private void DisplayDialoguePiece(int i)
     {
-        audioSource.PlayOneShot(dialogues[i].chirp);
+        if (audioSource != null)
+            audioSource.PlayOneShot(dialogues[i].chirp);
         dialogues[i].onWriteEvent.Invoke();
         DialogueManager.Main.characterNameText.text = dialogues[i].name;
         DialogueManager.Main.characterPortrait.sprite = dialogues[i].portrait;
@@ -163,12 +164,13 @@ public class DialoguePopupController : MonoBehaviour, IInteractable
                     AudioClip keyType = keyTypes[UnityEngine.Random.Range(0, keyTypes.Length)];
 
                     // Play the chosen key sound
-                    audioSource.PlayOneShot(keyType);
+                    if (audioSource != null)
+                        audioSource.PlayOneShot(keyType);
                 }
             }
             i++;
         }
-        if(keyFinish != null) audioSource.PlayOneShot(keyFinish);
+        if(keyFinish != null && audioSource != null) audioSource.PlayOneShot(keyFinish);
         writing = false;
     }
 
@@ -188,7 +190,7 @@ public class DialoguePopupController : MonoBehaviour, IInteractable
 
     private void FinishLine()
     {
-        if(keyFinish != null) audioSource.PlayOneShot(keyFinish);
+        if(keyFinish != null && audioSource != null) audioSource.PlayOneShot(keyFinish);
         if (writeRoutine != null) StopCoroutine(writeRoutine);
         DialogueManager.Main.characterText.text = dialogues[dialogueIndex].message;
         writing = false;
