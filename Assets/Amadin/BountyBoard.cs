@@ -239,6 +239,7 @@ public class BountyBoard : MonoBehaviour, IDataPersistence
         }
         if(PauseMenu.paused) PauseMenu.main.UnPauseNoUI();
         ThirdPersonController.Main._inDialogue = false;
+        playerHUD.SetActive(true);
     }
 
     public void BackButton()
