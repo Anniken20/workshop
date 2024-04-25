@@ -55,7 +55,8 @@ public class SwitchController : MonoBehaviour
         if (transform.position != switchDownPos)
         {
             transform.position = Vector3.MoveTowards(transform.position, switchDownPos, switchSpeed * Time.deltaTime);
-            audioSource.PlayOneShot(pressurePlateClick);
+            //if (audioSource != null)
+                //audioSource.PlayOneShot(pressurePlateClick);
         }
     }
 
@@ -77,6 +78,8 @@ public class SwitchController : MonoBehaviour
             isPressingSwitch = !isPressingSwitch;
             if (clickPlayed == false)
             {
+                if (audioSource != null)
+                    audioSource.PlayOneShot(pressurePlateClick);
                 clickPlayed = true;
             }
 
