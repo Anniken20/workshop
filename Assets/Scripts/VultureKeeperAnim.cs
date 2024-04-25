@@ -9,10 +9,11 @@ public class VultureKeeperAnim : MonoBehaviour
     public AudioSource audioSource;
     public AudioClip projectileSFX;
 
-    void Start()
+    private Coroutine cowerRoutine;
+
+    void OnEnable()
     {
         anim.SetBool("Crying", false);
-        anim.SetBool("Throw", false);
         anim.SetBool("Idle", true);
     }
 
@@ -23,7 +24,8 @@ public class VultureKeeperAnim : MonoBehaviour
         {
             anim.SetBool("Idle", false);
             anim.SetBool("Crying", true);
-            StartCoroutine(CowerDelay());
+            if (cowerRoutine != null) StopCoroutine(cowerRoutine);
+            cowerRoutine = StartCoroutine(CowerDelay());
         }
     }
 
@@ -31,6 +33,7 @@ public class VultureKeeperAnim : MonoBehaviour
     {
         yield return new WaitForSeconds(2.5f);
         anim.SetBool("Crying", false);
+        Debug.Log("cower delay set throw false");
         anim.SetBool("Throw", false);
         anim.SetBool("Idle", true);
     }

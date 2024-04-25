@@ -44,7 +44,7 @@ public class VultureKeeper : Enemy
             anim.SetBool("Idle", false);
             anim.SetBool("Crying", false);
             anim.SetBool("Throw", true);
-            Debug.Log("Set Throwing to true");
+            Debug.Log("Set throwing to true");
             StartCoroutine(ThrowDelay());
 
             foreach (GameObject box in boxes)
@@ -71,6 +71,7 @@ public class VultureKeeper : Enemy
     {
         Debug.Log("Waiting to go back to idle");
         yield return new WaitForSeconds(2f);
+        Debug.Log("throw delay set throw false");
         anim.SetBool("Throw", false);
         anim.SetBool("Crying", false);
         anim.SetBool("Idle", true);
