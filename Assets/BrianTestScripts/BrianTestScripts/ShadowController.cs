@@ -51,8 +51,11 @@ public class ShadowController : MonoBehaviour
     {
         // Instantiate the cube at player's position plus some height
         GameObject fallingCube = Instantiate(fallingCubePrefab, player.position + Vector3.up * 5, Quaternion.identity);
-        if(enemy.GetComponent<VultureKeeperAnim>() != null){
-            enemy.GetComponent<VultureKeeperAnim>().CallBirds();
+        if (enemy != null)
+        {
+            if(enemy.GetComponent<VultureKeeperAnim>() != null){
+                enemy.GetComponent<VultureKeeperAnim>().CallBirds();
+            }
         }
     }
 
