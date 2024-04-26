@@ -143,6 +143,12 @@ public class NotesSystem : MonoBehaviour
                     break;
             }
         }
+        if (Time.timeScale != 0 && usingNotesSystem == true)
+        {
+            usingNotesSystem = !usingNotesSystem;
+            Close(activeNote != null);
+            EventSystem.current.SetSelectedGameObject(null); 
+        }
 
         /*
         if (usingNotesSystem)
