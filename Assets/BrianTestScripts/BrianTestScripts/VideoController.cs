@@ -8,6 +8,7 @@ using StarterAssets;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
 using TMPro.Examples;
+using UnityEngine.Events;
 
 public class VideoController : MonoBehaviour, IDataPersistence
 {
@@ -26,6 +27,7 @@ public class VideoController : MonoBehaviour, IDataPersistence
     bool triggeredOnce = true;
     public QTEDuel qteDuel;
     public BountyBoard bountyBoard;
+    public UnityEvent onEndReached;
 
     public void Start()
     {
@@ -81,6 +83,8 @@ public class VideoController : MonoBehaviour, IDataPersistence
         {
             bountyBoard.EndVideo();
         }
+
+        onEndReached?.Invoke();
     }
 
     public void LoadScene(string nextSceneName)
@@ -130,6 +134,8 @@ public class VideoController : MonoBehaviour, IDataPersistence
             AudioManager.main.musicAudio.Play();
             bountyBoard.EndVideo();
         }
+
+        onEndReached?.Invoke();
     }
 
     void OnDestroy()
