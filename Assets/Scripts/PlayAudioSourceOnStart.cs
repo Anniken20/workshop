@@ -27,4 +27,10 @@ public class PlayAudioSourceOnStart : MonoBehaviour
         if (audioSource != null) audioSource.Play();
     }
 
+    public void ResumeAudio()
+    {
+        AudioSource audioSource = GetComponent<AudioSource>();
+        if (audioSource != null) audioSource.Play();
+    }
+
 }
